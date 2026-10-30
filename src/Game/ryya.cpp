@@ -1,5 +1,79 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801A6690-801A8194 (RYYA). Remaining functions are not yet decompiled.
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JMath/JMath.h"
+#include "std/math.h"
+extern "C" void* lbl_8053AB10;
+extern "C" void fn_801EEC98(void*,s32,u16*,s32*,f32*,s32*,s32,s32);
+extern "C" void fn_80239914(void*,s32,s32);
+extern "C" s32 fn_80138A30(void*);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" void fn_8022FEB8(void*,s32,s32,s32,s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" u8 fn_8038AD24(s32,s32,s32,s32,const JGeometry::TVec3f&,s32);
+extern "C" void fn_801EE8F4(void*,void*,f32*,s32);
+extern "C" u8 fn_803865B8(s32);
+extern "C" s32 fn_8037EFB4(s32);
+extern "C" void fn_8038470C(s32,s32);
+extern "C" u8 fn_80388CAC(s32,s32);
+extern "C" void fn_80230534(s32);
+extern "C" void fn_801F0D20(void*,s32);
+extern "C" void fn_80458FF0(void*,u32,s32,s32);
+extern "C" void fn_8022B1E0(void);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7818(void*,u32,s32,void*,s32);
+extern "C" s32 fn_801F68E0(void*);
+extern "C" void fn_80230C6C(s32);
+extern "C" s32 fn_801F2718(void*,u32);
+extern "C" char* fn_801F666C(void*,s32);
+extern "C" void fn_801F0E34(void*,u32,s32);
+extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void fn_801F71A4(void*,f32,f32,f32);
+extern "C" void fn_8030C210(void*,void*);
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" void fn_8022FE80(s32,s32,s32,s32,s32);
+extern "C" s32 Actor_CreateByID(void*,u32,u32,f32*,u32,s32,s32);
+extern "C" u8 fn_80384C58(s32,s32);
+extern "C" void fn_801F6884(void*);
+extern "C" s32 fn_801F8544(void*,u32,s32,void*,s32);
+extern const f32 lbl_8053E640;
+extern const f32 lbl_8053E644;
+extern const f32 lbl_8053E648;
+extern const f32 lbl_8053E64C;
+extern const f32 lbl_8053E650;
+extern const f32 lbl_8053E658;
+extern const f32 lbl_8053E65C;
+extern const f32 lbl_8053E680;
+extern const f32 lbl_8053E684;
+
+static inline void ryyaFocus(const JGeometry::TVec3f& pos) {
+    char* camera=(char*)((void**)lbl_8053AB10)[9];
+    if (*(u8*)(camera+0x7f5)==0) {
+        *(u8*)(camera+0x7f4)=1;
+        *(s32*)(camera+0x7f8)=4;
+        *(f32*)(camera+0x7fc)=pos.x;
+        *(f32*)(camera+0x800)=pos.y;
+        *(f32*)(camera+0x804)=pos.z;
+        *(u8*)(camera+0x7f6)=0;
+    }
+}
+static inline f32 ryyaDistance(char* p,char* obj) {
+    f32 dy=*(f32*)(obj+0x10)-*(f32*)(p+0x10);
+    f32 dx=*(f32*)(obj+0xc)-*(f32*)(p+0xc);
+    return std::sqrtf(dx*dx+dy*dy);
+}
+static inline void ryyaPlayerDirection(char* p,const JGeometry::TVec3f& delta) {
+    u16 angle=(s32)(JMath::atanTable_.atan2_(-delta.x,-delta.y)*lbl_8053E64C);
+    if(angle<0x2000 || angle>=0xe000) *(s32*)(p+0x98)=3;
+    else if(angle>=0x2000 && angle<0x6000) *(s32*)(p+0x98)=1;
+    else if(angle>=0x6000 && angle<=0xa000) *(s32*)(p+0x98)=2;
+    else *(s32*)(p+0x98)=0;
+}
+
 #include "types.h"
 
 // from src/Game/Saya_ForceStateRange_801A68A4.cpp
@@ -198,8 +272,9 @@ extern "C" void fn_801A6690(char* p) {
             lbl_8053AF20->m10 = *(s32*)(p + 0x25c);
             lbl_8053AF20->m13 |= 1;
             s32 t = *(s32*)(p + 0x258);
+            s32 r = t - (t / 60) * 60;
             lbl_8053AF20->m11 = t / 60;
-            lbl_8053AF20->m12 = (s32)(lbl_8053E62C * (t - (t / 60) * 60) / lbl_8053E630);
+            lbl_8053AF20->m12 = (s32)(lbl_8053E62C * r / lbl_8053E630);
             lbl_8053AF20->m13 |= 2;
         }
         break;
