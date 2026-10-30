@@ -404,20 +404,142 @@ static inline void setHit_8026B81C(u8* p) { p[*(s32*)(p + 0x1c) + 0x38] = 1; }
 
 extern "C" void fn_8026B81C(u8* p, u16 k) {
     switch (k) {
-    case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
-    case 0x08: case 0x09: case 0x0A: case 0x0B: case 0x0C: case 0x0D: case 0x0E: case 0x0F:
-    case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15: case 0x16: case 0x17:
-    case 0x18: case 0x19: case 0x1A: case 0x1B: case 0x1C: case 0x1D: case 0x1E: case 0x1F:
-    case 0x20: case 0x21: case 0x22: case 0x23: case 0x24: case 0x25: case 0x26: case 0x27:
-    case 0x28: case 0x29: case 0x2A: case 0x2B: case 0x2C: case 0x2D: case 0x2E: case 0x2F:
-    case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37:
-    case 0x38: case 0x39: case 0x3A: case 0x3B: case 0x3C: case 0x3D: case 0x3E: case 0x3F:
-    case 0x40: case 0x41: case 0x42: case 0x43: case 0x44: case 0x45: case 0x46: case 0x47:
-    case 0x48: case 0x49: case 0x4A: case 0x4B: case 0x4C: case 0x4D: case 0x4E: case 0x4F:
-    case 0x50: case 0x51: case 0x52: case 0x53: case 0x54: case 0x55: case 0x56: case 0x57:
-    case 0x58: case 0x59: case 0x5A: case 0x5B: case 0x5C: case 0x5D: case 0x5E: case 0x5F:
-    case 0x60:
-        *(u8*)(p + *(s32*)(p + 0x1c) + 0x38) = 1;
+    case 0x01:
+        setHit_8026B81C(p);
+        break;
+    case 0x04:
+        if (tileX_8026B81C(p) < 8) setHit_8026B81C(p);
+        break;
+    case 0x05:
+        if (tileX_8026B81C(p) > 8) setHit_8026B81C(p);
+        break;
+    case 0x06:
+        if (tileY_8026B81C(p) < 8) setHit_8026B81C(p);
+        break;
+    case 0x07:
+        if (tileY_8026B81C(p) > 8) setHit_8026B81C(p);
+        break;
+    case 0x08:
+        if (tileY_8026B81C(p) + tileX_8026B81C(p) >= 16) setHit_8026B81C(p);
+        break;
+    case 0x09:
+        if (tileY_8026B81C(p) - tileX_8026B81C(p) < 0) setHit_8026B81C(p);
+        break;
+    case 0x0A:
+        if (tileY_8026B81C(p) - tileX_8026B81C(p) >= 0) setHit_8026B81C(p);
+        break;
+    case 0x0B:
+        if (tileY_8026B81C(p) + tileX_8026B81C(p) < 16) setHit_8026B81C(p);
+        break;
+    case 0x18:
+        if (tileX_8026B81C(p) < 8 && tileY_8026B81C(p) < 8) setHit_8026B81C(p);
+        break;
+    case 0x19:
+        if (tileX_8026B81C(p) < 8 && tileY_8026B81C(p) > 8) setHit_8026B81C(p);
+        break;
+    case 0x1A:
+        if (tileX_8026B81C(p) > 8 && tileY_8026B81C(p) < 8) setHit_8026B81C(p);
+        break;
+    case 0x1B:
+        if (tileX_8026B81C(p) > 8 && tileY_8026B81C(p) > 8) setHit_8026B81C(p);
+        break;
+    case 0x1C:
+        if (tileX_8026B81C(p) > 8 || tileY_8026B81C(p) > 8) setHit_8026B81C(p);
+        break;
+    case 0x1D:
+        if (tileX_8026B81C(p) > 8 || tileY_8026B81C(p) < 8) setHit_8026B81C(p);
+        break;
+    case 0x1E:
+        if (tileX_8026B81C(p) < 8 || tileY_8026B81C(p) > 8) setHit_8026B81C(p);
+        break;
+    case 0x1F:
+        if (tileX_8026B81C(p) < 8 || tileY_8026B81C(p) < 8) setHit_8026B81C(p);
+        break;
+    case 0x20:
+        setHit_8026B81C(p);
+        break;
+    case 0x21:
+        setHit_8026B81C(p);
+        break;
+    case 0x22:
+        setHit_8026B81C(p);
+        break;
+    case 0x24:
+        setHit_8026B81C(p);
+        break;
+    case 0x25:
+        if (fn_802D6A9C()[0x171] == 0) setHit_8026B81C(p);
+        break;
+    case 0x26:
+        if (fn_802D6A9C()[0x171] == 1) setHit_8026B81C(p);
+        break;
+    case 0x27: case 0x28: case 0x29: case 0x2A: case 0x2B: case 0x2C: case 0x2D: case 0x2E: case 0x2F:
+        setHit_8026B81C(p);
+        break;
+    case 0x30:
+        setHit_8026B81C(p);
+        break;
+    case 0x31: case 0x32: case 0x33: case 0x34:
+        setHit_8026B81C(p);
+        break;
+    case 0x35:
+        setHit_8026B81C(p);
+        break;
+    case 0x36:
+        setHit_8026B81C(p);
+        break;
+    case 0x37:
+        setHit_8026B81C(p);
+        break;
+    case 0x38:
+        setHit_8026B81C(p);
+        break;
+    case 0x3C:
+        setHit_8026B81C(p);
+        break;
+    case 0x3D:
+        setHit_8026B81C(p);
+        break;
+    case 0x3E:
+        setHit_8026B81C(p);
+        break;
+    case 0x40: case 0x41: case 0x42: case 0x43:
+        setHit_8026B81C(p);
+        break;
+    case 0x51:
+        setHit_8026B81C(p);
+        break;
+    case 0x52:
+        setHit_8026B81C(p);
+        break;
+    case 0x53:
+        setHit_8026B81C(p);
+        break;
+    case 0x58:
+        if (tileY_8026B81C(p) + tileX_8026B81C(p) >= 16) setHit_8026B81C(p);
+        break;
+    case 0x59:
+        if (tileY_8026B81C(p) - tileX_8026B81C(p) < 0) setHit_8026B81C(p);
+        break;
+    case 0x5A:
+        if (tileY_8026B81C(p) - tileX_8026B81C(p) >= 0) setHit_8026B81C(p);
+        break;
+    case 0x5B:
+        if (tileY_8026B81C(p) + tileX_8026B81C(p) < 16) setHit_8026B81C(p);
+        break;
+    case 0x5C:
+        if (tileY_8026B81C(p) + tileX_8026B81C(p) >= 16) setHit_8026B81C(p);
+        break;
+    case 0x5D:
+        if (tileY_8026B81C(p) - tileX_8026B81C(p) < 0) setHit_8026B81C(p);
+        break;
+    case 0x5E:
+        if (tileY_8026B81C(p) - tileX_8026B81C(p) >= 0) setHit_8026B81C(p);
+        break;
+    case 0x5F:
+        if (tileY_8026B81C(p) + tileX_8026B81C(p) < 16) setHit_8026B81C(p);
+        break;
+    case 0x00: case 0x02: case 0x03: case 0x60:
         break;
     }
 }
