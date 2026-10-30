@@ -189,8 +189,8 @@ extern "C" int GBAJoyBoot(s32 chan, s32 palette, s32 speed, u8* program, u32 len
 extern "C" u32 SIProbe(s32 chan);
 extern "C" s32 fn_801365A8(void);
 extern "C" s32 fn_80301A88(void* this_);
-extern s8 lbl_8054161C[];
-extern u8 lbl_80541618[];
+extern s8 lbl_8054161C[4];
+extern u8 lbl_80541618[4];
 extern u32 lbl_80541620;
 extern u32 lbl_80541628;
 
