@@ -208,7 +208,7 @@ struct PlayerAreas2 {
     s32 mId[0x50];
 };
 
-inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::TVec3<f32>& b, const f32 epsilon, const f32 height = 0.0f) {
+inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::TVec3<f32>& b, const f32 epsilon, const f32 height) {
     bool equal=false;
     bool xy=false;
     if(JGeometry::TUtilf::epsilonEquals(a.x,b.x,epsilon) &&
@@ -1668,7 +1668,8 @@ void fn_80274CB8(char* p) {
     self = p;
     tb = (const u8*)liftDataPrefix;
 
-    if (F32(self, 0x10) > lbl_8054028C) {
+    f32 height = F32(self,0x10);
+    if (height > lbl_8054028C) {
         st = U8(self, 0x3f8);
         if (U8(self,0x3f8) < 4) {
             U8(self, 0x3f8) = st + 1;
@@ -1683,7 +1684,7 @@ void fn_80274CB8(char* p) {
         return;
     }
 
-    b9=liftPositionsEqual(*(JGeometry::TVec3<f32>*)(self+8),*(JGeometry::TVec3<f32>*)(self+0x14),JGeometry::TUtilf::epsilon());
+    b9=liftPositionsEqual(*(JGeometry::TVec3<f32>*)(self+8),*(JGeometry::TVec3<f32>*)(self+0x14),JGeometry::TUtilf::epsilon(),height);
     if (b9) {
         U8(self, 0x3f8) = 0;
     } else {
