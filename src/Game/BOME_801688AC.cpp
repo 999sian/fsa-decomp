@@ -246,6 +246,16 @@ extern "C" void fn_80168E78(char* this_) {
 extern "C" u8 fn_8022F478(s32 idx);
 extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
 extern "C" s32 fn_8022F3DC(s32 idx);
+extern "C" u8 fn_8022BC38(s32, s32, void*);
+extern "C" u8 fn_8022C274(s32);
+extern "C" u8 fn_8022D75C(s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" u8 fn_801F6758(void*, s32, f32);
+extern "C" void fn_8030C210(void*, void*);
+extern "C" void fn_801F0E34(void*, u32, s32);
+extern "C" void fn_802A20F0(void*, void*, s32, s32, s32, s32);
+extern u8* lbl_8053AC98;
+
 extern "C" void fn_80169030(Actor* this_) {
     u8* self = (u8*)this_;
     s32 idx = *(s32*)(self + 0x90);
