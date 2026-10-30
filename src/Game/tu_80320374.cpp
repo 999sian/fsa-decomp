@@ -66,6 +66,7 @@ extern "C" void* fn_801F666C(void*,s32);
 extern "C" const f32 lbl_80541AF0;
 extern "C" const f32 lbl_80541AF4;
 extern "C" const f32 lbl_80541AF8;
+static inline char* droppedActor320374(s32 id) { return (char*)fn_801F666C(fn_801F856C(),id); }
 static inline f32 deathRandom320374() {
     char* random = lbl_8053AAF8;
     u32 bits;
@@ -73,6 +74,7 @@ static inline f32 deathRandom320374() {
     bits=(*(u32*)(random+0xb4)>>9)|0x3f800000;
     return *(f32*)&bits-lbl_80541AEC;
 }
+#pragma opt_strength_reduction off
 #pragma opt_common_subs off
 #pragma opt_propagation on
 extern "C" void fn_80320374(char* p) {
@@ -285,6 +287,7 @@ extern "C" void fn_80320374(char* p) {
 }
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 static inline f32 ItemRandom321200() {
     char* rng=lbl_8053AAF8;
     u32 bits;
