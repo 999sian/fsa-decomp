@@ -250,7 +250,7 @@ static inline BOOL gbaReadPacket(GbaChan* c) {
         if (GBAGetStatus(c->chan, c->status) != 0 || c->status[0] != 0x38) {
             return TRUE;
         }
-        if (GBARead(c->chan, (u8*)c + (i + 0x28), c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
+        if (GBARead(c->chan, (u8*)&c->pkt + i, c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
             return TRUE;
         }
     }
@@ -416,7 +416,7 @@ extern "C" void* fn_80300E1C(void* arg) {
         if (msg == (void*)1) {
             return NULL;
         }
-        if (msg == (void*)7 && *(u8**)((u8*)c + 0x4c) == NULL) {
+        if (msg == (void*)7 && c->program == NULL) {
             msg = (void*)8;
         }
         c->msg = (u32)msg;
@@ -557,20 +557,20 @@ extern "C" void* fn_80300E1C(void* arg) {
             c->f_d8 = 0;
             err = 1;
             c->f_d9 = 0;
-            *(s32*)((u8*)c + 0x5c) = err;
+            c->f5c = err;
             c->status[3] = 0;
             type = SIProbe(c->chan);
-            *(u32*)((u8*)c + 0x58) = type;
+            c->probeType = type;
             if (type == 0x80) {
                 goto wait;
             }
             if (type == 0x40000) {
-                *(u32*)((u8*)c + 0x54) = type;
+                c->deviceType = type;
                 c->f_d3 = 0;
                 continue;
             }
             if (type != 8 && type != 0x40) {
-                *(u32*)((u8*)c + 0x54) = type;
+                c->deviceType = type;
             }
             c->f_d3 = 1;
             continue;
@@ -580,9 +580,9 @@ extern "C" void* fn_80300E1C(void* arg) {
             u32 expected;
             c->f_d8 = 0;
             c->f_d9 = 1;
-            *(s32*)((u8*)c + 0x5c) = 1;
+            c->f5c = 1;
             c->status[3] = 0;
-            err = GBAJoyBoot(c->chan, lbl_8054161C[c->chan], 2, *(u8**)((u8*)c + 0x4c), *(u32*)((u8*)c + 0x50), c->status);
+            err = GBAJoyBoot(c->chan, lbl_8054161C[c->chan], 2, c->program, c->programLen, c->status);
             if (err == 0) {
                 GbaPkt* pkt = &lbl_804D6AB8[c->chan];
                 memset(pkt, 0, sizeof(GbaPkt));
@@ -621,7 +621,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             u32 expected;
             c->f_d8 = 0;
             c->f_d9 = 1;
-            *(s32*)((u8*)c + 0x5c) = 1;
+            c->f5c = 1;
             c->status[3] = 0;
             if ((err = GBAReset(c->chan, c->status)) != 0) {
                 goto wait;
@@ -642,7 +642,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                         c->f_d3 = 1;
                         continue;
                     }
-                    c->f_db = ((u8*)c)[0x6b] & 3;
+                    c->f_db = c->gameId[3] & 3;
                     c->f_da = lbl_80541618[c->f_db];
                     if (c->f_db != 0) {
                         if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
@@ -689,14 +689,14 @@ extern "C" void* fn_80300E1C(void* arg) {
             if (s & 2) {
                 goto check;
             }
-            if ((err = GBARead(c->chan, (u8*)c + 0x60, c->status)) != 0) {
+            if ((err = GBARead(c->chan, (u8*)&c->crcWord, c->status)) != 0) {
                 goto fail;
             }
             if ((c->status[0] & 0x30) != 0x30) {
                 goto fail;
             }
             {
-                u32 v = *(u32*)((u8*)c + 0x60);
+                u32 v = c->crcWord;
                 if ((u8)v != gbaCrc(((v >> 16) & 0xff) | (v & 0xff00))) {
                     goto fail;
                 }
