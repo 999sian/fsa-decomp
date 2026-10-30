@@ -311,7 +311,7 @@ static inline u32 gbaExpectedId(void) {
     if (fn_801365A8() == 0) {
         return *(const volatile u32*)&lbl_80541620;
     }
-    return lbl_80541628;
+    return *(const volatile u32*)&lbl_80541628;
 }
 
 // Same CRC as fn_803006E8, used inline by the link thread.
