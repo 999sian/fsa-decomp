@@ -329,7 +329,7 @@ extern "C" void fn_801C2E70(u8* this_) {
     fn_80216A8C(this_ + 0x528);
 }
 
-extern "C" void fn_801D01A0(u8* this_, void* src, f32* out);
+extern "C" void fn_801D01A0(u8* this_, void* src, f32* out, f32 r);
 extern "C" u8 fn_801D0DD4(u8* this_);
 extern "C" void fn_802188B0(void* p);
 extern "C" void fn_801C71BC(u8* this_);
