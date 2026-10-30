@@ -1427,7 +1427,6 @@ extern "C" void fn_803C1340(u8* p) {
     p[0x110] = 0x14;
 }
 
-static inline u8 menuIconFlag(const u8* p,s32 index) { return p[index+0x19f]; }
 
 #pragma opt_lifetimes off
 extern "C" void fn_803C1734(u8* this_) {
