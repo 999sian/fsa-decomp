@@ -18,11 +18,60 @@ extern "C" void* fn_802E5C44(void* this_, short how) {
     return this_;
 }
 
+struct BgmnVt {
+    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
+    virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
+    virtual void v08(); virtual void v09(); virtual void v10(); virtual u8 v11();
+};
+
+struct BgmnVec {
+    f32 x, y, z;
+};
+
+static inline bool bgmnInArea(const BgmnVec& p, f32 x0, f32 y0, f32 x1, f32 y1) {
+    bool r = false;
+    if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
+        r = true;
+    }
+    return r;
+}
+
 // ---- Bgmn_EmptyHook.cpp ----
 // Bgmn_EmptyHook - BGMN: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
 
 void Bgmn_EmptyHook(void) {}
+
+extern "C" s32 fn_8023DE58(s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" s32 fn_8022EA0C(s32);
+extern void* lbl_8053AAF8;
+extern "C" void fn_802E5CA8(char* p) {
+    f32 minX = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+    f32 minY = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+    f32 maxX = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+    f32 maxY = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+    *(s32*)(p + 0x258) = -1;
+    *(s32*)(p + 0x25c) = -1;
+    *(u16*)(p + 0x94) = 0xffff;
+    if (*(u32*)(p + 0x240) != 2) {
+        s32 i;
+        if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
+            for (i = 0; i < 4; i++) {
+                if (((u8*)lbl_8053AAF8)[0x82] & (1 << i)) {
+                    if (*(s32*)(p + 4) == fn_8023DE58(i)) {
+                        f32* box = (f32*)fn_8023E724(i);
+                        if (box[0] >= minX && box[1] >= minY && box[0] < maxX && box[1] < maxY) {
+                            *(s32*)(p + 0x258) = i;
+                            *(u16*)(p + 0x94) = (u16)i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 }
 
