@@ -197,12 +197,8 @@ extern "C" void fn_8021D938(char* p) {
 
 extern "C" void fn_8021D9D4(char* p) {
     fn_801CE120(p);
-    if (*(s32*)(p + 0x248) == 9) {
-        register f32 v = *(f32*)(p + 0x14);
-        if (v > lbl_8053FD64) {
-            *(f32*)(p + 0x14) = v;
-            v = lbl_8053FD64;
-        }
+    if (*(s32*)(p + 0x248) == 9 && *(f32*)(p + 0x14) > 350.0f) {
+        *(f32*)(p + 0x14) = 350.0f;
     }
 }
 
@@ -472,6 +468,9 @@ extern "C" void fn_8021DC44(char* p) {
 }
 
 extern "C" void fn_8021DFAC(char* p, s32 state) {
+    NaviVec v2;
+    NaviVec v6;
+    NaviVec v1;
     s32 c;
     s32 i;
     s32 j;
@@ -483,9 +482,9 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         if (*(u32*)(p + 0x230) & 0x2000) {
             for (i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && navi_eq(fn_8023DE58(i), *(s32*)(p + 4))) {
-                    NaviVec v(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+                    v1 = NaviVec(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
                     for (j = 0; j < 4; j++) {
-                        fn_8013CC50(*(s32*)(p + 4), &v, lbl_8046A78C[i][j], 0, 0, 0, 0, 1, lbl_8053FD5C);
+                        fn_8013CC50(*(s32*)(p + 4), &v1, lbl_8046A78C[i][j], 0, 0, 0, 0, 1, 1.0f);
                     }
                     fn_80230FD0(i, 0x20063);
                 }
@@ -496,7 +495,8 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         if (*(u32*)(p + 0x230) & 0x2000) {
             for (i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && navi_eq(fn_8023DE58(i), *(s32*)(p + 4))) {
-                    fn_80230498(i, (void*)&(const NaviVec&)NaviVec(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58), fn_80230CFC(i) + 0x3c, 0xff, -0x80, -0x80, 1);
+                    v2 = NaviVec(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+                    fn_80230498(i, &v2, fn_80230CFC(i) + 0x3c, 0xff, -0x80, -0x80, 1);
                 }
             }
         }
@@ -510,7 +510,7 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         break;
     case 4: {
         fn_801F3604(p);
-        *(f32*)(p + 0x2bc) = lbl_8053FD5C;
+        *(f32*)(p + 0x2bc) = 1.0f;
         u8 flag = 0;
         s32 idx = *(s32*)(p + 0x2b4);
         if (idx >= 0 && (*(u32*)(p + 0x230) & 0x30000)) {
@@ -528,14 +528,17 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         f32* o = t;
         o[0] = *(f32*)(p + 0x2c8);
         o[1] = *(f32*)(p + 0x2cc);
-        f32 dx = JMath::sincosTable_.mTable[0x600].first * *(f32*)(p + 0x2bc);
-        f32 dz = JMath::sincosTable_.mTable[0x600].second * *(f32*)(p + 0x2bc);
-        o[0] += dx;
-        o[1] += dz;
+        JGeometry::TVec2<f32> offset;
+        offset.x = JMath::sincosTable_.mTable[0x600].first;
+        offset.y = JMath::sincosTable_.mTable[0x600].second;
+        offset.scale(*(f32*)(p + 0x2bc));
+        ((JGeometry::TVec2<f32>*)o)->add(offset);
         *(f32*)(p + 0x2c0) = o[0];
         *(f32*)(p + 0x2c4) = o[1];
-        *(f32*)(p + 0xc) = *(f32*)(p + 0x2c0);
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x2c4);
+        f32 py = *(f32*)(p + 0x2c4);
+        f32 px = *(f32*)(p + 0x2c0);
+        *(f32*)(p + 0xc) = px;
+        *(f32*)(p + 0x10) = py;
         *(f32*)(p + 0x14) = lbl_8053FD58;
         s32 st = *(s32*)(p + 0x248);
         s32 f = 0;
@@ -543,16 +546,16 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
         switch (st) {
         case 9: f = 1; break;
         }
-        *(void**)(p + 0x2d0) = fn_8013CC50(rm, p + 0xc, 0x32c, 0, -1, 0, 0, f, lbl_8053FD5C);
+        *(void**)(p + 0x2d0) = fn_8013CC50(rm, p + 0xc, 0x32c, 0, -1, 0, 0, f, 1.0f);
         f = 0;
         st = *(s32*)(p + 0x248);
         rm = *(s32*)(p + 4);
         switch (st) {
         case 9: f = 1; break;
         }
-        *(void**)(p + 0x2d4) = fn_8013CC50(rm, p + 0xc, 0x184, 0, -1, 0, 0, f, lbl_8053FD5C);
+        *(void**)(p + 0x2d4) = fn_8013CC50(rm, p + 0xc, 0x184, 0, -1, 0, 0, f, 1.0f);
         void* e = *(void**)(p + 0x2d0);
-        if (e != 0) {
+        if (e) {
             int k = *(u8*)(p + 0x2ac) * 3;
             ((JPABaseEmitter*)e)->setGlobalEnvColor(lbl_8046A7AC[k], lbl_8046A7AC[k + 1], lbl_8046A7AC[k + 2]);
         }
@@ -575,7 +578,8 @@ extern "C" void fn_8021DFAC(char* p, s32 state) {
                         c = fn_801CD354(fn_801D0020(p, p + 0xc, i, 0));
                     }
                     fn_80230BF4(i, c);
-                    fn_80230498(i, (void*)&(const NaviVec&)NaviVec(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58), c + 0x3c, 0xff, -0x80, -0x80, 1);
+                    v6 = NaviVec(((f32*)fn_8023E724(i))[0], ((f32*)fn_8023E724(i))[1], lbl_8053FD58);
+                    fn_80230498(i, &v6, c + 0x3c, 0xff, -0x80, -0x80, 1);
                 }
             }
         }
