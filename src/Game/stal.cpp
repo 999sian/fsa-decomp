@@ -78,7 +78,14 @@ extern "C" char* fn_801F666C(void*, s32);
 extern "C" void fn_801EE4F0(void*);
 extern "C" void fn_8013CC50(u32, void*, s32, s32, s32, s32, s32, s32);
 extern "C" s32 ClassifyBamAngleToQuadrant(u32);
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 extern s32 lbl_804A0C10[];
+static inline u8 stalRoomFlag(const char* p) {
+    u32 room = *(const u32*)(p+4);
+    return ((StalMgr*)fn_802D6A9C())->flag(room);
+}
+
 
 struct StalAnimTable {
     s32 walk[4][6];
