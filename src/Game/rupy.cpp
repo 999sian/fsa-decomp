@@ -1201,6 +1201,7 @@ extern "C" void fn_8032C664(u8* p) {
     }
 }
 
+#pragma opt_lifetimes reset
 #pragma opt_propagation reset
 // RUPY: small helpers.
 extern const f32 lbl_80541D88;
