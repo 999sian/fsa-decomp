@@ -746,7 +746,9 @@ static inline u32 key0MgrBits() {
 }
 
 static inline void key0LinkHere2(char* p) {
-    u32 packed = key0PackActorFlags((u8*)p);
+    u32 packed = (*(u32*)(p + 0x23c) << 30) | (*(u8*)(p + 0x2b5) << 29);
+    packed = __rlwimi(packed, *(u32*)(p + 0x280), 24, 3, 7);
+    packed = __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
     if (!fn_802DCD0C(fn_802D6A9C())) {
         packed |= key0MgrBits();
     } else {
@@ -837,20 +839,7 @@ extern "C" void fn_802C2C30(char* p) {
     room = *(s32*)(p + 4);
     if (key0RoomFlag(room) != 0) {
         if (*(u8*)(p + 0x2b3) == 1) {
-            *(u8*)(p + 0x2b3) = 0;
-            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-            vel.z = *(f32*)(p + 0x14) = 0.0f;
-            if (vel.y >= lbl_80540C94) {
-                vel.y = lbl_80540C94;
-            } else if (vel.y <= lbl_80540C9C) {
-                vel.y = lbl_80540C9C;
-            }
-            if (*(s32*)(p + 0x280) == 6) {
-                if (vel.x != lbl_80540C74 || vel.y != lbl_80540C74) {
-                    vel.x = lbl_80540CB0 * vel.x;
-                    vel.y = lbl_80540CB0 * vel.y;
-                }
-            }
+            key0Land(p);
         }
         *(f32*)(p + 0x248) = *(f32*)(p + 0xc);
         *(f32*)(p + 0x24c) = *(f32*)(p + 0x10);
