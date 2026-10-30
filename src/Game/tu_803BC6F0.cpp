@@ -654,6 +654,8 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
 
 #pragma dont_inline on
 #include "Game/ItemBase.h"
+extern "C" void* lbl_8053AB10;
+extern "C" void fn_8013B490(void*);
 #include "JSystem/JUtility/JUTVideo.h"
 extern "C" void fn_8013B414(void*,f32*,s32);
 extern "C" void fn_802F86CC(void*,void*,void*,s32,DrawRec*,f32,f32);
