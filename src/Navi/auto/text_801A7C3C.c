@@ -847,18 +847,21 @@ extern "C" f32 fn_801ABF3C(Anim_801ABF3C* self, u16 idx)
 }
 
 extern "C" void fn_801ABFC0(u8* p) {
+    void* v0 = lbl_8027F214;
+    void* v1 = lbl_8029B430;
+    void* v2 = lbl_8029B41C;
     f32 f = lbl_80301D6C;
-    *(void**)p = lbl_8027F214;
+    *(void**)p = v0;
     p[4] = 0;
     p[5] = 0;
     *(s16*)(p + 6) = 0;
     *(f32*)(p + 8) = f;
-    *(void**)p = lbl_8029B430;
+    *(void**)p = v1;
     *(s16*)(p + 0xc) = 0;
     *(s16*)(p + 0xe) = 0;
     *(s32*)(p + 0x10) = 0;
     *(s32*)(p + 0x14) = 0;
-    *(void**)p = lbl_8029B41C;
+    *(void**)p = v2;
     *(s32*)(p + 0x18) = 0;
     *(s32*)(p + 0x1c) = 0;
 }
@@ -1589,8 +1592,8 @@ extern "C" void fn_801AF8C4(u8* self, void* node) {
 
 extern "C" void fn_801AF8F8(void* arg0) {
     struct Obj_801AF8F8* p = (struct Obj_801AF8F8*)arg0;
-    Vec3f_801AF8F8 a;
-    Vec3f_801AF8F8 b;
+    union { W3_801AF8F8 w; Vec3f_801AF8F8 v; } t1;
+    union { W3_801AF8F8 w; Vec3f_801AF8F8 v; } t2;
     p->w0 = 0;
     p->w4 = 0;
     p->w8 = 0;
@@ -1603,10 +1606,10 @@ extern "C" void fn_801AF8F8(void* arg0) {
     p->f38 = lbl_80301DD4;
     p->w54 = 0;
     p->w58 = 0;
-    a = lbl_80202698;
-    b = lbl_802026A4;
-    p->v3C = a;
-    p->v48 = b;
+    t1.w = *(W3_801AF8F8*)&lbl_80202698;
+    p->v3C = t1.v;
+    t2.w = *(W3_801AF8F8*)&lbl_802026A4;
+    p->v48 = t2.v;
 }
 
 extern "C" void fn_801AFD48(void* param_1) {
@@ -3490,47 +3493,39 @@ extern "C" void* fn_8018C248(void* base, u32 offset);
 extern "C" void* fn_8018C278(void* base, u32 offset);
 extern "C" void fn_801B97AC(void* unused, void* dest, void* src) {
     extern f32 lbl_80301DF0;
+    u32 v1;
+    u32 v2;
+    s32 i;
+    s32 j;
     u8* s = (u8*)src;
-    u8* d = (u8*)dest;
-    f32 f = lbl_80301DF0;
-    u8 c = s[8];
+    u8 c = *(u8*)(s + 8);
     s16 b = *(s16*)(s + 0xa);
-    *(s16*)(d + 6) = b;
+    u8* dst = (u8*)dest;
+    f32 f = lbl_80301DF0;
+    *(s16*)(dst + 6) = b;
     u16 a = *(u16*)(s + 0xc);
-    *(u8*)(d + 4) = c;
+    *(u8*)(dst + 4) = c;
     u16 e = *(u16*)(s + 0xe);
-    *(f32*)(d + 8) = f;
-    *(u16*)(d + 0xc) = a;
-    u32 t = *(u32*)(s + 0x18);
-    *(u16*)(d + 0xe) = e;
-    *(void**)(d + 0x18) = fn_8018C248(src, t);
-    *(void**)(d + 0x1c) = fn_8018C248(src, *(u32*)(s + 0x1c));
-    *(void**)(d + 0x10) = fn_8018C278(src, *(u32*)(s + 0x20));
-    *(void**)(d + 0x14) = fn_8018C278(src, *(u32*)(s + 0x24));
-    u32 v1 = (u32)fn_80174BA0(src, *(u32*)(s + 0x28));
-    u32 v2 = (u32)fn_80174BA0(src, *(u32*)(s + 0x2c));
-    {
-        u32 off = 0;
-        s32 i = 0;
-        for (; i < *(u16*)(d + 0xc); i++) {
-            u32* w = (u32*)(*(u8**)(d + 0x10) + off + 4);
-            *w = v1 + *w * 2;
-            off += 8;
-        }
+    *(f32*)(dst + 8) = f;
+    *(u16*)(dst + 0xc) = a;
+    u32 d = *(u32*)(s + 0x18);
+    *(u16*)(dst + 0xe) = e;
+    *(void**)(dst + 0x18) = fn_8018C248(s, d);
+    *(void**)(dst + 0x1c) = fn_8018C248(s, *(u32*)(s + 0x1c));
+    *(void**)(dst + 0x10) = fn_8018C278(s, *(u32*)(s + 0x20));
+    *(void**)(dst + 0x14) = fn_8018C278(s, *(u32*)(s + 0x24));
+    v1 = (u32)fn_80174BA0(s, *(u32*)(s + 0x28));
+    v2 = (u32)fn_80174BA0(s, *(u32*)(s + 0x2c));
+    for (i = 0; i < *(u16*)(dst + 0xc); i++) {
+        (*(u32**)(dst + 0x10))[i * 2 + 1] = v1 + (*(u32**)(dst + 0x10))[i * 2 + 1] * 2;
     }
-    {
-        u32 off = 0;
-        s32 i = 0;
-        for (; i < *(u16*)(d + 0xe); i++) {
-            u32* w = (u32*)(*(u8**)(d + 0x14) + off + 4);
-            *w = v2 + *w * 2;
-            off += 8;
-        }
+    for (j = 0; j < *(u16*)(dst + 0xe); j++) {
+        (*(u32**)(dst + 0x14))[j * 2 + 1] = v2 + (*(u32**)(dst + 0x14))[j * 2 + 1] * 2;
     }
-    *(void**)(d + 0x20) = fn_80174B40(src, *(u32*)(s + 0x30));
-    *(void**)(d + 0x24) = fn_80174B40(src, *(u32*)(s + 0x34));
-    *(void**)(d + 0x28) = fn_80174B40(src, *(u32*)(s + 0x38));
-    *(void**)(d + 0x2c) = fn_80174B40(src, *(u32*)(s + 0x3c));
+    *(void**)(dst + 0x20) = fn_80174B40(s, *(u32*)(s + 0x30));
+    *(void**)(dst + 0x24) = fn_80174B40(s, *(u32*)(s + 0x34));
+    *(void**)(dst + 0x28) = fn_80174B40(s, *(u32*)(s + 0x38));
+    *(void**)(dst + 0x2c) = fn_80174B40(s, *(u32*)(s + 0x3c));
 }
 
 extern "C" void fn_801B9BBC(void* unused, void* dest, void* src);

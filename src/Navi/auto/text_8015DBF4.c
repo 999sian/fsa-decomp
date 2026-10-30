@@ -123,3 +123,32 @@ extern "C" u32 fn_8015E8FC(void) {
     return head;
 }
 
+#pragma use_lmw_stmw off
+extern "C" void* fn_8015E9A0(void* param_1) {
+    u32 size = lbl_802FF5A8 - (u32)param_1;
+    void* dst;
+    u32 left;
+    u32 chunk;
+    u8* end;
+    if (size & 0x1f) {
+        dst = (u8*)lbl_802FF5A4 + 0x20 - (size & 0x1f);
+    } else {
+        dst = (void*)lbl_802FF5A4;
+    }
+    memcpy(dst, param_1, size);
+    end = (u8*)dst + size;
+    chunk = lbl_802FF5A8 - (u32)end;
+    if (chunk > lbl_802FF5BC) {
+        chunk = lbl_802FF5BC;
+    }
+    fn_8015F248(1, lbl_802FF5C4 + lbl_802FF5B8, (u32)end, (chunk + 0x1f) & ~0x1f, 0);
+    left = lbl_802FF5BC - chunk;
+    lbl_802FF5B8 += chunk;
+    lbl_802FF5BC = left;
+    if (left == 0) {
+        lbl_802FF5C0 = (u32)end + chunk;
+    }
+    return dst;
+}
+#pragma use_lmw_stmw reset
+

@@ -317,6 +317,7 @@ extern "C" void fn_800C8E40(u8* p) {
 
 #pragma use_lmw_stmw off
 extern "C" int fn_800C91A4(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 from, f32 to) {
+    s32 n = idx;
     if (t < 0) {
         return 0;
     }
@@ -324,17 +325,17 @@ extern "C" int fn_800C91A4(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 f
         return 1;
     }
     f32 r = fn_800C95E4(p, max, t, b, from, to);
-    u8* q = p + idx * 4;
+    s32 off = n * 4;
     f32 d = r * (to - from);
-    VObj_800C91A4* o = *(VObj_800C91A4**)(q + 0x54);
-    o->SetPos(*(f32*)(q + 0x5c), *(f32*)(q + 0x64) + (from + d));
+    VObj_800C91A4* o = *(VObj_800C91A4**)(p + off + 0x54);
+    o->SetPos(*(f32*)(p + off + 0x5c), *(f32*)(p + off + 0x64) + (from + d));
     if (mode != 2) {
         if (mode == 1) {
             r = lbl_80300DE8 - r;
         }
         for (s32 i = 0; i < 3; i++) {
-            u8 a = p[idx + 0x6c];
-            o = *(VObj_800C91A4**)(p + (idx * 4 + 0x54));
+            u8 a = p[n + 0x6c];
+            o = *(VObj_800C91A4**)(p + (off + 0x54));
             o->SetAlpha((s32)(a * r));
         }
     }
@@ -359,10 +360,11 @@ extern "C" void fn_800C954C(u8* p) {
         o->v0(1);
     }
     (*(VObj_800C954C**)(p + 0x10))->v7();
-    if (lbl_802C567C[4] >= 0) {
-        if (--*(s32*)(lbl_802C567C + 8) == 0) {
+    char* base = lbl_802C567C;
+    if (*(s8*)(base + 4) >= 0) {
+        if (--*(s32*)(base + 8) == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
-            lbl_802C567C[4] = -1;
+            *(s8*)(base + 4) = -1;
         }
     }
 }

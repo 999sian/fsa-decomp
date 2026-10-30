@@ -533,13 +533,12 @@ extern "C" char* fn_80161710(u16* p, char* s, s8 term) {
         v = fn_801E30E8(*s);
         p[0] = v + p[0] * 3;
         if (i < 0x100) {
-            ((u8*)p)[i + 4] = v;
-            i++;
+            ((u8*)p)[i++ + 4] = v;
         }
         s++;
     }
     p[1] = i;
-    ((u8*)p)[i + 4] = 0;
+    ((u8*)p + i)[4] = 0;
     if (*s != 0) {
         return s + 1;
     }

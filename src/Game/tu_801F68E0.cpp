@@ -281,10 +281,9 @@ extern "C" BOOL fn_801F84C4(LinkPool* pool, LinkActor* actor) {
 }
 
 extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* count, s32 max) {
-    s32 i;
-    s32 n;
+    s32 n = pool->mCount;
     *count = 0;
-    for (i = 0, n = pool->mCount; i < n; i++) {
+    for (s32 i = 0; i < n; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->mType == 'RAIL' &&
             key == ((pool->mActors[i]->m90 >> 8) & 0xff))
         {
@@ -303,8 +302,8 @@ extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     f32 best = 1000000.0f;
     for (s32 i = 0; i < pool->mCount; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->m1a8 == 1) {
-            f32 dx = pos[0] - pool->mActors[i]->mX;
             f32 dy = pos[1] - pool->mActors[i]->mY;
+            f32 dx = pos[0] - pool->mActors[i]->mX;
             f32 dx2 = dx * dx;
             f32 dy2 = dy * dy;
             f32 d = dx2 + dy2;
@@ -370,10 +369,10 @@ extern "C" u8 fn_801CC9B0(PoolActor* actor);
 extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
     s32 id = -1;
-    for (s32 i = 0; i < count; i++) {
-        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
-            exceptId != pool->mActors[i]->mId && fn_801CC960(pool->mActors[i]))
-        {
+    s32 i;
+    for (i = 0; i < count; i++) {
+        PoolActor* a = pool->mActors[i];
+        if (a != NULL && a->mActive && param == a->mParam && exceptId != a->mId && fn_801CC960(a)) {
             id = pool->mActors[i]->mId;
             break;
         }
@@ -396,8 +395,8 @@ extern "C" s32 fn_801F750C(ActorPool* pool, s32 param, s32 exceptId) {
 }
 
 extern "C" s32 fn_801F7274(ActorPool* pool, s32 param, PoolActor** out, s32 exceptId) {
-    s32 count = pool->mCount;
     s32 n = 0;
+    s32 count = pool->mCount;
     for (s32 i = 0; i < count; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
             exceptId != pool->mActors[i]->mId && pool->mActors[i]->mZ <= 16.0f &&

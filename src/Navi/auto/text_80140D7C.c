@@ -62,18 +62,17 @@ extern "C" u32 fn_80140DDC(int param_1)
 
 extern "C" u32 fn_80140E78(u32 param_1)
 {
-    u32 id;
     int* p;
+    u32 id = param_1 & 0x7fffffff;
 
-    id = param_1 & 0x7fffffff;
     for (p = (int*)lbl_802FF3AC; p != 0; p = (int*)p[0]) {
         if ((u32)p[3] == id) {
-            return (param_1 & 0x80000000) | ((u8*)p)[9];
+            return ((u8*)p)[9] | (param_1 & 0x80000000);
         }
     }
     for (p = (int*)lbl_802FF3A8; p != 0; p = (int*)p[0]) {
         if ((u32)p[3] == id) {
-            return (param_1 & 0x80000000) | ((u8*)p)[9];
+            return ((u8*)p)[9] | (param_1 & 0x80000000);
         }
     }
     return -1;

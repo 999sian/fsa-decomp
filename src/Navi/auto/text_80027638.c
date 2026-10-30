@@ -335,11 +335,15 @@ extern "C" unsigned char fn_8002B7B0(unsigned char* self, unsigned char idx, int
 
 #pragma use_lmw_stmw off
 extern "C" int fn_8002B808(unsigned char* p, unsigned int param) {
-    unsigned char* t = lbl_802FBE3C;
-    int found = 0;
-    unsigned char* q = t;
+    unsigned char* q;
+    unsigned char* t;
     int i;
-    int n = 5;
+    int n;
+    int found;
+    t = lbl_802FBE3C;
+    q = t;
+    found = 0;
+    n = 5;
     if (lbl_802FEE30 & 0x8000) {
         n = 4;
     }
@@ -349,15 +353,15 @@ extern "C" int fn_8002B808(unsigned char* p, unsigned int param) {
             break;
         }
     }
-    if (found == 0) {
-        return 0;
-    }
-    for (i = 0; i < n; i++, t++) {
-        if ((p + 4)[(unsigned char)param + 0x834] == *t) {
-            return 0;
+    if (found != 0) {
+        for (i = 0; i < n; i++, t++) {
+            if ((p + 4)[(unsigned char)param + 0x834] == *t) {
+                return 0;
+            }
         }
+        return 1;
     }
-    return 1;
+    return 0;
 }
 #pragma use_lmw_stmw reset
 extern "C" void fn_8002BC84(void) {
@@ -515,12 +519,14 @@ extern "C" void fn_8002E55C(unsigned char* obj) {
         } else if (obj[0x56e] != 0) {
             fn_800589CC(1);
         }
+        float f;
         lbl_802FEE28 = 0;
+        f = lbl_802FFD10;
         *(unsigned short*)(obj + 0x56c) = 0;
         obj[0x56e] = 0;
         obj[0x56f] = 1;
         lbl_802FEE28 = p;
-        fn_80058654(1, (void*)p, 1, lbl_802FFD10);
+        fn_80058654(1, (void*)p, 1, f);
         *(unsigned short*)(obj + 0x56c) = (unsigned short)p;
         obj[0x56e] = 2;
         obj[0x56f] = 1;
@@ -745,6 +751,32 @@ extern "C" int fn_8002F8AC(int p, int a, unsigned char b, unsigned char c, unsig
         p = (a << 24) + (b << 16) + (c << 8) + d;
     }
     return p;
+}
+
+extern "C" void fn_8002F8D4(int param_1) {
+    unsigned int uVar1;
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    float f;
+    if (obj != 0 && lbl_802FEE08 != param_1) {
+        uVar1 = lbl_80227878[param_1];
+        if (obj[0x56e] == 3) {
+            fn_800589CC(1);
+            fn_800589CC(2);
+        } else if (obj[0x56e] != 0) {
+            fn_800589CC(1);
+        }
+        lbl_802FEE28 = 0;
+        f = *(float*)&lbl_802FFD10;
+        *(unsigned short*)(obj + 0x56c) = 0;
+        obj[0x56e] = 0;
+        obj[0x56f] = 1;
+        lbl_802FEE28 = uVar1;
+        fn_80058654(1, (void*)uVar1, 1, f);
+        *(unsigned short*)(obj + 0x56c) = uVar1;
+        obj[0x56e] = 2;
+        obj[0x56f] = 1;
+        lbl_802FEE08 = param_1;
+    }
 }
 
 extern "C" void fn_8002F9B4(void) {

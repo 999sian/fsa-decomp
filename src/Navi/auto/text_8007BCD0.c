@@ -204,13 +204,13 @@ extern "C" void fn_8007C5E4(void) {
 
 #pragma dont_inline on
 extern "C" int fn_8007C604(u8* p) {
-    int iVar1 = fn_80020EA4(p + 0x244, 0);
+    register s32 iVar1 = fn_80020EA4(p + 0x244, 0);
     if (iVar1 == 4) {
         if ((*(u32*)(p + 0xf8) & 8) == 0) {
             if (p != nullptr) {
                 fn_8007BF68(p);
             }
-            *(u32*)(p + 0xf8) |= 8;
+            *(u32*)(p + (u32)0xf8) |= 8;
         }
         if ((u8)fn_800183AC(p, (void*)fn_8007C5E4, 0x91d0)) {
             iVar1 = fn_8007CEDC(p);
@@ -223,15 +223,14 @@ extern "C" int fn_8007C604(u8* p) {
 
 extern "C" int fn_8007CEDC(u8* p)
 {
-    f32 f1 = lbl_803007C8;
-    f32 f0 = lbl_803007D4;
-
     *(u8**)(lbl_802BB0FC + 0x34) = p;
     *(s32*)(p + 0x15c) = *(s32*)(*(u8**)(p + 0x358) + 4) + 0x24;
     fn_8007D940(p);
     p[0x2f5] = 0;
     p[0x44c] = 0;
+    f32 f0 = lbl_803007D4;
     p[0x448] = 4;
+    f32 f1 = lbl_803007C8;
     *(s16*)(p + 0x432) = 10;
     p[0x44a] = 0;
     p[0x44b] = 0;

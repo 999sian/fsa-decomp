@@ -7,7 +7,7 @@ extern "C" void fn_80143F98(u32 t, u8 a, u8 b) {
     if (a == 0xff) {
         a = 8;
     }
-    *(u32*)((u8*)lbl_802D46C0 + a * 0x40 + b * 4) = ((t << 3) * 0x600) / 240;
+    lbl_802D46C0[a][b] = (t * 8 * 0x600) / 240;
 }
 
 extern "C" u32 fn_80143FE0(u8* p) {
@@ -15,7 +15,7 @@ extern "C" u32 fn_80143FE0(u8* p) {
     if (a == 0xff) {
         a = 8;
     }
-    return *(u32*)((u8*)lbl_802D46C0 + a * 0x40 + p[0x123] * 4);
+    return *(u32*)((u32)lbl_802D46C0 + a * 0x40 + p[0x123] * 4);
 }
 
 extern "C" void fn_80144014(u8* p) {

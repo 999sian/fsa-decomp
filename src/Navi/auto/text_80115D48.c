@@ -11,10 +11,7 @@ extern "C" void fn_8001766C(void);
 extern char lbl_802C5D48[];
 extern S16Vec3 lbl_802FF220;
 extern "C" void fn_80115D48(void) {
-    S16Vec3 tmp;
-    tmp.x = 0;
-    tmp.y = 0;
-    tmp.z = 0;
+    S16Vec3 tmp(0, 0, 0);
     lbl_802FF220 = tmp;
     __register_global_object(&lbl_802FF220, (void*)fn_8001766C, lbl_802C5D48);
 }

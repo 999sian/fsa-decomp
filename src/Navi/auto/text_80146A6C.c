@@ -16,17 +16,19 @@ extern "C" unsigned char lbl_802FF3B0;
 extern "C" Unk80146A6C lbl_802D4C94[];
 extern "C" Unk80146A6C lbl_802D46C0[];
 extern "C" unsigned long lbl_802FF3D8;
-extern "C" int fn_80146A6C(unsigned char idx) {
-    Unk80146A6C* p = (Unk80146A6C*)((char*)lbl_802D46C0 + 0x5c0) + idx;
-    if (p->m29 != 4 && (lbl_802FF3D8 & (1 << idx)) && p->m1C > p->m18) {
+extern "C" int fn_80146A6C(int no) {
+    unsigned char idx = no;
+    Unk80146A6C* p = &lbl_802D46C0[idx];
+    if (((unsigned char*)p)[0x601] != 4 && (lbl_802FF3D8 & (1 << idx)) && *(float*)((char*)p + 0x5dc) > *(float*)((char*)p + 0x5d8)) {
         return 1;
     }
     return 0;
 }
 
-extern "C" void fn_80146AC0(unsigned char idx, unsigned char val) {
+extern "C" void fn_80146AC0(int no, unsigned char val) {
     if (lbl_802FF3B0 == 0) {
         return;
     }
+    unsigned char idx = no;
     lbl_802D4C94[idx].m2D = val;
 }

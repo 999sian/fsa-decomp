@@ -1802,12 +1802,11 @@ extern "C" void fn_8009B154(u8* p) {
     s32 a = fn_8009B574();
     s32 b = fn_8009B220(p);
     a = b | a;
-    s32 c = fn_8009B8B4(p);
+    unsigned c = fn_8009B8B4(p);
     if ((c | a) != 0) {
         if (p[0x718] == 0) {
             void* obj = *(void**)(p + 0x700);
-            void (*f)(void*, void*) = (*(void (***)(void*, void*))obj)[25];
-            f(obj, *(void**)(p + 0x710));
+            ((void (*)(void*, void*))(*(void***)obj)[25])(obj, *(void**)(p + 0x710));
             *(s32*)(p + 0x714) = 0;
             p[0x718] = 1;
         }
@@ -2436,13 +2435,9 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
         result = t;
         break;
     case 3: {
-        f32 temp;
         f32 threshold = lbl_80300B38;
         f32 bias = lbl_80300B20;
-        temp = threshold * t;
-        temp = temp - bias;
-        temp = threshold * temp;
-        result = temp - bias;
+        result = threshold * (threshold * t - bias) - bias;
         break;
     }
     case 4: {

@@ -5,14 +5,15 @@
 extern "C" u8 lbl_802EBB14[];
 extern "C" u8 lbl_802EB890[];
 
-void fn_8015827C(u8* param_1)
+extern "C" void fn_8015827C(u8* param_1)
 {
     u8* base;
     u8* p;
     u8* q;
-    s32 i;
+    u32 i;
+    u8 tmp[8];
 
-    if (*(s32*)(param_1 + 0xc) == 1) {
+    if (*(u32*)(param_1 + 0xc) == 1) {
         base = lbl_802EBB14;
     } else {
         base = lbl_802EB890;

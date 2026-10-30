@@ -816,55 +816,20 @@ extern "C" void fn_800590D0(s32 param_1, s32* param_2, s32* param_3) {
 
 extern "C" s32 fn_80059190(s32 idx)
 {
-    s32 ret = 0;
     u8* p = lbl_802C05F0;
+    u8* ret = NULL;
     s32 i;
 
     if (idx >= 0 && idx <= 0xffff) {
-        for (i = 0; i < 2; i++) {
+        for (i = 0; i < 16; i++) {
             if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
-                break;
-            }
-            p += 0x18;
-            if (*(u16*)(p + 0x8) == idx) {
-                ret = (s32)p;
+                ret = p;
                 break;
             }
             p += 0x18;
         }
     }
-    return ret;
+    return (s32)ret;
 }
 
 extern "C" float lbl_80300230;
@@ -1351,9 +1316,7 @@ extern "C" s32 fn_8005C764(s32 idx) {
     u8* found;
     u8* p;
 
-    if (idx >= 0x107 && idx <= 0x10c) {
-        flag = 1;
-    } else if (idx == 0xcb || idx == 0xcc) {
+    if ((idx >= 0x107 && idx <= 0x10c) || idx == 0xcb || idx == 0xcc) {
         flag = 1;
     }
     if (flag == 0) {
@@ -1390,18 +1353,26 @@ extern "C" s32 fn_8005C764(s32 idx) {
 }
 
 extern "C" s32 fn_8005C854(s32 param) {
-    s32 flag = 0;
-    u8* found = 0;
-    u8* p = lbl_802C05F0;
-    s32 count = 0;
+    u8* found;
+    u8* p;
+    s32 count;
     s32 i;
+    s32 inRange = 0;
 
-    if ((param > 0x106 && param < 0x10d) || param == 0xcb || param == 0xcc) {
-        flag = 1;
+    if (param >= 0x107) {
+        if (param <= 0x10c) {
+            inRange = 1;
+        }
     }
-    if (!flag) {
+    if (param == 0xcb || param == 0xcc) {
+        inRange = 1;
+    }
+    if (inRange == 0) {
         return param;
     }
+    found = 0;
+    p = lbl_802C05F0;
+    count = 0;
     for (i = 0; i < 4; i++) {
         if (p[0x12] != 0 && *(s32*)p == 0x24) {
             found = p;

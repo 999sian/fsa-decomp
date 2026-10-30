@@ -177,6 +177,31 @@ end:
     *(s32*)(s + 0x20) = r;
 }
 
+extern "C" s32 fn_80140188(s32 idx, void* p, s32 a, void (*cb)(s32, s32));
+extern "C" void fn_8013F5A0(s32 idx, s32 r);
+extern "C" void fn_8013F4D0(s32 idx, s32 r) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    u8* p = s + 0x40;
+    if (r == 0 && **(u8**)(p + 0x10) != lbl_80293878[0]) {
+        r = 3;
+    }
+    if (r == 0) {
+        r = fn_80140188(idx, p + 0x18, *(s32*)(p + 0x10), fn_8013F5A0);
+        if (r == 0) {
+            goto end;
+        }
+    }
+    *(s32*)(p + 0x2c) = 0;
+    *(s32*)(p + 0x28) = 0;
+    void* cb = *(void**)(p + 0x14);
+    if (cb != 0) {
+        *(s32*)(p + 0x14) = 0;
+        ((void (*)(s32, s32))cb)(idx, r);
+    }
+end:
+    *(s32*)(s + 0x20) = r;
+}
+
 extern "C" void fn_8013F5A0(s32 idx, s32 param_2) {
     u8* s = lbl_802C6A80 + (idx << 8);
     u8* t = s + 0x40;
@@ -194,6 +219,31 @@ extern "C" void fn_8013F5A0(s32 idx, s32 param_2) {
         fn_801408CC(t + 0x18);
     }
     *(s32*)(s + 0x20) = param_2;
+}
+
+extern "C" void fn_8013FF64(s32 idx, s32 param_2) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    u8* t = s + 0x40;
+    s32 r = param_2;
+    if (r == 0) {
+        u32 v = *(u32*)(t + 0x60);
+        if ((((t[0x18] ^ v) | ((t[0x19] ^ (v >> 8)) | ((t[0x1a] ^ (v >> 16)) | (t[0x1b] ^ (v >> 24))))) << 24) != 0) {
+            r = 3;
+        } else {
+            r = fn_801402B8(idx, t + 0x18, *(s32*)(t + 0x10), (s32)fn_80140060);
+        }
+    }
+    if (r != 0) {
+        void* cb;
+        *(s32*)(t + 0x2c) = 0;
+        *(s32*)(t + 0x28) = 0;
+        cb = *(void**)(t + 0x14);
+        if (cb != 0) {
+            *(s32*)(t + 0x14) = 0;
+            ((void (*)(s32, s32))cb)(idx, r);
+        }
+    }
+    *(s32*)(s + 0x20) = r;
 }
 
 extern "C" void fn_80140060(s32 idx, s32 param_2) {
@@ -414,41 +464,43 @@ extern "C" NaviNode* fn_80140A8C(s32 key, u8 type) {
     NaviNode* node;
     NaviNode* cur;
     NaviNode* prev;
+    NaviNode* next;
     node = lbl_802FF394;
-    if (node == 0) {
-        return 0;
-    }
-    lbl_802FF394 = node->next;
-    if (lbl_802FF394 != 0) {
-        lbl_802FF394->prev = 0;
-    }
-    node->key = key;
-    node->type = type;
-    node->slot = *(u8*)(lbl_802FF390 + 0x1518 + type * 0x38);
-    cur = *(NaviNode**)(lbl_802FF390 + 0xe64 + node->slot * 4);
-    prev = 0;
-    while (cur != 0) {
-        if (cur->key > key) {
-            node->next = cur;
-            node->prev = prev;
-            if (prev != 0) {
-                prev->next = node;
-            } else {
-                *(NaviNode**)(lbl_802FF390 + 0xe64 + node->slot * 4) = node;
-            }
-            cur->prev = node;
-            return node;
+    if (node != 0) {
+        next = node->next;
+        lbl_802FF394 = next;
+        if (next != 0) {
+            lbl_802FF394->prev = 0;
         }
-        prev = cur;
-        cur = cur->next;
+        node->key = key;
+        node->type = type;
+        node->slot = (lbl_802FF390 + type * 0x38)[0x1518];
+        cur = ((NaviNode**)(lbl_802FF390 + node->slot * 4))[0x399];
+        prev = 0;
+        while (cur != 0) {
+            if (cur->key > node->key) {
+                node->next = cur;
+                node->prev = prev;
+                if (prev != 0) {
+                    prev->next = node;
+                } else {
+                    ((NaviNode**)(lbl_802FF390 + node->slot * 4))[0x399] = node;
+                }
+                cur->prev = node;
+                return node;
+            }
+            prev = cur;
+            cur = cur->next;
+        }
+        node->prev = prev;
+        if (prev != 0) {
+            prev->next = node;
+        } else {
+            ((NaviNode**)(lbl_802FF390 + node->slot * 4))[0x399] = node;
+        }
+        node->next = 0;
+        return node;
     }
-    node->prev = prev;
-    if (prev != 0) {
-        prev->next = node;
-    } else {
-        *(NaviNode**)(lbl_802FF390 + 0xe64 + node->slot * 4) = node;
-    }
-    node->next = 0;
-    return node;
+    return 0;
 }
 

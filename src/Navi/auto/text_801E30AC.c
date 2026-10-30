@@ -164,27 +164,30 @@ extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c) {
     unsigned char tbl[4] = {0x00, 0x00, 0xc0, 0xe0};
     unsigned char* p;
     int n;
+    unsigned short wc;
 
     if (s == 0) {
         return 0;
     }
+    wc = c;
     if (c < 0x80) {
         n = 1;
-    } else if (c < 0x800) {
+    } else if (wc < 0x800) {
         n = 2;
     } else {
         n = 3;
     }
     p = s + n;
-    if (n == 3) {
-        *--p = (c & 0x3f) | 0x80;
-        c >>= 6;
+    switch (n) {
+    case 3:
+        *--p = (wc & 0x3f) | 0x80;
+        wc >>= 6;
+    case 2:
+        *--p = (wc & 0x3f) | 0x80;
+        wc >>= 6;
+    case 1:
+        *--p = wc | tbl[n];
     }
-    if (n >= 2) {
-        *--p = (c & 0x3f) | 0x80;
-        c >>= 6;
-    }
-    *--p = c | tbl[n];
     return n;
 }
 

@@ -1314,7 +1314,10 @@ struct Obj_80139DEC : Base_802911A0 {
 };
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    new (param_1) Obj_80139DEC(param_2);
+    Obj_80139DEC* o = (Obj_80139DEC*)param_1;
+    o->setVt((void*)lbl_802911A0);
+    o->setVt((void*)lbl_80292C80);
+    o->val = param_2;
 }
 
 extern "C" void fn_80167880(void*, int);

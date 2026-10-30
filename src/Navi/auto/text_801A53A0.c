@@ -144,6 +144,34 @@ extern "C" u32* fn_801A7344(u32* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_801A73A4(u8* param_1) {
+    u32 i;
+    u32 count;
+    u32 off;
+
+    i = 0;
+    count = *(u32*)(param_1 + 4);
+    if (count != 0) {
+        if (count > 8) {
+            off = 0;
+            for (; count - 8 > 0; i += 8, off += 0x20) {
+                *(u32*)(*(u8**)param_1 + off) = 0;
+                *(u32*)(*(u8**)param_1 + off + 4) = 0;
+                *(u32*)(*(u8**)param_1 + off + 8) = 0;
+                *(u32*)(*(u8**)param_1 + off + 12) = 0;
+                *(u32*)(*(u8**)param_1 + off + 16) = 0;
+                *(u32*)(*(u8**)param_1 + off + 20) = 0;
+                *(u32*)(*(u8**)param_1 + off + 24) = 0;
+                *(u32*)(*(u8**)param_1 + off + 28) = 0;
+            }
+        }
+        for (; i < count; i++) {
+            *(u32*)(*(u8**)param_1 + i * 4) = 0;
+        }
+    }
+    *(u32*)(param_1 + 0x20) = 0;
+}
+
 extern "C" BOOL fn_801A78EC(u8* param_1, u8* param_2) {
     *(u32*)(param_2 + 4) = 0;
     *(u32*)(param_2 + 8) = 0;

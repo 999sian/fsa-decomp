@@ -17,27 +17,30 @@ extern "C" void fn_80157F98(u32 p);
 
 extern "C" void fn_80147610(u32 param_1)
 {
-    u8* p = lbl_802D4A80;
     u8 id = param_1;
+    u8* p = lbl_802D4A80;
     u32 off = 0;
     u32 i;
 
     for (i = 0; i < p[0x210]; i++) {
         u8* entry = lbl_802FF3E0 + off;
         if (entry[0x11f] == id) {
-            if (*(s32*)(entry + 0xf4) == -1) {
+            if (*(u32*)(entry + 0xf4) != 0xffffffff) {
+                fn_8014EAE4(*(u32*)(*(u8**)(entry + 0xf8) + 8));
+            } else {
                 if (fn_8015766C(i)) {
                     fn_80157F24(i);
                 }
-            } else {
-                fn_8014EAE4(*(u32*)(*(u8**)(entry + 0xf8) + 8));
             }
         }
         off += 0x404;
     }
     fn_80158D4C();
-    lbl_802D52F4[id] = 0;
-    lbl_802D5334[id] = 0;
+    {
+        u32 o = id << 2;
+        *(u32*)((u8*)lbl_802D52F4 + o) = 0;
+        *(u32*)((u8*)lbl_802D5334 + o) = 0;
+    }
     lbl_802FF3CC[id] = 0xff;
     lbl_802FF3BC[id] = 0xff;
     fn_80158D14();

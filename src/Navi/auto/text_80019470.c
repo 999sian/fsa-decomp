@@ -605,17 +605,19 @@ extern "C" s32 fn_8001A7E8(void* param_1) {
 extern u8 lbl_802055D0[];
 extern "C" void* fn_8001DF4C(int, int, int, int, int, void*);
 extern "C" s32 fn_8001DC84(void* param_1);
+#pragma use_lmw_stmw off
 extern "C" int fn_8001A828(int param_1, int param_2, int param_3, int param_4, int param_5, int param_6) {
+    u8* base = lbl_802055D0;
     s32 tmp = 0;
-    u8* obj = (u8*)fn_8001DF4C(0x74, param_1, param_2, param_3, param_4, lbl_802055D0);
-    u8* p = lbl_802055D0 + 0x10;
+    u8* p = base + 0x10;
+    u8* obj = (u8*)fn_8001DF4C(0x74, param_1, param_2, param_3, param_4, base);
     if (obj == NULL) {
         return -1;
     }
     if ((s16)param_5 != 0x7fff) {
-        p = lbl_802055D0 + 0x30;
+        p = base + 0x30;
         if (lbl_802FEC00 == 0) {
-            tmp = fn_800199DC(param_5, param_6);
+            tmp = fn_800199DC(param_5, (s16)param_6);
             if (tmp != 0) {
                 lbl_802FEC00 = 1;
             }
@@ -629,7 +631,7 @@ extern "C" int fn_8001A828(int param_1, int param_2, int param_3, int param_4, i
     fn_8011526C(obj + 0x68, p);
     return *(s32*)(obj + 0x44);
 }
-
+#pragma use_lmw_stmw reset
 extern "C" s32 fn_8001E628(u32 param_1, s16 param_2, u32 param_3);
 extern "C" s32 fn_8001A910(u32 param_1, s16 param_2, u32 param_3) {
     return fn_8001E628(param_1, param_2, param_3);
@@ -825,25 +827,29 @@ extern "C" bool fn_8001B094(void* a, int* b) {
 }
 
 extern "C" s32 fn_8001B0EC(void* param_1) {
-    if (param_1 == NULL || *(s8*)((u8*)param_1 + 0x15) != 0) {
+    void* tmp;
+    if (param_1 != NULL && *(s8*)((u8*)param_1 + 0x15) == 0) {
+        *(s8*)((u8*)param_1 + 0x15) = 1;
+        tmp = *(void**)((u8*)param_1 + 0x40);
+        if (tmp != NULL && fn_8001B9CC() == 0) {
+            return 0;
+        }
+        if (*(void**)((u8*)param_1 + 0x34) != NULL && (s32)fn_8001D540(*(void**)(*(u8**)((u8*)param_1 + 0x34) + 4), param_1) == 0) {
+            return 0;
+        }
+        cTg_SingleCut((create_tag_class*)param_1);
+        fn_8001BFE0(*(void**)((u8*)param_1 + 0x44));
+        fn_8001BEA4((u8*)param_1 + 0x18);
+        if (*(void**)((u8*)param_1 + 0x34) != NULL && (s32)fn_8001D540(*(void**)(*(u8**)((u8*)param_1 + 0x34) + 8), param_1) == 0) {
+            return 0;
+        }
+        if (*(void**)((u8*)param_1 + 0x40) != NULL) {
+            *(s32*)(*(u8**)((u8*)param_1 + 0x40) + 0x14) = 0;
+        }
+        fn_801148F4(param_1);
         return 1;
     }
-    *(s8*)((u8*)param_1 + 0x15) = 1;
-    if (*(void**)((u8*)param_1 + 0x40) == NULL || fn_8001B9CC() != 0) {
-        if (*(void**)((u8*)param_1 + 0x34) == NULL || (s32)fn_8001D540(*(void**)(*(u8**)((u8*)param_1 + 0x34) + 4), param_1) != 0) {
-            cTg_SingleCut((create_tag_class*)param_1);
-            fn_8001BFE0(*(void**)((u8*)param_1 + 0x44));
-            fn_8001BEA4((u8*)param_1 + 0x18);
-            if (*(void**)((u8*)param_1 + 0x34) == NULL || (s32)fn_8001D540(*(void**)(*(u8**)((u8*)param_1 + 0x34) + 8), param_1) != 0) {
-                if (*(void**)((u8*)param_1 + 0x40) != NULL) {
-                    *(s32*)(*(u8**)((u8*)param_1 + 0x40) + 0x14) = 0;
-                }
-                fn_801148F4(param_1);
-                return 1;
-            }
-        }
-    }
-    return 0;
+    return 1;
 }
 
 extern "C" s32 fn_8001B1DC(void* param_1) {
@@ -1543,12 +1549,11 @@ extern "C" void fn_8001BEA4(void* param_1);
 extern "C" s32 fn_8001E710(void) {
     u8* p;
     create_tag_class* tag;
-    while ((tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80)) != NULL) {
-        p = (u8*)tag->mpTagData + 0x68;
-        fn_8001BEA4(p + 0x14);
+    while ((p = (tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80)) != NULL ? (u8*)tag->mpTagData + 0x68 : NULL) != NULL) {
         u8* q = *(u8**)(p + 0xc);
+        u8* r = q + 0x34;
         if (fn_8001C730(q + 0x18, *(u32*)(p + 0x30), *(u16*)(p + 0x34), *(u16*)(p + 0x36)) == 1) {
-            fn_8001E8CC(q + 0x34, *(u16*)(p + 0x3c));
+            fn_8001E8CC(r, *(u16*)(p + 0x3c));
             *(u32*)(p + 0x38) = *(u32*)(p + 0x30);
             *(u16*)(p + 0x3c) = *(u16*)(p + 0x34);
             *(u16*)(p + 0x3e) = *(u16*)(p + 0x36);

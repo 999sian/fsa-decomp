@@ -91,19 +91,22 @@ extern "C" void fn_800CF170(u8* p) {
 extern "C" void fn_8017A4F8(void*);
 extern "C" void fn_80178998(void*);
 extern "C" void fn_800D0050(u8* p) {
+    u8* t;
     if (p[0x264] != 0) {
         *(s32*)(p + 0x258) = *(s32*)(p + 0x258) + 1;
-        if (*(s32*)(p + 0x258) >= *(s16*)(*(u8**)(p + 0x24c) + 6)) {
-            *(s32*)(p + 0x258) -= *(s16*)(*(u8**)(p + 0x24c) + 6);
+        t = *(u8**)(p + 0x24c);
+        if (*(s16*)(t + 6) <= *(s32*)(p + 0x258)) {
+            *(s32*)(p + 0x258) -= *(s16*)(t + 6);
         }
         *(f32*)(*(u8**)(p + 0x24c) + 8) = (f32)*(s32*)(p + 0x258);
         fn_8017A4F8(*(void**)(p + 0xc));
         *(s32*)(p + 0x25c) = *(s32*)(p + 0x25c) + 1;
-        if (*(s32*)(p + 0x25c) >= *(s16*)(*(u8**)(p + 0x250) + 6)) {
-            *(s32*)(p + 0x25c) -= *(s16*)(*(u8**)(p + 0x250) + 6);
+        t = *(u8**)(p + 0x250);
+        if (*(s16*)(t + 6) <= *(s32*)(p + 0x25c)) {
+            *(s32*)(p + 0x25c) -= *(s16*)(t + 6);
         }
         *(f32*)(*(u8**)(p + 0x250) + 8) = (f32)*(s32*)(p + 0x25c);
-        fn_80178998(*(void**)(p + p[0x285] * 16 + 0xcc));
+        fn_80178998(*(void**)(p + (p[0x285] << 4) + 0xcc));
     }
 }
 
@@ -167,6 +170,38 @@ extern "C" s32 fn_800D02D8(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 f
 extern "C" void fn_800D0410(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
+}
+
+extern "C" void fn_800127A0(void* p);
+extern unsigned char lbl_8029FDB4[];
+extern "C" void fn_800D044C(u8* p) {
+    VObjDel* o;
+    o = *(VObjDel**)(p + 0x24c);
+    if (o != nullptr) {
+        o->v0(1);
+    }
+    o = *(VObjDel**)(p + 0x250);
+    if (o != nullptr) {
+        o->v0(1);
+    }
+    o = *(VObjDel**)(p + 0x254);
+    if (o != nullptr) {
+        o->v0(1);
+    }
+    o = *(VObjDel**)(p + 0xc);
+    if (o != nullptr) {
+        o->v0(1);
+    }
+    s8* tbl = (s8*)lbl_802C574C;
+    (*(VObjDel**)(p + 4))->v7();
+    if (tbl[4] >= 0) {
+        s32 n = *(s32*)(tbl + 8) - 1;
+        *(s32*)(tbl + 8) = n;
+        if (n == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            tbl[4] = -1;
+        }
+    }
 }
 
 extern "C" void fn_8015FDA8(void*, void*);

@@ -16,6 +16,10 @@ static inline u32 fn_80158020_calc(s32 idx) {
 
 extern "C" u32 fn_80158020(s32 idx) {
     u8* p = lbl_802FF4BC + idx * 0xf4;
+    u8* q;
+    u32 t;
+    u32 lo;
+    u32 r;
     if (p[0xec] != 2) {
         return 0;
     }
@@ -24,7 +28,14 @@ extern "C" u32 fn_80158020(s32 idx) {
     case 1:
     case 4:
     case 5:
-        return fn_80158020_calc(idx);
+        q = lbl_802FF4BC + idx * 0xf4;
+        t = *(u32*)(q + 0x20);
+        r = ((t - *(u32*)(q + 0x78) * 2) >> 4) * 14;
+        lo = t & 0xf;
+        if (lo >= 2) {
+            r += lo - 2;
+        }
+        return r;
     case 3:
         return *(u32*)(p + 0x20) - *(u32*)(p + 0x78);
     case 2:

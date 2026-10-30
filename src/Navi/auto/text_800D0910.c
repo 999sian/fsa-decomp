@@ -192,12 +192,12 @@ extern void* lbl_802892D0[];
 extern "C" s32 fn_800D2F3C(void* param_1, void* param_2);
 #pragma use_lmw_stmw off
 extern "C" void fn_800D2528(u8* p) {
-    s32 k;
-    s32 j;
-    s32 i;
+    u8* q;
     u8* col;
     u8* cell;
-    u8* q;
+    s32 j;
+    s32 k;
+    s32 i;
     p[0x26a] = *(s32*)(lbl_802BB0FC + 0x130);
     p[0x26b] = 0;
     p[0x269] = *(s32*)(lbl_802BB0FC + 0x198);
@@ -213,7 +213,7 @@ extern "C" void fn_800D2528(u8* p) {
         for (j = 0; j < 4; j++) {
             s32 v = fn_800D2F3C(p, lbl_802892D0[p[0x269] * 4 + k]);
             void* obj = *(void**)(q + 0x17c);
-            (*(void (**)(void*, s32, s32))(*(u32*)obj + 0x110))(obj, v, 0);
+            (*(void (**)(void*, s32, s32))(**(u32**)obj + 0x110))(obj, v, 0);
             q += 4;
         }
         col += 4;

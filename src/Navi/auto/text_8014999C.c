@@ -17,3 +17,12 @@ void fn_8014998C(void);
 u32* fn_80157334(void*, void*, u16, int, void (*)(void));
 u32 fn_8014999C(u16 a);
 }
+
+extern "C" u32 fn_8014999C(u16 a) {
+    lbl_802FF428.unk4 = a;
+    lbl_802FF430 = fn_80157334(&lbl_802FF428, lbl_802D7BA8, lbl_802FF402, 8, fn_8014998C);
+    if (lbl_802FF430 != 0) {
+        return *lbl_802FF430;
+    }
+    return 0;
+}

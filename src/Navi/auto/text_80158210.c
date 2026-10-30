@@ -32,7 +32,7 @@ extern "C" int fn_80158234(int param_1)
 
 extern "C" int fn_8015825C(int param_1)
 {
-    char* p = (char*)lbl_802FF4BC + param_1 * 0xf4;
-    return p[0xec] == 0;
+    unsigned char* p = (unsigned char*)lbl_802FF4BC + param_1 * 0xf4;
+    return p[0xec] == 1;
 }
 

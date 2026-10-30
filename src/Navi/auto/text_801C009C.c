@@ -108,25 +108,28 @@ extern "C" void fn_801C0848(void) {
 }
 
 extern "C" void fn_801C0A6C(unsigned int param) {
-    unsigned char* thread;
+    int level;
     unsigned char* next;
     unsigned char* prev;
-    int level = OSDisableInterrupts();
+    unsigned char* thread;
+    unsigned char* base;
 
-    thread = *(unsigned char**)0x800000E4;
+    level = OSDisableInterrupts();
+    base = (unsigned char*)0x80000000;
+    thread = *(unsigned char**)(base + 0xe4);
     OSClearContext(thread);
     if (*(unsigned short*)(thread + 0x2ca) & 1) {
         next = *(unsigned char**)(thread + 0x2fc);
         prev = *(unsigned char**)(thread + 0x300);
-        if (next != 0) {
+        if (next == 0) {
+            *(unsigned char**)(base + 0xe0) = prev;
+        } else {
             *(unsigned char**)(next + 0x300) = prev;
-        } else {
-            *(unsigned char**)0x800000E0 = prev;
         }
-        if (prev != 0) {
-            *(unsigned char**)(prev + 0x2fc) = next;
-        } else {
+        if (prev == 0) {
             *(unsigned char**)0x800000DC = next;
+        } else {
+            *(unsigned char**)(prev + 0x2fc) = next;
         }
         *(unsigned short*)(thread + 0x2c8) = 0;
     } else {
@@ -135,8 +138,8 @@ extern "C" void fn_801C0A6C(unsigned int param) {
     }
     fn_801BE544(thread);
     fn_801C13D0(thread + 0x2e8);
-    RunQueueHint_802FF7CC = 1;
-    if (RunQueueHint_802FF7CC != 0) {
+    *(volatile int*)&RunQueueHint_802FF7CC = 1;
+    if (*(volatile int*)&RunQueueHint_802FF7CC != 0) {
         SelectThread(0);
     }
     OSRestoreInterrupts(level);
@@ -162,6 +165,46 @@ extern "C" void fn_801C0E4C(unsigned char* p) {
     }
     fn_801C13D0(p + 0x2e8);
     OSRestoreInterrupts(level);
+}
+
+extern "C" void fn_801C12E4(unsigned char** queue) {
+    int enabled;
+    unsigned char* current;
+    unsigned char* thread;
+    unsigned char* prev;
+
+    enabled = OSDisableInterrupts();
+    current = *(unsigned char**)0x800000E4;
+    *(unsigned short*)(current + 0x2c8) = 4;
+    *(unsigned char***)(current + 0x2dc) = queue;
+    for (thread = queue[0]; thread != 0 && *(int*)(thread + 0x2d0) <= *(int*)(current + 0x2d0); thread = *(unsigned char**)(thread + 0x2e0)) {
+    }
+    if (thread == 0) {
+        prev = queue[1];
+        if (prev == 0) {
+            queue[0] = current;
+        } else {
+            *(unsigned char**)(prev + 0x2e0) = current;
+        }
+        *(unsigned char**)(current + 0x2e4) = prev;
+        *(unsigned char**)(current + 0x2e0) = 0;
+        queue[1] = current;
+    } else {
+        *(unsigned char**)(current + 0x2e0) = thread;
+        prev = *(unsigned char**)(thread + 0x2e4);
+        *(unsigned char**)(thread + 0x2e4) = current;
+        *(unsigned char**)(current + 0x2e4) = prev;
+        if (prev == 0) {
+            queue[0] = current;
+        } else {
+            *(unsigned char**)(prev + 0x2e0) = current;
+        }
+    }
+    RunQueueHint_802FF7CC = 1;
+    if (*(volatile int*)&RunQueueHint_802FF7CC != 0) {
+        SelectThread(0);
+    }
+    OSRestoreInterrupts(enabled);
 }
 
 extern int RunQueueHint_802FF7CC;

@@ -147,6 +147,22 @@ extern "C" void fn_8010F880(u8* param_1) {
     (*(VObj_8010F880**)(param_1 + 0x68))->v7(lbl_802C5B44[0x24]);
 }
 
+extern "C" void fn_8010F8F8(u8* p) {
+    f32 f = fn_801104C0(p, lbl_802C5B44[0x23], p[0x7d], 0);
+    if (p[0x7e] != 0) {
+        f = lbl_80301300 - f;
+    }
+    u32 n = f * (f32)(lbl_802C5B44[0x24] - lbl_802C5B44[0x25]);
+    (*(VObj_8010F880**)(p + 0x64))->v7(lbl_802C5B44[0x25] + n);
+    (*(VObj_8010F880**)(p + 0x68))->v7(lbl_802C5B44[0x25] + n);
+    if (p[0x7d] == 0) {
+        p[0x7d] = lbl_802C5B44[0x23];
+        p[0x7e] ^= 1;
+    } else {
+        p[0x7d]--;
+    }
+}
+
 extern "C" void fn_8017A4F8(void* p);
 extern "C" void fn_8010F9F8(u8* param_1) {
     if (*(u8*)(*(u8**)(param_1 + 0xa0) + 0xb0) != 0) {

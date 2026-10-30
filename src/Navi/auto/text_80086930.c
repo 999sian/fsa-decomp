@@ -48,6 +48,33 @@ extern "C" BOOL fn_80086E18()
 	return TRUE;
 }
 
+#pragma use_lmw_stmw off
+extern "C" int fn_80087160(u8* param_1) {
+    s32 i;
+    u8* obj;
+    u32* flag = lbl_802C5278;
+    u8* p2 = param_1;
+    u8* p1 = param_1;
+    for (i = 0; i < 0x18; i++) {
+        if ((flag[0x18] & 1) == 0) {
+            obj = *(u8**)(*(u8**)(p1 + 0x24c) + 4);
+            fn_8000DDAC(p2 + 0x30c, obj + 0x58, (s32)*(f32*)(*(u8**)(p2 + 0x310) + 0x10));
+            fn_8000EBB8(*(void**)(p1 + 0x24c));
+            fn_801AFE98(obj + 0x58, *(void**)(p2 + 0x314));
+        }
+        p1 += 4;
+        p2 += 12;
+        flag++;
+    }
+    if (lbl_802C5278[50] & 1) {
+        obj = *(u8**)(*(u8**)(param_1 + 0x45c) + 4);
+        fn_8000E414(param_1 + 0x460, obj + 0x58, *(f32*)(*(u8**)(param_1 + 0x464) + 0x10));
+        fn_8000EBB8(*(void**)(param_1 + 0x45c));
+        fn_801B002C(obj + 0x58, *(void**)(param_1 + 0x468));
+    }
+    return 1;
+}
+#pragma use_lmw_stmw reset
 extern "C" BOOL fn_8008724C()
 {
 	return TRUE;

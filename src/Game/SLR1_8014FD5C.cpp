@@ -48,7 +48,8 @@ extern "C" s32 fn_80154310(u32 type, u32 owner, const Vec* position, u32 paramet
 
 extern "C" f32 fn_8015436C(f32 value)
 {
-    return __fabs(value);
+    volatile f32 result = __fabs(value);
+    return result;
 }
 
 extern "C" f32 fn_80154378(f32 value)
@@ -205,12 +206,14 @@ extern "C" u32 fn_8015461C(const Actor* actor)
 
 extern "C" u8 fn_80154624(s32 index)
 {
-    return ((u8*)fn_802D6A9C())[0x131DF + index];
+    u8* base = (u8*)fn_802D6A9C();
+    return base[0x131DF + index];
 }
 
 extern "C" s32 fn_8015465C(f32 y, f32 x)
 {
-    return JMath::atanTable_.atan2_(y, x) * lbl_8053D310;
+    f32 result = JMath::atanTable_.atan2_(y, x);
+    return (s32)(result * lbl_8053D310);
 }
 
 extern "C" u8 fn_80154698()
@@ -227,6 +230,9 @@ extern "C" void fn_801546D0(JGeometry::TVec3<f32>* vector,
                            const JGeometry::TVec3<f32>* other)
 {
     JGeometry::setTVec3f(&other->x, &vector->x);
+}
+
+inline JGeometry::TVec2<f32>::TVec2() {
 }
 
 extern "C" void fn_801546E8(JGeometry::TVec2<f32>* vector, f32 x, f32 y)

@@ -4,7 +4,11 @@
 #include "types.h"
 
 extern "C" BOOL fn_80157FB8(void);
-extern "C" BOOL fn_80147700(void)
+extern "C" BOOL fn_80157FB8();
+BOOL fn_80157FB8(void);
+#pragma optimization_level 0
+BOOL fn_80147700(void)
 {
     return fn_80157FB8();
 }
+#pragma optimization_level reset

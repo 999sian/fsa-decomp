@@ -5,5 +5,6 @@ extern "C" void fn_801534C0(void* p);
 extern "C" unsigned char lbl_802E3B10[];
 extern "C" void fn_80157FB8(unsigned char param_1)
 {
-	fn_801534C0(lbl_802E3B10 + (param_1 & 0xff) * 0xbc);
+	unsigned char idx = param_1;
+	fn_801534C0(lbl_802E3B10 + (idx & 0xff) * 0xbc);
 }

@@ -562,12 +562,14 @@ extern "C" void fn_8030AB38(PadState* s) {
 extern void* lbl_804AA8C8[];
 extern PadState* lbl_8053AD30;
 
+extern "C" void __dl__FPv(void* p);
+struct PadState;
 extern "C" PadState* fn_8030ABFC(PadState* s, s16 how) {
-    if (s != 0) {
+    if (s) {
         s->vtbl = lbl_804AA8C8;
         lbl_8053AD30 = 0;
         if (how > 0) {
-            operator delete(s);
+            __dl__FPv(s);
         }
     }
     return s;

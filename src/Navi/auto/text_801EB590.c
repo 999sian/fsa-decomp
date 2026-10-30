@@ -259,3 +259,41 @@ extern "C" void fn_801EC4B8(u8* param_1, int param_2)
 	MWTRACE(8, lbl_80202FC4);
 }
 
+extern "C" int fn_801EC670(int param_1, int* param_2)
+{
+	int err;
+	int* p;
+	int handle2;
+	int handle;
+	void* buf;
+	struct {
+		u32 length;
+		u8 type;
+		u8 pad[3];
+		int param;
+		u8 rest[0x40 - 12];
+	} msg;
+
+	memset(&msg, 0, 0x40);
+	msg.type = 0xd3;
+	msg.length = 0x40;
+	msg.param = param_1;
+	err = TRKGetFreeBuffer(&handle, &buf);
+	if (err == 0) {
+		err = TRKAppendBuffer_ui8(buf, (u8*)&msg, 0x40);
+	}
+	if (err == 0) {
+		*param_2 = 0;
+		err = fn_801EC874(buf, &handle2, 3, 3, 0);
+		if (err == 0) {
+			p = (int*)TRKGetBuffer(handle2);
+			if (err == 0) {
+				*param_2 = p[8];
+			}
+		}
+		TRKReleaseBuffer(handle2);
+	}
+	TRKReleaseBuffer(handle);
+	return err;
+}
+

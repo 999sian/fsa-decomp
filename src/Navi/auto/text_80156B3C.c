@@ -6,11 +6,12 @@ extern "C" u32 fn_801564BC(u8* a, u8 b, u8 c);
 extern "C" u32 fn_80156B3C(u8* param_1)
 {
     u32 uVar1;
+    u32 flags = *(u32*)(param_1 + 0x214);
 
-    if ((*(u32*)(param_1 + 0x214) & 0x100) == 0) {
+    if ((flags & 0x100) == 0) {
         uVar1 = *(u16*)(param_1 + 0x358);
     } else {
-        *(u32*)(param_1 + 0x214) &= ~0x100;
+        *(u32*)(param_1 + 0x214) = flags & ~0x100;
         uVar1 = fn_801564BC(param_1 + 0x338, param_1[0x121], param_1[0x122]);
     }
     return uVar1;

@@ -30,7 +30,8 @@ extern "C" void fn_801555FC(f32* m, f32* v, f32* out)
 
 extern "C" void fn_801556A8(f32* v)
 {
-    f32 len = sqrtf_inl(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+    f32 sq = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+    f32 len = sqrtf_inl(sq);
     v[0] /= len;
     v[1] /= len;
     v[2] /= len;

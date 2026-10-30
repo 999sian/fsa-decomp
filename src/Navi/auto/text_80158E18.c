@@ -783,6 +783,7 @@ extern "C" char* fn_8015AC00(void* arg, void* arg2) {
 }
 
 extern "C" char* fn_8015AC80(u32 param_1, char* param_2, char* param_3) {
+    char* iVar1;
     char* iVar2;
     char* iVar3;
     char* iVar4;
@@ -796,7 +797,8 @@ extern "C" char* fn_8015AC80(u32 param_1, char* param_2, char* param_3) {
     if (param_1 < 0xa0) {
         return 0;
     }
-    iVar2 = (char*)fn_80159BE0(param_1, 0x10, param_2);
+    iVar1 = (char*)fn_80159BE0(param_1, 0x10, param_2);
+    iVar2 = iVar1;
     iVar4 = iVar2 + 0x90;
     if (iVar2 == 0) {
         return 0;
@@ -1266,6 +1268,31 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" int fn_8015C960(void* p) {
+    u8* h;
+    u32 size;
+    u32 aligned;
+    u8* self = (u8*)p;
+    h = *(u8**)(*(u8**)(self + 0x50) + 0xc);
+    if (h != nullptr) {
+        fn_801BE3A0(self + 0x18);
+        u32 end = *(u32*)(self + 0x30);
+        size = end - (u32)self;
+        aligned = (*(u32*)(self + 0x70) - end + 0x1f) & ~0x1f;
+        size += aligned;
+        if (fn_80159D5C(h, self, size) != -1) {
+            *(u32*)(self + 0x6c) = 0;
+            *(u32*)(self + 0x38) = aligned;
+            *(u32*)(self + 0x34) = *(u32*)(self + 0x30) + *(u32*)(self + 0x38);
+            *(u32*)(self + 0x70) = *(u32*)(self + 0x34);
+            *(u32*)(self + 0x74) = *(u32*)(self + 0x34);
+        }
+        fn_801BE47C(self + 0x18);
+        return size;
+    }
+    return -1;
+}
+
 extern "C" int fn_8015CA24(char* param_1, u32 param_2, s32 param_3) {
     int r;
     fn_801BE3A0(param_1 + 0x18);
@@ -1608,6 +1635,34 @@ extern "C" void* fn_8015DA4C(void* ptr, s16 param_2) {
 
 extern "C" void fn_8015DA94(void)
 {
+}
+
+extern "C" void* fn_8015DA98(void* p, s16 param_2) {
+    if (p != 0) {
+        *(void**)p = lbl_802979A4;
+        lbl_802FF580 = 0;
+        if (p != 0) {
+            *(void**)p = lbl_802979B8;
+            fn_80166FC4(lbl_802EE20C, (u8*)p + 0x18);
+            if (*(u32*)((u8*)p + 0x28) != 0) {
+                if (fn_801C0288(*(void**)((u8*)p + 0x2c)) == 0) {
+                    fn_801C0E4C(*(void**)((u8*)p + 0x2c));
+                    OSCancelThread(*(void**)((u8*)p + 0x2c));
+                }
+                fn_80159C6C(*(void**)((u8*)p + 0x58), *(s32*)((u8*)p + 0x28));
+                fn_80159C6C(*(void**)((u8*)p + 0x2c), *(s32*)((u8*)p + 0x28));
+            }
+            fn_80159C6C(*(void**)((u8*)p + 0x50), 0);
+            if ((u32)p + 0x18 != 0) {
+                fn_80166B70((u8*)p + 0x18, 0);
+            }
+            fn_8015D0B8(p, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
 }
 
 extern "C" void fn_8015DB88(void) {

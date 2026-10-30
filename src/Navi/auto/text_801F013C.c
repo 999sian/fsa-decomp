@@ -83,26 +83,58 @@ extern "C" int fn_801F0614(void* buf)
 
 extern "C" int fn_801F06C0(unsigned long addr, unsigned long* buf, long len)
 {
+    volatile unsigned long* reg = (volatile unsigned long*)0xCC006800;
+    volatile unsigned long* status;
     unsigned long cmd;
     unsigned long data;
     int err;
 
     cmd = ((addr << 8) & 0x1FFFC00) | 0xA0000000;
-    *(volatile unsigned long*)0xCC006828 = (*(volatile unsigned long*)0xCC006828 & 0x405) | 0xC0;
-    err = fn_801F0924(&cmd, 4, 1) == 0;
-    while (*(volatile unsigned long*)0xCC006834 & 1) {
+    reg += 10;
+    *reg = (*reg & 0x405) | 0xC0;
+    err = !fn_801F0924(&cmd, 4, 1);
+    status = (volatile unsigned long*)0xCC006800;
+    while (*(status += 13) & 1) {
     }
     while (len != 0) {
         data = *buf++;
-        err |= fn_801F0924(&data, 4, 1) == 0;
-        while (*(volatile unsigned long*)0xCC006834 & 1) {
+        err |= !fn_801F0924(&data, 4, 1);
+        while (*status & 1) {
         }
         if ((len -= 4) < 0) {
             len = 0;
         }
     }
-    *(volatile unsigned long*)0xCC006828 &= 0x405;
-    return err == 0;
+    *reg &= 0x405;
+    return !err;
+}
+
+extern "C" int fn_801F079C(unsigned long addr, void* buf, unsigned long len)
+{
+    volatile unsigned long* reg = (volatile unsigned long*)0xCC006800;
+    volatile unsigned long* hw;
+    unsigned long cmd;
+    unsigned long data;
+    unsigned long* dst = (unsigned long*)buf;
+    int err;
+
+    cmd = ((addr << 8) & 0x1FFFC00) | 0x20000000;
+    reg[10] = (reg[10] & 0x405) | 0xC0;
+    err = !fn_801F0924(&cmd, 4, 1);
+    hw = reg + 13;
+    while (*hw & 1) {
+    }
+    while (len != 0) {
+        err |= !fn_801F0924(&data, 4, 0);
+        while (*hw & 1) {
+        }
+        *dst++ = data;
+        if ((len -= 4) < 0) {
+            len = 0;
+        }
+    }
+    reg[10] &= 0x405;
+    return !err;
 }
 
 extern "C" int fn_801F0878(void* buf)

@@ -5,5 +5,5 @@
 extern void (*lbl_802FF4EC[])(void);
 extern "C" void fn_80158DEC(void)
 {
-    ((void (*)(void))((void **)lbl_802FF4EC)[1])();
+    lbl_802FF4EC[1]();
 }

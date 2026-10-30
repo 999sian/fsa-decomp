@@ -2516,16 +2516,16 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
     return p + 0xda + i * 8;
 }
 
-extern "C" void fn_801A394C(u8* p, u32 i, u8* src) {
+extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
     u8 a = src[0];
-    u8 b = src[1];
-    u8 c = src[2];
-    u8 d = src[3];
-    u8* base = p + (i << 2);
+    u8* base = p + i * 4;
     base[0xfa] = a;
-    base[0xfb] = b;
-    base[0xfc] = c;
-    base[0xfd] = d;
+    a = src[1];
+    base[0xfb] = a;
+    a = src[2];
+    base[0xfc] = a;
+    a = src[3];
+    base[0xfd] = a;
 }
 
 extern "C" s32 fn_801A39A4(s32 param_1, s32 param_2) {
@@ -2574,8 +2574,8 @@ extern "C" void fn_801A3A24(u8* p, s32 i, u8* src) {
     u8* d = p + i * 8;
     u8 a, b, c;
     a = src[1];
-    d[0x5a] = a;
     b = src[2];
+    d[0x5a] = a;
     c = src[3];
     d[0x5b] = b;
     a = src[5];
@@ -2592,12 +2592,11 @@ extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
-    u8 b0 = param_3[0];
     u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
     u8* p = (u8*)(param_1 + param_2 * 8);
-    u32 s = (b1 & 0xFF) << 2;
     u8 x = p[0x60];
-    p[0x60] = (x & ~0x0C) | s;
+    p[0x60] = (x & ~0x0C) | ((b1 & 0xFF) << 2);
     p[0x60] = (p[0x60] & ~0x03) | b0;
 }
 
@@ -2721,7 +2720,6 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
 
 extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
     typedef struct { u8 r, g, b, a; } Col;
-    register u32 off = i << 2;
     ((Col*)(p + 0x62))[i] = *(Col*)src;
 }
 
@@ -3077,9 +3075,8 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 3);
-    u8 a = src[1];
-    d[0xf] = a;
+    u8* d = p + i * 8;
+    d[0xf] = src[1];
     {
         u8 b = src[2];
         u8 c = src[3];
@@ -3210,7 +3207,7 @@ struct Q801A4840 { u8 b0; C801A4840 c1; u8 b4; C801A4840 c5; };
 struct R801A4840 { u8 pad[0x38]; Q801A4840 e[1]; };
 extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
     u8 a = p3[1];
-    u8* p = p1 + p2 * 8;
+    u8* p = p1 + (p2 << 3);
     p[0x39] = a;
     p[0x3a] = p3[2];
     p[0x3b] = p3[3];
@@ -3243,12 +3240,15 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[0];
     u8* d = p1 + p2 * 4;
+    u8 a = p3[0];
     d[0xb8] = a;
-    d[0xb9] = p3[1];
-    d[0xba] = p3[2];
-    d[0xbb] = p3[3];
+    a = p3[1];
+    d[0xb9] = a;
+    a = p3[2];
+    d[0xba] = a;
+    a = p3[3];
+    d[0xbb] = a;
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {

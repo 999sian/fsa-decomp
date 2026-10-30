@@ -1,4 +1,10 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
+struct J2DScreen {
+    u8 pad[0x100];
+    u8 b100;
+};
+
 
 extern "C" void fn_804316EC(void*);
 extern void* lbl_8053AEC0;
@@ -16,10 +22,29 @@ extern "C" void* fn_8044F664(void) {
 }
 
 extern "C" void fn_804522C8(u8* p) {
-    s16 v = *(s16*)(p + 0xfa);
-    if (v == 7 || v == 8 || v == 9) {
+    if (*(s16*)(p + 0xfa) == 7 || *(s16*)(p + 0xfa) == 8 || *(s16*)(p + 0xfa) == 9) {
         fn_804316EC(lbl_8053AEC0);
     }
+}
+
+extern "C" void fn_8013B490(void*);
+extern u8* lbl_8053AB10;
+extern f32 lbl_80543DFC;
+struct J2DGrafContext;
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
+extern "C" void fn_80452308(void* self_) {
+    u8* self = (u8*)self_;
+    fn_8013B490(lbl_8053AB10);
+    f32 f = lbl_80543DFC;
+    draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern "C" void fn_80453830(void* thisPtr) {
+	s32* p = (s32*)thisPtr;
+	p[0] = -1;
+	p[1] = -1;
+	p[2] = -1;
+	p[3] = -1;
 }
 
 extern "C" u8 fn_80453848(u8* p) {
@@ -28,5 +53,15 @@ extern "C" u8 fn_80453848(u8* p) {
         dead = 1;
     }
     return dead;
+}
+
+extern "C" void fn_80453874(void* thisObj, f32 x, f32 y, f32 z) {
+	*(f32*)((char*)thisObj + 0x0) = x;
+	*(f32*)((char*)thisObj + 0x4) = y;
+	*(f32*)((char*)thisObj + 0x8) = z;
+}
+
+extern "C" void fn_80453884(J2DWindow* window, JUtility::TColor* colors) {
+    window->setContentsColor(colors[0], colors[1], colors[2], colors[3]);
 }
 

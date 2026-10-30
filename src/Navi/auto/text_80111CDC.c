@@ -45,6 +45,39 @@ extern "C" void fn_80111EC0(void) {
     fn_80111FE0();
 }
 
+extern "C" s32 fn_80111EE0(u8* p) {
+    s32 i;
+    f32 zero = lbl_803013C0;
+    u8* base = lbl_802C5B90;
+    u8* a = base;
+    u8* b = base + 0x24;
+    u8* c = base + 0x3c;
+    u8* d = base + 0x54;
+    *(f32*)(base + 0x0) = zero;
+    *(f32*)(a + 0x4) = zero;
+    *(f32*)(a + 0x8) = zero;
+    *(f32*)(a + 0xc) = zero;
+    *(f32*)(a + 0x10) = zero;
+    *(f32*)(a + 0x14) = zero;
+    *(f32*)(base + 0x24) = zero;
+    *(f32*)(b + 0x4) = zero;
+    *(f32*)(b + 0x8) = zero;
+    lbl_802FF208 = 0;
+    lbl_802FF20C = 0;
+    lbl_802FF20E = 0;
+    *(f32*)(base + 0x3c) = zero;
+    *(f32*)(c + 0x4) = zero;
+    *(f32*)(c + 0x8) = zero;
+    *(f32*)(base + 0x54) = zero;
+    *(f32*)(d + 0x4) = zero;
+    *(f32*)(d + 0x8) = zero;
+    *(s32*)(p + 0x240) = fn_800137B8(lbl_8028F39C[lbl_802FF20D], 0, 0);
+    for (i = 0; i < 8; i++) {
+        *(s32*)(p + 0x244 + i * 4) = fn_800137B8(lbl_8028F4EC[i], 0, 0);
+    }
+    return 2;
+}
+
 #pragma dont_inline on
 extern "C" BOOL fn_801123B4(u8* p) {
     if (lbl_802C5BFC[0x74] != 0) {

@@ -8,6 +8,7 @@ typedef struct {
 } Pair81FC;
 extern "C" s32 fn_801D28AC(s32 chan, void* cb);
 #include <Dolphin/mtx.h>
+#include <Dolphin/GX/GXFifo.h>
 extern "C" void* __OSSetInterruptHandler(s32 interrupt, void (*handler)(void*, void*));
 extern "C" void OSInitThreadQueue(void* queue);
 extern "C" void __OSUnmaskInterrupts(u32 mask);
@@ -620,6 +621,32 @@ extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
 
+#pragma dont_inline on
+extern "C" void fn_801D0F78(void) {
+    if ((u32)lbl_802FF9E4 == 0 && (u32)lbl_802FF9D8 != 0) {
+        lbl_802FF9E4 = lbl_802FF9D8;
+        lbl_802FF9D8 = *(int*)lbl_802FF9D8;
+    }
+
+    if ((u32)lbl_802FF9E4 != 0) {
+        if (((u32*)lbl_802FF9E4)[6] <= (u32)lbl_802FF9F0) {
+            if (((u32*)lbl_802FF9E4)[2] == 0) {
+                fn_801CF4E0(((u32*)lbl_802FF9E4)[2], ((u32*)lbl_802FF9E4)[4], ((u32*)lbl_802FF9E4)[5], ((u32*)lbl_802FF9E4)[6]);
+            } else {
+                fn_801CF4E0(((u32*)lbl_802FF9E4)[2], ((u32*)lbl_802FF9E4)[5], ((u32*)lbl_802FF9E4)[4], ((u32*)lbl_802FF9E4)[6]);
+            }
+            lbl_802FF9EC = ((u32*)lbl_802FF9E4)[7];
+        } else if (((u32*)lbl_802FF9E4)[2] == 0) {
+            fn_801CF4E0(((u32*)lbl_802FF9E4)[2], ((u32*)lbl_802FF9E4)[4], ((u32*)lbl_802FF9E4)[5], lbl_802FF9F0);
+        } else {
+            fn_801CF4E0(((u32*)lbl_802FF9E4)[2], ((u32*)lbl_802FF9E4)[5], ((u32*)lbl_802FF9E4)[4], lbl_802FF9F0);
+        }
+        ((u32*)lbl_802FF9E4)[6] -= lbl_802FF9F0;
+        ((u32*)lbl_802FF9E4)[4] += lbl_802FF9F0;
+        ((u32*)lbl_802FF9E4)[5] += lbl_802FF9F0;
+    }
+}
+#pragma dont_inline reset
 extern "C" void fn_801D1078(void) {
 }
 
@@ -1377,33 +1404,36 @@ extern "C" s32 fn_801D81FC(s32 chan, u32* out) {
 
 extern "C" u32 fn_801DD3D0(u8* p);
 extern "C" uint fn_801DD3F0(int param_1);
+#pragma peephole off
 extern "C" u8* fn_801D82C0(s32 arg0, s32 arg1) {
     s32 temp_r31 = fn_801DD3D0((u8*)arg0);
-    u8 temp_r3 = fn_801DD3F0(arg0);
-    s32 temp_r4 = arg1 % 8;
-    if (temp_r31 != 7) {
-        if (temp_r31 < 7) {
-            if (temp_r31 < 6) {
-                goto block_10;
-            }
-            if (temp_r3 != 0) {
-                return __GXData + ((temp_r4 * 0x10) + 0x308);
-            }
-            return __GXData + ((temp_r4 * 0x10) + 0x288);
-        }
+    uint temp_r3 = fn_801DD3F0(arg0);
+    s32 temp_r4 = arg1 - (arg1 / 8) * 8;
+    if (temp_r31 == 7) {
+        goto block_10;
+    }
+    if (temp_r31 > 7) {
         if (temp_r31 < 0xB) {
-            return __GXData + ((temp_r4 * 0x10) + 0x208);
+            goto ret_208;
         }
         goto block_10;
     }
-block_10:
-    if (temp_r3 != 0) {
-        return __GXData + ((temp_r4 * 0x10) + 0x288);
+    if (temp_r31 < 6) {
+        goto block_10;
     }
-    return __GXData + ((temp_r4 * 0x10) + 0x208);
+    if ((u8)temp_r3 != 0) {
+        return __GXData + (temp_r4 << 4) + 0x308;
+    }
+    return __GXData + (temp_r4 << 4) + 0x288;
+ret_208:
+    return __GXData + (temp_r4 << 4) + 0x208;
+block_10:
+    if ((u8)temp_r3 != 0) {
+        return __GXData + (temp_r4 << 4) + 0x288;
+    }
+    return __GXData + (temp_r4 << 4) + 0x208;
 }
-
-#pragma dont_inline reset
+#pragma peephole reset
 extern "C" void fn_801D9850(void* base, u32 hi, u32 lo);
 extern "C" void fn_801D97E0(s32* fifo, s32 readPtr, s32 writePtr);
 extern "C" void GXInitFifoBase(s32* fifo, s32 base, s32 size) {
@@ -3159,10 +3189,9 @@ extern "C" void fn_801E0034(void) {
             return;
         }
     }
-    while (r3 != 0) {
+    do {
         *(*(u8**)&lbl_802FFA80[2])++ = 0;
-        r3--;
-    }
+    } while (--r3 != 0);
 }
 
 extern "C" s32 fn_801E0B6C(u8* arg0, s32 arg1) {

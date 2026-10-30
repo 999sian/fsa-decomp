@@ -150,9 +150,37 @@ extern "C" void fn_80117F60(u8* param_1)
     if (x < 0) {
         x += step;
     }
-    *(f32*)(param_1 + 0x28) = (f32)(f64)(u32)x / (f32)(f64)period;
+    *(f32*)(param_1 + 0x28) = (f32)(f64)x / (f32)(f64)period;
     if (*(f32*)(param_1 + 0x28) > 1.0f) {
         *(f32*)(param_1 + 0x28) = 1.0f;
+    }
+}
+
+extern "C" void fn_801180DC(void);
+extern "C" void fn_801DB478(void);
+extern "C" void fn_801BB7E0(void* a);
+extern "C" u64 fn_801E17C8(f64 x);
+extern f64 lbl_803014C0;
+extern f64 lbl_803014D0;
+extern "C" void fn_80117FEC(void) {
+    u8 alarm[44];
+    u8 buf[20];
+    u8* obj = buf;
+    u32 level;
+    fn_80166B58(obj, alarm);
+    level = OSDisableInterrupts();
+    OSCreateAlarm(alarm);
+    fn_80166C84(lbl_802C5F84, obj);
+    OSRestoreInterrupts(level);
+    f64 t = (f64)(*(u32*)0x800000F8 >> 2) - lbl_803014C0;
+    OSSetAlarm(alarm, fn_801E17C8(lbl_803014D0 * t), (void (*)(void*, void*))fn_801180DC);
+    fn_801DB478();
+    level = OSDisableInterrupts();
+    fn_801BB7E0(alarm);
+    fn_80166FC4(lbl_802C5F84, obj);
+    OSRestoreInterrupts(level);
+    if (obj != nullptr) {
+        fn_80166B70(obj, 0);
     }
 }
 

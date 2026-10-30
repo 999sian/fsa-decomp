@@ -2,6 +2,8 @@
 // .text 0x8015814c-0x8015816c (1 functions). split_file divides it into the game's real files.
 
 extern "C" int fn_801587F0();
-extern "C" void fn_8015814C() {
-    fn_801587F0();
+extern "C" int fn_801587F0(void);
+extern "C" int fn_8015814C(void)
+{
+	return fn_801587F0();
 }

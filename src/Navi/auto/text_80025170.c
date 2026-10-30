@@ -128,31 +128,44 @@ extern "C" int fn_800254CC(u8* param_1) {
 extern "C" u8 lbl_802FED9C;
 extern "C" s32 fn_80025570(u8* param_1) {
     u8* a;
-    s32 i;
     u32* p;
+    u8* q;
+    s32 i;
     u32 zero;
+    s32 c;
 
     a = *(u8**)(param_1 + 0x10);
-    if (a != 0 && a[0xc] == 0) {
-        return 0;
+    if (a != 0) {
+        c = a[0xc];
+        if (c == 0) {
+            return 0;
+        }
     }
     a = *(u8**)(param_1 + 0x14);
-    if (a != 0 && a[0xc] == 0) {
-        return 0;
+    if (a != 0) {
+        c = a[0xc];
+        if (c == 0) {
+            return 0;
+        }
     }
-    a = *(u8**)(param_1 + 0x18);
-    if (a != 0 && a[0xc] == 0) {
-        return 0;
+    q = param_1 + 8;
+    a = *(u8**)(q + 0x10);
+    if (a != 0) {
+        c = a[0xc];
+        if (c == 0) {
+            return 0;
+        }
     }
     i = 0;
-    zero = 0;
     p = (u32*)param_1;
+    zero = i;
     for (; i < 3; i++) {
         if (p[4] != 0) {
             p[0xe5] = ((u32*)p[4])[7];
             p[0xf1] = ((u32*)p[4])[8];
             if (p[4] != 0) {
-                (*(void (**)(void*, s32))(*(u32*)(p[4] + 0x10) + 8))((void*)p[4], 1);
+                a = (u8*)p[4];
+                (*(void (**)(void*, s32))(*(u32*)(a + 0x10) + 8))(a, 1);
             }
             p[4] = zero;
         }

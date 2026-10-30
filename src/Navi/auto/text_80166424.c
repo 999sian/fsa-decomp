@@ -831,6 +831,31 @@ extern "C" void* fn_80168E64(void* self, f32 unused0, f32 unused1, f32 a, f32 b,
     return self;
 }
 
+extern "C" void fn_801688F0(void* p, u32* a, u32* b, u32* c, u32* d);
+extern "C" void fn_80168A0C(void* p, s32 v);
+extern "C" void fn_80168B40(void* p, s32 v);
+extern "C" void fn_801693F4(void* a, s32* b, s32 c) {
+    s32 vals[5];
+    Obj_801693F4 obj;
+    Obj_801693F4* p = &obj;
+    s32 v;
+
+    fn_801682D8(p, lbl_80301A90, lbl_80301A90, lbl_80301A90, lbl_80301A90);
+    p->vt = lbl_80298574;
+    ((VObj_801693F4*)p)->vf7();
+    v = *b;
+    vals[4] = v;
+    vals[3] = v;
+    vals[2] = v;
+    vals[1] = v;
+    vals[0] = v;
+    fn_801688F0(p, (u32*)&vals[0], (u32*)&vals[1], (u32*)&vals[2], (u32*)&vals[3]);
+    fn_80168A0C(p, c);
+    fn_80168B40(p, (s32)a);
+    p->vt = lbl_80298574;
+    p->vt = lbl_80298520;
+}
+
 extern "C" BOOL fn_801694D8(void);
 extern "C" BOOL fn_801694D8(void)
 {

@@ -103,6 +103,41 @@ extern "C" int fn_801C4A28(u32 param_1) {
     return 0;
 }
 
+extern "C" int fn_801C4AF4(u32 param_1) {
+    s32 i;
+    u32* p;
+    s32 n;
+    BOOL enabled;
+
+    enabled = OSDisableInterrupts();
+    p = lbl_802F7970;
+    for (i = 0; i < 4; i++, p++) {
+        if (*p == param_1) {
+            lbl_802F7970[i] = 0;
+            n = 0;
+            if (lbl_802F7970[0] == 0) {
+                n = 1;
+                if (lbl_802F7970[1] == 0) {
+                    n = 2;
+                    if (lbl_802F7970[2] == 0) {
+                        n = 3;
+                        if (lbl_802F7970[3] == 0) {
+                            n = 4;
+                        }
+                    }
+                }
+            }
+            if (n == 4) {
+                fn_801C4990(0);
+            }
+            OSRestoreInterrupts(enabled);
+            return 1;
+        }
+    }
+    OSRestoreInterrupts(enabled);
+    return 0;
+}
+
 extern "C" void SIInit(void) {
     OSRegisterVersion(__SIVersion);
     Packet_802F77D0[0] = -1;
@@ -149,14 +184,25 @@ extern "C" void fn_801C4F38(void) {
 }
 
 extern "C" BOOL fn_801C50BC(s32 chan) {
+    int enabled;
     u32 sr;
-    u32 (*inputBuffer)[2] = (u32 (*)[2])&Packet_802F77D0[112];
+    unsigned long* type;
+    int* packet = Packet_802F77D0;
 
-    sr = fn_801C4EA8(chan);
+    enabled = OSDisableInterrupts();
+    sr = __SIRegs[14];
+    sr >>= (3 - chan) * 8;
+    if (sr & 8) {
+        type = &Type_8029D098[chan];
+        if (!(*type & 0x80)) {
+            *type = 8;
+        }
+    }
+    OSRestoreInterrupts(enabled);
     if (sr & 0x20) {
-        inputBuffer[chan][0] = __SIRegs[3 * chan + 1];
-        inputBuffer[chan][1] = __SIRegs[3 * chan + 2];
-        Packet_802F77D0[108 + chan] = TRUE;
+        packet[112 + chan * 2] = __SIRegs[chan * 3 + 1];
+        packet[113 + chan * 2] = __SIRegs[chan * 3 + 2];
+        packet[108 + chan] = TRUE;
         return TRUE;
     }
     return FALSE;

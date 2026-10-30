@@ -1341,6 +1341,31 @@ extern "C" void fn_80105204(u8* p) {
     }
 }
 
+extern u8 lbl_802313EC[];
+extern "C" u32 fn_80107EA0(u8* p);
+extern "C" void fn_801053E4(u8* self) {
+    u32 r = fn_80107EA0(self);
+    u8 k = lbl_802313EC[self[0x1e1] * 2 + self[0x1e0]];
+    u16* p;
+    int prev;
+    int cur;
+    int i;
+    self[0x419] = 0;
+    p = (u16*)((u8*)lbl_802B7CA0 + r * 0xf0 + k * 0x14);
+    prev = p[0x20a];
+    p++;
+    for (i = 1; i < 15; i++) {
+        cur = p[0x20a];
+        if (cur == prev) {
+            self[0x419 + i] = self[0x418 + i];
+        } else {
+            self[0x419 + i] = i;
+            prev = cur;
+        }
+        p++;
+    }
+}
+
 extern "C" void* fn_80181BA0(void* p);
 extern "C" void fn_801E41AC(void* a, void* b, s32 c);
 extern "C" void fn_801E6768(void* a, void* b);

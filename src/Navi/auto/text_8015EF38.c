@@ -142,16 +142,14 @@ extern "C" void fn_80166B70(void*, int);
 extern "C" void fn_801BDE1C(void*, void*, int);
 extern "C" void fn_80166650(void*);
 extern "C" u8* fn_8015F520(u8* p) {
-    u8* owner;
-    owner = p;
-    fn_80166B58(&owner[0x20], owner);
+    fn_80166B58(p + 0x20, p);
     fn_80166B58(p + 0x30, p);
     fn_801BDDBC(p + 0x68, p + 0x88, 1);
     *(u32*)(p + 0x58) = 0;
     *(u32*)(p + 0x5c) = 0;
     *(u32*)(p + 0x60) = 0;
     *(u32*)(p + 0x8c) = 0;
-    *(u32*)(p + 0x90) = 0;
+    *((int)u32*)(p + 0x90) = 0;
     *(u32*)(p + 0x94) = 0;
     return p;
 }

@@ -243,6 +243,38 @@ extern "C" void fn_801E22E8(u8* fmt, double x, u8* d) {
         d[i + 5] += '0';
     }
 }
+
+extern "C" void fn_801E28E8(u8* param_1, char* param_2, s16 param_3) {
+    s32 i = 0;
+    char* q;
+    *(s16*)(param_1 + 2) = param_3;
+    param_1[0] = 0;
+    for (; i < 0x24 && *param_2 != 0; ) {
+        param_1[i + 5] = *param_2++ - '0';
+        i++;
+    }
+    param_1[4] = i;
+    if (*param_2 == 0) {
+        return;
+    }
+    if (*param_2 < 5) {
+        return;
+    }
+    if (*param_2 <= 5) {
+        q = param_2 + 1;
+        while (*q != 0) {
+            if (*q != '0') {
+                break;
+            }
+            q++;
+        }
+        if ((param_1[i + 4] & 1) == 0) {
+            return;
+        }
+    }
+    fn_801E2D28(param_1, param_1[4]);
+}
+
 #pragma pop
 extern "C" s32 fn_801E2D9C(u8* param_1, s32 param_2);
 extern "C" void fn_801E2D28(u8* param_1, s32 param_2);

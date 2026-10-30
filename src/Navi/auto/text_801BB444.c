@@ -157,6 +157,59 @@ extern "C" u32* fn_801BBC1C(u32* param_1, u32* param_2) {
     }
     return param_2;
 }
+
+extern "C" void* fn_801BBCC8(s32 heap, u32 size) {
+    OSHeapDesc* hd;
+    OSCell* cell;
+    OSCell* newCell;
+    OSCell* list;
+    s32 leftoverSize;
+
+    hd = &((OSHeapDesc*)lbl_802FF758)[heap];
+    size += 0x20 + 0x1f;
+    size &= ~0x1f;
+
+    for (cell = hd->free; cell != 0; cell = cell->next) {
+        if ((s32)size <= cell->size)
+            break;
+    }
+
+    if (cell == 0)
+        return 0;
+
+    leftoverSize = cell->size - (s32)size;
+    if (leftoverSize < 0x40U) {
+        list = hd->free;
+        if (cell->next)
+            cell->next->prev = cell->prev;
+        if (!cell->prev)
+            list = cell->next;
+        else
+            cell->prev->next = cell->next;
+        hd->free = list;
+    } else {
+        cell->size = size;
+        newCell = (OSCell*)((char*)cell + size);
+        newCell->size = leftoverSize;
+        newCell->prev = cell->prev;
+        newCell->next = cell->next;
+        if (newCell->next != 0)
+            newCell->next->prev = newCell;
+        if (newCell->prev != 0)
+            newCell->prev->next = newCell;
+        else
+            hd->free = newCell;
+    }
+
+    list = hd->allocated;
+    cell->next = list;
+    cell->prev = 0;
+    if (list)
+        list->prev = cell;
+    hd->allocated = cell;
+    return (char*)cell + 0x20;
+}
+
 #pragma dont_inline reset
 extern "C" u32* fn_801BBC1C(u32* param_1, u32* param_2);
 extern "C" void fn_801BBDC4(int param_1, u32* param_2) {

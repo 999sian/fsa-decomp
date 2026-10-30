@@ -197,23 +197,47 @@ extern "C" void fn_800C4F84(u8* param_1) {
     }
 }
 
+extern u8 lbl_80288360[];
+extern u8 lbl_80288370[];
+extern "C" void fn_800C5008(u8* param_1) {
+    Color_800C5104 color;
+    s32 iVar1;
+
+    iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, lbl_80300D8C, *(f32*)(lbl_802C565C + 0x10));
+    param_1[0x38]++;
+    if (iVar1 == 1) {
+        param_1[0x38] = 0;
+        fn_800C5648(param_1);
+        ((VObj_800C5104*)*(u8**)(param_1 + 0x24))->setString((const char*)lbl_80288360, 0);
+        ((VObj_800C5104*)*(u8**)(param_1 + 0x20))->setString((const char*)lbl_80288370, 0);
+        color.r = 0xff;
+        color.g = 0x28;
+        color.b = 0x28;
+        color.a = 0xff;
+        ((VObj_800C5104*)*(u8**)(param_1 + 0x20))->setColor(color);
+        fn_800C5444(param_1, 0);
+        param_1[0x36] = 0;
+        param_1[0x37] = 0;
+    }
+}
+
 extern char lbl_8028837C[];
 extern "C" void fn_800C5104(u8* param_1) {
-    void* obj;
     u8* tbl = lbl_802C565C;
     s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], tbl[0xc], 0, lbl_80300D8C, *(f32*)(tbl + 0x10));
     param_1[0x38]++;
     if (iVar1 == 1) {
         param_1[0x38] = 0;
         fn_800C5648(param_1);
-        obj = *(void**)(param_1 + 0x24);
-        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, lbl_802881B8, 0);
-        obj = *(void**)(param_1 + 0x20);
-        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, lbl_8028837C, 0);
-        Color_800C5104 c = {0, 0xff, 0xff, 0xff};
+        (*(VObj_800C5104**)(param_1 + 0x24))->setString(lbl_802881B8, 0);
+        (*(VObj_800C5104**)(param_1 + 0x20))->setString(lbl_8028837C, 0);
+        Color_800C5104 c;
+        c.r = 0;
+        c.g = 0xff;
+        c.b = 0xff;
+        c.a = 0xff;
         Color_800C5104 c2 = c;
-        obj = *(void**)(param_1 + 0x20);
-        (*(void (**)(void*, Color_800C5104*))(*(u8**)obj + 0x12c))(obj, &c2);
+        (*(VObj_800C5104**)(param_1 + 0x20))->setColor(c2);
         fn_800C5434(param_1);
         param_1[0x36] = 0;
         param_1[0x37] = 0;
@@ -235,6 +259,28 @@ extern "C" void fn_800C51FC(u8* param_1) {
     }
 }
 
+#pragma dont_inline on
+extern "C" void fn_800C529C(u8* param_1) {
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, lbl_80300D8C, *(f32*)(lbl_802C565C + 0x10));
+    param_1[0x38]++;
+    if (iVar1 == 1) {
+        param_1[0x38] = 0;
+        fn_800C5648(param_1);
+        (*(VObj_800C5104**)(param_1 + 0x24))->setString(lbl_80288388, 0);
+        (*(VObj_800C5104**)(param_1 + 0x20))->setString(lbl_8028837C, 0);
+        Color_800C5104 c;
+        c.r = 0;
+        c.g = 0xff;
+        c.b = 0xff;
+        c.a = 0xff;
+        (*(VObj_800C5104**)(param_1 + 0x20))->setColor(c);
+        param_1[0x35] = 1;
+        param_1[0x36] = 1;
+        fn_800C5434(param_1);
+        param_1[0x37] = 0;
+    }
+}
+#pragma dont_inline reset
 extern "C" void fn_800C539C(u8* param_1) {
     void* obj;
     s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
@@ -339,13 +385,14 @@ extern "C" s32 fn_800C56A0(u8* p, s16 a, u8 b, s32 c, f32 d, f32 e) {
     if (a < 0) {
         return 0;
     }
-    if (b < a) {
+    if (a > b) {
         return 1;
     }
     f32 t = fn_800C5824(p, b, a);
-    f32 v = *fn_80177B10(*(void**)(p + 0x10));
     f32 lerp = t * (e - d);
-    ((VObj_800C56A0*)*(void**)(p + 0x10))->v2(v, *(f32*)(p + 0x14) + (d + lerp));
+    f32 y = d + lerp;
+    f32 v = *fn_80177B10(*(void**)(p + 0x10));
+    ((VObj_800C56A0*)*(void**)(p + 0x10))->v2(v, *(f32*)(p + 0x14) + y);
     return 0;
 }
 

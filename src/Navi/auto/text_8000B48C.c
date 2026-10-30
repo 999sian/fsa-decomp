@@ -109,8 +109,8 @@ extern "C" void fn_8000CA54(f32 matrix[3][4], u32 angle) {
     f32 m[3][4];
     f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
     f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
-    m[0][0] = lbl_802FFB60;
     m[0][1] = lbl_802FFB64;
+    m[0][0] = lbl_802FFB60;
     m[0][2] = lbl_802FFB64;
     m[0][3] = lbl_802FFB64;
     m[1][0] = lbl_802FFB64;
@@ -203,6 +203,15 @@ extern "C" void* fn_8000CEC4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+#pragma fp_contract off
+extern "C" void fn_8000D084(f32 (*self)[4], const f32 (*m)[4], f32 (*out)[4]) {
+    fn_801C5DA8(self, m, out);
+    out[3][0] = self[3][2] * m[2][0] + (self[3][0] * m[0][0] + self[3][1] * m[1][0]);
+    out[3][1] = self[3][2] * m[2][1] + (self[3][0] * m[0][1] + self[3][1] * m[1][1]);
+    out[3][2] = self[3][2] * m[2][2] + (self[3][0] * m[0][2] + self[3][1] * m[1][2]);
+    out[3][3] = self[3][3] + (self[3][2] * m[2][3] + (self[3][0] * m[0][3] + self[3][1] * m[1][3]));
+}
+#pragma fp_contract reset
 extern "C" void fn_8000D318(void) {
     f32 m[3][4];
     fn_801C61AC(m);

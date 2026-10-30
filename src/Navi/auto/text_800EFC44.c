@@ -25,28 +25,25 @@ struct SaveMgr_800F0C44 {
     SaveSlot_800F0C44 slots[1];
 };
 extern "C" s32 fn_800F0C44(void* param_1, s32 p, s32 idx) {
-    s64* dst;
-    p = idx * 0x9c4 + p;
-    dst = (s64*)(p + 0x258);
-    memcpy(dst, lbl_802B7CA0, 0x9b8);
-    *dst = OSGetTime();
+    p += idx * 0x9c4;
+    memcpy((void*)(p + 0x258), lbl_802B7CA0, 0x9b8);
+    *(s64*)(p + 0x258) = OSGetTime();
     fn_801E445C(lbl_8028BFCC, 0x9b8);
     return 0;
 }
 
 extern "C" s32 fn_800F0CB4(void* param_1, s32 p, s32 idx) {
-    memcpy(lbl_802B7CA0, (void*)(idx * 0x9c4 + p + 0x258), 0x9b8);
+    p += idx * 0x9c4;
+    memcpy(lbl_802B7CA0, (void*)(p + 0x258), 0x9b8);
     fn_801E445C(lbl_8028BFDC, 0x9b8);
     return 0;
 }
 
 extern "C" s32 fn_800F0D04(void* param_1, s32 p, s32 idx) {
     u8 buf[0x9b8];
-    void* dst;
-    p = idx * 0x9c4 + p;
-    dst = (void*)(p + 0x258);
+    p += idx * 0x9c4;
     fn_800EFC44(buf);
-    memcpy(dst, buf, 0x9b8);
+    memcpy((void*)(p + 0x258), buf, 0x9b8);
     fn_801E445C(lbl_8028BFEC, 0x9b8);
     return 0;
 }

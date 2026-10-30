@@ -35,8 +35,6 @@ struct VObj_8015FBCC {
     virtual void vf1(void);
     virtual void vf2(void);
     virtual void vf3(void);
-    virtual void vf4(void);
-    virtual void vf5(void);
     virtual s32 vf6(void);
     virtual s32 vf7(void);
 };
@@ -99,6 +97,29 @@ extern "C" void fn_8015F79C(void)
 extern "C" BOOL fn_8015F80C()
 {
 	return TRUE;
+}
+
+extern "C" void* fn_8015FA08(u32 a, u32 b, u32 c, u32 d, u32* e) {
+    u8* p = (u8*)fn_8015A9A8(0x5c, lbl_802FF540, -4);
+    if (p != nullptr) {
+        fn_8015FBC0(p);
+    }
+    *(u32*)(p + 0x0) = 2;
+    *(u32*)(p + 0x4) = b;
+    *(u32*)(p + 0x8) = c;
+    *(u32*)(p + 0x10) = a;
+    *(u32*)(p + 0x2c) = 0;
+    *(u32*)(p + 0x14) = d;
+    *(u32*)(p + 0x1c) = lbl_802FF5E4;
+    *(u32*)(p + 0x24) = lbl_802FF5EC;
+    *(u32*)(p + 0x20) = lbl_802FF5E8;
+    *(u32*)(p + 0x18) = (u32)e;
+    if (e != nullptr) {
+        *e = 0;
+    }
+    fn_801BDDBC(p + 0x30, p + 0x50, 1);
+    fn_801BDE1C(&lbl_80297B40, p, 1);
+    return p;
 }
 
 extern "C" void* fn_8015FAD8(u8* p, s32 mode) {

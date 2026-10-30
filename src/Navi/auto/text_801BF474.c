@@ -34,8 +34,8 @@ extern "C" u8* __OSLockSram(void) {
 
 extern "C" u8* __OSLockSramEx(void) {
     u8* puVar3 = Scb_802F6CC0;
-    BOOL uVar2 = OSDisableInterrupts();
     s32* flag = (s32*)(puVar3 + 0x48);
+    BOOL uVar2 = OSDisableInterrupts();
     if (*flag != 0) {
         OSRestoreInterrupts(uVar2);
         return 0;
@@ -57,13 +57,12 @@ extern "C" u32 __OSSyncSram(void) {
 extern "C" BOOL fn_801BFB74(void) {
     u8* puVar3 = Scb_802F6CC0;
     BOOL uVar2 = OSDisableInterrupts();
-    s32* flag = (s32*)(puVar3 + 0x48);
-    if (*flag != 0) {
+    if (*(u32*)(puVar3 + 0x48) != 0) {
         OSRestoreInterrupts(uVar2);
         puVar3 = 0;
     } else {
+        *(u32*)(puVar3 + 0x48) = 1;
         *(BOOL*)(puVar3 + 0x44) = uVar2;
-        *flag = 1;
     }
     BOOL bVar1 = (puVar3[0x13] & 4) ? 1 : 0;
     fn_801BF7E0(0, 0);
@@ -88,8 +87,8 @@ extern "C" u8 fn_801BFBF4(void) {
 
 extern "C" u16 fn_801BFC64(u32 param_1) {
     u8* puVar3 = Scb_802F6CC0;
-    BOOL uVar2 = OSDisableInterrupts();
     s32* flag = (s32*)(puVar3 + 0x48);
+    BOOL uVar2 = OSDisableInterrupts();
     u8* p;
     if (*flag != 0) {
         OSRestoreInterrupts(uVar2);
@@ -106,8 +105,8 @@ extern "C" u16 fn_801BFC64(u32 param_1) {
 
 extern "C" void fn_801BFCE8(u32 param_1, u16 param_2) {
     u8* puVar3 = Scb_802F6CC0;
-    BOOL uVar2 = OSDisableInterrupts();
     s32* flag = (s32*)(puVar3 + 0x48);
+    BOOL uVar2 = OSDisableInterrupts();
     u8* p;
     if (*flag != 0) {
         OSRestoreInterrupts(uVar2);
@@ -126,6 +125,30 @@ extern "C" void fn_801BFCE8(u32 param_1, u16 param_2) {
     }
 }
 
+extern "C" void OSSetGbsMode(u16 param_1) {
+    u16* p;
+    BOOL level;
+
+    if (((param_1 & 0x7c00) == 0x5000) || ((param_1 & 0xc0) == 0xc0)) {
+        param_1 = 0;
+    }
+    level = OSDisableInterrupts();
+    if (*(u32*)(Scb_802F6CC0 + 0x48) == 0) {
+        *(u32*)(Scb_802F6CC0 + 0x48) = 1;
+        *(BOOL*)(Scb_802F6CC0 + 0x44) = level;
+        p = (u16*)(Scb_802F6CC0 + 0x14);
+    } else {
+        OSRestoreInterrupts(level);
+        p = 0;
+    }
+    if (param_1 == *(u16*)((u8*)p + 0x28)) {
+        fn_801BF7E0(0, 0x14);
+    } else {
+        *(u16*)((u8*)p + 0x28) = param_1;
+        fn_801BF7E0(1, 0x14);
+    }
+}
+
 extern "C" void fn_801BFEBC(s32* param_1, s32 param_2) {
     param_1[0] = param_2;
     param_1[3] = 0;
@@ -135,6 +158,33 @@ extern "C" void fn_801BFEBC(s32* param_1, s32 param_2) {
     param_1[4] = 0;
     param_1[7] = 0;
     param_1[6] = 0;
+}
+
+extern "C" void fn_801BFEE8(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(s32*)(p + 0x28) = 1;
+    u64 t = OSGetTime();
+    *(u32*)(p + 0x24) = (u32)t;
+    *(u32*)(p + 0x20) = (u32)(t >> 32);
+}
+
+extern "C" void fn_801BFF24(u8* p1) {
+    u64 now;
+    s64 delta;
+
+    if (*(s32*)(p1 + 0x28) != 0) {
+        now = OSGetTime();
+        delta = now - *(s64*)(p1 + 0x20);
+        *(s64*)(p1 + 0x8) += delta;
+        *(s32*)(p1 + 0x28) = 0;
+        *(s32*)(p1 + 0x4) += 1;
+        if (*(s64*)(p1 + 0x18) < delta) {
+            *(s64*)(p1 + 0x18) = delta;
+        }
+        if (delta < *(s64*)(p1 + 0x10)) {
+            *(s64*)(p1 + 0x10) = delta;
+        }
+    }
 }
 
 extern "C" void fn_801BFFF0(u32* param_1) {

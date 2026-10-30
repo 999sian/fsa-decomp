@@ -71,8 +71,14 @@ extern "C" void fn_801155C0(unsigned char* param_1, int param_2) {
 }
 
 extern "C" void fn_801155E0(unsigned char* param_1, int param_2) {
-    *param_1 = (*param_1 & ~0x80) | ((1 << 7) & 0x80);
-    *param_1 = (*param_1 & ~0x40) | ((0 << 6) & 0x40);
-    *param_1 = (*param_1 & ~0x3f) | (param_2 & 0x3f);
+    struct Flags {
+        unsigned char b7 : 1;
+        unsigned char b6 : 1;
+        unsigned char rest : 6;
+    };
+    Flags* f = (Flags*)param_1;
+    f->b7 = true;
+    f->b6 = false;
+    f->rest = param_2;
 }
 

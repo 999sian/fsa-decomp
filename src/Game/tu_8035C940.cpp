@@ -1,0 +1,73 @@
+#include "JSystem/JMath/JMath.h"
+#include "dolphin/mtx.h"
+#include "JSystem/JGeometry.h"
+
+struct Unk8035CD00 {
+    u8 pad0[0x14];
+    f32 m14;
+    u8 pad18[0x25c - 0x18];
+    f32 m25C;
+    s16 m260;
+    u8 pad262[2];
+    f32 m264;
+    f32 m268;
+    u8 pad26c[4];
+    s16 m270;
+};
+
+extern "C" Vec fn_8035CD00(Unk8035CD00* p) {
+    s16 old = p->m260;
+    p->m260 += 0x400;
+    Vec pos;
+    pos.x = 25.0f * JMACosShort(p->m260) + (0.0f + p->m264);
+    pos.y = 25.0f * JMASinShort(p->m260) + (25.0f + (p->m268 - p->m25C));
+    pos.z = p->m14;
+    Vec ret = pos;
+    if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) {
+        if (p->m270 < 0) {
+            p->m270 = -0x4000;
+        } else {
+            p->m270 = -0x8000;
+        }
+    }
+    return ret;
+}
+
+extern const f32 lbl_80542938;
+extern const f32 lbl_8054293C;
+extern "C" JGeometry::TVec3<f32> fn_8035CDC0(char* p) {
+    s16 old = *(s16*)(p + 0x260);
+    *(s16*)(p + 0x260) = old + 0x400;
+    s16 ang = *(s16*)(p + 0x260);
+    f32 z = *(f32*)(p + 0x14);
+    JGeometry::TVec3<f32> v(lbl_80542938 * JMath::sincosTable_.mTable[(u16)ang >> 5].second + (*(f32*)(p + 0x264) - lbl_8054293C),
+        lbl_80542938 * JMath::sincosTable_.mTable[(u16)ang >> 5].first + (*(f32*)(p + 0x268) + *(f32*)(p + 0x25c) - lbl_80542938),
+        z);
+    if (ang >= 0x4000 && old < 0x4000) {
+        if (*(s16*)(p + 0x270) < 0) {
+            *(s16*)(p + 0x270) = -0x4000;
+        } else {
+            *(s16*)(p + 0x270) = -0x8000;
+        }
+    }
+    return v;
+}
+
+extern "C" void fn_8035D6C4(char* p) {
+    if (*(int*)(p + 0x238) == 0) return;
+    *(int*)(p + 0x234) = 0x400;
+    *(int*)(p + 0x230) = 1;
+    *(int*)(p + 0x244) = 0x38;
+    *(int*)(p + 0x238) = 4;
+}
+
+struct Unk8035DA78;
+typedef void (Unk8035DA78::*Unk8035DA78Func)();
+extern Unk8035DA78Func lbl_804AD528[];
+extern "C" void fn_8035DA78(Unk8035DA78* self) {
+    char* p = (char*)self;
+    if (*(int*)(p + 0x234) != 0) *(int*)(p + 0x234) -= 1;
+    if (*(int*)(p + 0x244) != 0) *(int*)(p + 0x244) -= 1;
+    (self->*lbl_804AD528[*(int*)(p + 0x230)])();
+}
+

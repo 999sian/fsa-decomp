@@ -149,22 +149,20 @@ extern const u16 lbl_8053FF4C[2];
 
 extern "C" BOOL fn_80224D0C(f32* pos, s32 room) {
     u8* g = fn_802D6A9C();
-    TileRect r = *(TileRect*)((room < 8) ? g + 0xcc : g + 0xdc);
+    s32 r4_val = room;
+    const TileRect r = *(TileRect*)((room < 8) ? g + 0xcc : g + 0xdc);
+    u8 in = (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1);
     u16 tile;
-    u8 in = 0;
-    if (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1) in = 1;
     if (!in) {
         tile = 0xf;
     } else {
-        s32 y;
-        s32 x;
-        x = pos[0] - r.x0;
-        y = pos[1] - r.y0;
+        s32 x = pos[0] - r.x0;
+        s32 y = pos[1] - r.y0;
         if (x < 0) x = 0;
         else if (x >= 0x200) x = 0x1ff;
         if (y < 0) y = 0;
         else if (y >= 0x200) y = 0x1ff;
-        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), r4_val,
             ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
     }
     for (s32 i = 0; i < 2; i++) {

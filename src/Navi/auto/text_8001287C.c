@@ -360,3 +360,22 @@ extern "C" void* fn_8001391C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80013978(u8* param_1) {
+    u8* self = param_1;
+    u32 t = *(u32*)(self + 0x24);
+    if (t == 0) {
+        t = fn_8000F6A0();
+    }
+    u32 mode = 2;
+    if (*(u8*)(self + 0x14) == 0) {
+        mode = 1;
+    }
+    u32 r = fn_80164A10(*(u32*)(self + 0x18), 0, 1, 0, t, mode, 0, 0, 0);
+    *(u32*)(self + 0x1c) = r;
+    if (*(u32*)(self + 0x1c) != 0) {
+        *(u32*)(self + 0x20) = fn_80159D88(t);
+    }
+    *(u8*)(self + 0xc) = 1;
+    return (-*(u32*)(self + 0x1c) | *(u32*)(self + 0x1c)) >> 31;
+}
+

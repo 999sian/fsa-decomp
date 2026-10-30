@@ -213,6 +213,43 @@ extern "C" s32 fn_801661D8(void) {
     return var_r30;
 }
 
+extern "C" void* fn_8016628C(void* src) {
+  void* dst;
+  s32 len;
+  s32 rem;
+  s32 ret;
+  s32 end;
+
+  len = lbl_802FF644 - (s32)src;
+  if (len & 0x1f) {
+    dst = (void*)(lbl_802FF640 + 0x20 - (len & 0x1f));
+  } else {
+    dst = (void*)lbl_802FF640;
+  }
+  memcpy(dst, src, len);
+  end = (s32)dst + len;
+  rem = lbl_802FF644 - end;
+  if ((u32)rem > (u32)lbl_802FF664) {
+    rem = lbl_802FF664;
+  }
+  for (;;) {
+    ret = fn_801C806C((u8*)lbl_802FF66C + 0x5c, end, rem, lbl_802FF660, 2);
+    if (ret >= 0) {
+      break;
+    }
+    if (lbl_802FE3A0 == 0) {
+      return (void*)0;
+    }
+    fn_801CBA20();
+  }
+  lbl_802FF660 += rem;
+  lbl_802FF664 -= rem;
+  if (lbl_802FF664 == 0) {
+    lbl_802FF668 = end + rem;
+  }
+  return dst;
+}
+
 extern "C" s32 fn_80166378(u32 a) {
     s32 size;
     if (lbl_802FF65C == lbl_802FF654) {

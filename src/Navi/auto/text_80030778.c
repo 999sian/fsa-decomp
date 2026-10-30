@@ -728,18 +728,24 @@ extern "C" int fn_80039AF0(void* p, int x, int idx) {
 }
 
 extern "C" int fn_80039BD4(int* p, int x, int idx) {
-    short* e;
-    short* t;
+    short* minx;
+    short* miny;
+    short* maxx;
+    short* maxy;
     int i;
+    short* e;
     int n = 0;
     int cnt = 0;
     if (idx < 0 || idx >= 0x24) {
         return 0;
     }
-    t = (short*)((char*)lbl_802BEE18 + idx * 8);
+    minx = (short*)((char*)lbl_802BEE18 + idx * 8);
+    miny = minx + 1;
+    maxx = minx + 2;
+    maxy = minx + 3;
     e = (short*)p[0];
     for (i = 0; i < p[3]; i++) {
-        if (e[0] >= t[0] && e[1] >= t[1] && e[0] < t[2] && e[1] < t[3]) {
+        if (e[0] >= *minx && e[1] >= *miny && e[0] < *maxx && e[1] < *maxy) {
             cnt++;
             e[2] = e[2] | 0x1000;
             if (!(e[2] & 0x8000)) {
@@ -748,7 +754,7 @@ extern "C" int fn_80039BD4(int* p, int x, int idx) {
         }
         e += 4;
     }
-    return ((int (*)(void*, int, int, int))fn_80039CB8)(p, x, cnt, n);
+    return fn_80039CB8(p, x, cnt, n);
 }
 
 extern "C" void fn_80039FBC(int* p) {

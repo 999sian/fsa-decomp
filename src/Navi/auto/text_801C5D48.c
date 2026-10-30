@@ -129,6 +129,7 @@ extern "C" u32 fn_801C5E74(const f32 src[3][4], f32 inv[3][4]) {
 }
 
 extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
+    f64 pad;
     f32 a = fn_801EA270(v);
     f32 b = fn_801EA294(v);
     fn_801C5FDC(dst, axis, a, b);
@@ -593,7 +594,7 @@ extern "C" void fn_801C8A68(void) {
         break;
     }
 }
-#pragma dont_inline reset
+#pragma dont_inline on
 extern "C" void fn_801C8B48(DVDCommandBlock* block) {
     fn_801C76C8(((u8*)IDShouldBe_802FF884)[8], 10, fn_801C8E54);
 }
@@ -622,6 +623,44 @@ extern "C" void fn_801C8D70(u32 param_1)
 		fn_801C747C(fn_801C8554);
 	}
 }
+
+extern "C" void fn_801C8E54(u32 param_1)
+{
+	DVDCommandBlock* block;
+	s32 ready;
+
+	if (param_1 == 0x10) {
+		executing_802FF880->state = DVD_STATE_FATAL_ERROR;
+		__DVDStoreErrorCode(0x1234568);
+		DVDReset();
+		cbForStateError(0);
+	} else if (param_1 & 1) {
+		lbl_802FF8B4 = 0;
+		ready = 0;
+		if (lbl_802FF8A0 != 0) {
+			ResumeFromHere_802FF8A8 = 0;
+			block = executing_802FF880;
+			lbl_802FF8A0 = 0;
+			executing_802FF880 = &DummyCommandBlock_802F7AE0;
+			block->state = DVD_STATE_CANCELED;
+			if (block->callback) {
+				(block->callback)(DVD_RESULT_CANCELED, block);
+			}
+			if (lbl_802FF8A4) {
+				(lbl_802FF8A4)(0, block);
+			}
+			stateReady();
+			ready = 1;
+		}
+		if (ready == 0) {
+			executing_802FF880->state = DVD_STATE_BUSY;
+			stateBusy_801C943C(executing_802FF880);
+		}
+	} else {
+		fn_801C747C(fn_801C8554);
+	}
+}
+
 #pragma dont_inline reset
 extern "C" void AlarmHandler(void) {
     DVDReset();

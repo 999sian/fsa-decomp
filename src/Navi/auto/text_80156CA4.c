@@ -6,12 +6,14 @@ extern u32 lbl_802EB5D0[];
 extern u32 lbl_80294EB0[];
 extern u8 lbl_802D5824[];
 extern "C" u32 fn_801564BC(u32 unk, void* p);
+extern "C" u32 fn_801564BC(u32 a, void* b);
 extern "C" u32 fn_80156CA4(u8 p1, u8 p2, u8 p3, u8 p4)
 {
+    u32 set;
     u32 mask = lbl_80294EB0[p2];
     u32* flags = &lbl_802EB5D0[p4 * 16 + p3];
-    u32 set = (mask & *flags) != 0;
 
+    set = (mask & *flags) != 0;
     if (set) {
         *flags &= ~mask;
     }

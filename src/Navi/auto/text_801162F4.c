@@ -42,6 +42,36 @@ extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minSte
     return diff;
 }
 
+extern "C" int fn_80116708(s16* p, s16 target, s16 rate, s16 maxStep, s16 minStep) {
+    s16 cur = *p;
+    if (cur != target) {
+        s16 diff = (s16)(target - cur);
+        rate = diff / rate;
+        if (rate <= minStep && rate >= -minStep) {
+            if (diff < 0) {
+                *p = cur - minStep;
+                if (-1 < (s16)(target - *p)) {
+                    *p = target;
+                }
+            } else {
+                *p = cur + minStep;
+                if ((s16)(target - *p) < 1) {
+                    *p = target;
+                }
+            }
+        } else {
+            if (rate > maxStep) {
+                rate = maxStep;
+            }
+            if (rate < -maxStep) {
+                rate = -maxStep;
+            }
+            *p += rate;
+        }
+    }
+    return (s16)(target - *p);
+}
+
 extern "C" int fn_801167D0(s16* p, s16 target, s16 step) {
     if (step != 0) {
         if (*p > target) {

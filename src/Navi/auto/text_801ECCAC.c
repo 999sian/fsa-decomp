@@ -80,7 +80,7 @@ extern "C" void fn_801ECD7C(void* dst, int val, unsigned long n)
 }
 
 unsigned int __mfmsr(void);
-unsigned int fn_801ECE34(void) {
+extern "C" unsigned int fn_801ECE34(void) {
     return __mfmsr();
 }
 
@@ -231,14 +231,13 @@ extern "C" int fn_801EE3CC(unsigned long firstRegister, unsigned long lastRegist
     unsigned long count;
     unsigned long* data;
     TRKExceptionStatus_801ECCAC tempExceptionStatus;
-    TRKExceptionStatus_801ECCAC* status = (TRKExceptionStatus_801ECCAC*)&gTRKExceptionStatus_8029F044;
 
     if (lastRegister > 0x24) {
         return 0x701;
     }
 
-    tempExceptionStatus = *status;
-    status->exceptionDetected = 0;
+    tempExceptionStatus = gTRKExceptionStatus_8029F044;
+    gTRKExceptionStatus_8029F044.exceptionDetected = 0;
 
     data = (unsigned long*)gTRKCPUState + firstRegister;
     count = (lastRegister - firstRegister) + 1;
@@ -250,12 +249,12 @@ extern "C" int fn_801EE3CC(unsigned long firstRegister, unsigned long lastRegist
         error = fn_801EA898(b, (unsigned char*)data, count);
     }
 
-    if (status->exceptionDetected) {
+    if (gTRKExceptionStatus_8029F044.exceptionDetected) {
         *registersLengthPtr = 0;
         error = 0x702;
     }
 
-    *status = tempExceptionStatus;
+    gTRKExceptionStatus_8029F044 = tempExceptionStatus;
     return error;
 }
 

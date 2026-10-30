@@ -15,7 +15,7 @@ extern "C" unsigned char fn_80157664(void) {
 }
 
 extern "C" int fn_8015766C(int i) {
-    return -(int)(*(unsigned char*)(lbl_802FF4BC + i * 0xf4 + 0xec) == 0);
+    return *(unsigned char*)(lbl_802FF4BC + i * 0xf4 + 0xec) != 0;
 }
 
 extern "C" void fn_8015768C(void* p) {

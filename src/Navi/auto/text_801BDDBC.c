@@ -12,6 +12,34 @@ extern "C" int OSDisableInterrupts(void);
 extern "C" int OSRestoreInterrupts(int level);
 extern "C" void fn_801C12E4(void* queue);
 extern "C" void fn_801C13D0(void* queue);
+extern "C" BOOL fn_801BDE1C(u8* param1, u32 param2, u32 param3)
+{
+    BOOL enabled;
+    s32 idx;
+    s32 wait;
+
+    wait = param3 & 1;
+    enabled = OSDisableInterrupts();
+    goto check;
+    for (;;) {
+        if (wait == 0) {
+            OSRestoreInterrupts(enabled);
+            return 0;
+        }
+        fn_801C12E4(param1);
+check:
+        if (*(s32*)(param1 + 0x14) > *(s32*)(param1 + 0x1c)) {
+            break;
+        }
+    }
+    idx = *(s32*)(param1 + 0x18) + *(s32*)(param1 + 0x1c);
+    ((u32*)(*(u32*)(param1 + 0x10)))[idx % *(s32*)(param1 + 0x14)] = param2;
+    *(s32*)(param1 + 0x1c) += 1;
+    fn_801C13D0(param1 + 8);
+    OSRestoreInterrupts(enabled);
+    return 1;
+}
+
 extern "C" int fn_801BDEE4(u8* mq, void** msg, s32 flags)
 {
     int enabled;

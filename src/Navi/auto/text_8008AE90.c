@@ -88,12 +88,11 @@ extern "C" BOOL fn_8008B888(void* param_1, void* param_2, void* param_3, void* p
 
 extern "C" s32 fn_8008BC84(void)
 {
-    s8 flag;
     void* addr = (u8*)lbl_802B7CA0 + 0x2200;
     fn_800636F4(&lbl_802FCE94, addr, 0x40);
-    
+
     s8* ptr = &lbl_802C5394[0];
-    flag = ptr[4];
+    s8 flag = ptr[4];
     if (flag >= 0) {
         u32 count = *((u32*)(ptr + 8)) - 1;
         *((u32*)(ptr + 8)) = count;

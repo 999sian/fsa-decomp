@@ -385,17 +385,13 @@ extern "C" void fn_8003C6E0(u8* p, f32* out, f32 a, f32 b) {
 }
 
 extern "C" void fn_8003C7DC(void) {
-    f32 nearz = lbl_802FFDD0;
-    u8* cam = *(u8**)(lbl_802B7CA0 + 0x16c0);
-    Color_8003C7DC color;
-    f32 farz;
-    int i;
     u8 alpha;
-    color.r = lbl_802FEFAC[0];
-    color.g = lbl_802FEFAC[1];
-    color.b = lbl_802FEFAC[2];
-    color.a = alpha;
-    farz = lbl_802FFDF0;
+    f32 nearz;
+    f32 farz = lbl_802FFDF0;
+    u8* cam = *(u8**)(lbl_802B7CA0 + 0x16c0);
+    int i;
+    Color_8003C7DC color = makeColor_8003C7DC(lbl_802FEFAC[0], lbl_802FEFAC[1], lbl_802FEFAC[2], alpha);
+    nearz = lbl_802FFDD0;
     if (cam != 0) {
         if (*(f32*)(cam + 0xc8) >= lbl_802FFDD4 && *(f32*)(cam + 0xcc) >= lbl_802FFDD4 &&
             *(f32*)(cam + 0xc8) < *(f32*)(cam + 0xcc)) {
@@ -403,11 +399,15 @@ extern "C" void fn_8003C7DC(void) {
             farz = *(f32*)(cam + 0xcc);
         }
     }
-    setFog_8003C7DC(2, color, lbl_802FEE5C, lbl_802FEE60, nearz, farz);
-    for (i = 0; i < 10; i++) {
-        lbl_802BF1FC.r[i] = lbl_80246984[lbl_802FF057].r[i];
+    fn_801DEA74(2, color, lbl_802FEE5C, lbl_802FEE60, nearz, farz);
+    {
+        u16 center = lbl_802FF054;
+        u8 enable = lbl_802FF056;
+        for (i = 0; i < 10; i++) {
+            lbl_802BF1FC.r[i] = lbl_80246984[lbl_802FF057].r[i];
+        }
+        fn_801DEC98(enable, center, &lbl_802BF1FC);
     }
-    fn_801DEC98(lbl_802FF056, lbl_802FF054, &lbl_802BF1FC);
 }
 
 extern "C" void fn_8003CB48(void* p) {

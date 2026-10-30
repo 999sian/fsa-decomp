@@ -167,6 +167,37 @@ extern "C" void fn_800C1968(u8* p) {
     }
 }
 
+extern "C" void fn_80130974(u8* obj);
+extern "C" void fn_800C1ABC(u8* p) {
+    s32 i;
+    u8* q = p;
+    for (i = 0; i < 2; i++, q += 4) {
+        if (*(u8**)(q + 0x254) != NULL) {
+            fn_80130974(*(u8**)(q + 0x254));
+            u8* o = *(u8**)(q + 0x254);
+            *(u32*)(o + 0xf4) |= 1;
+            *(s32*)(o + 0x24) = 1;
+            *(u8**)(q + 0x254) = NULL;
+        }
+        if (*(u8**)(q + 0x25c) != NULL) {
+            fn_80130974(*(u8**)(q + 0x25c));
+            u8* o = *(u8**)(q + 0x25c);
+            *(u32*)(o + 0xf4) |= 1;
+            *(s32*)(o + 0x24) = 1;
+            *(u8**)(q + 0x25c) = NULL;
+        }
+    }
+    for (i = 0; i < 12; i++, p += 4) {
+        if (*(u8**)(p + 0x224) != NULL) {
+            fn_80130974(*(u8**)(p + 0x224));
+            u8* o = *(u8**)(p + 0x224);
+            *(u32*)(o + 0xf4) |= 1;
+            *(s32*)(o + 0x24) = 1;
+            *(u8**)(p + 0x224) = NULL;
+        }
+    }
+}
+
 extern "C" void fn_800C1BB8(u8* p) {
     s32 iVar1;
     s32 iVar2;
@@ -266,9 +297,9 @@ extern "C" void fn_800C2640(u8* p) {
 }
 
 extern "C" void fn_800C269C(u8* p) {
-    s32 flags;
     s32 iVar1;
     s32 iVar2;
+    u32 v;
     if (*(s16*)(p + 0x21e) == 0) {
         fn_8002F458(0x9c, 0);
     }
@@ -277,9 +308,9 @@ extern "C" void fn_800C269C(u8* p) {
     *(s16*)(p + 0x21e) = *(s16*)(p + 0x21e) + 1;
     if (iVar1 == 1 && iVar2 == 1) {
         *(s16*)(p + 0x21e) = 0;
-        flags = *(s32*)(lbl_802BB0FC + 0x108) & ~0x4000;
-        *(s32*)(lbl_802BB0FC + 0x108) = flags;
-        *(s32*)(lbl_802BB0FC + 0x108) = flags | *(s32*)(p + 0x218);
+        v = *(u32*)(lbl_802BB0FC + 0x108) & ~0x4000;
+        *(u32*)(lbl_802BB0FC + 0x108) = v;
+        *(u32*)(lbl_802BB0FC + 0x108) = v | *(u32*)(p + 0x218);
         p[0x213] = 0;
         p[0x212] = 0x17;
     }

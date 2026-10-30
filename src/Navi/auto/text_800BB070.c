@@ -116,8 +116,12 @@ extern "C" BOOL fn_800BC8A4(u8* p) {
     if (*(s16*)(p + 0xe2) == 0) {
         fn_8002F458(0xa6, 0);
     }
-    a = fn_800BD710(p, (s16)(*(s16*)(p + 0xe2) - lbl_802C55FC[0x11]), lbl_80300CE8, *(f32*)(lbl_802C55FC + 0xc), lbl_802C55FC[0x10], 0, 1);
-    b = fn_800BD938(p, *(s16*)(p + 0xe2), lbl_80300CE8, *(f32*)(lbl_802C55FC + 0x14), lbl_802C55FC[0x18], 0, 1);
+    FadeParam* d = (FadeParam*)lbl_802C55FC;
+    u8 n = d->unk10;
+    a = fn_800BD710(p, *(s16*)(p + 0xe2) - d->unk11, lbl_80300CE8, d->unkC, n, 0, 1);
+    d = (FadeParam*)lbl_802C55FC;
+    n = d->unk18;
+    b = fn_800BD938(p, *(s16*)(p + 0xe2), lbl_80300CE8, d->unk14, n, 0, 1);
     (*(s16*)(p + 0xe2))++;
     if (a == 1 && b == 1) {
         ret = TRUE;

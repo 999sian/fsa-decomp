@@ -61,6 +61,40 @@ extern "C" void fn_801BE3A0(OSMutex* mutex)
 	OSRestoreInterrupts(enabled);
 }
 
+extern "C" s32 fn_801C03A4(OSThread* thread);
+extern "C" void fn_801BE47C(OSMutex* mutex)
+{
+    BOOL enabled;
+    OSThread* thread;
+    OSMutex* prev;
+    OSMutex* next;
+
+    enabled = OSDisableInterrupts();
+    thread = fn_801C027C();
+    if (mutex->thread == thread) {
+        if (--mutex->count == 0) {
+            prev = mutex->link.next;
+            next = mutex->link.prev;
+            if (prev == nullptr) {
+                thread->queueMutex.tail = next;
+            } else {
+                prev->link.prev = next;
+            }
+            if (next == nullptr) {
+                thread->queueMutex.head = prev;
+            } else {
+                next->link.next = prev;
+            }
+            mutex->thread = nullptr;
+            if (*(s32*)((u8*)thread + 0x2d0) < *(s32*)((u8*)thread + 0x2d4)) {
+                *(s32*)((u8*)thread + 0x2d0) = fn_801C03A4(thread);
+            }
+            fn_801C13D0((int)mutex);
+        }
+    }
+    OSRestoreInterrupts(enabled);
+}
+
 extern "C" void fn_801BE544(int param_1)
 {
     int iVar1;
@@ -120,9 +154,89 @@ extern "C" void fn_801BE670(OSThreadQueue* queue)
     OSInitThreadQueue(queue);
 }
 
+#pragma dont_inline on
+extern "C" void fn_801BE690(OSCond* cond, OSMutex* mutex)
+{
+    BOOL enabled;
+    OSThread* thread;
+    u32 count;
+    OSMutex* prev;
+    OSMutex* next;
+    u32 pad[3];
+
+    enabled = OSDisableInterrupts();
+    thread = fn_801C027C();
+    if (mutex->thread == thread) {
+        count = mutex->count;
+        mutex->count = 0;
+        prev = mutex->link.next;
+        next = mutex->link.prev;
+        if (prev == nullptr) {
+            thread->queueMutex.tail = next;
+        } else {
+            prev->link.prev = next;
+        }
+        if (next == nullptr) {
+            thread->queueMutex.head = prev;
+        } else {
+            next->link.next = prev;
+        }
+        mutex->thread = nullptr;
+        if (*(s32*)((u8*)thread + 0x2d0) < *(s32*)((u8*)thread + 0x2d4)) {
+            *(s32*)((u8*)thread + 0x2d0) = fn_801C03A4(thread);
+        }
+        OSDisableScheduler();
+        fn_801C13D0((int)mutex);
+        OSEnableScheduler();
+        fn_801C12E4((OSMutex*)cond);
+        fn_801BE3A0(mutex);
+        mutex->count = count;
+    }
+    OSRestoreInterrupts(enabled);
+}
+#pragma dont_inline reset
+extern "C" void fn_801C13D0(int param_1);
 extern "C" void fn_801BE764(int param_1)
 {
-    fn_801C13D0(param_1);
+	fn_801C13D0(param_1);
+}
+
+extern "C" int fn_801BE784(unsigned char** queue)
+{
+    unsigned char* next;
+    unsigned char* thread;
+    s32 maxPrio = 0;
+
+    if (queue[0] != 0 && *(unsigned char**)(queue[0] + 0x2e4) != 0) {
+        return 0;
+    }
+    if (queue[1] != 0 && *(unsigned char**)(queue[1] + 0x2e0) != 0) {
+        return 0;
+    }
+    for (thread = queue[0]; thread != 0; thread = next) {
+        next = *(unsigned char**)(thread + 0x2e0);
+        if (next != 0 && thread != *(unsigned char**)(next + 0x2e4)) {
+            return 0;
+        }
+        if (*(unsigned char**)(thread + 0x2e4) != 0 && thread != *(unsigned char**)(*(unsigned char**)(thread + 0x2e4) + 0x2e0)) {
+            return 0;
+        }
+        if (*(u16*)(thread + 0x2c8) != 4) {
+            return 0;
+        }
+        if (*(s32*)(thread + 0x2d0) < maxPrio) {
+            return 0;
+        }
+        maxPrio = *(s32*)(thread + 0x2d0);
+    }
+    if (queue[2] != 0) {
+        if ((s32)queue[3] <= 0) {
+            return 0;
+        }
+    } else if ((s32)queue[3] != 0) {
+        return 0;
+    }
+    return 1;
 }
 
 extern "C" BOOL fn_801BE884(u32 param_1)
@@ -211,8 +325,10 @@ extern "C" void OSRegisterResetFunction(OSResetFunctionInfo* info)
 
 extern "C" void fn_801BED90(int param_1)
 {
+    u16* reg = (u16*)0xcc002000;
+
     OSDisableInterrupts();
-    *(u16*)0xcc002002 = 0;
+    reg[1] = 0;
     ICFlashInvalidate();
     Reset(param_1 << 3);
 }

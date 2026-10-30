@@ -671,6 +671,20 @@ extern "C" void* fn_800102D8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+#pragma use_lmw_stmw off
+extern "C" void* fn_80010334(void* self, void* p2, f32 f, u32 a5, u32 a6, u32 a7, u32 a8, u32 a9, u32 a10, u32 a11, u32 a12, u32 a13, u32 a14) {
+    void** vt = (void**)self;
+    vt[0] = lbl_80204948;
+    vt[0] = lbl_8020474C;
+    vt[0] = lbl_80204720;
+    vt[0] = lbl_802046F4;
+    vt[3] = lbl_80204984;
+    fn_801AA6C0(&vt[3], 0);
+    *((u8*)self + 0x3c) = 0;
+    fn_800104BC(self, p2, f, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14);
+    return self;
+}
+#pragma use_lmw_stmw reset
 extern "C" void* lbl_802046F4[];
 extern void* lbl_802047F4[];
 extern void* lbl_80204820[];

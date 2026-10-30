@@ -402,16 +402,16 @@ void fn_8023FF90(char* p, const f32* v) {
 }
 BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
-    s32 me;
-    s32 c;
-    s32 i;
+    s32 c = 0;
+    s32 i = c;
     s32 linked;
-    c = 0;
+    s32 me;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
-            if ((linked = S32(p, 0xd60)) >= 0) {
+            linked = S32(p, 0xd60);
+            if (linked >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
@@ -1105,19 +1105,21 @@ BOOL fn_802454C0(char* p) {
     if (!ok) {
         ok2 = false;
     } else {
-        s32 mode;
         s32 c = 0;
-        for (s32 i = 0; i < 4; i++) {
+        s32 i = c;
+        s32 linked;
+        s32 me;
+        s32 mode;
+        for (i = 0; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
-                s32 linked;
                 if ((linked = S32(p, 0xd60)) >= 0) {
                     if (linked == fn_8022F3DC(i)) {
                         c++;
                     }
                 } else {
-                    s32 me = S32(p, 0x4);
+                    me = S32(p, 0x4);
                     if (me == fn_8022F3DC(i)) {
                         c++;
                     }
@@ -1152,6 +1154,41 @@ BOOL fn_802454C0(char* p) {
 }
 PAD_GATED(802456FC, fn_80309D24, 0x20)
 PAD_GATED(80245938, fn_80309D6C, 0x20)
+inline s32 countSharingB(char* p) {
+    s32 c;
+    s32 i;
+    s32 linked;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getModeB(char* p) {
+    if (countSharingB(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
 inline bool padActive3(char* p) {
     bool ok;
     if (U8(p, 0xc80) == 0) {
@@ -1170,7 +1207,7 @@ inline bool padActive3(char* p) {
     if (!ok) {
         return false;
     }
-    if ((getMode3(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+    if ((getModeB(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
         return false;
     }
     return true;
@@ -1308,7 +1345,7 @@ inline bool padActive5(char* p) {
     return true;
 }
 BOOL fn_80246464(char* p) {
-    if (!padActive4(p)) {
+    if (!padActive5(p)) {
         return 0;
     }
     if (fn_8022B244()) {
@@ -1322,7 +1359,21 @@ BOOL fn_80246464(char* p) {
     }
     return PADF(fn_80309D24, 0x200) != 0;
 }
-PAD_GATED2(802466B4, fn_80309D6C, 0x200)
+BOOL fn_802466B4(char* p) {
+    if (!padActive5(p)) {
+        return 0;
+    }
+    if (fn_8022B244()) {
+        return 0;
+    }
+    if (U8(p, 0x456) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x11f0) > 0) {
+        return 0;
+    }
+    return PADF(fn_80309D6C, 0x200) != 0;
+}
 #define PAD_BTN(addr, fn) \
     u32 fn_##addr(char* p, u32 mask) { \
         return !padActive(p) ? 0 : fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask); \
@@ -1334,7 +1385,69 @@ PAD_GATED2(802466B4, fn_80309D6C, 0x200)
 PAD_BTN(80246904, fn_80309A78)
 PAD_BTN(80246B10, fn_80309D24)
 PAD_BTN(80246D1C, fn_80309D6C)
-PAD_AXIS(80246F28, fn_80309D90)
+inline s32 countSharing6(char* p) {
+    s32 c;
+    s32 i;
+    s32 linked;
+    s32 me;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode6(char* p) {
+    if (countSharing6(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline bool padActive6(char* p) {
+    bool ok;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getMode6(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+f32 fn_80246F28(char* p) {
+    return !padActive6(p) ? 0.0f : fn_80309D90(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+}
 PAD_AXIS(8024712C, fn_80309F20)
 PAD_AXIS(80247330, fn_80309FCC)
 s32 fn_80247534(char* p) { return fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); }

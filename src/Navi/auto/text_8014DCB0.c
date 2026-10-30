@@ -112,3 +112,35 @@ extern "C" u32 fn_8014DDC0(u32 param_1)
     return 0xffffffff;
 }
 
+extern "C" void fn_8014DE10(u8* param_1)
+{
+    u8* base = (u8*)lbl_802E1C00;
+    u8* e = base + ((*(u32*)(param_1 + 0xf4) & 0xff) * 4);
+    u16 flag = *(u16*)(e + 0x8c2);
+
+    e += 0x8c0;
+    if (flag != 1) {
+        return;
+    }
+    if (e[0] != 0xff) {
+        base[e[0] * 4 + 0x8c1] = e[1];
+    } else {
+        base[*(u8*)(param_1 + 0x10c) + 0x9c0] = e[1];
+    }
+    if (e[1] != 0xff) {
+        base[e[1] * 4 + 0x8c0] = e[0];
+    } else if (e[0] == 0xff) {
+        u8* e2 = base + *(u8*)(param_1 + 0x10c) * 4;
+
+        if (*(u16*)(e2 + 0xac2) != 0xffff) {
+            *(u16*)(base + *(u16*)(e2 + 0xac2) * 4 + 0xac0) = *(u16*)(e2 + 0xac0);
+        } else {
+            lbl_802FF474 = *(u16*)(e2 + 0xac0);
+        }
+        if (*(u16*)(e2 + 0xac0) != 0xffff) {
+            *(u16*)(base + *(u16*)(e2 + 0xac0) * 4 + 0xac2) = *(u16*)(e2 + 0xac2);
+        }
+    }
+    *(u16*)(e + 2) = 0;
+}
+

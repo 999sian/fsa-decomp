@@ -45,6 +45,35 @@ extern "C" s32 fn_80164A10(s32 p0, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5, s32 p
     }
 }
 
+extern "C" void* fn_801653D4(void) {
+    u32 n;
+    u32 len;
+    void* base;
+    s32 result;
+
+    base = (void*)lbl_802FF600;
+    n = lbl_802FF604 - (u32)base;
+    lbl_802FF61C = lbl_802FF604 - 0x19;
+    if (lbl_802FF618 < n) {
+        n = lbl_802FF618;
+    }
+    len = n;
+    do {
+        result = fn_801C806C((void*)(lbl_802FF620 + 0x5c), base, len, lbl_802FF614, 2);
+        if (result >= 0) {
+            break;
+        }
+        if (result == -3 || !lbl_802FE390) {
+            return NULL;
+        }
+        fn_801CBA20();
+    } while (TRUE);
+    DCInvalidateRange(base, n);
+    lbl_802FF614 += n;
+    lbl_802FF618 -= n;
+    return base;
+}
+
 extern u8 lbl_802FE390;
 extern "C" u8 fn_801655B4(void) {
     return lbl_802FE390;

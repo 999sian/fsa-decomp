@@ -15,8 +15,8 @@ struct Unk802FF4BC {
 
 extern "C" void fn_80157A54(int idx, u32 a, u32 b)
 {
-    *(u32*)(lbl_802FF4BC + idx * 0xf4 + 0x94) = a;
-    *(u32*)(lbl_802FF4BC + idx * 0xf4 + 0x98) = b;
+    ((u32*)(lbl_802FF4BC + idx * 0xf4))[0x94 / 4] = a;
+    ((u32*)(lbl_802FF4BC + idx * 0xf4))[0x98 / 4] = b;
 }
 
 extern "C" u8 fn_80157A74(int idx)
@@ -31,7 +31,8 @@ extern "C" u8 fn_80157A88(int idx)
 
 extern "C" u16 fn_80157A9C(int idx)
 {
-    return *(u16*)(lbl_802FF4BC + idx * 0xf4 + 0x70);
+    Unk802FF4BC* p = &((Unk802FF4BC*)lbl_802FF4BC)[idx];
+    return p->unk70;
 }
 
 extern "C" void fn_80157AB0(int idx, u8 v)

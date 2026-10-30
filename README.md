@@ -5,7 +5,7 @@
 [![Matched Functions](https://img.shields.io/badge/Functions-62.67%25-green.svg)](https://github.com/999sian/fsa-decomp)
 [![Linked Objects](https://img.shields.io/badge/Linked_Files-444%20%2F%20889-blue.svg)](https://github.com/999sian/fsa-decomp)
 
-A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.
+A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**. This branch carries the **Navi Trackers** (Tetra's Trackers) work: the separate Japanese executable `framework.dol`, built as `G4SJ01_NT`.
 
 The goal of this project is to produce readable, idiomatic C/C++ source code that compiles with the original Metrowerks compiler and links to a `main.dol` binary that is **byte-for-byte identical** to the retail release.
 
@@ -20,6 +20,16 @@ The goal of this project is to produce readable, idiomatic C/C++ source code tha
 | **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** (29.74% code matched) |
 | **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Supported** (0.28% code matched, retail verified) |
 | **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Supported** (0.27% code matched, retail verified) |
+
+### Navi Trackers / Tetra's Trackers (JP)
+
+The Japanese disc ships a second executable, `files/DOL/framework.dol` (SHA-1 `ab5f67bcf0687923d8dc1caf5afeb3bb9fe69011`), built as the separate **`G4SJ01_NT`** target. Current decompdecomp progress: **15.47%** of code bytes matched (312,136 / 2,018,048) and **4,178 / 8,121** functions.
+
+```sh
+python3 configure.py --version G4SJ01_NT
+ninja -j3
+sha1sum -c config/G4SJ01_NT/build.sha1
+```
 ---
 
 ## Progress Tracker

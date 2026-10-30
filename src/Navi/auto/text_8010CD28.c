@@ -71,20 +71,21 @@ extern "C" void fn_8010CFE0(u8* p) {
 
 extern "C" void fn_8010D01C(u8* p) {
     VObj_800A1A64* obj;
+    s32 n;
     obj = *(VObj_800A1A64**)(p + 0x18);
     if (obj != nullptr) {
-        obj->v2(1);
+        obj->v0(1);
     }
     obj = *(VObj_800A1A64**)(p + 0x1c);
     if (obj != nullptr) {
-        obj->v2(1);
+        obj->v0(1);
     }
     obj = *(VObj_800A1A64**)(p + 0x8);
     if (obj != nullptr) {
-        obj->v2(1);
+        obj->v0(1);
     }
-    if (lbl_802C5B2C[4] >= 0) {
-        s32 n = *(s32*)(lbl_802C5B2C + 8) - 1;
+    if ((s8)lbl_802C5B2C[4] >= 0) {
+        n = *(s32*)(lbl_802C5B2C + 8) - 1;
         *(s32*)(lbl_802C5B2C + 8) = n;
         if (n == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
