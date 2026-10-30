@@ -447,7 +447,7 @@ static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
     }
 }
 static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
-    for (int j = 0; j < 4; j++) {
+    for (s32 j = 0; j < 4; j++) {
         if (tags[j] != 0) {
             J2DScreen* screen = fixed ? ((MsgDraw*)p)->screen : ((MsgDraw*)p)->screens[p[0x1a2]];
             screen->search(tags[j])->setAlpha(p[j + 0x1a5]);
