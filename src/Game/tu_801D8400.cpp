@@ -382,6 +382,7 @@ static inline s32 t84FindPlayer(char* p) {
 }
 #pragma opt_propagation on
 #pragma opt_common_subs on
+#pragma opt_lifetimes on
 extern "C" void fn_801D8B28(void* this_) {
     s32 n;
     s32 i;
@@ -460,7 +461,30 @@ extern "C" void fn_801D8B28(void* this_) {
         break;
     case 9:
         if(I(p,0x24c)>=180) {
-            t84PickTarget(p);
+            {
+
+    if (*(u8*)(p + 0x33f) == 3) {
+                                            s32 l[12];
+                  int n = 1;
+          l[0] = 1;
+          l[n++] = 2;
+          l[2] = 5;
+        ++n;
+          l[n++] = 6;
+          l[4] = 9;
+        ++n;
+          l[n++] = 10;
+            if (n > 0) {
+              *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+          } else {
+              *(u8*)(p + 0x334) = 0;
+          }
+    } else {
+        *(u8*)(p + 0x334) = fn_801CD664(0xc);
+    }
+    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
+
+}
             bool left=false;
             f32 tx=((JGeometry::TVec2<f32>*)(p+0x2d4))[B(p,0x334)].x;
             f32 x=F(p,0xc);
@@ -482,11 +506,34 @@ extern "C" void fn_801D8B28(void* this_) {
         break;
     case 14:
         if(U(p,0x2bc)&1) {
-            s32 player=t84FindPlayer(p);
+            int player=t84FindPlayer(p);
             if(player>=0) {
                 if(B(p,0x33e)<2 || (B(p,0x33e)<3 && t84Random()<lbl_8053F210)) {fn_801D9C58(p,14);break;}
             }
-            t84PickTarget(p);
+            {
+
+    if (*(u8*)(p + 0x33f) == 3) {
+                                            s32 l[12];
+                  int n = 1;
+          l[0] = 1;
+          l[n++] = 2;
+          l[2] = 5;
+        ++n;
+          l[n++] = 6;
+          l[4] = 9;
+        ++n;
+          l[n++] = 10;
+            if (n > 0) {
+              *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+          } else {
+              *(u8*)(p + 0x334) = 0;
+          }
+    } else {
+        *(u8*)(p + 0x334) = fn_801CD664(0xc);
+    }
+    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
+
+}
             bool turn=false;
             bool left=turn;
             f32 tx=((JGeometry::TVec2<f32>*)(p+0x2d4))[B(p,0x334)].x;
@@ -518,7 +565,30 @@ extern "C" void fn_801D8B28(void* this_) {
         break;
     case 18:
         if(U(p,0x2bc)&1) {
-            t84PickTarget(p);
+            {
+
+    if (*(u8*)(p + 0x33f) == 3) {
+                                            s32 l[12];
+                  int n = 1;
+          l[0] = 1;
+          l[n++] = 2;
+          l[2] = 5;
+        ++n;
+          l[n++] = 6;
+          l[4] = 9;
+        ++n;
+          l[n++] = 10;
+            if (n > 0) {
+              *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+          } else {
+              *(u8*)(p + 0x334) = 0;
+          }
+    } else {
+        *(u8*)(p + 0x334) = fn_801CD664(0xc);
+    }
+    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
+
+}
             bool turn=false;
             bool left=turn;
             f32 tx=((JGeometry::TVec2<f32>*)(p+0x2d4))[B(p,0x334)].x;
@@ -542,7 +612,15 @@ extern "C" void fn_801D8B28(void* this_) {
 }
 extern "C" s32 fn_801CD664(s32 n);
 
-struct T84List;
+struct T84List {
+    T84List() : n(0) {}
+    void add(s32 x) {
+        v[n] = x;
+        n++;
+    }
+    s32 v[11];
+    s32 n;
+};
 
 static inline void t84PickTarget(char* p);
 
