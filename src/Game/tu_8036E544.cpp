@@ -60,6 +60,11 @@ static inline bool canDeleteEmitter(char* em) {
     return del;
 }
 
+static inline void killEmitter(void** slot) {
+    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *slot);
+    *slot = 0;
+}
+
 struct BubbleArea {
     f32 x0, y0, x1, y1;
 };
@@ -149,11 +154,7 @@ extern "C" void fn_8036E5E8(void* this_) {
     for (s32 i = 0; i < 20; i++, q += 4) {
         if (*(char**)(q + 0x258)) {
             count++;
-            bool del = false;
-            if (*(u32*)(*(char**)(q + 0x258) + 0xf4) & 8) {
-                if (*(s32*)(*(char**)(q + 0x258) + 0xd0) + *(s32*)(*(char**)(q + 0x258) + 0xdc) == 0) del = true;
-            }
-            if (del) {
+            if (canDeleteEmitter(*(char**)(q + 0x258))) {
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(q + 0x258));
                 *(void**)(q + 0x258) = 0;
             }
@@ -177,18 +178,14 @@ extern "C" void fn_8036E5E8(void* this_) {
             for (s32 j = 0; j < n; j++) {
                 char* a = *(char**)((char*)fn_801F856C() + j * 4 + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
-                    switch (*(s32*)(a + 0x238)) {
-                    case 0x26:
-                    case 0x27:
-                    case 0x28:
-                    case 0x29:
+                    s32 s = *(s32*)(a + 0x238);
+                    if (s == 0x26 || (s == 0x27 || s == 0x28) || s == 0x29) {
                         *(s32*)(p + 0x238) = j;
-                        goto found;
+                        break;
                     }
                 }
             }
         }
-    found:
         s32 idx = *(s32*)(p + 0x238);
         if (idx >= 0) {
             char* a = ((char**)((char*)fn_801F856C() + 8))[idx];
@@ -245,14 +242,15 @@ extern "C" void fn_8036E5E8(void* this_) {
             } while (r == *(s32*)(p + 0x2ac));
             static s8 sAreasInit;
             if (!sAreasInit) {
-                ((JGeometry::TBox2f*)lbl_8050C700)[0].set(lbl_80542D7C, lbl_80542D7C, lbl_80542D80, lbl_80542D84);
-                ((JGeometry::TBox2f*)lbl_8050C700)[1].set(lbl_80542D88, lbl_80542D7C, lbl_80542D8C, lbl_80542D84);
-                ((JGeometry::TBox2f*)lbl_8050C700)[2].set(lbl_80542D7C, lbl_80542D90, lbl_80542D80, lbl_80542D94);
-                ((JGeometry::TBox2f*)lbl_8050C700)[3].set(lbl_80542D98, lbl_80542D90, lbl_80542D8C, lbl_80542D94);
+                BubbleArea* areas = (BubbleArea*)lbl_8050C700;
+                areas[0].x0 = lbl_80542D7C; areas[0].y0 = lbl_80542D7C; areas[0].x1 = lbl_80542D80; areas[0].y1 = lbl_80542D84;
+                areas[1].x0 = lbl_80542D88; areas[1].y0 = lbl_80542D7C; areas[1].x1 = lbl_80542D8C; areas[1].y1 = lbl_80542D84;
+                areas[2].x0 = lbl_80542D7C; areas[2].y0 = lbl_80542D90; areas[2].x1 = lbl_80542D80; areas[2].y1 = lbl_80542D94;
+                areas[3].x0 = lbl_80542D98; areas[3].y0 = lbl_80542D90; areas[3].x1 = lbl_80542D8C; areas[3].y1 = lbl_80542D94;
                 sAreasInit = 1;
             }
             JGeometry::TVec3f pt;
-            JGeometry::TBox2f area = ((JGeometry::TBox2f*)lbl_8050C700)[r];
+            BubbleArea area = ((BubbleArea*)lbl_8050C700)[r];
             do {
                 f32 y = (f32)fn_801CD664(0x1a2);
                 f32 x = (f32)fn_801CD664(0x242);
