@@ -36,7 +36,7 @@ struct GateBox {
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
     void expand(f32 v) { f32 a=x0-v, b=y0-v, c=x1+v, d=y1+v; x0=a; y0=b; x1=c; y1=d; }
 };
-static inline int gateRoom(const int param) { int n=(param>>24)&7; int r=n+7; if (!n) r=n; return r; }
+static inline int gateRoom(const u32 param) { u32 n=(param>>24)&7; int r=n+7; if (!n) r=n; return r; }
 struct GateRoomFlags { u8 pad[0x131df]; u8 flags[1]; u8 flag(s32 room) { return flags[room]; } };
 
 
@@ -422,6 +422,7 @@ extern "C" u16 fn_80226850(void*,s32);
 extern "C" void* fn_801902C0();
 extern "C" s32 fn_801F26CC(void*,const u32*);
 extern "C" void fn_801F349C(void*,s32,void*);
+#pragma opt_propagation off
 extern "C" void fn_80227F50(void* this_) {
     const u32* types;
     u8* p=(u8*)this_;
@@ -557,7 +558,7 @@ extern "C" void fn_80227F50(void* this_) {
         dest=*(JGeometry::TVec3f*)(p+0x238);
         delta.x-=(*(f32*)(p+0xc)); delta.y-=(*(f32*)(p+0x10));
         dest.add(delta);
-        fn_801F349C(actor,gateRoom((*(u32*)(p+0x90))),&dest);
+        ((void(*)(Actor*,int,const JGeometry::TVec3f*))fn_801F349C)((Actor*)actor,gateRoom((*(u32*)(p+0x90))),&dest);
     } else {
         if((*(u32*)(actor+0x1a0))==0x45535259) {
             kind=(*(u32*)(p+0x90))&0x7f;
@@ -576,10 +577,10 @@ extern "C" void fn_80227F50(void* this_) {
             }
         }
         if((*(u32*)(actor+0x1a0))==0x46495245 && (((*(u32*)(actor+0x90))>>6)&3)==1) return;
-        if(actor[0xc4]==0) fn_801F349C(actor,gateRoom((*(u32*)(p+0x90))),p+0x238);
+        if(actor[0xc4]==0) ((void(*)(Actor*,int,const JGeometry::TVec3f*))fn_801F349C)((Actor*)actor,gateRoom((*(u32*)(p+0x90))),(JGeometry::TVec3f*)(p+0x238));
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_80228AEC(void* this_, s16 freeFlag) {
     if (this_) {
         *(void**)this_ = lbl_804A6DC8;
