@@ -34,6 +34,7 @@ extern "C" void fn_8036E5E4(void) {
 
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JUtility/JUTVideo.h"
 extern "C" void* fn_8013CC50(s32 room, void* p, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" void* fn_801F856C(void);
@@ -160,11 +161,10 @@ extern "C" void fn_8036E5E8(void* this_) {
     }
     *(JGeometry::TVec3f*)(*(char**)(p + 0x250) + 0xc) = *(JGeometry::TVec3f*)(p + 0xc);
     u16* rm = *(u16**)(sManager__8JUTVideo + 4);
-    s32 h;
-    s32 w;
-    w = rm[2];
-    h = rm[3];
-    JGeometry::TVec3f center((f32)w * lbl_80542D5C, (f32)h * lbl_80542D5C, lbl_80542D60);
+    JGeometry::TVec3f center;
+    center.x = (f32)(s32)rm[2] * lbl_80542D5C;
+    center.y = (f32)(s32)rm[3] * lbl_80542D5C;
+    center.z = lbl_80542D60;
     count = 0;
     q = p;
     for (i = 0; i < 20; i++, q += 4) {
@@ -193,10 +193,8 @@ extern "C" void fn_8036E5E8(void* this_) {
             s32 n;
             s32 k;
             s32 j;
-            void* mgr = fn_801F856C();
-            j = 0;
-            n = *(s32*)((char*)mgr + 0x1008);
-            for (k = j; j < n; k += 4, j++) {
+            n = *(s32*)((char*)fn_801F856C() + 0x1008);
+            for (j = 0, k = j; j < n; k += 4, j++) {
                 char* a = *(char**)((char*)fn_801F856C() + k + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
                     s32 s = *(s32*)(a + 0x238);
@@ -274,8 +272,7 @@ extern "C" void fn_8036E5E8(void* this_) {
             BubbleArea area = ((BubbleArea*)lbl_8050C700)[r];
             do {
                 f32 y = (f32)fn_801CD664(0x1a2);
-                f32 x = (f32)fn_801CD664(0x242);
-                pt.set(x, y, lbl_80542D60);
+                pt.set((f32)fn_801CD664(0x242), y, lbl_80542D60);
             } while (!inArea(area, pt));
             s32 kind = fn_801CD664(8);
             bool ok;
