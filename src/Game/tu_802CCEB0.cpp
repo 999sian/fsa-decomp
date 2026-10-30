@@ -1,7 +1,9 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "std/math.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern void* lbl_8053AC98;
 extern "C" s32 fn_8023AF14(f32* box, s32 room, f32 r, s32 flag);
