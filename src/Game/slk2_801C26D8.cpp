@@ -368,6 +368,10 @@ extern const f32 lbl_8053EE30;
 extern const f32 lbl_8053EE34;
 extern const f32 lbl_8053EE38;
 
+static inline void slk2ClearFlag(u8* this_, u32 mask) {
+    *(u32*)(this_ + 0x230) &= ~mask;
+}
+
 static inline void slk2ResetHitRect(u8* this_) {
     if (*(u8*)(this_ + 0x34d) == 7) {
         *(u32*)(this_ + 0x230) &= ~0x100;
