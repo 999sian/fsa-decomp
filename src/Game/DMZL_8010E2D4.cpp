@@ -4,6 +4,29 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+extern "C" void* lbl_8053AED0;
+extern "C" void* lbl_8053AF80;
+extern "C" void fn_8043A450(void*, s32, s32);
+extern "C" void fn_80458FF0(void*, s32, s32, s32);
+extern "C" void* fn_80119DD0(void);
+extern "C" void fn_80119998(void*,s32,s32,s32,s32,s32,s32,s32);
+extern "C" void fn_802D9FF4(void*,s32,s32);
+extern "C" void fn_802DA8DC(void*);
+extern "C" Vec* fn_8023E604(s32);
+extern "C" u16 fn_8023CBC0(s32);
+extern "C" void fn_80230498(s32,void*,u16,s32,s32,s32,s32);
+extern const s32 lbl_8053C548[];
+extern const f32 lbl_8053C588;
+extern const f32 lbl_8053C5A4;
+extern const f32 lbl_8053C5A8;
+extern const f32 lbl_8053C5AC;
+extern const f32 lbl_8053C5B0;
+extern const f32 lbl_8053C5B4;
+extern const f32 lbl_8053C5B8;
+extern const f32 lbl_8053C5BC;
+extern const f32 lbl_8053C5C0;
+extern const f32 lbl_8053C5C4;
+
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1F14(void*, f32);
 extern "C" void fn_80110210(u8*);
