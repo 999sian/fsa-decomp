@@ -4,8 +4,10 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
-static inline JGeometry::TVec3<f32> DMZLDivide(JGeometry::TVec3<f32> v, f32 divisor) {
-return JGeometry::TVec3<f32>(v.x/divisor,v.y/divisor,v.z/divisor);
+static inline JGeometry::TVec3<f32> DMZLDivide(JGeometry::TVec3<f32> v, const f32 divisor) {
+JGeometry::TVec3<f32> copy(v);
+copy.x /= divisor; copy.y /= divisor; copy.z /= divisor;
+return copy;
 }
 extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
@@ -1076,32 +1078,47 @@ extern "C" void fn_8010E2D4(void* this_, s32 param) {
 
 extern "C" void fn_8010E7E8(void* this_, s32 state) {
 u8* p=(u8*)this_;
+JGeometry::TVec3<f32> dest3;
+JGeometry::TVec3<f32> from4;
+JGeometry::TVec3<f32> pos5;
+JGeometry::TVec3<f32> pos6;
+JGeometry::TVec3<f32> dest7;
+JGeometry::TVec3<f32> from8;
+JGeometry::TVec3<f32> dest10;
+JGeometry::TVec3<f32> v0;
+JGeometry::TVec3<f32> v1;
+JGeometry::TVec3<f32> v2;
+JGeometry::TVec3<f32> v9;
+JGeometry::TVec3<f32> v11;
+JGeometry::TVec3<f32> v14;
+JGeometry::TVec3<f32> pos12;
+JGeometry::TVec3<f32> pos13;
 switch(state) {
 case 3:{{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}fn_8043A450(lbl_8053AED0,0,3);}break;
 case 4:{fn_801D22DC(p+0x2f4,2,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
-case 5:{fn_801D22DC(p+0x2f4,8,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,lbl_8053C548[*(s32*)(p+0x234)],*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
+case 5:{fn_801D22DC(p+0x2f4,8,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{v0.set(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,lbl_8053C548[*(s32*)(p+0x234)],*(s32*)(p+4),&v0,0x4022);}fn_8011921C();fn_80118454();}break;
 case 6:{*(f32*)(p+0x278)=lbl_8053C5A0;}break;
-case 7:{fn_801D22DC(p+0x2f4,14,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C5A4,lbl_8053C55C);fn_8038BD08(0,0x233,*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
+case 7:{fn_801D22DC(p+0x2f4,14,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{v1.set(lbl_8053C55C,lbl_8053C5A4,lbl_8053C55C);fn_8038BD08(0,0x233,*(s32*)(p+4),&v1,0x4022);}fn_8011921C();fn_80118454();}break;
 case 8:{fn_801D22DC(p+0x2f4,12,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;*(f32*)(p+0x278)=lbl_8053C5A8;}break;
-case 9:{fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x234,*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
+case 9:{fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{v2.set(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x234,*(s32*)(p+4),&v2,0x4022);}fn_8011921C();fn_80118454();}break;
 case 10:{fn_801D22DC(p+0x2f4,13,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;}break;
-case 11:{fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(JGeometry::TVec3<f32>*)(p+0x2e8)=JGeometry::TVec3<f32>(lbl_8053C55C,lbl_8053C5AC,lbl_8053C55C);{Vec* v=fn_8023E724(0);*(f32*)(p+0x2dc)=v->x;*(f32*)(p+0x2e0)=v->y;*(f32*)(p+0x2e4)=v->z;}*(f32*)(p+0x2e0)-=lbl_8053C5B0;}break;
+case 11:{fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);((JGeometry::TVec3<f32>*)(p+0x2e8))->set(lbl_8053C55C,lbl_8053C5AC,lbl_8053C55C);{Vec* v=fn_8023E724(0);*(f32*)(p+0x2dc)=v->x;*(f32*)(p+0x2e0)=v->y;*(f32*)(p+0x2e4)=v->z;}*(f32*)(p+0x2e0)-=lbl_8053C5B0;}break;
 case 12:{fn_80119998(fn_80119DD0(),90,0,2,0,0,60,0);}break;
 case 13:{fn_802D9FF4(fn_802D6A9C(),*(s32*)(p+0x244),*(s32*)(p+0x248));fn_802DA8DC(fn_802D6A9C());}break;
-case 14:{{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}{JGeometry::TVec3<f32> dest=*(Vec*)(p+0x24);JGeometry::TVec3<f32> from=*fn_8023E724(0);from.y+=lbl_8053C5B4;dest.y+=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from,a,255,-128,-128,1);}{JGeometry::TVec3<f32> pos(from);pos.y-=lbl_8053C588;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);} fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C); *(f32*)(p+0x324)=lbl_8053C58C;*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5B8,c.y/lbl_8053C5B8,c.z/lbl_8053C5B8);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;} fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
-case 16:{{JGeometry::TVec3<f32> pos=*fn_8023E604(0);pos.y-=lbl_8053C5B4;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);}fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;{JGeometry::TVec3<f32> dest=*(Vec*)(p+0x24);JGeometry::TVec3<f32> from=*fn_8023E604(0);dest.y+=lbl_8053C588;from.y-=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from,a,255,-128,-128,1);}*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5BC,c.y/lbl_8053C5BC,c.z/lbl_8053C5BC);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;}fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
-case 17:{fn_801D22DC(p+0x2f4,8,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C550;fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x4b0,*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
-case 18:{{JGeometry::TVec3<f32> dest=*(Vec*)(p+0xc);dest.y+=lbl_8053C5C0;JGeometry::TVec3<f32>* from=(JGeometry::TVec3<f32>*)fn_8023E724(0);*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(*from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5C4,c.y/lbl_8053C5C4,c.z/lbl_8053C5C4);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;}fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
+case 14:{{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}{JGeometry::setTVec3f((f32*)((Vec*)(p+0x24)),&dest3.x);JGeometry::setTVec3f((f32*)(fn_8023E724(0)),&from4.x);from4.y+=lbl_8053C5B4;dest3.y+=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from4,a,255,-128,-128,1);}{pos5=from4;pos5.y-=lbl_8053C588;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos5);} fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C); *(f32*)(p+0x324)=lbl_8053C58C;*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest3;*(JGeometry::TVec3<f32>*)(p+0x2e8)=DMZLDivide(dest3-from4,lbl_8053C5B8); fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
+case 16:{{JGeometry::setTVec3f((f32*)(fn_8023E604(0)),&pos6.x);pos6.y-=lbl_8053C5B4;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos6);}fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;{JGeometry::setTVec3f((f32*)((Vec*)(p+0x24)),&dest7.x);JGeometry::setTVec3f((f32*)(fn_8023E604(0)),&from8.x);dest7.y+=lbl_8053C588;from8.y-=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from8,a,255,-128,-128,1);}*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest7;*(JGeometry::TVec3<f32>*)(p+0x2e8)=DMZLDivide(dest7-from8,lbl_8053C5BC);fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
+case 17:{fn_801D22DC(p+0x2f4,8,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C550;fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{v9.set(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x4b0,*(s32*)(p+4),&v9,0x4022);}fn_8011921C();fn_80118454();}break;
+case 18:{{JGeometry::setTVec3f((f32*)((Vec*)(p+0xc)),&dest10.x);dest10.y+=lbl_8053C5C0;JGeometry::TVec3<f32>* from=(JGeometry::TVec3<f32>*)fn_8023E724(0);*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest10;*(JGeometry::TVec3<f32>*)(p+0x2e8)=DMZLDivide(dest10-*from,lbl_8053C5C4);fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
 case 19:{fn_8011921C();fn_801183BC();fn_801D22DC(p+0x2f4,15,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}fn_80458FF0(lbl_8053AF80,0x100001b,0,0);}break;
 case 21:{*(void**)(p+0x364)=((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x309,0,0,0,0,1);*(void**)(p+0x368)=((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x30a,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2e1,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2e2,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2e3,0,0,0,0,1);*(void**)(p+0x36c)=((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2ea,0,0,0,0,1);fn_801D22DC(p+0x2f4,21,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
 case 22:{fn_801D22DC(p+0x2f4,20,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
 case 23:{{u8* e=*(u8**)(p+868);if(e){*(u32*)(e+0xf4)|=1;*(s32*)(e+0x24)=1;*(void**)(p+868)=0;}}{u8* e=*(u8**)(p+872);if(e){*(u32*)(e+0xf4)|=1;*(s32*)(e+0x24)=1;*(void**)(p+872)=0;}}{u8* e=*(u8**)(p+876);if(e){*(u32*)(e+0xf4)|=1;*(s32*)(e+0x24)=1;*(void**)(p+876)=0;}}fn_801D22DC(p+0x2f4,24,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
 case 25:{fn_801D22DC(p+0x2f4,22,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
-case 26:{fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x239,*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
-case 28:{{JGeometry::TVec3<f32> pos=*(Vec*)(p+0xc);pos.y+=lbl_8053C590;((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),&pos,lbl_8053C550,0x33b,0,0,0,0,1);}fn_801F0E34(p,0x400b5,0);fn_801D22DC(p+0x2f4,13,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
-case 30:{{JGeometry::TVec3<f32> pos=*(Vec*)(p+0xc);pos.y+=lbl_8053C590;((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),&pos,lbl_8053C550,0x33b,0,0,0,0,1);}fn_801F0E34(p,0x400b5,0);}break;
-case 31:{fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x4b1,*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
-case 33:{fn_80458FF0(lbl_8053AF80,0x100002b,1,0);fn_801F0E34(p,0x40071,0);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,193,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,194,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,195,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,196,0,0,0,0,1);{JGeometry::TBox2<f32> box=*(JGeometry::TBox2<f32>*)((u8*)fn_802D6A9C()+0xcc);JGeometry::TVec3<f32> pos;pos.x=lbl_8053C58C*(box.i.x-box.f.x)+box.f.x;pos.y=lbl_8053C58C*(box.i.y-box.f.y)+box.f.y;pos.z=lbl_8053C55C;((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),&pos,lbl_8053C550,0xc5,0,0,0,0,1);}}break;
+case 26:{fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{v11.set(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x239,*(s32*)(p+4),&v11,0x4022);}fn_8011921C();fn_80118454();}break;
+case 28:{{JGeometry::setTVec3f((f32*)((Vec*)(p+0xc)),&pos12.x);pos12.y+=lbl_8053C590;((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),&pos12,lbl_8053C550,0x33b,0,0,0,0,1);}fn_801F0E34(p,0x400b5,0);fn_801D22DC(p+0x2f4,13,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
+case 30:{{JGeometry::setTVec3f((f32*)((Vec*)(p+0xc)),&pos13.x);pos13.y+=lbl_8053C590;((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),&pos13,lbl_8053C550,0x33b,0,0,0,0,1);}fn_801F0E34(p,0x400b5,0);}break;
+case 31:{fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{v14.set(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x4b1,*(s32*)(p+4),&v14,0x4022);}fn_8011921C();fn_80118454();}break;
+case 33:{fn_80458FF0(lbl_8053AF80,0x100002b,1,0);fn_801F0E34(p,0x40071,0);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,193,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,194,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,195,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,196,0,0,0,0,1);{JGeometry::TBox2<f32> box;{u8* q=(u8*)fn_802D6A9C();*(u32*)&box.i.x=*(u32*)(q+0xcc);*(u32*)&box.i.y=*(u32*)(q+0xd0);*(u32*)&box.f.x=*(u32*)(q+0xd4);*(u32*)&box.f.y=*(u32*)(q+0xd8);}JGeometry::TVec3<f32> pos;pos.x=lbl_8053C58C*(box.i.x-box.f.x)+box.f.x;pos.y=lbl_8053C58C*(box.i.y-box.f.y)+box.f.y;pos.z=lbl_8053C55C;((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),&pos,lbl_8053C550,0xc5,0,0,0,0,1);}}break;
 case 34:{p[0x230]=1;}break;
 case 62:default:break;
 }}
