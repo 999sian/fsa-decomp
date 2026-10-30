@@ -68,7 +68,7 @@ static inline void titleFadePulse(u8* self,f32& value) {
     }
 }
 
-static inline void setTitleAlpha(J2DPane* pane,f32 alpha) { pane->setAlpha((u8)alpha); }
+static inline void setTitleAlpha(J2DPane* pane,const f32 alpha) { pane->setAlpha((u8)alpha); }
 
 static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
     (*(J2DScreen**)(self + 0x4))->search(0x506e7464)->setAlpha((u8)*(f32*)(self + 0x4c));
@@ -155,7 +155,7 @@ extern "C" void fn_803A44D8(u8* this_) {
             case 2:
             case 3:
             case 4: {
-                (*(J2DPicture**)(this_ + 0xc))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                setTitleAlpha(*(J2DPicture**)(this_ + 0xc),*(f32*)(this_+0x50));
                 (*(J2DPicture**)(this_ + 0xc))->draw(113.0f, 281.0f, false, false, false);
                 s16 t = *(s16*)(this_ + 0x72);
                 f32 r;
@@ -173,9 +173,9 @@ extern "C" void fn_803A44D8(u8* this_) {
                     (*(J2DPicture**)(this_ + 0x18))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xa0, 0xa0, 0xa0, 0xff));
                     (*(J2DPicture**)(this_ + 0x1c))->setBlackWhite(JUtility::TColor(g, b, 0, 0), JUtility::TColor(0xff, 0xc8, 0, 0xff));
                 }
-                (*(J2DPicture**)(this_ + 0x18))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                setTitleAlpha(*(J2DPicture**)(this_ + 0x18),*(f32*)(this_+0x50));
                 (*(J2DPicture**)(this_ + 0x18))->draw(211.0f, 372.0f, false, false, false);
-                (*(J2DPicture**)(this_ + 0x1c))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                setTitleAlpha(*(J2DPicture**)(this_ + 0x1c),*(f32*)(this_+0x50));
                 (*(J2DPicture**)(this_ + 0x1c))->draw(350.0f, 372.0f, false, false, false);
                 break;
             }
@@ -191,10 +191,10 @@ extern "C" void fn_803A44D8(u8* this_) {
             case 10:
             case 11:
                 if (this_[0x14c] == 0) {
-                    (*(J2DPicture**)(this_ + 0x14))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                    setTitleAlpha(*(J2DPicture**)(this_ + 0x14),*(f32*)(this_+0x50));
                     (*(J2DPicture**)(this_ + 0x14))->draw(153.0f, 309.0f, false, false, false);
                 } else {
-                    (*(J2DPicture**)(this_ + 0x10))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                    setTitleAlpha(*(J2DPicture**)(this_ + 0x10),*(f32*)(this_+0x50));
                     (*(J2DPicture**)(this_ + 0x10))->draw(153.0f, 309.0f, false, false, false);
                 }
                 break;
