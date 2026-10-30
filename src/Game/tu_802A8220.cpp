@@ -55,7 +55,8 @@ extern "C" const f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_805
 #pragma opt_propagation off
 static inline u8 SpawnRadiusZero(f32 value) {
     u8 nonzero=value!=lbl_80540854;
-    return nonzero==0;
+    u8 zero=nonzero==0;
+    return zero;
 }
 
 static inline f32 SpawnRandom() {
@@ -64,8 +65,7 @@ static inline f32 SpawnRandom() {
     return out.f-lbl_80540858;
 }
 
-extern "C" void fn_802A8284(u8* this_) {
-    ActorExt* a=(ActorExt*)this_;
+extern "C" void fn_802A8284(ActorExt* a) {
     s32 room=a->field_04;
     u8* manager=fn_802D6A9C();
     f32* box=room<8?(f32*)(manager+0xcc):(f32*)(manager+0xdc);
@@ -100,11 +100,13 @@ extern "C" void fn_802A8284(u8* this_) {
             for(s32 i=0;i<a->m240;i++) {
                 if(a->m244==8) {
                     if(i==0) {
-pos.y=lbl_80540840*sincosTable___5JMath[0x401]+a->field_0C.y;
-pos.x=lbl_80540840*sincosTable___5JMath[0x400]+a->field_0C.x;pos.z=lbl_80540844;
+f32 y=lbl_80540840*sincosTable___5JMath[0x401]+a->field_0C.y;
+f32 x=lbl_80540840*sincosTable___5JMath[0x400]+a->field_0C.x;
+pos.y=y;pos.x=x;pos.z=lbl_80540844;
 } else {
-pos.y=lbl_80540840*sincosTable___5JMath[0xc01]+a->field_0C.y;
-pos.x=lbl_80540840*sincosTable___5JMath[0xc00]+a->field_0C.x;pos.z=lbl_80540844;
+f32 y=lbl_80540840*sincosTable___5JMath[0xc01]+a->field_0C.y;
+f32 x=lbl_80540840*sincosTable___5JMath[0xc00]+a->field_0C.x;
+pos.y=y;pos.x=x;pos.z=lbl_80540844;
 }
                 } else if(a->m244==10) {pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;pos.z=lbl_80540848;}
                 else if(a->m244==11||a->m244==13) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
@@ -116,11 +118,12 @@ f32 x=radius-spread*SpawnRandom();
 pos.y=a->field_0C.y+y;pos.z=z;pos.x=a->field_0C.x+x;}
                 else {
                     s32 idx=((u16)angle>>5);
-                    pos.y=lbl_80540868*sincosTable___5JMath[idx*2+1]+a->field_0C.y;
-                    pos.x=lbl_80540868*sincosTable___5JMath[idx*2]+a->field_0C.x;pos.z=lbl_80540844;
+                    f32 y=lbl_80540868*sincosTable___5JMath[idx*2+1]+a->field_0C.y;
+                    f32 x=lbl_80540868*sincosTable___5JMath[idx*2]+a->field_0C.x;
+                    pos.z=lbl_80540844;pos.x=x;pos.y=y;
                 }
                 s32 room=a->field_04;
-if(*(fn_802D6A9C()+(room+0x131df))) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
+if(*(u8*)((u32)fn_802D6A9C()+0x131df+room)) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
                 s32 handle=Actor_CreateByID(fn_801F856C(),id,a->field_04,&pos,param,-1,-1);
                 if(handle>=0) {
                     Actor* spawned=fn_801F666C(fn_801F856C(),handle);
@@ -154,7 +157,7 @@ if(*(fn_802D6A9C()+(room+0x131df))) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
         s32 i=0;
         do {
             s32 room=a->field_04;
-            if(*(fn_802D6A9C()+(room+0x131df))) {
+            if(*(u8*)((u32)fn_802D6A9C()+0x131df+room)) {
                 if(a->m244==6||a->m244==7||a->m244==12){
                     f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
                     if(SpawnRadiusZero(radius))radius=lbl_80540850;
@@ -183,7 +186,7 @@ pos.y=y;pos.z=z;pos.x=x;}
             for(s32 i=0;i<(s32)a->m234;i++) {
                 pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
                 s32 room=a->field_04;
-                if(*(fn_802D6A9C()+(room+0x131df))) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
+                if(*(u8*)((u32)fn_802D6A9C()+0x131df+room)) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
                 else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
 if(SpawnRadiusZero(radius))radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
@@ -208,7 +211,7 @@ f32 y=box[1]+(box[3]-box[1])*SpawnRandom();
 f32 x=box[0]+(box[2]-box[0])*SpawnRandom();
 pos.y=y;pos.z=z;pos.x=x;
         s32 room=a->field_04;
-if(fn_802D6A9C()[room+0x131df]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
+if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
         if((s32)a->m248==0){
             if(a->m244==1){
                 s32 handle=Actor_CreateByID(fn_801F856C(),0x48424d42,a->field_04,&pos,3,-1,-1);
