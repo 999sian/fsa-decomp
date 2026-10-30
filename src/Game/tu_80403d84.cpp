@@ -182,6 +182,7 @@ struct Obj240 {
 };
 extern "C" f32 lbl_805438C8;
 extern "C" void fn_8042EB24(void*);
+extern "C" void fn_804083D8(u8*);
 extern "C" void fn_8037AA58();
 extern void* lbl_8053AEC4;
 extern "C" void fn_8040873C(u8*);
