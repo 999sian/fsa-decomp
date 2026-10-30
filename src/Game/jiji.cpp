@@ -46,14 +46,68 @@ Jiji::Jiji() : Actor() {
 }
 
 typedef void (Jiji::*JijiAction)();
+extern "C" void __sinit_jiji_cpp(void);
+#pragma opt_lifetimes on
 extern "C" void fn_8037CE5C(void) {
-    u32* src = (u32*)lbl_804AE9C0;
-    u32* dst = (u32*)(lbl_804AE9C0 + 0x288);
-    for (int i = 0; i < 0xa2; i++) {
-        dst[i] = src[i];
-    }
+    const JijiAction* src = (JijiAction*)lbl_804AE9C0;
+    JijiAction* dst = (JijiAction*)(lbl_804AE9C0+0x288);
+    *(dst+0) = *(src+0);
+    *(dst+1) = *(src+1);
+    *(dst+2) = *(src+2);
+    *(dst+3) = *(src+3);
+    *(dst+4) = *(src+4);
+    *(dst+5) = *(src+5);
+    *(dst+6) = *(src+6);
+    *(dst+7) = *(src+7);
+    *(dst+8) = *(src+8);
+    *(dst+9) = *(src+9);
+    *(dst+10) = *(src+10);
+    *(dst+11) = *(src+11);
+    *(dst+12) = *(src+12);
+    *(dst+13) = *(src+13);
+    *(dst+14) = *(src+14);
+    *(dst+15) = *(src+15);
+    *(dst+16) = *(src+16);
+    *(dst+17) = *(src+17);
+    *(dst+18) = *(src+18);
+    *(dst+19) = *(src+19);
+    *(dst+20) = *(src+20);
+    *(dst+21) = *(src+21);
+    *(dst+22) = *(src+22);
+    *(dst+23) = *(src+23);
+    *(dst+24) = *(src+24);
+    *(dst+25) = *(src+25);
+    *(dst+26) = *(src+26);
+    *(dst+27) = *(src+27);
+    *(dst+28) = *(src+28);
+    *(dst+29) = *(src+29);
+    *(dst+30) = *(src+30);
+    *(dst+31) = *(src+31);
+    *(dst+32) = *(src+32);
+    *(dst+33) = *(src+33);
+    *(dst+34) = *(src+34);
+    *(dst+35) = *(src+35);
+    *(dst+36) = *(src+36);
+    *(dst+37) = *(src+37);
+    *(dst+38) = *(src+38);
+    *(dst+39) = *(src+39);
+    *(dst+40) = *(src+40);
+    *(dst+41) = *(src+41);
+    *(dst+42) = *(src+42);
+    *(dst+43) = *(src+43);
+    *(dst+44) = *(src+44);
+    *(dst+45) = *(src+45);
+    *(dst+46) = *(src+46);
+    *(dst+47) = *(src+47);
+    *(dst+48) = *(src+48);
+    *(dst+49) = *(src+49);
+    *(dst+50) = *(src+50);
+    *(dst+51) = *(src+51);
+    *(dst+52) = *(src+52);
+    *(dst+53) = *(src+53);
+    __sinit_jiji_cpp();
 }
-
+#pragma opt_lifetimes reset
 // ---- JIJI small state helpers (0x8037B374-0x8037B7EC) ----
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
@@ -582,6 +636,60 @@ extern "C" void fn_8037C788(u8* this_) {
         fn_80316E50(*(AnimEffectRec**)(this_ + 0x274), room, pos);
     }
     *(s32*)(this_ + 0x278) = 0;
+}
+
+
+extern "C" void fn_80239914(void*, s32, s32);
+extern "C" u8 fn_80303750(s32);
+extern "C" u8 fn_8022C8EC(s32);
+extern "C" u8 fn_8022B160();
+extern "C" void fn_8022FEB8(void*,s32,s32,s32,s32);
+extern "C" s32 fn_8023AF14(void*,s32,s32,f32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" s32 fn_8037E54C(s32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" u8 fn_8038C678(s32,s32,s32,s32,JGeometry::TVec3<f32>,s32);
+extern "C" void fn_8022FF8C(s32,void*,s32,s32,s32,s32);
+extern "C" u8 fn_80388CAC(s32,s32);
+extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void fn_8015F8FC(void*,s32,void*,s32);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D79E8(void*,s32,s32,f32,f32);
+extern "C" void* fn_8013C824();
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*,void*);
+extern u8* lbl_8053AB10;
+extern u8 lbl_80529DEC[];
+extern u8 lbl_8050DB0C[];
+extern JijiAction lbl_804AEC48[];
+static inline void jijiFace(u8* p,s32 player) {
+    if (*(s32*)(p+0x24c)) {
+        --*(s32*)(p+0x24c);
+    } else {
+        *(s32*)(p+0x24c)=20;
+        JGeometry::TVec3<f32> dir;
+        f32 dist;
+        fn_801EE558(p,&dir,&dist,player);
+        if(dist<100.0f) {
+            u16 ang=(u16)(s32)(JMAAtan2Radian(-dir.x,-dir.y)*lbl_8054304C);
+            if(ang<0x2000 || ang>=0xe000) *(s32*)(p+0x248)=3;
+            else if(ang>=0x2000 && ang<0x6000) *(s32*)(p+0x248)=1;
+            else if(ang>=0x6000 && ang<=0xa000) *(s32*)(p+0x248)=2;
+            else *(s32*)(p+0x248)=0;
+        } else *(s32*)(p+0x248)=2;
+    }
+}
+static inline void jijiExpand(f32* dst,f32* src,f32 v) {
+    dst[3]=v+src[3];
+    dst[2]=v+src[2];
+    dst[1]=src[1]-v;
+    dst[0]=src[0]-v;
+}
+static inline void jijiBoxPos(f32* b,u8* p) {
+    b[0]+=*(f32*)(p+0xc);
+    b[2]+=*(f32*)(p+0xc);
+    b[1]+=*(f32*)(p+0x10);
+    b[3]+=*(f32*)(p+0x10);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
