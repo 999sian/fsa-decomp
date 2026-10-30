@@ -261,6 +261,96 @@ extern "C" void fn_80300A8C(GbaChan* c) {
 
 #pragma opt_strength_reduction reset
 
+extern "C" s32 OSReceiveMessage(void* mq, void* msg, s32 flags);
+extern "C" s64 OSGetTime(void);
+extern "C" void OSCreateAlarm(void* alarm);
+extern "C" void* OSGetCurrentThread(void);
+extern "C" s32 OSDisableInterrupts(void);
+extern "C" s32 OSRestoreInterrupts(s32 level);
+extern "C" void OSSetAlarm(void* alarm, s64 tick, s32 (*handler)(void*));
+extern "C" s32 OSSuspendThread(void* thread);
+extern "C" int GBAReset(s32 chan, u8* status);
+extern "C" int GBAJoyBoot(s32 chan, s32 palette, s32 speed, u8* program, u32 length, u8* status);
+extern "C" u32 SIProbe(s32 chan);
+extern "C" s32 fn_801365A8(void);
+extern "C" s32 fn_80301A88(void* this_);
+extern s8 lbl_8054161C[];
+extern u8 lbl_80541618[];
+extern u32 lbl_80541620;
+extern u32 lbl_80541628;
+
+// Reads the GBA's 4-byte id into +0x64.
+static inline s32 gbaReadId(GbaChan* c) {
+    s32 err;
+    u32 id;
+    if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+        return err;
+    }
+    if (c->status[0] != 0x28) {
+        return 1;
+    }
+    if ((err = GBARead(c->chan, (u8*)&id, c->status)) != 0) {
+        return err;
+    }
+    *(u32*)((u8*)c + 0x64) = id;
+    c->status[3] = 1;
+    return 0;
+}
+
+// Sends the disc id to the GBA.
+static inline s32 gbaWriteId(GbaChan* c) {
+    s32 err;
+    if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+        return err;
+    }
+    if (c->status[0] != 0x20) {
+        return 1;
+    }
+    if ((err = GBAWrite(c->chan, lbl_8053ACC4, c->status)) != 0) {
+        return err;
+    }
+    if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+        return err;
+    }
+    if (c->status[0] != 0x30) {
+        return 1;
+    }
+    return 0;
+}
+
+// Requests the GBA's packet and reads it (8 words) into +0x28.
+static inline BOOL gbaReadPacket(GbaChan* c) {
+    u32 cmd = 0x04000000;
+    if (GBAWrite(c->chan, (u8*)&cmd, c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
+        return TRUE;
+    }
+    for (s32 i = 0; i < 0x20; i += 4) {
+        if (GBAGetStatus(c->chan, c->status) != 0 || c->status[0] != 0x38) {
+            return TRUE;
+        }
+        if (GBARead(c->chan, (u8*)c + (i + 0x28), c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+static inline BOOL gbaHandshake(GbaChan* c, u32 expected) {
+    if (gbaReadId(c) != 0) {
+        return TRUE;
+    }
+    if (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) != 0 && *(u32*)((u8*)c + 0x64) != expected) {
+        return TRUE;
+    }
+    if (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) == 0) {
+        *(s32*)((u8*)c + 0x5c) = 0;
+    }
+    if (gbaWriteId(c) != 0) {
+        return TRUE;
+    }
+    return gbaReadPacket(c);
+}
+
 extern "C" s32 fn_80301A88(void* this_) {
     return OSResumeThread(*(void**)((char*)this_ + 0x28));
 }
