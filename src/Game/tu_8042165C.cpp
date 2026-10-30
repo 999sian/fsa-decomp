@@ -858,9 +858,10 @@ extern "C" void fn_80423DF0(u8* self, s32 player) {
 }
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
-extern "C" void fn_8043D57C(void);
-extern "C" void fn_8043D514(void);
-extern "C" void fn_80402E08(void);
+extern "C" f32 fn_8043D57C(void* = 0);
+extern "C" f32 fn_8043D514(void* = 0);
+extern "C" void fn_80402E08(void* = 0, f32 = 0.0f, f32 = 0.0f);
+extern const f32 lbl_80543A6C;
 extern "C" void fn_8042165C(u8* this_);
 extern "C" void fn_8037EB4C(void);
 #pragma push
