@@ -1003,6 +1003,35 @@ extern "C" void fn_803F38A4(u8* p) {
     fn_80440EE8(lbl_8053AED8);
 }
 
+extern "C" u8 fn_8030A388(void*,s32);
+extern "C" s32 fn_8030AAF4(s32);
+extern "C" void fn_8013B490(void*);
+extern "C" void fn_804316EC(void*);
+extern const f32 lbl_80543758,lbl_80543794,lbl_80543798,lbl_8054379C,lbl_805437A8;
+static inline u8 MenuEnabled803F(s32 i) { return (lbl_8053AAF8[0x82] & (u8)(1 << (i + 4))) != 0; }
+static inline s16 MenuNext803F(s16 old,s32 count) {
+    s16 next=old;
+    for(s32 i=0;i<=count;i++) {
+        next++;
+        if(next>count)next=0;
+        if(!(lbl_8053AAF8[0x82]&(u8)(1<<(next+4))))return next;
+        if(next==old)return -1;
+    }
+    return -1;
+}
+static inline void MenuRestore803F(u8* p,const u64* a,const u64* b,const u64* c) {
+    ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*a))->v9(p[0x253]);
+    ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*b))->v9(p[0x254]);
+    ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*c))->v9(p[0x255]);
+}
+static inline void MenuSprite803F(JGeometry::TVec3f& pos,s32 id,DrawRec& rec,const u8* base) {
+    void* res=(*(Tu803FResMgr**)(lbl_8053AAF8+0xa4))->vf18('SOB ',base+0xf20);
+    fn_802F86CC(((void**)lbl_8053AB10)[8],&pos,res,id,&rec,lbl_80543730,lbl_80543730);
+}
+struct MenuFrameValue803F {s32 frame;};
+struct MenuFrame803F {u8 _00[0x220];MenuFrameValue803F frame220[4];MenuFrameValue803F frame230[4];};
+static inline void MenuMove803F(J2DPane* screen,u64 tag,f32 x,f32 y) {screen->search(tag)->move(x,y);}
+
 extern "C" void fn_803F4120(u8* p) {
     s32 i;
     u8* base = lbl_80478A60;
@@ -1146,10 +1175,9 @@ extern const f32 lbl_80543748;
 extern "C" void fn_803F726C(u8* p){
 u8* base=lbl_80478A60;
 f32 fade;
-f32 y;
 s16 buf[3];s16* order;s16* dest;
 s32 start,stop,offset,j,i;
-T803FC46C* obj=(T803FC46C*)p;
+T803FC46C* const obj=(T803FC46C*)p;
 if(*(s32*)(p+0x1ac)!=2){
 s32 t=*(s32*)(p+0x210);
 if(t<100)*(s32*)(p+0x210)=0;
@@ -1182,11 +1210,11 @@ if(fade<lbl_8054372C)fade=lbl_8054372C;else if(fade>lbl_80543730)fade=lbl_805437
 }else{
  start=0;j=0;offset=start;stop=10;
  for(;j<2;j++,stop+=10,order++,offset+=30,start+=10){
- if(*(s16*)(p+0x240)>start){if(*(s16*)(p+0x240)<stop){s32 g=*order;s32 d=*(s16*)(p+0x240)-start;
+ if(*(s16*)(p+0x240)>start){if(*(s16*)(p+0x240)<stop){s16 g=*order;s32 d=*(s16*)(p+0x240)-start;
 obj->groupMotion[g]=lbl_8054375C*(MenuSquare803F(d)/lbl_805437B8);
 fade=(f32)(10-(*(s16*)(p+0x240)-offset))/lbl_805437BC;
 if(fade<lbl_8054372C)fade=lbl_8054372C;else if(fade>lbl_80543730)fade=lbl_80543730;
-{const u64* tags=(const u64*)(base+0x690)+g*5;u8* bytes=p+g*5;s32 i;for(i=0;i<5;i++,tags++,bytes++){J2DPane* pane=(*(J2DPane**)(p+0xc))->search(*tags);f32 value=bytes[0x326];value*=fade;((Tu803FVObj*)pane)->v9((s32)value);}}}else{s32 g=*order;obj->groupMotion[g]=lbl_8054375C;{const u64* tags=(const u64*)(base+0x690)+g*5;u8* bytes=p+g*5;s32 i;for(i=0;i<5;i++,tags++,bytes++){J2DPane* pane=(*(J2DPane**)(p+0xc))->search(*tags);f32 value=bytes[0x326];value*=lbl_8054372C;((Tu803FVObj*)pane)->v9((s32)value);}}}}
+{const u64* tags=(const u64*)(base+0x690)+g*5;u8* bytes=p+g*5;s32 i;for(i=0;i<5;i++,tags++,bytes++){J2DPane* pane=(*(J2DPane**)(p+0xc))->search(*tags);f32 value=bytes[0x326];value*=fade;((Tu803FVObj*)pane)->v9((s32)value);}}}else{s16 g=*order;obj->groupMotion[g]=lbl_8054375C;{const u64* tags=(const u64*)(base+0x690)+g*5;u8* bytes=p+g*5;s32 i;for(i=0;i<5;i++,tags++,bytes++){J2DPane* pane=(*(J2DPane**)(p+0xc))->search(*tags);f32 value=bytes[0x326];value*=lbl_8054372C;((Tu803FVObj*)pane)->v9((s32)value);}}}}
  }
  if(*(s16*)(p+0x240)>15){if(*(s16*)(p+0x240)<23){s32 g=*(s32*)(p+0x1a8);s32 d=*(s16*)(p+0x240)-15;
 obj->groupMotion[g]=lbl_8054375C*(MenuSquare803F(d)*lbl_805437B0);
@@ -1226,7 +1254,7 @@ fn_80402E08(*(void**)(p+0x74),lbl_8054372C,*(f32*)(p+0x168));
 (*(J2DPane**)(p+0xc))->search(0x005068616e623034ULL)->move(*(f32*)(p+0x170)+*(f32*)(p+0x188),*(f32*)(p+0x17c));
 (*(J2DPane**)(p+0xc))->search(0x0000507275623034ULL)->move(*(f32*)(p+0x174)+*(f32*)(p+0x18c),*(f32*)(p+0x180));
 (*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL)->move(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
-y=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL)->getBounds()->i.y;
+f32 y=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL)->getBounds()->i.y;
 (*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL)->move(*(f32*)(p+0xf4)+obj->groupMotion[*(s32*)(p+0x1a8)],y);
 }
 #pragma opt_common_subs reset
