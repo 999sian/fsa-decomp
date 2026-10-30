@@ -214,9 +214,52 @@ extern "C" u8 fn_8028C518(u8* this_, u8 mode) {
 
 extern "C" void fn_80239914(f32* rect, s32 room, s32 handle);
 extern "C" void fn_8020D7D0(void* a, s32 b, void* c);
-extern "C" void* fn_8020D58C(f32* a);
+extern "C" void* fn_8020D58C(void);
 extern "C" s16 fn_8022461C(f32* a, s32 b);
+extern "C" const f32 lbl_80540504;
+extern "C" const f32 lbl_80540508;
+extern "C" const f32 lbl_8054050C;
 extern "C" const f32 lbl_80540510;
+extern "C" const f32 lbl_80540518;
+extern "C" const f32 lbl_80540520;
+extern "C" const f32 lbl_80540524;
+extern "C" const f32 lbl_80540528;
+extern "C" const f32 lbl_8054052C;
+extern "C" const f32 lbl_80540530;
+extern "C" const f32 lbl_80540534;
+extern "C" const f32 lbl_80540538;
+extern "C" const f32 lbl_8054053C;
+extern "C" const f32 lbl_80540540;
+extern "C" const f32 lbl_80540544;
+extern "C" const f32 lbl_80540548;
+extern "C" const JGeometry::TVec3f lbl_804A79E0[];
+extern "C" const JGeometry::TVec3f lbl_8046C180[];
+extern "C" s32 fn_80239040(s32 handle);
+extern "C" u8 fn_8022E438(s32 n, s32 i);
+extern "C" u8 fn_8023B190(s32 i, void* box, s32 room);
+extern "C" void fn_80238548(s32 i, s32 a, void* pos, s32 b);
+extern "C" f32 fn_8033D4AC(f32 cur, f32 target, f32 step);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D8050(void* mgr, s32 id, s32 on, s32 c);
+extern "C" void fn_802D7584(void* mgr, void* rec, s32 id);
+extern "C" s32 fn_80239108(s32 handle);
+extern "C" s32 fn_80238BC4(s32 handle);
+extern "C" void fn_80238E08(s32 handle);
+extern "C" void fn_80238D50(s32 handle);
+extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
+
+static inline u8 yasiKeepMove(u8* this_, f32 thr) {
+    JGeometry::TVec3f sv(*(JGeometry::TVec3f*)(this_ + 0x3c));
+    if ((*(u32*)(this_ + 0x90) & 3) != 0 && lbl_80540508 == thr &&
+        PSVECDistance((Vec*)(this_ + 0xc), (Vec*)(this_ + 0x230)) >= lbl_8054050C &&
+        *(s32*)(this_ + 0x248) != 0) {
+        if (!fn_8028C518(this_, *(s32*)(this_ + 0x248) - 1)) {
+            return 0;
+        }
+    }
+    *(JGeometry::TVec3f*)(this_ + 0x3c) = sv;
+    return 1;
+}
 extern "C" void fn_8028C7D0(u8* this_) {
     f32 rect[4];
     f32 x;
