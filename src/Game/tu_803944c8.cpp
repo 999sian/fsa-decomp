@@ -429,7 +429,7 @@ extern "C" void fn_80395834(MsgPop2* self, J2DPane* pane) {
 
 static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
     s32 period = *(s16*)(lbl_8050DB0C + 0x284);
-    ++*(s16*)(p + 0x196);
+    ++((MsgPop*)p)->fadeTimer;
     s32 half = period / 2;
     if (*(s16*)(p + 0x196) >= period) *(s16*)(p + 0x196) = 0;
     s32 t = *(s16*)(p + 0x196);
