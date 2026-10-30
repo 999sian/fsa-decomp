@@ -306,6 +306,14 @@ extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 
 extern f32 lbl_80543054;
+struct JijiUpdateActor {
+    virtual void v00(); virtual void v01(); virtual void v02();
+    virtual void v03(); virtual void v04(); virtual void v05();
+    virtual void v06(); virtual void v07(); virtual void v08();
+    virtual void v09(); virtual void v10(); virtual void v11();
+    virtual void v12(s32,s32);
+};
+
 #include "JSystem/JGeometry/Box.h"
 static inline void jijiExpandBox(JGeometry::TBox2<f32>* dst,f32* src,f32 v) {
     dst->set(src[0]-v,src[1]-v,v+src[2],v+src[3]);
@@ -522,7 +530,7 @@ extern "C" void fn_8037BC30(u8* p) {
         if(*(s32*)(p+0x268)!=0) {*(u8*)(p+0x272)=0; *(s32*)(p+0x268)=0;}
         if(*(s32*)(p+0x254)) *(s32*)(p+0x230)=6;
         else *(s32*)(p+0x230)=1;
-        if(*(AnimEffectRec**)(p+0x274)) { s32 room=*(s32*)(p+4); JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(p+0xc); fn_80316E50(*(AnimEffectRec**)(p+0x274),room,posAnim); }
+        if(*(AnimEffectRec**)(p+0x274)) { s32 room=*(s32*)(p+4); posAnim=*(JGeometry::TVec3<f32>*)(p+0xc); fn_80316E50(*(AnimEffectRec**)(p+0x274),room,posAnim); }
         break;
     case 6:
         ++*(s32*)(p+0x240);
