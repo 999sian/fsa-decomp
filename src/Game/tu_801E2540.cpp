@@ -66,6 +66,11 @@ extern "C" s32 fn_801E2540(u8* this_) {
     return ret;
 }
 
+static inline void actorApplyRect(f32 left, f32 top, f32 right, f32 bottom, u32 room, s32 handle) {
+    JGeometry::TBox2<f32> rect(left, top, right, bottom);
+    fn_802397B4(&rect, room, handle);
+}
+
 extern "C" s32 fn_801F285C(u8* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" u8 fn_801E1CF8(u8* this_);
 extern "C" u8 fn_80235448(s32 id);
