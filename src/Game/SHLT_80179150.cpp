@@ -82,13 +82,6 @@ extern "C" void fn_802D9FF4(void*,s32,s32);
 extern "C" void fn_80136798(void*,s32,s32);
 extern "C" u8 fn_8022B7C4(s32);
 extern "C" void fn_80458F9C(void*,s32);
-static inline f32 shltAngleScale(f32 angle) { return angle * lbl_8053DC54; }
-
-static inline f32 shltAngle(f32 y, f32 x) {
-    f32 radians = JMath::atanTable_.atan2_(y, x);
-    return radians * lbl_8053DC54;
-}
-
 extern "C" void fn_80179388(Actor* this_) {
  u8* p=(u8*)this_;
  s32 player=0;
@@ -124,7 +117,7 @@ extern "C" void fn_80179388(Actor* this_) {
   }
   break;
  case 4:
-  (*(s32*)(p+0x2f8))=5; fn_801EEC98(this_,(*(s32*)(p+0x198)),0,0,&distance,&player,0,0);break;
+  (*(s32*)(p+0x2f8))=5; ((void (*)(Actor*,s32,void*,void*,f32*,s32*,s32,s32))fn_801EEC98)(this_,(*(s32*)(p+0x198)),0,0,&distance,&player,0,0);break;
  case 5: break;
  case 6:
   if((*(s32*)(p+0x328))!=0)fn_80458880(lbl_8053AF80,0x36,-1);
@@ -134,8 +127,8 @@ extern "C" void fn_80179388(Actor* this_) {
    f32 dx=fn_8023E724(lbl_80539F80)->x-(*(f32*)(p+0xc));
    f32 dy=fn_8023E724(lbl_80539F80)->y-(*(f32*)(p+0x10));
    if(std::sqrtf(dx*dx+dy*dy)>lbl_8053DC50) {
-    (*(f32*)(p+0x370))=JMath::sincosTable_.sinShort((s16)(JMath::atanTable_.atan2_(dx,dy)*(65536.0f / 6.2831855f)))*lbl_8053DC50;
-    (*(f32*)(p+0x374))=JMath::sincosTable_.cosShort((s16)(JMath::atanTable_.atan2_(dx,dy)*(65536.0f / 6.2831855f)))*lbl_8053DC50;
+    (*(f32*)(p+0x370))=JMath::sincosTable_.sinShort((s16)(lbl_8053DC54*JMath::atanTable_.atan2_(dx,dy)))*lbl_8053DC50;
+    (*(f32*)(p+0x374))=JMath::sincosTable_.cosShort((s16)(lbl_8053DC54*JMath::atanTable_.atan2_(dx,dy)))*lbl_8053DC50;
    } else {
     Vec* v=fn_8023E724(lbl_80539F80);
     (*(f32*)(p+0xc))=v->x;(*(f32*)(p+0x10))=v->y;(*(f32*)(p+0x14))=v->z;
@@ -165,7 +158,7 @@ extern "C" void fn_80179388(Actor* this_) {
   if(lbl_80539F84>=0 && lbl_8053AB68==(*(s32*)(p+0x4))) {
    f32 dx=(*(f32*)(p+0xc))-lbl_804C0EA0.x;
    f32 dy=(*(f32*)(p+0x10))-lbl_804C0EA0.y;
-   s16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*(65536.0f / 6.2831855f));
+   s16 angle=(s32)(lbl_8053DC54*JMath::atanTable_.atan2_(-dx,-dy));
    (*(f32*)(p+0x370))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].first;
    (*(f32*)(p+0x374))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].second;
    if(std::sqrtf(dx*dx+dy*dy)<lbl_8053DC5C) {(*(f32*)(p+0x378))=lbl_8053DC28;(*(f32*)(p+0x374))=lbl_8053DC28;(*(f32*)(p+0x370))=lbl_8053DC28;(*(f32*)(p+0x44))=lbl_8053DC28;(*(f32*)(p+0x40))=lbl_8053DC28;(*(f32*)(p+0x3c))=lbl_8053DC28; (*(s32*)(p+0x31c))++;}
@@ -177,7 +170,7 @@ extern "C" void fn_80179388(Actor* this_) {
   break;
  case 8: {
   f32 dx=(*(f32*)(p+0xc))-(*(f32*)(p+0x364));f32 dy=(*(f32*)(p+0x10))-(*(f32*)(p+0x368));
-  s16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*(65536.0f / 6.2831855f));
+  s16 angle=(s32)(lbl_8053DC54*JMath::atanTable_.atan2_(-dx,-dy));
   (*(f32*)(p+0x370))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].first;
   (*(f32*)(p+0x374))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].second;
   if(std::sqrtf(dx*dx+dy*dy)<lbl_8053DC5C){(*(f32*)(p+0x378))=lbl_8053DC28;(*(f32*)(p+0x374))=lbl_8053DC28;(*(f32*)(p+0x370))=lbl_8053DC28;(*(s32*)(p+0x2f8))=(*(s32*)(p+0x2fc));}
@@ -185,7 +178,7 @@ extern "C" void fn_80179388(Actor* this_) {
  }
  }
  if((*(s32*)(p+0x2f8))==0 || (*(s32*)(p+0x2f8))==1 || (*(s32*)(p+0x2f8))==3 || (*(s32*)(p+0x2f8))==7 || (*(s32*)(p+0x2f8))==8) {
-  fn_801EEC98(this_,(*(s32*)(p+0x198)),0,0,&distance,&player,0,0);
+  ((void (*)(Actor*,s32,void*,void*,f32*,s32*,s32,s32))fn_801EEC98)(this_,(*(s32*)(p+0x198)),0,0,&distance,&player,0,0);
   if((*(s32*)(p+0x320))!=0) {
    if(!fn_801F68E0(fn_801F856C()))return;
    (*(s32*)(p+0x310))=1;(*(s32*)(p+0x320))=0;
