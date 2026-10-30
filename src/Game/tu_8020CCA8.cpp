@@ -88,7 +88,7 @@ extern "C" void fn_8020CCA8(u8* o0) {
 
 #pragma optimization_level 2
 extern "C" void fn_8020CF7C(Actor* o) {
-    fn_8013CC50(*(volatile u32*)&o->field_04, &o->field_0C, lbl_8053FA08, 0x48d, 0, 0, 0, 0, 1);
+    fn_8013CC50(o->field_04, &o->field_0C, lbl_8053FA08, 0x48d, 0, 0, 0, 0, 1);
 }
 #pragma optimization_level 4
 extern "C" void fn_8020CFC4(u8* o) {
@@ -142,17 +142,17 @@ extern "C" void fn_8020D16C(u8* a) {
 }
 
 #pragma opt_propagation off
-extern "C" void fn_8020D2AC(u8* o) {
+extern "C" void fn_8020D2AC(const u8* o) {
     Vec pos;
-    JGeometry::setTVec3f((f32*)(o + 0xc), &pos.x);
+    JGeometry::setTVec3f((const f32*)(o + 0xc), &pos.x);
     pos.y -= 26.0f;
     if (!fn_801E1D9C()) {
-        switch (*(s32*)(o + 0x98)) {
+        switch (*(const s32*)(o + 0x98)) {
         case 0: pos.x += 6.0f; break;
         case 1: pos.x -= 6.0f; break;
         }
     }
-    fn_8013CC50(*(u32*)(o + 4), &pos, 1.0f, 0x33a, 0, 1, 0, 0, 1);
+    fn_8013CC50(*(const u32*)(o + 4), &pos, 1.0f, 0x33a, 0, 1, 0, 0, 1);
 }
 
 void fn_8020D368(void) {}
