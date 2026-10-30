@@ -38,7 +38,10 @@ struct RoomArrays {
     u8 values328[32];
     u32 flags348[8][4];
     u64 masks3C8[4][10][10];
-    u64 flags1048[10][10][8];
+    union {
+        u64 flags1048[10][10][8];
+        u64 roomFlags1048[10][80];
+    };
     u16 values2948[8][64];
     u32 flags2D48[4][128];
     u32 flags3548[10][10][32];
@@ -2661,40 +2664,44 @@ extern "C" void fn_80134FBC(void*,u8);
 extern "C" u8 fn_803B8EBC(s32);
 extern void* lbl_8053AD30;
 extern "C" void fn_802DD808(char* p) {
-    int i, j, k;
+    f32 spawnRank[3];
+    f32 spawnGBA[3];
+    JGeometry::TVec3<f32> camera;
+    f32 points[3];
+    s32 i, j, k;
     *(s32*)((char*)roomArrays()+0x1328C)=0;
     fn_802DEE2C();
     for(i=0;i<10;i++) for(j=0;j<10;j++) for(k=0;k<8;k++) roomArrays()->flags1048[i][j][k]=0;
     for(i=0;i<8;i++) for(j=0;j<64;j++) roomArrays()->values2948[i][j]=0;
     for(i=0;i<4;i++) for(j=0;j<128;j++) roomArrays()->flags2D48[i][j]=0;
     for(i=0;i<10;i++) for(j=0;j<10;j++){
-      for(k=0;k<32;k++){roomArrays()->flags3548[i][j][k]=0;roomArrays()->flags6768[i][j][k]=0;}
+      for(k=0;k<32;k+=4){roomArrays()->flags3548[i][j][k+0]=0;roomArrays()->flags6768[i][j][k+0]=0;roomArrays()->flags3548[i][j][k+1]=0;roomArrays()->flags6768[i][j][k+1]=0;roomArrays()->flags3548[i][j][k+2]=0;roomArrays()->flags6768[i][j][k+2]=0;roomArrays()->flags3548[i][j][k+3]=0;roomArrays()->flags6768[i][j][k+3]=0;}
       for(k=0;k<256;k++) roomArrays()->values9968[i][j][k]=0;
     }
     for(i=0;i<8;i++){
       roomArrays()->keys13068[i]=0;
-      roomArrays()->positions13088[i].set(0.0f,0.0f);
+      roomArrays()->positions13088[i].set(lbl_8054111C,lbl_8054111C);
       roomArrays()->owners130C8[i]=-1;
     }
     for(i=0;i<8;i++){
-      ((JGeometry::TVec2<f32>*)((char*)roomArrays()+0x130E8))[i].set(0.0f,0.0f);
-      ((s32*)((char*)roomArrays()+0x13128))[i]=-1;
-      ((JGeometry::TVec2<f32>*)((char*)roomArrays()+0x13148))[i].set(0.0f,0.0f);
-      ((s32*)((char*)roomArrays()+0x13188))[i]=-1;
+      roomArrays()->positions130E8[i].set(lbl_8054111C,lbl_8054111C);
+      roomArrays()->owners13128[i]=-1;
+      roomArrays()->positions13148[i].set(lbl_8054111C,lbl_8054111C);
+      roomArrays()->owners13188[i]=-1;
     }
-    for(i=0;i<16;i++) ((JGeometry::TVec2<f32>*)(p+0xF0))[i].set(0.0f,0.0f);
+    for(i=0;i<16;i++) ((JGeometry::TVec2<f32>*)(p+0xF0))[i].set(lbl_8054111C,lbl_8054111C);
     fn_802D3D48(p);
     for(i=0;i<4;i++){
       u32 active=((u8)(1<<i)&*(u8*)(lbl_8053AAF8+0x82))!=0;
       if(active==1 && fn_8030A308(lbl_8053AD30,fn_8030AAF4(i))==1){
         if(*(u8*)(lbl_8053AAF8+0x7F)==0 || *(s32*)(lbl_80529DEC+0x118)!=10 || *(s32*)(lbl_80529DEC+0x11C)!=2) fn_80303870(i);
       }
-      ((s32*)(p+0x131A8))[i]=-1;
+      ((RoomArrays*)p)->owners131A8[i]=-1;
     }
     ((u8*)roomArrays())[0x170]=1;
     ((u8*)roomArrays())[0x171]=1;
     *(s32*)((char*)roomArrays()+0x174)=0;
-    for(i=0;i<16;i++){((u16*)(p+0x131B8))[i]=0;((u8*)(p+0x131DF))[i]=0;}
+    for(i=0;i<16;i+=8){((RoomArrays*)p)->flags131B8[i+0]=0;*((u8*)p+(i+0+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+1]=0;*((u8*)p+(i+1+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+2]=0;*((u8*)p+(i+2+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+3]=0;*((u8*)p+(i+3+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+4]=0;*((u8*)p+(i+4+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+5]=0;*((u8*)p+(i+5+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+6]=0;*((u8*)p+(i+6+0x131DF))=0;((RoomArrays*)p)->flags131B8[i+7]=0;*((u8*)p+(i+7+0x131DF))=0;}
     ((u8*)roomArrays())[0x131DE]=0;
         *(u8*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + 0x131EF) = 0;
         u8 v;
@@ -2735,25 +2742,24 @@ extern "C" void fn_802DD808(char* p) {
     fn_802D92F0(p);
     fn_802D8D50(p,0);
     for(i=0;i<4;i++){
-      f32 pos[3];
-      pos[0]=lbl_8046E148[i*3];pos[1]=lbl_8046E148[i*3+1];pos[2]=lbl_8046E148[i*3+2];
-      pos[0]+=*(f32*)(p+0xCC);pos[1]+=*(f32*)(p+0xD0);
-      fn_8023F1D4(i,pos,2,0,0);
+
+      points[0]=lbl_8046E148[i*3];points[1]=lbl_8046E148[i*3+1];points[2]=lbl_8046E148[i*3+2];
+      points[0]+=*(f32*)(p+0xCC);points[1]+=*(f32*)(p+0xD0);
+      fn_8023F1D4(i,points,2,0,0);
     }
     fn_802D8328(p,1,1);
-    {f32 pos[3]={0.0f,0.0f,0.0f};Actor_CreateByID(fn_801F856C(),0x52414E4B,0,pos,0,-1,-1);}
-    {f32 pos[3]={0.0f,0.0f,0.0f};Actor_CreateByID(fn_801F856C(),0x4742414F,0,pos,0,-1,-1);}
+    spawnRank[0]=lbl_8054111C;spawnRank[1]=lbl_8054111C;spawnRank[2]=lbl_8054111C;Actor_CreateByID(fn_801F856C(),0x52414E4B,0,spawnRank,0,-1,-1);
+    spawnGBA[0]=lbl_8054111C;spawnGBA[1]=lbl_8054111C;spawnGBA[2]=lbl_8054111C;Actor_CreateByID(fn_801F856C(),0x4742414F,0,spawnGBA,0,-1,-1);
     char* m=*(char**)(lbl_8053AB10+0x24);
     *(f32*)(m+0x154)=*(f32*)(p+0xCC);*(f32*)(m+0x158)=*(f32*)(p+0xD0);
     *(f32*)(m+0x15C)=*(f32*)(p+0xD4);*(f32*)(m+0x160)=*(f32*)(p+0xD8);
-    JGeometry::TVec3<f32> pos;
-    pos.set(*(f32*)(p+0xCC),*(f32*)(p+0xD0),0.0f);
-    *(JGeometry::TVec3<f32>*)(*(char**)(lbl_8053AB10+0x20)+0x2368)=pos;
+    camera.set(*(f32*)(p+0xCC),*(f32*)(p+0xD0),lbl_8054111C);
+    *(JGeometry::TVec3<f32>*)(*(char**)(lbl_8053AB10+0x20)+0x2368)=camera;
     if(*(u8*)(lbl_8053AAF8+0x7F)==1) *(s32*)(p+0xC4)=36000;
     else *(s32*)(p+0xC4)=0x2A30;
     for(i=0;i<4;i++){
-      *(f32*)(p+0x1323C+i*4)=0.0f;*(f32*)(p+0x1324C+i*4)=0.0f;
-      *(f32*)(p+0x1325C+i*4)=0.0f;*(f32*)(p+0x1326C+i*4)=0.0f;
+      *(f32*)(p+0x1323C+i*4)=lbl_8054111C;*(f32*)(p+0x1324C+i*4)=lbl_8054111C;
+      *(f32*)(p+0x1325C+i*4)=lbl_8054111C;*(f32*)(p+0x1326C+i*4)=lbl_8054111C;
       *(u8*)(p+0x1327C+i)=0;
     }
     fn_80134FE0(lbl_8053AAF8,0);fn_80134FBC(lbl_8053AAF8,0);
