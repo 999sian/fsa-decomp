@@ -372,7 +372,7 @@ static inline void slk2ResetHitRect(u8* this_) {
     if (*(u8*)(this_ + 0x34d) == 7) {
         *(u32*)(this_ + 0x230) &= ~0x100;
         s32 room = *(s32*)(this_ + 4);
-        if ((((u8*)fn_802D6A9C()) + 0x10000)[room + 0x31df] == 0) {
+        if (*(u8*)((u8*)fn_802D6A9C() + 0x10000 + room + 0x31df) == 0) {
             f32 a;
             f32 b;
             a = lbl_8053EE20;
@@ -409,9 +409,7 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
         case 0x27:
             if (fn_801C0FEC(fn_801C0D70(), this_ + 0xc, pos)) {
                 if (*(u16*)fn_801C0D70() & 0x800) {
-                    *(f32*)(this_ + 0x32c) = pos[0];
-                    *(f32*)(this_ + 0x330) = pos[1];
-                    *(f32*)(this_ + 0x334) = lbl_8053EE08;
+                    ((JGeometry::TVec3f*)(this_ + 0x32c))->set(pos[0], pos[1], lbl_8053EE08);
                     fn_801C3B7C(this_, 0x1d);
                 }
             } else {
@@ -643,13 +641,11 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
         break;
     case 30:
         if (*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
-            u32 f;
             fn_802144F0(this_ + 0x4ec);
-            f = *(u32*)(this_ + 0x230);
-            if (f & 0x1000000) {
-                *(u32*)(this_ + 0x230) &= ~0x1000000;
+            if (*(u32*)(this_ + 0x230) & 0x1000000) {
+                *(s32*)(this_ + 0x230) &= ~0x1000000;
                 fn_801C3B7C(this_, 0x2c);
-            } else if (f & 0x2000000) {
+            } else if (*(u32*)(this_ + 0x230) & 0x2000000) {
                 fn_801C3B7C(this_, 0x11);
             } else {
                 fn_801C3B7C(this_, 0x1f);
@@ -685,7 +681,7 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
                 u8* g = lbl_8053AAF8;
                 *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
                 u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
-                if (*(f32*)&bits - *(const f32*)&lbl_8053EE28 < lbl_8053EE2C && fn_801D183C(this_, lbl_8053EE30)) {
+                if (*(f32*)&bits - lbl_8053EE28 < lbl_8053EE2C && fn_801D183C(this_, lbl_8053EE30)) {
                     fn_801C3B7C(this_, 0x22);
                     break;
                 }
