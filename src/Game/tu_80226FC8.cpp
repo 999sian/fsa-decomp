@@ -13,14 +13,22 @@ static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
 }
 
 static inline bool gateVelocitySame(u8* actor) {
-    extern const f32 lbl_8053FF60;
-    bool z = false;
     f32 eps = 32.0f * FLT_EPSILON;
-    bool equal = false;
-    bool xy = false;
-    if (JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x3c), *(f32*)(actor+0x364), eps) &&
-        JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x40), *(f32*)(actor+0x368), eps)) xy = true;
-    if (xy && JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x44), *(f32*)(actor+0x36c), eps)) equal = true;
+    bool equal = false, xy = false, x = false;
+    f32 dx = *(f32*)(actor+0x3c) - *(f32*)(actor+0x364);
+    if (-eps <= dx && dx <= eps) x = true;
+    if (x) {
+        bool y = false;
+        f32 dy = *(f32*)(actor+0x40) - *(f32*)(actor+0x368);
+        if (-eps <= dy && dy <= eps) y = true;
+        if (y) xy = true;
+    }
+    if (xy) {
+        bool z = false;
+        f32 dz = *(f32*)(actor+0x44) - *(f32*)(actor+0x36c);
+        if (-eps <= dz && dz <= eps) z = true;
+        if (z) equal = true;
+    }
     return equal;
 }
 struct GateBox {
@@ -522,7 +530,7 @@ extern "C" void fn_80227F50(void* this_) {
     if((kind==0 || kind==3 || kind==0x15 || kind==0x23) && (*(f32*)(actor+0x40))>=0.0f) return;
     if((kind==1 || kind==2) && (*(f32*)(actor+0x40))<=0.0f) return;
     if(kind==0x17 && (*(f32*)(actor+0x3c))<=0.0f) return;
-    if(kind==0x18) { if((*(f32*)(actor+0x3c))>=0.0f) return; }
+    if(kind==0x18) { if(!((*(f32*)(actor+0x3c))>=0.0f)) {} else return; }
     if((*(u32*)(actor+0x1a0))==0x424f4d45) {
         fn_8023DE58((*(u32*)(actor+0x90))&15);
         u8 same;
