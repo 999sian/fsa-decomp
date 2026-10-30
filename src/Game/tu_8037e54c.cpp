@@ -769,7 +769,20 @@ extern "C" u32 fn_803846BC(u32 id) {
 }
 
 extern "C" u8 fn_8038A42C(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u16);
-static inline u8 canShowMessage(s32);
+static inline u8 canShowMessage(s32 p) {
+    if (!fn_80303750(resolvePlayer(p))) return 0;
+    u8 hit;
+    for (s32 i=0;i<4;++i) {
+        if ((lbl_8053AAF8->b82 & (u8)(1<<i)) && fn_80390818(lbl_8053AD78->sub[i])==1) {
+            hit=1;
+            goto found;
+        }
+    }
+    hit=0;
+found:
+    if (hit) return 0;
+    return 1;
+}
 extern "C" void fn_8022FBB8(s32, s32);
 extern "C" u8 fn_802308E0(s32);
 static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
@@ -793,6 +806,84 @@ extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
         id = 0x12b;
     }
     return fn_8038A984(a, b, c, id, e, f);
+}
+
+extern "C" u8 fn_8038C678(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u32 flags) {
+    f32 out[3];
+    s32 i;
+    s32 q;
+    char* e;
+    s32 f4;
+    s32 f2;
+    u16 flags16;
+    s32 p;
+    int roomCopy=room;
+    p = resolvePlayer(a);
+    if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) return 0;
+    u32 index=fn_803846BC(id);
+index=fn_80383EB0(p,index);
+id=lbl_8053AD78->p8->inf.entries[index].id;
+    if(fn_802D46D8(fn_802D6A9C(),p,index,0)==1) {
+s32 q=resolvePlayer(p);
+Inf1* inf=&lbl_8053AD78->p8->inf;
+char* e=(char*)inf+inf->size+inf->entries[index].offset+8;
+u32 next=index;
+if(e[0]==0x1a&&e[2]==2&&e[4]==5)next=*(s32*)(e+5);
+index=fn_80383EB0(q,next);
+id=lbl_8053AD78->p8->inf.entries[index].id;
+}
+if (lbl_8053AAF8->b7e == 0 || (flags & 0x40)) {
+        if (roomCopy < 8) { JGeometry::TVec3<f32> v; v=*pos; return showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags); }
+        if (!fn_8022C8EC(0)) {
+            f32 in[2];
+            in[0]=lbl_805430F8; in[1]=lbl_805430FC;
+            fn_8030C4A0(*(u8**)(lbl_8053AB10+0x24),in,1,out);
+            JGeometry::TVec3<f32> v; v=*(JGeometry::TVec3<f32>*)out;
+            return showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags);
+        }
+    u8 can=canShowMessage(p);
+        if (can) { JGeometry::TVec3<f32> v; v=*pos; return showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags); }
+        return ((u8(*)(s32,s32,s32,u32,s32,u32))fn_8038C60C)((s32)lbl_8053AD78,p,a,id,p3,flags);
+    } else {
+        flags16=flags;
+        u32 textIndex=fn_803846BC(id);
+        q=resolvePlayer(p);
+        Inf1* inf=&lbl_8053AD78->p8->inf;
+inf=&lbl_8053AD78->p8->inf;
+e=(char*)inf+inf->size+8+inf->entries[textIndex].offset;
+        u8 hit;
+        if (e[0]==0x1a && e[2]==2 && e[4]==0x1f) hit=1;
+        else if(e[0]==0x1a && e[2]==2 && e[4]==0x2f && ((u8*)lbl_8053AD78)[0xed]==0 && fn_80138A30(lbl_8053AAF8)>=2 && fn_8023DE58(fn_8022EA0C(q))>=8) {
+            hit=1;
+            ((u8*)lbl_8053AD78)[0xed]=hit;
+            *(s32*)((u8*)lbl_8053AD78+0x110)=q;
+            ((u8*)lbl_8053AD78)[0xee]=e[5];
+        } else hit=0;
+        if(hit) {
+            if(((u8(*)(s32,s32,u32,u32))fn_80389964)((s32)lbl_8053AD78,p,fn_803846BC(id),flags)) {
+                JGeometry::TVec3<f32> v; v=*pos;
+                if(showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags)) {
+                    q=resolvePlayer(a);
+                    f4=flags16&4;
+                    f2=flags16&2;
+                    for(i=0;i<4;i++) {
+                        if(i!=q && (lbl_8053AAF8->b82 & (u8)(1<<i))) {
+                            if(fn_8022CAF8(i)==4) fn_8022FBB8(fn_8022EA0C(i),p3); else fn_8022FBB8(i,p3);
+                            ((u8*)lbl_8053AD78->sub[resolvePlayer(i)])[0x24]=9;
+                            if(!f4 && !f2) fn_802308E0(i);
+                        }
+                    }
+                    return 1;
+                }
+            }
+            goto fail;
+        }
+    u8 can=canShowMessage(p);
+        if(can) { JGeometry::TVec3<f32> v; v=*pos; return showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags); }
+        return ((u8(*)(s32,s32,s32,u32,s32,u32))fn_8038C60C)((s32)lbl_8053AD78,p,a,id,p3,flags);
+    }
+fail:
+    return 0;
 }
 
 extern "C" void fn_80391678(void* p);
@@ -2231,20 +2322,7 @@ extern "C" u8 fn_8038A984(s32 unused, s32 p, s32 q, u32 id, s32 val, u16 flags) 
 }
 
 extern "C" void fn_8022FBB8(s32, s32);
-static inline u8 canShowMessage(s32 p) {
-    if (!fn_80303750(resolvePlayer(p))) return 0;
-    u8 hit;
-    for (s32 i=0;i<4;++i) {
-        if ((lbl_8053AAF8->b82 & (u8)(1<<i)) && fn_80390818(lbl_8053AD78->sub[i])==1) {
-            hit=1;
-            goto found;
-        }
-    }
-    hit=0;
-found:
-    if (hit) return 0;
-    return 1;
-}
+
 #pragma opt_lifetimes off
 extern "C" u8 fn_8038AD24(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u16 flags) {
     f32 out[3];
