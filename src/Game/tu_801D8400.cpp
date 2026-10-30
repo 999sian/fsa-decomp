@@ -331,7 +331,7 @@ inline f32 t84Random() { return ((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_
 static inline void t84PickTarget(char* p) {
     if (*(u8*)(p + 0x33f) == 3) {
                                             s32 l[12];
-                  s32 n = 1;
+                  int n = 1;
           l[0] = 1;
           l[n++] = 2;
           l[2] = 5;
