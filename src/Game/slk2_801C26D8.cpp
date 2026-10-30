@@ -376,7 +376,7 @@ static inline void slk2ResetHitRect(u8* this_) {
     if (*(u8*)(this_ + 0x34d) == 7) {
         *(u32*)(this_ + 0x230) &= ~0x100;
         s32 room = *(s32*)(this_ + 4);
-        if (*(u8*)((u8*)fn_802D6A9C() + 0x10000 + room + 0x31df) == 0) {
+        if (*(u8*)((u32)fn_802D6A9C() + 0x10000 + room + 0x31df) == 0) {
             f32 a;
             f32 b;
             a = lbl_8053EE20;
