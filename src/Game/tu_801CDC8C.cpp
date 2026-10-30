@@ -1364,13 +1364,13 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
 }
 
 #pragma opt_propagation off
-extern "C" BOOL fn_801D0DD4(ItemBase* this_) {
-    s32 room = *(volatile s32*)this_->mActor;
+extern "C" BOOL fn_801D0DD4(const ItemBase* this_) {
+    u32 room = *(u32*)this_->mActor;
     u8* g = fn_802D6A9C();
     if (g[0x131df + room] != 0) {
         return (this_->m230 & 0x18) != 0;
     }
-    return *(f32*)(this_->mActor + 0x10) <= lbl_8053EFC4 ? TRUE : FALSE;
+    return *(const f32*)(this_->mActor + 0x10) <= lbl_8053EFC4 ? TRUE : FALSE;
 }
 #pragma opt_propagation reset
 extern "C" void fn_801D0E58(char* p) {
