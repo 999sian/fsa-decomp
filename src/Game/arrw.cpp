@@ -232,7 +232,7 @@ extern "C" void Actor_CreateByID(void*,u32,s32,void*,u32,s32,s32);
 extern "C" void fn_8030C210(void*,void*);
 extern "C" void fn_801F71A4(f32*,f32,f32,f32);
 extern "C" void JPAGetXYZRotateMtx__FsssPA4_f(s16,s16,s16,void*);
-#pragma opt_propagation on
+#pragma opt_propagation off
 #pragma opt_lifetimes off
 extern "C" void fn_80165730(char* p) {
  const ArrwTables* table=(const ArrwTables*)lbl_804A0530;
