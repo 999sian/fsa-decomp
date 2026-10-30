@@ -316,6 +316,11 @@ extern const f32 lbl_805427A8;
 extern const f32 lbl_805427AC;
 extern const f32 lbl_805427B0;
 
+static inline s32 mrtaCount(u8* p, s32 direction) {
+    u8* selected = p + direction * 4;
+    return *(s32*)(selected + 0x244);
+}
+
 static inline void mrtaAverage(JGeometry::TVec3f* values) {
     values[0].add(values[1]);
     values[0].add(values[2]);
@@ -331,7 +336,6 @@ static inline u8 mrtaInside(const JGeometry::TBox2f& box, f32 x, f32 y) {
 
 #pragma opt_common_subs on
 extern "C" void fn_803558A4(void* this_) {
-    s32 loopIndex;
     s32 scanIndex;
     s32 hitIndex;
     s32 filterIndex;
@@ -339,6 +343,7 @@ extern "C" void fn_803558A4(void* this_) {
     u8* player;
     u8* record;
     u8* order;
+    s32 loopIndex;
     JGeometry::TVec3f* next;
     JGeometry::TVec3f positions[4];
     JGeometry::TBox2f box;
@@ -354,8 +359,8 @@ extern "C" void fn_803558A4(void* this_) {
         fn_80239914((f32*)&box,*(s32*)(p+4),*(s32*)(p+0x198));
         s32 handle=*(s32*)(p+0x198);
         s32 room=*(s32*)(p+4);
-        u8* map=(u8*)((void* (*)())fn_8020D58C)();
-        ((void (*)(void*,void*,s32,s32))fn_8020D8C0)(map+4+map[0]*0x784,&box,room,handle);
+        u8* map=(u8*)fn_8020D58C();
+        fn_8020D8C0(map+4+map[0]*0x784,&box,room,handle);
         fn_80354FE8(p);
         if(!(((JGeometry::TVec3f*)(p+0x2d4))->isZero()!=0)) {
             ((JGeometry::TVec3f*)(p+0xc))->add(*(JGeometry::TVec3f*)(p+0x3c));
@@ -373,7 +378,7 @@ extern "C" void fn_803558A4(void* this_) {
                 p[0x2cc]=1;
             } else {
                 u8* emitter=*(u8**)(p+0x2e0);
-                if(emitter) ((void(*)(void*,void*,s32,s32,s32))fn_8013CB44)(emitter,p+0xc,0,-2,1);
+                if(emitter) fn_8013CB44(emitter,p+0xc,0,-2,1);
             }
         }
         if(!(((JGeometry::TVec3f*)(p+0x2d4))->isZero()!=0) || *(s32*)(p+0x2c8)!=0) break;
