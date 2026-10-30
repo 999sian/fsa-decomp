@@ -946,7 +946,8 @@ struct MsgMeasure {
     f32 spaceW[0x14];         // 0x1a8
     u8 pad1f8[0x201 - 0x1f8];
     u8 line;                  // 0x201
-    u8 pad202[0x22d - 0x202];
+    s8 colorHist[0x2a];       // 0x202
+    s8 color;                 // 0x22c
     u8 lineChars[0x10];       // 0x22d
 };
 
@@ -2117,7 +2118,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     f32 ratio = m->fontW / (f32)m->font->getCellWidth();
     switch (id) {
     case 0:
-        if ((s8)(p + p[0x281])[0x202] != (s8)p[0x22c]) {
+        if ((s8)p[0x22c] != (s8)(p + p[0x281])[0x202]) {
             p[0x281]++;
             (p + p[0x281])[0x202] = p[0x22c];
             (p + p[0x281])[0x257] = 0;
