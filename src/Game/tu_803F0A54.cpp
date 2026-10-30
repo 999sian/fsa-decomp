@@ -368,33 +368,37 @@ extern const s16 lbl_80543710[4];
 extern const f32 lbl_80543754;
 extern const f32 lbl_80543758;
 extern "C" void fn_803F1C70(u8* p) {
+    s32 n;
+    ResTIMG* img;
+    s32 j;
+    s32 rank;
     u8* base = lbl_80478A60;
-    u64* rowA = (u64*)(base+0xb60);
-    u64* rowB = (u64*)(base+0xc20);
-    u64* rowC = (u64*)(base+0xce0);
-    u64* rowD = (u64*)(base+0xda0);
-    for (int i = 0; i < 4; i++, rowA+=6, rowB+=6, rowC+=6, rowD+=6) {
+    const u64* rowA = (const u64*)(base+0xb60);
+    const u64* rowB = (const u64*)(base+0xc20);
+    const u64* rowC = (const u64*)(base+0xce0);
+    const u64* rowD = (const u64*)(base+0xda0);
+    for (s32 i = 0; i < 4; i++, rowA+=6, rowB+=6, rowC+=6, rowD+=6) {
         if (i >= 1) {
             if (i > *(s32*)(p + 0x1ac) + 1)
-                (*(J2DPane**)(p + 0x10))->search(((u64*)(base + 0xea0))[i])->show();
+                (*(J2DPane**)(p + 0x10))->search(((const u64*)(base + 0xea0))[i])->show();
             else
-                (*(J2DPane**)(p + 0x10))->search(((u64*)(base + 0xea0))[i])->hide();
+                (*(J2DPane**)(p + 0x10))->search(((const u64*)(base + 0xea0))[i])->hide();
         }
         *(s32*)(p + 0x1e0 + i*4) = fn_80403414(i);
         *(s32*)(p + 0x1f0 + i*4) = fn_804033D4(i);
         *(s32*)(p + 0x200 + i*4) = fn_8040336C(i);
-        s32 n = fn_80403070(*(s32*)(p + 0x1e0 + i*4));
-        ResTIMG* img = fn_804030C4(0x54494d47, lbl_804B0EE8[n / 100]);
-        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((u64*)(base+0xa58))[i]))->changeTexture(img, 0);
-        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((u64*)(base+0xa78))[i]))->changeTexture(img, 0);
+        n = fn_80403070(*(s32*)(p + 0x1e0 + i*4));
+        img = fn_804030C4(0x54494d47, lbl_804B0EE8[n / 100]);
+        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((const u64*)(base+0xa58))[i]))->changeTexture(img, 0);
+        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((const u64*)(base+0xa78))[i]))->changeTexture(img, 0);
         img = fn_804030C4(0x54494d47, lbl_804B0EE8[(n % 100) / 10]);
-        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((u64*)(base+0xa18))[i]))->changeTexture(img, 0);
-        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((u64*)(base+0xa38))[i]))->changeTexture(img, 0);
+        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((const u64*)(base+0xa18))[i]))->changeTexture(img, 0);
+        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((const u64*)(base+0xa38))[i]))->changeTexture(img, 0);
         img = fn_804030C4(0x54494d47, lbl_804B0EE8[n % 10]);
-        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((u64*)(base+0x9d8))[i]))->changeTexture(img, 0);
-        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((u64*)(base+0x9f8))[i]))->changeTexture(img, 0);
-        s32 rank = fn_8040305C(*(s32*)(p+0x1f0+i*4)) - 1;
-        for (int j=0; j<6; j++) {
+        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((const u64*)(base+0x9d8))[i]))->changeTexture(img, 0);
+        ((J2DPicture*)(*(J2DPane**)(p + 0x10))->search(((const u64*)(base+0x9f8))[i]))->changeTexture(img, 0);
+        rank = fn_8040305C(*(s32*)(p+0x1f0+i*4)) - 1;
+        for (j=0; j<6; j++) {
             if (j < rank) {
                 (*(J2DPane**)(p+0x10))->search(rowA[j])->show();
                 (*(J2DPane**)(p+0x10))->search(rowB[j])->show();
@@ -412,11 +416,11 @@ extern "C" void fn_803F1C70(u8* p) {
                 (*(J2DPane**)(p+0x10))->search(rowD[j])->hide();
             }
         }
-        (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x998))[i])->hide();
+        (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x998))[i])->hide();
     }
     fn_80402E08(*(void**)(p+0x60), lbl_8054372C, lbl_80543754);
     *(s16*)(*(u8**)(p+0x60)+0x22)=0;
-    for (int i=0; i<4; i++) {
+    for (s32 i=0; i<4; i++) {
         if (i <= *(s32*)(p+0x1ac)+1) {
             fn_80402E08(*(void**)(p+0x64+i*4), lbl_8054372C, lbl_80543758);
             *(s16*)(*(u8**)(p+0x64+i*4)+0x22)=0;
@@ -426,27 +430,27 @@ extern "C" void fn_803F1C70(u8* p) {
         *(s32*)(p+0x1d0+i*4)=30;
         if (i <= *(s32*)(p+0x1ac)+1) {
             if (*(s32*)(p+0x1b0+i*4) < 3) {
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x958))[i])->hide();
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x978))[i])->show();
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x998))[i])->hide();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x958))[i])->hide();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x978))[i])->show();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x998))[i])->hide();
             } else if (*(s32*)(p+0x1b0+i*4)==3) {
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x958))[i])->hide();
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x978))[i])->show();
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x998))[i])->show();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x958))[i])->hide();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x978))[i])->show();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x998))[i])->show();
             } else {
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x958))[i])->show();
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x978))[i])->hide();
-                (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x998))[i])->hide();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x958))[i])->show();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x978))[i])->hide();
+                (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x998))[i])->hide();
             }
         } else {
-            (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x958))[i])->hide();
-            (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x978))[i])->hide();
-            (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x998))[i])->hide();
+            (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x958))[i])->hide();
+            (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x978))[i])->hide();
+            (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x998))[i])->hide();
         }
         s32 state=*(s32*)(p+0x1b0+i*4);
         if (state<=3) {
-            f32 x=(*(J2DPane**)(p+0x10))->search(((u64*)(base+0x978))[i])->getBounds()->i.x;
-            (*(J2DPane**)(p+0x10))->search(((u64*)(base+0x978))[i])->move(x, lbl_80543710[state]);
+            f32 x=(*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x978))[i])->getBounds()->i.x;
+            (*(J2DPane**)(p+0x10))->search(((const u64*)(base+0x978))[i])->move(x, lbl_80543710[state]);
         }
         *(s16*)(p+0x240+i*2)=0;
         *(s32*)(p+0x1d0+i*4)=0;
@@ -1193,6 +1197,8 @@ extern "C" void fn_803F8050(u8* p) {
 }
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
+extern const f32 lbl_805437B8;
+extern const f32 lbl_805437BC;
 extern const f32 lbl_805437C0;
 extern const f32 lbl_805437C4;
 #pragma opt_common_subs off
