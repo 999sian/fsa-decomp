@@ -792,7 +792,7 @@ u8 fn_8022B244(void);
 void fn_8024E694(char*, s32, s32);
 extern u8 lbl_8050EC80[];
 extern const f32 lbl_80540288, lbl_80540290, lbl_80540294, lbl_8054029C, lbl_805402A0, lbl_805402A4, lbl_805402A8,
-    lbl_805402AC, lbl_805402B0, lbl_805402B4;
+    lbl_805402AC, lbl_805402B0, lbl_805402B4, lbl_805402B8;
 inline f32 hitInvSqrt(f32 x) {
     if (x <= lbl_8054028C) {
         return x;
