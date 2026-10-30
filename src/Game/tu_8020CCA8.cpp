@@ -15,7 +15,7 @@ extern "C" u8 fn_802DEB58();
 extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
 
 
-extern "C" u8* fn_8013CC50(u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" u8* fn_8013CC50(u32 owner, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 extern "C" bool fn_801E1D9C();
 extern "C" u8 fn_801E1D7C(u8* o);
@@ -88,23 +88,23 @@ extern "C" void fn_8020CCA8(u8* o0) {
 
 #pragma optimization_level 2
 extern "C" void fn_8020CF7C(Actor* o) {
-    fn_8013CC50(o->field_04, &o->field_0C, 0x48d, 0, 0, 0, 0, 1, lbl_8053FA08);
+    fn_8013CC50(o->field_04, &o->field_0C, lbl_8053FA08, 0x48d, 0, 0, 0, 0, 1);
 }
 #pragma optimization_level 4
 extern "C" void fn_8020CFC4(u8* o) {
     switch (getGroundType(*(u32*)(o + 4), o + 0xc)) {
     case 0xd:
-        fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x3d0, 0, 1, 0, 0, 1, lbl_8053FA0C);
-        fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x15b, 0, 1, 0, 0, 1, lbl_8053FA08);
-        fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x15c, -1, 0, 0, 0, 1, lbl_8053FA08);
+        fn_8013CC50(*(u32*)(o + 4), o + 0xc, lbl_8053FA0C, 0x3d0, 0, 1, 0, 0, 1);
+        fn_8013CC50(*(u32*)(o + 4), o + 0xc, lbl_8053FA08, 0x15b, 0, 1, 0, 0, 1);
+        fn_8013CC50(*(u32*)(o + 4), o + 0xc, lbl_8053FA08, 0x15c, -1, 0, 0, 0, 1);
         fn_801F0E34(o, 0x30022, 0);
         break;
     case 0xe:
         if (fn_801CD2F8(*(u32*)(o + 4))) {
             fn_801F0E34(o, 0x4003e, 0);
         } else {
-            fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x2a9, -1, 0, 0, 0, 1, lbl_8053FA08);
-            fn_8013CC50(*(u32*)(o + 4), o + 0xc, 0x2aa, 0, 1, 0, 0, 1, lbl_8053FA08);
+            fn_8013CC50(*(u32*)(o + 4), o + 0xc, lbl_8053FA08, 0x2a9, -1, 0, 0, 0, 1);
+            fn_8013CC50(*(u32*)(o + 4), o + 0xc, lbl_8053FA08, 0x2aa, 0, 1, 0, 0, 1);
             if (fn_802DEB58()) {
                 fn_801F0E34(o, 0x30022, 0);
             } else {
@@ -127,8 +127,8 @@ extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
 extern "C" void fn_8020D16C(u8* a) {
     u32* w = (u32*)a;
     if (fn_8022461C(a + 0xc, w[1]) == 0x39) {
-        fn_8013CC50(w[1], a + 0xc, 0x15b, 0, 1, 0, 0, 1, lbl_8053FA08);
-        fn_8013CC50(w[1], a + 0xc, 0x15c, -1, 0, 0, 0, 1, lbl_8053FA08);
+        fn_8013CC50(w[1], a + 0xc, lbl_8053FA08, 0x15b, 0, 1, 0, 0, 1);
+        fn_8013CC50(w[1], a + 0xc, lbl_8053FA08, 0x15c, -1, 0, 0, 0, 1);
         fn_801F0E34(a, 0x400e0, 0);
     } else if (fn_80224B88(a + 0xc, w[1]) & 0xff) {
         fn_801F0E34(a, 0x400e1, 0);
@@ -152,7 +152,7 @@ extern "C" void fn_8020D2AC(u8* o) {
         case 1: pos.x -= 6.0f; break;
         }
     }
-    fn_8013CC50(*(u32*)(o + 4), &pos, 0x33a, 0, 1, 0, 0, 1, 1.0f);
+    fn_8013CC50(*(u32*)(o + 4), &pos, 1.0f, 0x33a, 0, 1, 0, 0, 1);
 }
 
 void fn_8020D368(void) {}
