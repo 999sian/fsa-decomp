@@ -941,8 +941,10 @@ struct MsgMeasure {
     f32 scale;                // 0x44
     f32 fontW;                // 0x48
     f32 lineW[(0xf4 - 0x4c) / 4];  // 0x4c
-    f32 lineX[(0x1a0 - 0xf4) / 4]; // 0xf4
-    u8 pad1a0[0x201 - 0x1a0];
+    f32 lineX[(0x19c - 0xf4) / 4]; // 0xf4
+    f32 tabW[3];              // 0x19c
+    f32 spaceW[0x14];         // 0x1a8
+    u8 pad1f8[0x201 - 0x1f8];
     u8 line;                  // 0x201
     u8 pad202[0x22d - 0x202];
     u8 lineChars[0x10];       // 0x22d
@@ -2114,7 +2116,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x10009:
     case 0x1000a:
     {
-        *(f32*)(p + p[0x1fd] * 4 + 0x1a8) = m->lineW[m->line];
+        ((MsgMeasureSave*)m)->spaceW[p[0x1fd]] = m->lineW[m->line];
         (p + p[0x1fd])[0x1f1] = m->line;
         p[0x1fd]++;
         JUTFont::TWidth w;
@@ -2127,7 +2129,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x10004:
     case 0x10005:
     case 0x10006:
-        *(f32*)(p + p[0x1fd] * 4 + 0x1a8) = m->lineW[m->line];
+        ((MsgMeasureSave*)m)->spaceW[p[0x1fd]] = m->lineW[m->line];
         (p + p[0x1fd])[0x1f1] = m->line;
         p[0x1fd]++;
         msgMeasureChar2(m, 0x20, ratio, 3.0f);
@@ -2161,7 +2163,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
         } else if ((s32)m->line < 64) {
             *(u32*)(p + 0x40) |= 1 << (m->line - 32);
         }
-        *(f32*)(p + p[0x282] * 4 + 0x19c) = m->lineW[m->line];
+        ((MsgMeasureSave*)m)->tabW[p[0x282]] = m->lineW[m->line];
         (p + p[0x282])[0x1ee] = m->line;
         (p + p[0x282])[0x1fe] = m->lineChars[m->line];
         msgMeasureCharK(m, 0x20, ratio, 5.0f, 3.0f);
@@ -2180,7 +2182,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
         } else if ((s32)m->line < 64) {
             *(u32*)(p + 0x40) &= ~(1 << m->line);
         }
-        *(f32*)(p + p[0x282] * 4 + 0x19c) = m->lineW[m->line];
+        ((MsgMeasureSave*)m)->tabW[p[0x282]] = m->lineW[m->line];
         (p + p[0x282])[0x1ee] = m->line;
         (p + p[0x282])[0x1fe] = m->lineChars[m->line];
         msgMeasureCharTab(m, 0x20, ratio, 3.0f);
