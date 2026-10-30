@@ -81,6 +81,12 @@ extern "C" const char platformGround[16]="jimen_smp.bin";
 extern "C" const char platformHouse[16]="house_smp.bin";
 #pragma pool_data reset
 
+static inline void platformScale33(f32 m[3][4], f32 x, f32 y, f32 z) {
+    m[0][1]=0.0f; m[0][2]=0.0f; m[0][0]=x;
+    m[1][0]=0.0f; m[1][1]=y; m[1][2]=0.0f;
+    m[2][0]=0.0f; m[2][1]=0.0f; m[2][2]=z;
+}
+
 static inline void platformSetVec(Vec* v, f32 x, f32 y, f32 z) {
     v->x=x; v->y=y; v->z=z;
 }
@@ -119,9 +125,8 @@ static inline f32 platformCos(f32 angle) {
     return sincosTable___5JMath[((u16)(s32)(325.9493f*angle)&0x7ff)*2+1];
 }
 
-extern "C" void fn_802ACF04(Actor* a) {
-f32 rotation;
-Actor* self=a;
+extern "C" void fn_802ACF04(void* this_) {
+Actor* self=(Actor*)this_;
 DrawRec rec;
 f32 m[3][4];
 Vec pos;
@@ -132,13 +137,19 @@ m[1][0]=0.0f;m[1][1]=1.0f;m[1][2]=0.0f;
 m[2][0]=0.0f;m[2][1]=0.0f;m[2][2]=platformScaleY[*(s32*)((u8*)self+0x234)];
 rec.w18=m;
 void* texture=(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('TIMG',platformTexture);
-pos.z=self->field_0C.z;
-pos.y=self->field_0C.y+platformCenterY[*(s32*)((u8*)self+0x234)];
-pos.x=self->field_0C.x+platformCenterX[*(s32*)((u8*)self+0x234)];
+platformSetVec(&pos,self->field_0C.x+platformCenterX[*(s32*)((u8*)self+0x234)],self->field_0C.y+platformCenterY[*(s32*)((u8*)self+0x234)],self->field_0C.z);
 if((s32)self->field_04<8)fn_802F745C(*(void**)((u8*)lbl_8053AB10+0x20),&pos,texture,&rec);
 m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-rotation=*(f32*)((u8*)self+0x248);
-platformRotation(m,rotation);
+f32 rotation=*(f32*)((u8*)self+0x248);
+{
+    f32 sz, sx, cz, cy, cx, sy;
+    cx=cos(0.0);cy=cos(rotation);cz=cos(0.0);
+    sx=sin(0.0);sy=sin(rotation);sz=sin(0.0);
+    m[0][0]=cy*cx;m[1][0]=cy*sx;m[2][0]=-sy;
+    f32 czcx=cz*cx, szsy=sz*sy, czsx=cz*sx, szsx=sz*sx, szcx=sz*cx;
+    m[0][1]=szsy*cx-czsx;m[1][1]=szsy*sx+czcx;m[2][1]=sz*cy;
+    m[0][2]=czcx*sy+szsx;m[1][2]=czsx*sy-szcx;m[2][2]=cz*cy;
+}
 rec.b1c=-1;rec.b1d=-1;rec.b21=1;rec.w18=m;
 switch(*(s32*)((u8*)self+0x234)) {
 default:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformFloor),&rec);break;
@@ -183,17 +194,17 @@ if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v2,(*(J
 }break;
 case 3: {
 Vec v3;
-v3.y=self->field_0C.y;v3.x=64.0f+self->field_0C.x;v3.z=self->field_0C.z;
+platformSetVec(&v3,64.0f+self->field_0C.x,self->field_0C.y,self->field_0C.z);
 if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v3,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformTree0),&rec);
 Vec v4;
-v4.y=self->field_0C.y;v4.x=64.0f+self->field_0C.x;v4.z=self->field_0C.z;
+platformSetVec(&v4,64.0f+self->field_0C.x,self->field_0C.y,self->field_0C.z);
 if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v4,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformTree1),&rec);
 break;
 }
 case 4:case 5:
 rec.b1c=1;rec.b1d=-1;
-if(*(s32*)((u8*)self+0x230)==7) {Vec v5;v5.y=self->field_0C.y;v5.x=96.0f+self->field_0C.x;v5.z=self->field_0C.z;if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v5,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformGround),&rec);}
-else if(*(s32*)((u8*)self+0x230)!=8){Vec v6;v6.y=self->field_0C.y;v6.x=96.0f+self->field_0C.x;v6.z=self->field_0C.z;if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v6,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformHouse),&rec);}
+if(*(s32*)((u8*)self+0x230)==7) {Vec v5;platformSetVec(&v5,96.0f+self->field_0C.x,self->field_0C.y,self->field_0C.z);if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v5,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformGround),&rec);}
+else if(*(s32*)((u8*)self+0x230)!=8){Vec v6;platformSetVec(&v6,96.0f+self->field_0C.x,self->field_0C.y,self->field_0C.z);if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v6,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformHouse),&rec);}
 break;
 case 6:{
 Vec v7;
