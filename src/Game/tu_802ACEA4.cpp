@@ -85,7 +85,7 @@ extern "C" double cos(double);
 extern "C" double sin(double);
 extern "C" const f32 sincosTable___5JMath[];
 static inline void platformRotation(f32 m[3][4], const f32 ry) {
-    f32 sz, sx, cz, cy, cx, sy;
+    f32 sz, sy, sx, cz, cy, cx;
     cx=cos(0.0);
     cy=cos(ry);
     cz=cos(0.0);
