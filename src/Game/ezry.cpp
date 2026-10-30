@@ -178,13 +178,7 @@ extern "C" void fn_8016088C(char* p) {
             return;
         }
         *(u8*)(p + 0x268) = 1;
-        if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-            u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-            if (!(rec[0x87] & 1)) {
-                rec[0x87] |= 1;
-                ezryPlaySe(0x339);
-            }
-        }
+        ezryFirstSighting();
         *(u32*)(p + 0xb0) = 0x20000;
         if (*(void**)(p + 0x290) == 0) {
             *(void**)(p + 0x290) = fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x183, 0, 0, 0, 0, 1, lbl_8053D670);
@@ -426,7 +420,6 @@ extern "C" void fn_8016088C(char* p) {
 
 extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801F0E34(void* target, s32 soundId, s32 flag);
-extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AED0;
 extern u8 lbl_80529DEC[];
