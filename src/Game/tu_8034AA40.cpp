@@ -301,6 +301,7 @@ if(obj){s32 owner=*(s32*)(obj+0x25c);if(owner>=0&&*(s32*)(self+0x4)==*(s32*)(obj
 u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1){if(obj[0x2a3]==1)self[0x284+owner]=1;*(s32*)(self+0x274);(*(s32*)(self+0x274+*(s32*)(obj+0x25c)*4))+=1;}
 }}}
 }
+#pragma opt_propagation off
 static inline s32 nwokWinner(u8* self,s32* choices){
 s32 best=*(s32*)(self+0x274);s32 count=0;
 if(fn_80138A30(lbl_8053AAF8)==1)return 0;
@@ -313,10 +314,12 @@ digit=3;if(best==*(s32*)(self+0x280)){*next=digit;count+=1;}
 if(count==1)return choices[0];
 return choices[(s32)(count*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1())];
 }
+#pragma opt_propagation reset
 
 struct NwokScoreView {u8 field_000[0x274]; s32 scores[4];};
 
-extern "C" void fn_8034B088(u8* self){
+extern "C" void fn_8034B088(NwokScoreView* actor){
+u8* self=(u8*)actor;
 JGeometry::TBox2f box;JGeometry::TVec3f msg0,msg4,msg6,msg9,msg11,camera;
 JGeometry::TBox2f queryTmp,queryBox,tallyTmp,tallyBox;
 s32 choices[4];JGeometry::TVec3f delta;f32 distance;
@@ -329,7 +332,7 @@ box.i.x=*(f32*)(self+0x60);box.i.y=*(f32*)(self+0x64);box.f.x=*(f32*)(self+0x68)
 fn_80239914(&box,*(s32*)(self+0x4),*(s32*)(self+0x198));
 s32 roomHandle=*(s32*)(self+0x198);s32 room=*(s32*)(self+0x4);u8* collisions=fn_8020D58C();fn_8020D8C0(collisions+collisions[0]*0x784+4,&box,room,roomHandle);
 fn_8034ACF4(self);
-switch(*(s32*)(self+0x230)){
+s32 state=*(s32*)(self+0x230);switch(state){
 case 0:
 if(nwokHasChicken(self,queryTmp,queryBox)==1){*(s32*)(self+0x230)=4;break;}
 fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),1,0);*(s32*)(self+0x240)=fn_8022FD8C(*(s32*)(self+0x198));
@@ -342,7 +345,7 @@ case 0:switch(*(s32*)(self+0x244)){case 0:*(s32*)(self+0x2c0)=0x425;break;case 1
 case 1:switch(*(s32*)(self+0x244)){case 0:*(s32*)(self+0x2c0)=0x424;break;case 1:*(s32*)(self+0x2c0)=0x428;break;}if(fn_8038470C(*(s32*)(self+0x240),*(s32*)(self+0x2c0)))*(s32*)(self+0x230)=2;break;
 }}break;
 case 2:case 3:case 5:case 12:{
-if(*(s32*)(self+0x230)==5){s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();JGeometry::TBox2f* bounds;if(boxRoom<8)bounds=(JGeometry::TBox2f*)(manager+0xcc);else bounds=(JGeometry::TBox2f*)(manager+0xdc);box=*bounds;}
+if(state==5){s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();JGeometry::TBox2f* bounds;if(boxRoom<8)bounds=(JGeometry::TBox2f*)(manager+0xcc);else bounds=(JGeometry::TBox2f*)(manager+0xdc);box=*bounds;}
 fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),1,0);if(!fn_80388CAC(*(s32*)(self+0x240),*(s32*)(self+0x198)))break;fn_801F6884(fn_801F856C());
 switch(*(s32*)(self+0x230)){
 case 3:case 5:fn_801F0D20(self,0x3a);fn_80458FF0(lbl_8053AF80,0x1000007,1,0);fn_8022ADE4();*(s32*)(self+0x230)=6;break;
@@ -386,10 +389,10 @@ switch(*(s32*)(self+0x244)){
 case 0:
 if(*(s32*)(self+0x258)<fn_80138A30(lbl_8053AAF8)){
 fn_803894BC(*(s32*)(self+0x240),*(s32*)(self+0x258)+1);
-fn_8038938C(*(s32*)(self+0x240),((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]);
-fn_80389254(*(s32*)(self+0x240),((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]*100);
-if(((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]>0){
-if(fn_8038470C(*(s32*)(self+0x240),0x427)==1){fn_8043D874(lbl_8053AED0,*(s32*)(self+0x258),((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]*100,0);*(s32*)(self+0x258)+=1;}
+fn_8038938C(*(s32*)(self+0x240),actor->scores[*(s32*)(self+0x258)]);
+fn_80389254(*(s32*)(self+0x240),actor->scores[*(s32*)(self+0x258)]*100);
+if(actor->scores[*(s32*)(self+0x258)]>0){
+if(fn_8038470C(*(s32*)(self+0x240),0x427)==1){fn_8043D874(lbl_8053AED0,*(s32*)(self+0x258),actor->scores[*(s32*)(self+0x258)]*100,0);*(s32*)(self+0x258)+=1;}
 }else{if(fn_8038470C(*(s32*)(self+0x240),0x428)==1)*(s32*)(self+0x258)+=1;}
 }else if(*(s32*)(self+0x258)==fn_80138A30(lbl_8053AAF8)){
 if(fn_8038470C(*(s32*)(self+0x240),0x429)==1)*(s32*)(self+0x258)+=1;
@@ -398,11 +401,12 @@ break;
 case 1:
 if(!fn_80388CAC(*(s32*)(self+0x240),*(s32*)(self+0x198)))break;fn_801F6884(fn_801F856C());
 if(fn_802308E0(*(s32*)(self+0x254))!=1)break;
-for(s32 i=0;i<4;i++){
-void* position;s32 winner=*(s32*)(self+0x254);
+s32 winner;void* position;s32 i;u32 shift=0;
+for(i=0;i<4;i++,shift+=0x1000000){
+winner=*(s32*)(self+0x254);
 if(winner==i){position=fn_8023E724(winner);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,(winner<<26)|(winner<<24)|0x1000a,-1,-1);}
 else if(!fn_80236B50(i)&&fn_8022F514(i)==1&&*(s32*)(self+0x254)==fn_8022F3DC(i)){
-winner=*(s32*)(self+0x254);position=fn_8023E724(i);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,(winner<<26)|(i<<24)|0x1001000a,-1,-1);}
+winner=*(s32*)(self+0x254);position=fn_8023E724(i);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,((winner<<26)|0x10000000)|shift|0x1000a,-1,-1);}
 }
 *(s32*)(self+0x230)=11;((Actor*)self)->v10(255,1);break;
 }break;}
