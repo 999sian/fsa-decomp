@@ -1431,6 +1431,19 @@ extern "C" void fn_80365AF0(Unk80365AB8* self) {
     }
 }
 
+extern "C" s8 lbl_80542AE0[];
+extern "C" s8 lbl_80542A78[];
+extern "C" s8 lbl_80542A7C[];
+extern "C" u16 lbl_80542AE8[];
+extern "C" const f32 lbl_8050C088[];
+extern "C" f32 lbl_80542BE4;
+extern "C" f32 lbl_80542BE8;
+extern "C" f32 lbl_80542BEC;
+extern "C" f32 lbl_80542BF0;
+extern "C" f32 lbl_80542BF4;
+extern "C" f32 lbl_80542BF8;
+extern "C" f32 lbl_80542BFC;
+
 extern "C" void fn_80365B5C(char* self) {
     s32 kind = (s32)(*(u32*)(self + 0x90) & 0x1f);
     *(s32*)(self + 0x234) = kind;
@@ -1510,8 +1523,8 @@ extern "C" f32 lbl_80542C04;
 #pragma opt_propagation off
 extern "C" void fn_80366E60(void) {
     char* registrations = (char*)lbl_8050C028;
-    const unsigned int* b = (unsigned int*)lbl_804ADB60;
-    unsigned int* first = (unsigned int*)lbl_804ADB60 + 54;
+    const u32* b = lbl_804ADB60;
+    u32* first = lbl_804ADB60 + 54;
     first[0] = b[0];
     first[1] = b[1];
     first[2] = b[2];
@@ -1566,7 +1579,7 @@ extern "C" void fn_80366E60(void) {
     first[51] = b[51];
     first[52] = b[52];
     first[53] = b[53];
-    unsigned int* second = (unsigned int*)lbl_804ADB60 + 162;
+    u32* second = lbl_804ADB60 + 162;
     second[0] = b[108];
     second[1] = b[109];
     second[2] = b[110];
