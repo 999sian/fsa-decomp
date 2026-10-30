@@ -3133,18 +3133,6 @@ extern "C" void fn_803B35F8(void* this_, u32 kind) {
     }
 }
 
-struct ScoreScreenPaneLookup {
-    u8 pad[0x10];
-    Scr_803B1B60* screens[2];
-    u8 pad18[0x438];
-    s32 screenIndex;
-};
-
-static inline void* findScorePane(u8* p, u64 tag) {
-    ScoreScreenPaneLookup* screen = (ScoreScreenPaneLookup*)p;
-    return screen->screens[screen->screenIndex]->v3C(tag);
-}
-
 extern "C" void fn_803B38E8(void* this_) {
     u8* p = (u8*)this_;
     f32 f31;
