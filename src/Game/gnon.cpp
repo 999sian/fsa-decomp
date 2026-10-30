@@ -124,9 +124,6 @@ static inline void gnonSetRotation(f32 (*m)[4], f32 rx, f32 ry, f32 rz, f32 scal
     f32 cs;
     f32 cc;
     f32 cx, cy, sx, sy, sz;
-    m[0][3] = lbl_8053E278;
-    m[1][3] = lbl_8053E278;
-    m[2][3] = lbl_8053E278;
     sx = sin(rx);
     sy = sin(ry);
     sz = sin(rz);
