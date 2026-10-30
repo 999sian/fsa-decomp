@@ -14,7 +14,9 @@ extern char lbl_80476168[];
 extern void* lbl_804AF86C[];
 extern void* lbl_8053AD78;
 #pragma pool_data on
-const char optionLayoutData[56] = "option.blo\0\0kk_kettei_01.bti\0\0\0\0kk_modoru_01.bti";
+const char optionLayoutData[12] = "option.blo";
+const char optionConfirmTexture[20] = "kk_kettei_01.bti";
+const char optionBackTexture[24] = "kk_modoru_01.bti";
 #pragma pool_data reset
 static inline void optionSetFont(J2DScreen* screen,u64 key,JUTFont* font) {
     ((J2DTextBox*)screen->search(key))->setFont(font);
@@ -94,7 +96,7 @@ extern "C" void* fn_803A7708(void* this_, s16 flag) {
 }
 
 extern "C" char* fn_803A7898(char* p) {
-    char* name = lbl_80476168;
+    char* name = (char*)optionLayoutData;
     *(void**)p = lbl_804AF860;
     getTotalFreeSize__7JKRHeapFv(*(void**)((u8*)lbl_80529DEC + 0x8));
     J2DScreen* scr = new J2DScreen();
@@ -114,10 +116,10 @@ extern "C" char* fn_803A7898(char* p) {
     *(void**)(p + 0x34) = *(void**)((u8*)lbl_8053AED8 + 0x8);
     fn_80440D78(lbl_8053AED8, fn_804030C4(0x54494d47, name + 0xc));
     fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, name + 0x20));
-    ((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693031ULL))->setFont(*(JUTFont**)((*(u8**)lbl_8053AD78) + 0x154));
-    ((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->setFont(*(JUTFont**)((*(u8**)lbl_8053AD78) + 0x154));
-    ((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3031ULL))->setFont(*(JUTFont**)((*(u8**)lbl_8053AD78) + 0x154));
-    ((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->setFont(*(JUTFont**)((*(u8**)lbl_8053AD78) + 0x154));
+    optionSetFont(*(J2DScreen**)(p+4),0x5473693031ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    optionSetFont(*(J2DScreen**)(p+4),0x5473693032ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    optionSetFont(*(J2DScreen**)(p+4),0x54736f3031ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    optionSetFont(*(J2DScreen**)(p+4),0x54736f3032ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
     fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3031ULL))->getStringPtr(), 0x97, 0, 0, 0);
     fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693031ULL))->getStringPtr(), 0x37, 0, 0, 0);
     (*(J2DScreen**)(p + 4))->search(0x506f6375723031ULL)->show();
@@ -168,8 +170,8 @@ extern "C" char* fn_803A7898(char* p) {
     *(s16*)(p+0x6e)=0;
     p[0x79]=0;
     p[0x7a]=10;
-    p[0x7b]=0xff;
-    p[0x7c]=0xc0;
+    ((u8*)p)[0x7b]=0xff;
+    ((u8*)p)[0x7c]=0xc0;
     lbl_8053AD90=p;
     return p;
 }
