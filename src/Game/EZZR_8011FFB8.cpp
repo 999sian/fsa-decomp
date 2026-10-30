@@ -295,7 +295,7 @@ extern f32 lbl_8053C99C;
 extern f32 lbl_8053C9A0;
 extern f32 lbl_8053C9A4;
 
-static inline void EZZR_SetMove(EZZR* p, f32 speed, f32 accel) {
+static inline void EZZR_SetMove(EZZR* p, f32 accel, f32 speed) {
     *(f32*)((u8*)p + 0x380) = speed;
     *(f32*)((u8*)p + 0x37c) = accel;
 }
@@ -502,17 +502,44 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(8);
         }
         break;
-    case 7:
+    case 7: {
         if (fn_8012285C(p) < 0) {
             p->v25(0);
             break;
         }
-        if (EZZR_IsNearBarrier(p) && !fn_802DCD0C(fn_802D6A9C()) && fn_801186B0(fn_8011921C(), 0xe)) {
+        s32 i;
+        bool near;
+        if (*(s32*)fn_80131F0C() <= 1) {
+            near = false;
+        } else {
+            f32 dist = lbl_8053C980;
+            i = fn_801F778C(fn_801F856C(), 0x42415249, &p->field_0C, &dist);
+            if (i < 0) {
+                near = false;
+            } else if (dist > lbl_8053C984) {
+                near = false;
+            } else {
+                Actor* a = (Actor*)fn_801F666C(fn_801F856C(), i);
+                if (a == 0) {
+                    near = false;
+                } else if (*((u8*)a + 0x11c) == 0) {
+                    near = false;
+                } else {
+                    near = true;
+                }
+            }
+        }
+        if (near && !fn_802DCD0C(fn_802D6A9C()) && fn_801186B0(fn_8011921C(), 0xe)) {
             u8* ctx = fn_8011921C();
             ctx[2] = 1;
             fn_80118454(fn_8011921C());
             fn_8037AE00(lbl_8053AD70);
-            EZZR_SetAllState(13);
+            for (i = 0; i < *(s32*)fn_80131F0C(); i++) {
+                EZZR* a = (EZZR*)fn_80131E30(fn_80131F0C(), i);
+                if (a != 0) {
+                    a->v25(13);
+                }
+            }
             break;
         }
         if (fn_80138A30(lbl_8053AAF8) > 1) {
@@ -521,6 +548,7 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v37(fn_8012285C(p), lbl_8053C98C, lbl_8053C990, lbl_8053C994, lbl_8053C998, lbl_8053C9A0);
         }
         break;
+    }
     case 9:
         if (fn_8012285C(p) < 0) {
             p->v25(0);
@@ -567,7 +595,8 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(7);
             break;
         }
-        EZZR_SetMove(p, lbl_8053C970, lbl_8053C9A4);
+        *(f32*)((u8*)p + 0x37c) = lbl_8053C9A4;
+        *(f32*)((u8*)p + 0x380) = lbl_8053C970;
         if (p->v48((Vec*)&(const JGeometry::TVec3f&)JGeometry::TVec3f(lbl_8053C964, lbl_8053C964, lbl_8053C964), *(f32*)((u8*)p + 0x380))) {
             p->v25(15);
         }
