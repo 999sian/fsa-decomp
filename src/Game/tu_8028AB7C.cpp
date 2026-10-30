@@ -82,6 +82,9 @@ extern "C" void fn_801F349C(u8* obj, u32 n, f32* v);
 static inline void publishPlatformPos(u8* actor, u32 room, const JGeometry::TVec3<f32>& pos) {
     fn_801F349C(actor, room, (f32*)&pos);
 }
+static inline void publishPlatformXY(u8* actor, u32 room, f32 y, f32 x) {
+    publishPlatformPos(actor, room, JGeometry::TVec3<f32>(x, y, 0.0f));
+}
 extern "C" f32 lbl_805404D0;
 extern "C" f64 lbl_805404E0;
 extern void* lbl_8053AED0;
@@ -100,7 +103,7 @@ extern "C" void fn_8028AE2C(u8* this_) {
     s32 room;
     u8* obj;
     JGeometry::TBox2<f32> box;
-    f32 pv[3];
+    JGeometry::TVec3<f32> pv;
 
     prev = this_[0x234];
     this_[0x262] = 0;
@@ -308,11 +311,7 @@ extern "C" void fn_8028AE2C(u8* this_) {
         for (i = 0; i < 4; i++) {
             if (fn_8022F478(i) == 0) {
                 if (((u8*)lbl_8053AAF8)[0x7e] != 0 && fn_8022C8EC(i) == 0) {
-                    n = (*(u32*)(this_ + 0x90) >> 24) & 7;
-                    cnt = n + 7;
-                    if (n == 0) {
-                        cnt = n;
-                    }
+                    cnt = platformRoom(*(u32*)(this_ + 0x90));
                     s32 room = fn_8023DE58(i);
                         if (room != cnt) {
                         continue;
@@ -368,14 +367,9 @@ extern "C" void fn_8028AE2C(u8* this_) {
             u32 ax;
             u32 az;
             u8* tbl;
-            n = (*(u32*)(this_ + 0x90) >> 24) & 7;
-            idx = n + 7;
-            if (n == 0) {
-                idx = n;
-            }
+            idx = platformRoom(*(u32*)(this_ + 0x90));
             if (idx == 0) {
-                idx = n+7;
-                if (n==0) idx=n;
+                idx = platformRoom(*(u32*)(this_ + 0x90));
                 tbl = fn_802D6A9C();
                 if (idx < 8) {
                     tbl = tbl + 0xcc;
@@ -390,9 +384,8 @@ extern "C" void fn_8028AE2C(u8* this_) {
                 sp = *(u32*)(this_ + 0x90);
                 ax = (sp >> 5) & 0x1f8;
                 az = (sp >> 13) & 0x1f8;
-                publishPlatformPos(tgt, platformRoom(sp),
-                    JGeometry::TVec3<f32>(lbl_805404D8 + ((f32)az + f2),
-                        lbl_805404D8 + ((f32)ax + f3),0.0f));
+                pv.set(lbl_805404D8 + ((f32)az + f2), lbl_805404D8 + ((f32)ax + f3), 0.0f);
+                publishPlatformPos(tgt, platformRoom(sp), pv);
             }
         }
     }
