@@ -1489,6 +1489,15 @@ static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fad
     }
 }
 
+static inline void fadeGroup803F(u8* p, const u64* tags, u8* alphas, f32 fade) {
+    for (s32 i = 0; i < 9; i++, alphas++, tags++) {
+        J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
+        f32 alpha = alphas[0x2ee];
+        alpha *= fade;
+        pane->setAlpha((u8)alpha);
+    }
+}
+
 #pragma opt_common_subs off
 extern "C" void fn_803F943C(u8* p) {
     u8* base=lbl_80478A60;
