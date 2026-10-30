@@ -147,7 +147,7 @@ extern const f32 lbl_8053CE30;
 extern u8* lbl_8053AB10;
 extern "C" void fn_8030C210(void* p);
 extern "C" void fn_801F71A4(u8* p, f32 a, f32 b, f32 c);
-extern "C" void fn_801F2618(u8* this_, s32 a, s32 b);
+extern "C" u8 fn_801F2618(u8* this_, s32 a, s32 b);
 extern "C" void fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_8013FD50(u8* this_) {
     if (*(s32*)(this_ + 0x90) == 2) {
