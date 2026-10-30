@@ -268,9 +268,9 @@ static inline u8 thnkPlayerActive(s32 player) {
     if (fn_802375B0(player) == 0 && (u8)fn_801CCFE4(player)) active = 1;
     return active;
 }
-static inline bool thnkPlayerValid(s32 player) {
-    bool valid = false;
-    if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = true;
+static inline u8 thnkPlayerValid(s32 player) {
+    s32 valid = 0;
+    if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = 1;
     return valid;
 }
 #pragma opt_common_subs reset
@@ -278,7 +278,7 @@ static inline bool thnkPlayerValid(s32 player) {
 extern "C" void fn_801DEA70(void* this_) {
     char* p = (char*)this_;
     s32 state;
-    s32 idx;
+    int idx;
     void* found;
     s32 pause;
     if (*(u16*)(p+0x2cc)==0) fn_801E0CF4(p);
@@ -311,7 +311,7 @@ extern "C" void fn_801DEA70(void* this_) {
             if(fn_802375B0(player)==0 && (u8)fn_801CCFE4(player))active=1;
             if((u8)active && player<fn_80138A30(lbl_8053AAF8))valid=1;
             if(!valid)break;
-            s32 room=*(s32*)(p+4);
+            int room=*(s32*)(p+4);
             s32 playerRoom=fn_8023DE58(*(s32*)(p+0x2a8));
             if(playerRoom!=room)break;
             if(!(fabs(((f32*)fn_8023E724(*(s32*)(p+0x2a8)))[0]-*(f32*)(p+0xc))<lbl_8053F498))break;
@@ -335,7 +335,7 @@ extern "C" void fn_801DEA70(void* this_) {
         f32 height=lbl_8053F498;
         if(*(u32*)(p+0x230)&0x20000)height=lbl_8053F4A0;
         else {
-            s32 i=*(s32*)(p+0x2ac);
+            int i=*(s32*)(p+0x2ac);
             if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;
             else {i=*(s32*)(p+0x2b0);if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;}
         }
@@ -575,7 +575,7 @@ extern "C" void fn_801DEA70(void* this_) {
         f32 height=lbl_8053F498;
         if(*(u32*)(p+0x230)&0x20000)height=lbl_8053F4A0;
         else {
-            s32 i=*(s32*)(p+0x2ac);
+            int i=*(s32*)(p+0x2ac);
             if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;
             else {i=*(s32*)(p+0x2b0);if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;}
         }
