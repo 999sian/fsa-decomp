@@ -1,4 +1,8 @@
 #include "Game/esd/types.h"
+struct ActorGroups80204638 {
+    u32 flags;
+    u8* actors[2][10];
+};
 static u8 lbl_804CADE0[0xd0];
 #include "Game/SinitPoolChain.h"
 
