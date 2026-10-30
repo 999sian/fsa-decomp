@@ -109,6 +109,13 @@ public:
     u8 pad0[0x109];
     u8 f109;
     u8 f10a;
+    u8 choices[12];
+    u8 shuffled[12];
+    u8 alphaFirst[11];
+    u8 alphaSecond[11];
+    u8 alphaThird[9];
+    u8 alphaFourth[6];
+    u8 alphaGrid[10];
 };
 
 typedef void (TU80414F6C::*TU80414F6C_StateFn)();
@@ -818,15 +825,15 @@ static inline void dataSelectChild(u8* p, s32 offset, u64 key) {
 static inline void dataSelectFont(J2DScreen* screen, u64 key, JUTFont* font) {
     ((J2DTextBox*)screen->search(key))->setFont(font);
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs off
 extern "C" void* fn_8041787C(void* this_) {
     f32 y; f32 x;
     u8* p = (u8*)this_;
     const T80416BD0_Tags* t;
-    int i;
-    u8* slot;
-    const u64* b;
     const u64* a;
+    const u64* b;
+    u8* slot;
+    int i;
     *(void**)p = lbl_804B1378;
     t = &lbl_8048CD50;
     lbl_8053AE00 = (s32)p;
@@ -886,13 +893,13 @@ extern "C" void* fn_8041787C(void* this_) {
     fn_80440D78(lbl_8053AED8,fn_804030C4(0x54494d47,t->confirm));
     fn_80440CE4(lbl_8053AED8,fn_804030C4(0x54494d47,t->back));
     *(u16*)(p+0x106)=3;
-    ((u8*)(*(J2DScreen**)(p+0x24))->search(*t->locked))[0xb0]=0;
-    ((u8*)(*(J2DScreen**)(p+0x24))->search(t->locked[1]))[0xb0]=0;
+    { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(*t->locked); pane[0xb0]=0; }
+    { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(t->locked[1]); pane[0xb0]=0; }
     for(i=0,b=(const u64*)(t+0x498);i<8;i++,b++){
         if(fn_803B9120(i)){
-            ((u8*)(*(J2DScreen**)(p+0x24))->search(b[2]))[0xb0]=0;
+            { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(b[2]); pane[0xb0]=0; }
             *(u16*)(p+0x106)|=(u16)(1<<(i+2));
-        }else ((u8*)(*(J2DScreen**)(p+0x24))->search(b[2]))[0xb0]=1;
+        }else { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(b[2]); pane[0xb0]=1; }
     }
     *(s16*)(p+0x104)=0;
     for(s32 j=0;j<10;j++){
