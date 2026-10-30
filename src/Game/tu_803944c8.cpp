@@ -459,7 +459,7 @@ static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
     }
 }
 
-static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
+static inline void msgRestoreChoiceTV(const u8* p, const u64* tags) {
     int j = 0;
     const u64* child = tags;
     for (; j < 4; j++, child++) {
