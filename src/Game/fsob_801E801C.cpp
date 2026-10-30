@@ -29,6 +29,7 @@ extern "C" void fn_801D0F40(char* p);
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void __ct__Q29JGeometry8TVec2_f_Fv();
 extern f32 lbl_8053F5FC;
+extern f32 lbl_8053F608;
 struct Fsob8B10 { u8 pad[0x24]; void* m24; };
 extern Fsob8B10* lbl_8053AB10;
 
