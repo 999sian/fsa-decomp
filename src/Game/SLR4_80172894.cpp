@@ -276,7 +276,7 @@ extern "C" void fn_80172DC4(void* this_) {
         }
         (*(u16*)(p+0x94))=0;
         s32 hp=(*(s32*)(p+0x108));
-        if((*(s32*)(p+0xd8))==0 && ((*(s32*)(p+0x254))!=0 || fn_801F2FAC(p) || fn_801F2DB4(p,0x4e554c4c,0x4e554c4c,0))) {
+        if((*(s32*)(p+0xd8))==0 && (((*(s32*)(p+0x254))==0 && fn_801F2FAC(p)) || fn_801F2DB4(p,0x4e554c4c,0x4e554c4c,0))) {
             if(hp!=(*(s32*)(p+0x108))) {
                 if((s32)((*(u32*)(p+0x90))&0xff)!=6 && (*(s32*)(p+0x4))>=8 && (*(s32*)(p+0x23c))==1) {
                     (*(s32*)(p+0x284))-=10000-(*(s32*)(p+0x108));
@@ -300,8 +300,7 @@ extern "C" void fn_80172DC4(void* this_) {
                         char* entry;
                         Actor* obj;
                         s32 index;
-                        entry=p;
-                        for(index=0;index<4;index++,entry+=4) {
+                        for(index=0,entry=p;index<4;index++,entry+=4) {
                             s32 id=(*(s32*)(entry+0x2c0));
                             if(id>=0) {
                                 obj=(Actor*)fn_801F666C(fn_801F856C(),id);
@@ -323,16 +322,16 @@ extern "C" void fn_80172DC4(void* this_) {
                 (*(s32*)(p+0x230))=2;
             }
             (*(s32*)(p+0x26c))=150;
+            fn_801F2618(p,0,0);
+            if((*(s32*)(p+0x23c))==0) return;
         }
-        fn_801F2618(p,0,0);
-    }
-    if((*(s32*)(p+0x23c))==0) return;
     fn_801F71A4(p+0x3c,(*(f32*)(p+0x2a8)),lbl_8053DAD4,lbl_8053DAC0);
     fn_801F71A4(p+0x40,(*(f32*)(p+0x2ac)),lbl_8053DAD4,lbl_8053DAC0);
     (*(JGeometry::TVec3f*)(p+0xc)).add((*(JGeometry::TVec3f*)(p+0x3c)));
     fn_801EEC98(p,(*(s32*)(p+0x198)),&angle,&direction,&distance,0,0,0);
     if((*(s32*)(p+0x29c))!=2 || (*(s32*)(p+0x264))<4) fn_801F2B7C(p,-100,-1,1);
     else if((s32)((*(u32*)(p+0x90))&0xff)==6) fn_801F2B7C(p,4,-1,3);
+    }
     u8 collision=((u8(*)(void*,s32,s32))fn_801F2618)(p,0,0);
     switch((*(s32*)(p+0x230))) {
     case 0:
@@ -349,8 +348,9 @@ extern "C" void fn_80172DC4(void* this_) {
             (*(s32*)(p+0x230))=0;
             if((*(s32*)(p+0x294))==0 && (*(s32*)(p+0x298))==0) { (*(s32*)(p+0x288))=3;break; }
         }
-        if(direction>=0) {
-            if(((*(u32*)(p+0x90))!=2 && (*(u32*)(p+0x90))!=3) || (*(u8*)(p+0x2a5))==0) (*(s32*)(p+0x98))=direction;
+        s32 facing=direction;
+        if(facing>=0) {
+            if(((*(u32*)(p+0x90))!=2 && (*(u32*)(p+0x90))!=3) || (*(u8*)(p+0x2a5))==0) (*(s32*)(p+0x98))=facing;
             (*(s32*)(p+0x29c))=0;
         } else (*(s32*)(p+0x29c))=1;
         if((*(s32*)(p+0x248))==0) {
