@@ -74,6 +74,10 @@ static inline u8 gnma_cfgFlagId(s32 id) {
 
 struct Handles_gnma { u8 pad[0x27c]; void* h[2]; };
 
+static inline u8 gnmaAreaFlag(s32 id) {
+    return ((u8*)((char*)fn_802D6A9C() + 0x131df))[id];
+}
+
 // GNMA update (vtable slot 3)
 extern "C" void fn_801AAE88(char* this_) {
     switch (*(s32*)(this_ + 0x254)) {
@@ -325,9 +329,9 @@ extern "C" void fn_801EF510(void*);
 extern "C" double fabs(double);
 extern "C" void fn_801AB6A8(char* p) {
     HitBox box;
-    register int i;
-    register int player;
-    register s32 innerRoom;
+    int i;
+    int player;
+    int innerRoom;
     s32 room;
     JGeometry::TVec2<f32> offset;
     offset.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
@@ -349,7 +353,7 @@ extern "C" void fn_801AB6A8(char* p) {
         box.i.x=0.5f*(box.i.x-box.f.x)+box.f.x; box.f.y=0.5f*(box.i.y-box.f.y)+box.f.y;
         for(i=0;i<4;i++) {
             player=fn_801F285C(p,0,0,0,i);
-            if(player>=0) {
+            if((s32)player>=0) {
                 s32 index;
                 u16 angle;
                 fn_801EEC98(p,*(void**)(p+0x198),&angle,&index,0,0,player,2);
