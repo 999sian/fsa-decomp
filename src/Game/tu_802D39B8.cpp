@@ -1935,30 +1935,6 @@ extern "C" void fn_802DA788(char* p) {
     }
 }
 
-static inline void clearRoomArrays802D() {
-    int k, j, i;
-    for(i=0;i<10;i++) for(j=0;j<10;j++) for(k=0;k<8;k++) roomArrays()->flags1048[i][j][k]=0;
-    for(i=0;i<8;i++) for(j=0;j<64;j++) roomArrays()->values2948[i][j]=0;
-    for(i=0;i<4;i++) for(j=0;j<128;j++) roomArrays()->flags2D48[i][j]=0;
-    for(i=0;i<10;i++) for(j=0;j<10;j++){
-      for(k=0;k<32;k+=4){roomArrays()->flags3548[i][j][k+0]=0;roomArrays()->flags6768[i][j][k+0]=0;roomArrays()->flags3548[i][j][k+1]=0;roomArrays()->flags6768[i][j][k+1]=0;roomArrays()->flags3548[i][j][k+2]=0;roomArrays()->flags6768[i][j][k+2]=0;roomArrays()->flags3548[i][j][k+3]=0;roomArrays()->flags6768[i][j][k+3]=0;}
-      for(k=0;k<256;k++) roomArrays()->values9968[i][j][k]=0;
-    }
-    for(i=0;i<8;i++){
-      roomArrays()->keys13068[i]=0;
-      roomArrays()->positions13088[i].set(lbl_8054111C,lbl_8054111C);
-      roomArrays()->owners130C8[i]=-1;
-    }
-    for(i=0;i<8;i++){
-      roomArrays()->positions130E8[i].set(lbl_8054111C,lbl_8054111C);
-      roomArrays()->owners13128[i]=-1;
-      roomArrays()->positions13148[i].set(lbl_8054111C,lbl_8054111C);
-      roomArrays()->owners13188[i]=-1;
-    }
-
-
-}
-
 extern "C" void fn_802DA8DC(char* p) {
     JGeometry::TVec3<f32> camera;
     f32 points[3];
