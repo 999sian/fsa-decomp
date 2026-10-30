@@ -61,6 +61,10 @@ static inline void ryyaFocus(const JGeometry::TVec3f& pos) {
         *(u8*)(camera+0x7f6)=0;
     }
 }
+static inline void ryyaStop(char* obj,JGeometry::TVec3f& v) {
+    v.setAll(0.0f);
+    *(JGeometry::TVec3f*)(obj+0x3c)=v;
+}
 static inline f32 ryyaDistance(char* p,char* obj) {
     f32 dy=*(f32*)(obj+0x10)-*(f32*)(p+0x10);
     f32 dx=*(f32*)(obj+0xc)-*(f32*)(p+0xc);
@@ -189,7 +193,7 @@ s32 index=*(s32*)(p+0x26c);
 if(index>=0){char* obj=fn_801F666C(fn_801F856C(),index);if(obj){
 f32 distance=ryyaDistance(p,obj);
 if(distance>lbl_8053E658) *(s32*)(p+0x26c)=-1;
-else *(JGeometry::TVec3f*)(obj+0x3c)=(zero1.setAll(lbl_8053E654),zero1);
+else *(JGeometry::TVec3f*)(obj+0x3c)=(zero1.set(lbl_8053E654,lbl_8053E654,lbl_8053E654),zero1);
 }}}
 s32 index=*(s32*)(p+0x26c);
 if(index>=0){char* obj=fn_801F666C(fn_801F856C(),index);if(obj) {
@@ -198,7 +202,7 @@ if(distance<lbl_8053E680){
 ryyaSetCycle(p,5);fn_801F0E34(p,0x4005c,0);fn_8013CC50(*(s32*)(p+0x4),p+0xc,0x54e,0,0,0,0,1,lbl_8053E628);
 *(s32*)(p+0x25c)+=1;*(u8*)(obj+0x11c)=0;*(s32*)(p+0x26c)=-1;
 }else{
-*(JGeometry::TVec3f*)(obj+0x3c)=(zero2.setAll(lbl_8053E654),zero2);
+*(JGeometry::TVec3f*)(obj+0x3c)=(zero2.set(lbl_8053E654,lbl_8053E654,lbl_8053E654),zero2);
 fishPos.x=*(f32*)(obj+0xc);fishPos.y=*(f32*)(obj+0x10);fishPos.z=*(f32*)(obj+0x14);
 fn_801F71A4(&fishPos.x,*(f32*)(p+0xc),lbl_8053E684,lbl_8053E628);fn_801F71A4(&fishPos.y,*(f32*)(p+0x10),lbl_8053E684,lbl_8053E628);
 *(JGeometry::TVec3f*)(obj+0xc)=fishPos;
