@@ -1588,6 +1588,7 @@ static inline JUtility::TColor hudCtorColor(u8* pane, u32 slot) {
 static inline void hudCtorAppend(u8* pane, u32 texture, f32 blend) {
     ((bool (*)(u8*, u32, f32))(*(void***)pane)[39])(pane, texture, blend);
 }
+#pragma opt_common_subs on
 extern "C" void* fn_80426DEC(u8* this_) {
 const u8* data=lbl_804B1428;
 const u8* base=lbl_8048E1B8;
@@ -1599,18 +1600,21 @@ lbl_8053AED0[0x10e]|=1;
 u8* graph=(u8*)__nw__FUl(0xd4);
 if(graph) {
 u8* video=*(u8**)(sManager__8JUTVideo+4);
-__ct__13J2DOrthoGraphFffffff(graph,0.0f,0.0f,(f32)*(u16*)(video+4),(f32)*(u16*)(video+6),-10000.0f,10000.0f);
+s32 height=*(u16*)(video+6);
+s32 width=*(u16*)(video+4);
+__ct__13J2DOrthoGraphFffffff(graph,0.0f,0.0f,(f32)width,(f32)height,-10000.0f,10000.0f);
 }
 *(u8**)(p+0x4c)=graph;
 u8* animator=(u8*)__nw__FUl(0x10);if(animator)((void(*)(void*))fn_80441778)(animator);
 *(u8**)(p+0xf0)=animator;
 *(u8**)(p+4)=hudCtorScreen();
 setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+4),(const char*)base+0x106c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
-for(s32 i=0;i<4;i++) {
-*(u8**)(p+8+i*4)=hudCtorScreen();
-setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+8+i*4),(const char*)base+0x107c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
-*(u8**)(p+0x2c+i*4)=hudCtorScreen();
-setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+0x2c+i*4),(const char*)base+0x108c,0x1100000,*(void**)(lbl_80529DEC+0x20));
+u8* screens=p;
+for(s32 i=0;i<4;i++,screens+=4) {
+*(u8**)(screens+8)=hudCtorScreen();
+setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(screens+8),(const char*)base+0x107c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
+*(u8**)(screens+0x2c)=hudCtorScreen();
+setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(screens+0x2c),(const char*)base+0x108c,0x1100000,*(void**)(lbl_80529DEC+0x20));
 }
 *(u8**)(p+0x18)=hudCtorScreen();
 setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+0x18),(const char*)base+0x109c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
@@ -1620,8 +1624,8 @@ GetHeart(*(u8**)(p+4),0x5070336c693031ULL)[0xb0]=0;
 GetHeart(*(u8**)(p+4),0x5070346c693031ULL)[0xb0]=0;
 u8* pane=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x148));
 *(f32*)(p+0xf4)=(*(f32*)(pane+0x28)-*(f32*)(pane+0x20));
-((JUtility::TColor*)(p+0x214))->setRGBA(hudCtorColor(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xa28)),77));
-((JUtility::TColor*)(p+0x210))->setRGBA(hudCtorColor(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xa28)),78));
+((JUtility::TColor*)(p+0x214))->setRGBA(((HeartPane*)hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xa28)))->getBlack());
+((JUtility::TColor*)(p+0x210))->setRGBA(((HeartPane*)hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xa28)))->getWhite());
 const u64* tags0=(const u64*)(base+0xd68);
 const u64* tags1=(const u64*)(base+0xda8);
 const u64* tags2=(const u64*)(base+0xdc8);
@@ -1632,6 +1636,7 @@ const u64* tags6=(const u64*)(base+0xe68);
 const u64* tags7=(const u64*)(base+0xe88);
 const u64* tags8=(const u64*)(base+0xea8);
 const u64* tags9=(const u64*)(base+0xec8);
+const u64* firstTags=tags0;
 u8* owner=p;
 for(s32 i=0;i<4;i++,owner+=4,tags0++,tags1++,tags2++,tags3++,tags4++,tags5++,tags6++,tags7++,tags8++,tags9++) {
 hudCtorChild(owner,0x50,(u8**)(p+0x18),tags0);
@@ -1672,22 +1677,22 @@ p[0x23b]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xf28))[0xb2];
 for(s32 i=0;i<6;i++)p[0x247+i]=hudCtorFind(*(u8**)(p+0x2c),(const u64*)(base+0xfa0)+i)[0xb2];
 for(s32 i=0;i<4;i++) for(s32 j=0;j<8;j++) for(s32 k=0;k<3;k++) {
 u32 resource=fn_804030C4('TIMG',((const u32*)data)[k]);
-hudCtorAppend(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x228)+i*8+j),resource,lbl_80543A4C);
-hudCtorAppend(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x328)+i*8+j),resource,lbl_80543A4C);
+((HeartPane*)hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x228)+i*8+j))->append(resource,lbl_80543A4C);
+((HeartPane*)hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x328)+i*8+j))->append(resource,lbl_80543A4C);
 }
 for(s32 i=0;i<4;i++)for(s32 j=1;j<4;j++) {
 u32 resource=fn_804030C4('TIMG',((const u32*)(data+0x34))[j]);
-hudCtorAppend(hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xd68)+i),resource,lbl_80543A4C);
-hudCtorAppend(hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xd88)+i),resource,lbl_80543A4C);
+((HeartPane*)hudCtorFind(*(u8**)(p+0x18),firstTags+i))->append(resource,lbl_80543A4C);
+((HeartPane*)hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xd88)+i))->append(resource,lbl_80543A4C);
 }
 for(s32 i=0;i<4;i++)for(s32 j=0;j<8;j++)for(s32 k=0;k<3;k++) {
 u32 resource=fn_804030C4('TIMG',((const u32*)data)[k]);
-hudCtorAppend(hudCtorFind(*(u8**)(p+8+i*4),(const u64*)(base+0xc68)+j),resource,lbl_80543A4C);
-hudCtorAppend(hudCtorFind(*(u8**)(p+8+i*4),(const u64*)(base+0xce8)+j),resource,lbl_80543A4C);
+((HeartPane*)hudCtorFind(*(u8**)(p+8+i*4),(const u64*)(base+0xc68)+j))->append(resource,lbl_80543A4C);
+((HeartPane*)hudCtorFind(*(u8**)(screens+8),(const u64*)(base+0xce8)+j))->append(resource,lbl_80543A4C);
 }
 return p;
 }
-
+#pragma opt_common_subs reset
 
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
