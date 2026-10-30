@@ -1,5 +1,6 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+typedef Vec RckSdkVec;
 #define Vec ActorVec
 #include "Game/Actor.h"
 
