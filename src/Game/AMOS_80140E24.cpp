@@ -95,7 +95,7 @@ extern "C" void* fn_801F8108(void*, u32, s32, f32);
 extern "C" void* fn_801F666C(void*, void*);
 extern "C" void fn_801BEDBC(void*);
 extern f32 lbl_8053CEC4, lbl_8053CECC, lbl_8053CEE8;
-extern const JGeometry::TVec3f lbl_80465A98[4];
+extern const Vec lbl_80465A98[4];
 static inline void AMOSnormalize(JGeometry::TVec3f* v) { v->normalize(); }
 static inline f32 AMOSsquared(const JGeometry::TVec3f* v) { return v->squared(); }
 extern "C" void fn_80141064(u8* this_) {
@@ -216,8 +216,8 @@ extern "C" void fn_80141064(u8* this_) {
                 }
             }
             fn_801EE8F4(this_, &pos, 0, 0);
-            JMathInlineVEC::PSVECScale(&pos, &pos, lbl_8053CEA8);
-            f32 z = lbl_8053CEBC;
+            pos.scale(lbl_8053CEA8);
+            f32 z = 2.0f;
             (*(f32*)(this_+0x3c)) = pos.x;
             (*(f32*)(this_+0x40)) = pos.y;
             (*(f32*)(this_+0x44)) = z;
@@ -327,9 +327,13 @@ b.set(*(JGeometry::TBox2f*)(this_+0x60));
                 }
             }
             if (dir >= 0 && dir < 4) {
+                const Vec& direction = lbl_80465A98[dir];
                 (*(s32*)(this_+0x30c)) = 0;
-                const JGeometry::TVec3f* direction = &lbl_80465A98[dir];
-                (*(JGeometry::TVec3f*)(this_+0x3c)).set(*direction);
+                (*(f32*)(this_+0x3c)) = lbl_80465A98[dir].x;
+                f32 dy=direction.y;
+                f32 dz=direction.z;
+                (*(f32*)(this_+0x40))=dy;
+                (*(f32*)(this_+0x44))=dz;
                 (*(JGeometry::TVec3f*)(this_+0x320)).set((*(JGeometry::TVec3f*)(this_+0xc)));
             }
         }
@@ -351,7 +355,7 @@ b.set(*(JGeometry::TBox2f*)(this_+0x60));
             (*(f32*)(this_+0x14)) = 0.0f;
             JGeometry::TVec3f p;
  p.x=(*(f32*)(this_+0xc)); p.y=(*(f32*)(this_+0x10)); p.z=(*(f32*)(this_+0x14));
-            p.y += lbl_8053CEB8;
+            p.y += 8.0f;
             if ((*(s32*)(this_+0x304))) {
                 fn_8013CC50((*(s32*)(this_+0x4)), &p, lbl_8053CEBC, 0x3cf, 0,0,0,0,1);
                 fn_801F0E34(this_,0x40007,0);
@@ -361,7 +365,7 @@ b.set(*(JGeometry::TBox2f*)(this_+0x60));
             vel.setAll(0.0f);
             s32 room=(*(s32*)(this_+0x4));
                         s16 result;
-            ((void(*)(void*,JGeometry::TVec3f,void*,void*,void*,s32,f32))fn_800FDEA0)(this_+0x230,(*(JGeometry::TVec3f*)(this_+0xc)),&vel,&room,&result,0x200,lbl_8053CEE8);
+            ((void(*)(void*,JGeometry::TVec3f,void*,void*,void*,s32,f32))fn_800FDEA0)(this_+0x230,(*(JGeometry::TVec3f*)(this_+0xc)),&vel,&room,&result,0x200,0.3f);
             (*(f32*)(this_+0x3c))=vel.x; (*(f32*)(this_+0x40))=vel.y; (*(f32*)(this_+0x44))=lbl_8053CEBC;
         }
         fn_801F2B7C(this_,-100,-1,1);
