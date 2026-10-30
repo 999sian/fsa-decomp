@@ -334,10 +334,10 @@ extern "C" void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
 extern "C" void* fn_8013C824();
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*,void*);
 extern "C" void fn_80431174(void*, u8);
-extern "C" s32 fn_80309C4C(void*, s32, s32);
+extern "C" u32 fn_80309C4C(void*, s32, s32);
 extern "C" void fn_80458880(void*, s32, s32);
 extern "C" void* lbl_8053AD30;
-void fn_803D75B0(u8* self) {
+extern "C" void fn_803D75B0(u8* self) {
  f32 f29, f30, f31;
  register const char* base=lbl_80476F80;
  if(self[0x80]==1) {
