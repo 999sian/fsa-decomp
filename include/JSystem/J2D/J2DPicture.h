@@ -195,6 +195,11 @@ struct J2DPicture : public J2DPane {
         mBlendAlpha      = other.mBlendAlpha;
     }
 
+    inline void setCornerColor(u8 corner, JUtility::TColor color)
+    {
+        mCornerColors[corner] = color;
+    }
+
     inline void setCornerColor(TCornerColor colors)
     {
         mCornerColors[0].set(colors.mColor0);
