@@ -96,12 +96,11 @@ extern "C" void* fn_803A7708(void* this_, s16 flag) {
 }
 
 extern "C" char* fn_803A7898(char* p) {
-    char* name = (char*)optionLayoutData;
     *(void**)p = lbl_804AF860;
     getTotalFreeSize__7JKRHeapFv(*(void**)((u8*)lbl_80529DEC + 0x8));
     J2DScreen* scr = new J2DScreen();
     *(J2DScreen**)(p + 0x4) = scr;
-    (*(J2DScreen**)(p + 4))->setPriority(name, 0x1100000, *(JKRArchive**)((u8*)lbl_80529DEC + 0x2c));
+    (*(J2DScreen**)(p + 4))->setPriority(optionLayoutData, 0x1100000, *(JKRArchive**)((u8*)lbl_80529DEC + 0x2c));
     fn_803A7898_child(p, 0x8, 0x506f7062626b3033ULL);
     fn_803A7898_child(p, 0xc, 0x506f6375723031ULL);
     fn_803A7898_child(p, 0x10, 0x506f6375723032ULL);
@@ -114,8 +113,9 @@ extern "C" char* fn_803A7898(char* p) {
     fn_803A7898_child(p, 0x2c, 0x4e646174613033ULL);
     fn_803A7898_child(p, 0x30, 0x50746f7062623037ULL);
     *(void**)(p + 0x34) = *(void**)((u8*)lbl_8053AED8 + 0x8);
-    fn_80440D78(lbl_8053AED8, fn_804030C4(0x54494d47, name + 0xc));
-    fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, name + 0x20));
+    void* confirmTexture=fn_804030C4(0x54494d47, (char*)optionConfirmTexture);
+    fn_80440D78(lbl_8053AED8,confirmTexture);
+    fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, (char*)optionBackTexture));
     optionSetFont(*(J2DScreen**)(p+4),0x5473693031ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
     optionSetFont(*(J2DScreen**)(p+4),0x5473693032ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
     optionSetFont(*(J2DScreen**)(p+4),0x54736f3031ULL,*(JUTFont**)((u8*)lbl_8053AD78+0x154));
