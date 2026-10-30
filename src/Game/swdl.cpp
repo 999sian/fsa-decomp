@@ -25,6 +25,48 @@ extern "C" void fn_80236ED8(s32 a, s32 b);
 extern "C" void fn_8045873C(void* p, s32 a);
 extern "C" void fn_80128C58(s32 a);
 extern "C" u8* lbl_8053AAF8;
+extern "C" char* lbl_8053AB10;
+extern "C" char* lbl_8053AEC8;
+extern "C" void* lbl_8053AF80;
+extern "C" void* lbl_8053AED0;
+extern "C" const u8 lbl_8046F628[];
+extern "C" char lbl_80529DEC[];
+extern "C" char lbl_8050EC80[];
+extern "C" f32 lbl_80541438;
+extern "C" f32 lbl_8054143C;
+extern "C" char* fn_802D6A9C();
+extern "C" void fn_802D9FF4(void*, s32, s32);
+extern "C" void fn_802D6AAC(void*, s32);
+extern "C" u8 fn_802DE7CC();
+extern "C" u8 fn_80230534(s32);
+extern "C" u8 fn_80388EEC(s32);
+extern "C" void fn_8038BD08(s32, s32, s32, void*, s32);
+extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
+extern "C" void fn_801EE434(void*);
+extern "C" void fn_80230FD0(s32,s32);
+extern "C" s32 fn_80237810(s32);
+extern "C" void fn_80236554(s32,s32,s32);
+extern "C" void* fn_80119DD0();
+extern "C" void fn_80119468(void*,s32,s32);
+extern "C" void fn_80136798(void*,s32,s32);
+struct SwdlControlBase { u32 _0, _4; };
+struct SwdlControl : SwdlControlBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void command(u32*);
+};
+static inline u32 Swdl_isPlayer(s32 i) {
+    return (lbl_8053AAF8[0x82] & (u8)(1<<i)) != 0;
+}
+static inline s32 Swdl_isCleared() {
+    s32 room=*(s32*)(lbl_80529DEC+0x118);
+    s32 layer=*(s32*)(lbl_80529DEC+0x11c);
+    if(room<0 || room>7) return 0;
+    if(layer<0 || layer>3) return 0;
+    return (*(u32*)(lbl_8050EC80 + 0x28 + 200**(s32*)(lbl_8050EC80+0x10)) & (1 << (room*4+layer))) != 0;
+}
+
 extern "C" void fn_802F0330(void* this_) {
     u8* p = (u8*)this_;
     s32 i;
