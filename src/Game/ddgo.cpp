@@ -462,6 +462,74 @@ extern "C" void fn_801AE32C(void* this_) {
     }
 }
 
+#include "JSystem/JMath/JMath.h"
+extern void* lbl_8053AB10;
+extern f32 lbl_804A3108[];
+extern u16 lbl_8053A110[];
+extern f32 lbl_8053E7D8, lbl_8053E7E8, lbl_8053E7EC, lbl_8053E7F0, lbl_8053E7F4;
+extern f32 lbl_8053E7F8, lbl_8053E7FC, lbl_8053E800, lbl_8053E804, lbl_8053E808, lbl_8053E80C;
+extern f32 lbl_8053E810, lbl_8053E814, lbl_8053E818, lbl_8053E81C, lbl_8053E820, lbl_8053E824;
+extern "C" void fn_8030C210(void*, void*);
+extern "C" void fn_801F71A4(f32*, f32, f32, f32);
+extern "C" void fn_801F3D94(void*, s32);
+extern "C" void fn_801EF510(void*);
+extern "C" u8 fn_801F2618(void*, s32, s32);
+extern "C" s32 fn_801F285C(void*, s32, s32, s32, s32);
+extern "C" u8 fn_80237948(s32, f32*);
+extern "C" void fn_80458FF0(void*, u32, s32, s32);
+extern "C" void fn_801EEC98(void*, s32, s32, s32*, s32, s32, s32, s32);
+extern "C" s32 fn_801F2718(void*, u32);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16);
+extern "C" void fn_80134DE4(void*, s32, s32);
+static inline void DdgoChangeState(char* t, s32 state) {
+    if (*(s32*)(t+0x290) != state) {
+        *(s32*)(t+0x290)=state;
+        *(u8*)(t+0x298)=0;
+        *(s32*)(t+0x238)=0;
+        *(s32*)(t+0x24c)=0;
+        switch (*(s32*)(t+0x290)) {
+        case 0: *(s32*)(t+0x28c)=0; break;
+        case 1: *(s32*)(t+0x28c)=12; *(s32*)(t+0x258)=*(s32*)(t+0x28c); break;
+        case 2: *(s32*)(t+0x28c)=24; break;
+        case 3: *(s32*)(t+0x28c)=32; break;
+        case 4: *(s32*)(t+0x28c)=36; break;
+        }
+    }
+}
+static inline void DdgoSetVelocity(char* t, f32 a, f32 b) {
+    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=0.0f;
+    switch (*(s32*)(t+0x98)) {
+    case 0: *(f32*)(t+0x268)=a; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
+    case 1: *(f32*)(t+0x268)=b; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
+    case 2: *(f32*)(t+0x268)=0; *(f32*)(t+0x26c)=a; *(f32*)(t+0x270)=0; break;
+    case 3: *(f32*)(t+0x268)=0; *(f32*)(t+0x26c)=b; *(f32*)(t+0x270)=0; break;
+    }
+}
+static inline void DdgoStop(char* t) {
+    *(f32*)(t+0x270)=*(f32*)(t+0x26c)=*(f32*)(t+0x268)=
+    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=0.0f;
+}
+static inline s32 DdgoOldDirection(char* t) {
+    s32 dir=3;
+    s32 frame=*(s32*)(t+0x258);
+    if (frame<3) dir=0;
+    if (frame>=3 && frame<=5) dir=1;
+    if (frame>=6 && frame<=8) dir=2;
+    return dir;
+}
+static inline f32 DdgoRandom() {
+    u32* seed=(u32*)((char*)lbl_8053AAF8+0xb4);
+    *seed=*seed*0x19660d+0x3c6ef35f;
+    u32 bits=(*seed>>9)|0x3f800000;
+    return *(f32*)&bits-1.0f;
+}
+static inline void DdgoBox(char* t, f32* box, f32 scale) {
+    f32 l=box[0], top=box[1], b=box[3], r=box[2];
+    l=scale*l; top=scale*top; b=scale*b;
+    *(f32*)(t+0x60)=l; *(f32*)(t+0x64)=top;
+    *(f32*)(t+0x68)=scale*r; *(f32*)(t+0x6c)=b;
+}
+
 extern "C" void fn_801ACFF4(void* this_);
 extern "C" void fn_801ACCF0(char* this_);
 struct DdgoTimers { u8 pad[0x238]; s32 t[5]; };
