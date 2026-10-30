@@ -151,17 +151,16 @@ extern "C" void fn_8013ABCC(CamViewBase* this_, const Vec* pos, Mtx mtx) {
  this_->v5();
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8013AC54(Mtx mtx) {
-    J3DDrawBuffer* (&buffers)[2] = *(J3DDrawBuffer* (*)[2])((char*)lbl_8053AB10 + 8);
-    J3DDrawBuffer* opa = buffers[0];
-    J3DDrawBuffer* xlu = buffers[1];
+    const u8* mgr = (const u8*)lbl_8053AB10;
+    J3DDrawBuffer* opa = *(J3DDrawBuffer* const*)(mgr + 8);
+    J3DDrawBuffer* xlu = *(J3DDrawBuffer* const*)(mgr + 12);
     j3dSys.setDrawBuffer(opa, 0);
     j3dSys.setDrawBuffer(xlu, 1);
     j3dSys.setViewMtx(mtx);
 }
-
-#pragma opt_lifetimes on
-#pragma opt_common_subs on
+#pragma opt_propagation reset
 extern "C" void fn_8013AC90(Vec* pos, GXColor* color, s32 a, s32 b, f32 (* __restrict mtx)[4], f32 scale) {
     Mtx m;
     Mtx tmp;
