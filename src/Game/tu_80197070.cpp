@@ -823,10 +823,10 @@ next:
 }
 #pragma opt_propagation reset
 #else
-extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
+extern "C" void fn_8019C500(Pos_8019* this_, int flag) {
     Pos_8019* p;
     s32 id;
-    int i;
+    s32 i;
     Vec_8019 pos;
     p=this_;
     for(i=0;i<4;i++,p=(Pos_8019*)((char*)p+12)) {
