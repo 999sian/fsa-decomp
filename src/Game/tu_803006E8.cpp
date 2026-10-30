@@ -309,7 +309,7 @@ static inline BOOL gbaHandshakeBuf(GbaChan* c, u32 expected, u32* cmd) {
 
 static inline u32 gbaExpectedId(void) {
     if (fn_801365A8() == 0) {
-        return lbl_80541620;
+        return *(const volatile u32*)&lbl_80541620;
     }
     return lbl_80541628;
 }
@@ -583,7 +583,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             if (!(s & 8)) {
                 goto check;
             }
-            if ((err = GBARead(c->chan, &((u8*)c)[readOff + 0x28], c->status)) != 0) {
+            if ((err = GBARead(c->chan, &c->pktBytes[readOff], c->status)) != 0) {
                 goto fail;
             }
             if ((c->status[0] & 0x30) != 0x30) {
@@ -655,7 +655,11 @@ extern "C" void* fn_80300E1C(void* arg) {
                     goto wait;
                 }
             }
-            expected = gbaExpectedId();
+            if (fn_801365A8() == 0) {
+                expected = *(const volatile u32*)&lbl_80541620;
+            } else {
+                expected = *(const volatile u32*)&lbl_80541628;
+            }
             if (gbaHandshakeBuf(c, expected, &req)) {
                 goto wait;
             }
@@ -673,7 +677,11 @@ extern "C" void* fn_80300E1C(void* arg) {
             if ((err = GBAReset(c->chan, c->status)) != 0) {
                 goto wait;
             }
-            expected = gbaExpectedId();
+            if (fn_801365A8() == 0) {
+                expected = *(const volatile u32*)&lbl_80541620;
+            } else {
+                expected = *(const volatile u32*)&lbl_80541628;
+            }
             if (gbaHandshakeBuf(c, expected, &req)) {
                 goto wait;
             }
