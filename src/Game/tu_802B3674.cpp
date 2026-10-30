@@ -169,14 +169,14 @@ extern "C" void fn_802B3AB4(void) {
 
 extern "C" u8 fn_80236B50(s32);
 extern "C" void fn_801F856C(void);
-extern char lbl_8053AAF8[];
+extern char* lbl_8053AAF8;
 extern char lbl_80529DEC[];
-extern char lbl_8053AB10[];
+extern char* lbl_8053AB10;
 extern float lbl_80540A18[];
-extern float lbl_80540A1C[];
+extern const f32 lbl_80540A1C;
 extern "C" void fn_802B3AB8(char* this_) {
     u32 flag = 0;
-    if (*(u8*)(*(char**)lbl_8053AAF8 + 0x7f) != 0) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
         if (fn_80236B50(0) && fn_80236B50(1) && fn_80236B50(2) && fn_80236B50(3)) {
         }
     }
