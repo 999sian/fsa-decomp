@@ -682,7 +682,7 @@ extern "C" void fn_803BE3D8(void* a) {
     u8* p=(u8*)a;
     JGeometry::TVec3<f32> pos1,pos2,pos;
     u8* base=(u8*)lbl_804765D0;
-    ((MenuSlots24*)p)->pulseFrame++;
+    advanceMenuPulse((MenuSlots24*)p);
     if(*(s16*)(p+0xdc)>=0x36) *(s16*)(p+0xdc)=0;
     if(*(s32*)(p+0xd0)!=0) {
         DrawRec rec1;
@@ -3895,11 +3895,11 @@ extern "C" void fn_803C9F80(char* this_) {
         fn_80402628(*(void**)(p + 0x18), t192, *(u8*)(*(u8**)(p + 0x18) + 0x28), 0);
         ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), t192, 0, 0.0f, lbl_80543498);
         fn_80402628(*(void**)(p + 0x1c), t192, *(u8*)(*(u8**)(p + 0x1c) + 0x28), 0);
-        {u8* keys;
+        {u8* keys; s32 i;
         for (i = 0, keys = base + 0x48; i < 0x51; i++, keys += 8) {
             void* o = (*(J2DPane**)(p + 4))->search(*(u64*)keys);
             fn_804023D0(*(void**)(p + 0x14), o, ((MenuSlots24*)p)->flags132[(u32)i]); }}
-        {u8* keys;
+        {u8* keys; s32 i;
         for (i = 0, keys = base + 0x2d0; i < 0x13; i++, keys += 8) {
             void* o = (*(J2DPane**)(p + 8))->search(*(u64*)keys);
             fn_804023D0(*(void**)(p + 0x14), o, ((MenuSlots24*)p)->flags183[(u32)i]); }}
@@ -5190,7 +5190,7 @@ extern "C" f32 lbl_805434B8;
 extern "C" void fn_8013B490(void* a);
 extern "C" void fn_804316EC(void* a);
 extern "C" void fn_80440EE8(void* a);
-extern "C" void fn_803BE3D8(void* a);
+
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* a, f32 x, f32 y, void* ctx);
 extern "C" void fn_803CEED4(u8* p) {
     f32 f31;
