@@ -328,20 +328,27 @@ extern const f32 lbl_8053F214;
 #pragma auto_inline off
 inline f32 t84Random() { return ((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(); }
 
-struct T84List {
-    inline T84List() : n(0) {}
-    inline void add(s32 x) { v[n] = x; n++; }
-    s32 v[11];
-    s32 n;
-};
 static inline void t84PickTarget(char* p) {
-    if (*(u8*)(p+0x33f)==3) {
-        T84List list;
-        list.add(1);list.add(2);list.add(5);list.add(6);list.add(9);list.add(10);
-        if(list.n>0) *(u8*)(p+0x334)=list.v[fn_801CD664(list.n)];
-        else *(u8*)(p+0x334)=0;
-    } else *(u8*)(p+0x334)=fn_801CD664(12);
-    *(u16*)(p+0x338)=fn_801CD664(61)+60;
+    if (*(u8*)(p + 0x33f) == 3) {
+                                            s32 l[12];
+                  s32 n = 1;
+          l[0] = 1;
+          l[n++] = 2;
+          l[2] = 5;
+        ++n;
+          l[n++] = 6;
+          l[4] = 9;
+        ++n;
+          l[n++] = 10;
+            if (n > 0) {
+              *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+          } else {
+              *(u8*)(p + 0x334) = 0;
+          }
+    } else {
+        *(u8*)(p + 0x334) = fn_801CD664(0xc);
+    }
+    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
 }
 static inline void t84FrontPos(char* p, JGeometry::TVec3<f32>* v) {
     if (*(u32*)(p + 0x230) & 0x2000) {
