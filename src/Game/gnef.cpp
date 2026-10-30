@@ -122,33 +122,6 @@ extern "C" s32 fn_801F68E0(void);
 extern "C" void fn_80458FF0(void*, int, int, int);
 extern "C" void fn_8022ADE4(void);
 extern u8* lbl_8053AF80;
-extern "C" void fn_802ED984(u8* this_) {
-    switch (*(s32*)(this_ + 0x24c)) {
-    case 0:
-        fn_802D6A9C();
-        if (fn_802DCD0C() == 0) {
-            u8* s = *(u8**)(lbl_8053AB10 + 0x24);
-            if (s[0x7f5] == 0) {
-                s[0x7f4] = 1;
-                *(s32*)(s + 0x7f8) = 4;
-                *(f32*)(s + 0x7fc) = *(f32*)(this_ + 0xc);
-                *(f32*)(s + 0x800) = *(f32*)(this_ + 0x10);
-                *(f32*)(s + 0x804) = *(f32*)(this_ + 0x14);
-                s[0x7f6] = 0;
-            }
-            if (fn_801F68E0() != 0) {
-                *(s32*)(this_ + 0x250) = 0x14;
-                *(s32*)(this_ + 0x24c) += 1;
-                fn_80458FF0(lbl_8053AF80, 0x10000d, 0, 0);
-                fn_8022ADE4();
-            }
-        }
-        break;
-    default:
-        break;
-    }
-}
-
 // ---- fn_802EE704: link to WARP / SLR4 actors
 class GnefActor {
 public:
@@ -179,6 +152,85 @@ struct GnefActorMgr {
 extern "C" GnefActorMgr* fn_801F856C(void);
 extern const f32 lbl_80541404;
 extern "C" void fn_802EEA24(u8 v);
+struct GnefSlot {
+    f32 a, b, c, d;
+    u16 e;
+    u8 f;
+};
+extern void* lbl_804AA330[];
+extern "C" void* fn_804032E8(u32 type, void* name);
+extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
+
+class GnefSelf {
+public:
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual u8 v34();
+    s32 m04;
+    u8 pad08[4];
+    f32 x, y, z; // 0x0c
+    u8 pad18[0x90 - 0x18];
+    u32 m90;
+    u8 pad94[0x11c - 0x94];
+    u8 m11C;
+    u8 pad11D[2];
+    u8 m11F;
+    u8 pad120[0x230 - 0x120];
+    s32 mHandles[7]; // 0x230
+    s32 m24C;
+    s32 m250;
+    s32 m254;
+    s32 m258;
+    s32 m25C;
+    s32 m260;
+    s32 m264;
+    f32 m268, m26C, m270;
+    u8 m274;
+    u8 m275;
+    u8 m276;
+    u8 m277;
+    u8 m278;
+    u8 m279;
+    u8 pad27A[2];
+    GnefSlot mSlots[4]; // 0x27c
+    void* m2CC;
+};
+extern "C" void fn_802ED984(u8* this_) {
+    switch (*(s32*)(this_ + 0x24c)) {
+    case 0:
+        fn_802D6A9C();
+        if (fn_802DCD0C() == 0) {
+            u8* s = *(u8**)(lbl_8053AB10 + 0x24);
+            if (s[0x7f5] == 0) {
+                s[0x7f4] = 1;
+                *(s32*)(s + 0x7f8) = 4;
+                *(f32*)(s + 0x7fc) = *(f32*)(this_ + 0xc);
+                *(f32*)(s + 0x800) = *(f32*)(this_ + 0x10);
+                *(f32*)(s + 0x804) = *(f32*)(this_ + 0x14);
+                s[0x7f6] = 0;
+            }
+            if (fn_801F68E0() != 0) {
+                *(s32*)(this_ + 0x250) = 0x14;
+                *(s32*)(this_ + 0x24c) += 1;
+                fn_80458FF0(lbl_8053AF80, 0x10000d, 0, 0);
+                fn_8022ADE4();
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 
 struct GnefObj {
     u8 pad00[0xc];
@@ -313,58 +365,6 @@ extern "C" u8 fn_802ED538(u8* this_) {
 }
 #pragma fp_relax reset
 // ---- fn_802EE830: init
-struct GnefSlot {
-    f32 a, b, c, d;
-    u16 e;
-    u8 f;
-};
-extern void* lbl_804AA330[];
-extern "C" void* fn_804032E8(u32 type, void* name);
-extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
-
-class GnefSelf {
-public:
-    virtual void v08();
-    virtual void v0C();
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1C();
-    virtual void v20();
-    virtual void v24();
-    virtual void v28();
-    virtual void v2C();
-    virtual void v30();
-    virtual u8 v34();
-    s32 m04;
-    u8 pad08[4];
-    f32 x, y, z; // 0x0c
-    u8 pad18[0x90 - 0x18];
-    u32 m90;
-    u8 pad94[0x11c - 0x94];
-    u8 m11C;
-    u8 pad11D[2];
-    u8 m11F;
-    u8 pad120[0x230 - 0x120];
-    s32 mHandles[7]; // 0x230
-    s32 m24C;
-    s32 m250;
-    s32 m254;
-    s32 m258;
-    s32 m25C;
-    s32 m260;
-    s32 m264;
-    f32 m268, m26C, m270;
-    u8 m274;
-    u8 m275;
-    u8 m276;
-    u8 m277;
-    u8 m278;
-    u8 m279;
-    u8 pad27A[2];
-    GnefSlot mSlots[4]; // 0x27c
-    void* m2CC;
-};
 
 extern "C" void fn_802EE830(GnefSelf* this_) {
     this_->mHandles[0] = 0;
