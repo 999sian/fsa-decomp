@@ -867,7 +867,6 @@ extern "C" void fn_8037EB4C(void);
 #pragma push
 #pragma dont_inline off
 #pragma opt_strength_reduction off
-#pragma opt_propagation off
 extern "C" void fn_80424148(u8* this_, s32 i, u8 flag) {
     u8* p=this_+i*4;
     const u8* table=lbl_8048E1B8;
