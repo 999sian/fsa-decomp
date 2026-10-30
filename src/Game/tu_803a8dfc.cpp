@@ -3304,8 +3304,8 @@ static inline void IntroReadAlpha(Menu_Intro* m, u8* dst, const u64* tags, s32 c
     }
 }
 
-static inline void IntroSetupScores(u8* p, int count) {
-    for (int i = 0; i < count; i++) {
+static inline void IntroSetupScores(u8* p, s32 count) {
+    for (s32 i = 0; i < count; i++) {
         u8* q = p + i * 4;
         ((PaneVt_803B38E8*)*(void**)(q + 0xa8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
         ((PaneVt_803B38E8*)*(void**)(q + 0xb8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
@@ -3333,14 +3333,13 @@ static inline void IntroSetupScores(u8* p, int count) {
 }
 
 extern "C" void fn_803B42C0(void* this_) {
-    IntroTags* tbl = (IntroTags*)lbl_80476208;
+    register IntroTags* tbl = (IntroTags*)lbl_80476208;
     u8* p = (u8*)this_;
     Menu_Intro* m;
     f32 f31;
     u8* src;
     u8* dst;
     int i;
-    const u64* t;
 
     *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
     *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
@@ -3428,20 +3427,11 @@ extern "C" void fn_803B42C0(void* this_) {
     fn_803832BC(((J2DTextBox*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743032ULL))->getStringPtr(), 0xdd, 0, 0, 0);
     fn_803832BC(((J2DTextBox*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743031ULL))->getStringPtr(), 0xdd, 0, 0, 0);
     m = (Menu_Intro*)p;
-    t = tbl->title;
-    for (i = 0; i < 13; i++, t++) {
-        m->alphaTitle[i] = m->screens[m->cur]->search(*t)->getAlpha();
-    }
+    IntroReadAlpha(m, m->alphaTitle, tbl->title, 13);
     m->y41c = m->screens[m->cur]->search(0x00506d6d776b3032ULL)->getBounds()->i.y;
-    t = tbl->p3[0];
-    for (i = 0; i < 3; i++, t++) {
-        m->alpha3[i] = m->screens[m->cur]->search(*t)->getAlpha();
-    }
+    IntroReadAlpha(m, m->alpha3, tbl->p3[0], 3);
     m->y420 = m->screens[m->cur]->search(0x5031616762623032ULL)->getBounds()->i.y;
-    t = tbl->p2[0];
-    for (i = 0; i < 2; i++, t++) {
-        m->alpha[i] = m->screens[m->cur]->search(*t)->getAlpha();
-    }
+    IntroReadAlpha(m, m->alpha, tbl->p2[0], 2);
     m->y424 = m->screens[m->cur]->search(0x000050316f6b3032ULL)->getBounds()->i.y;
     *(f32*)(p + 0x428) = m->screens[m->cur]->search(0x0050316167623031ULL)->getBounds()->i.y;
     m->screens[m->cur]->search(0x004e646174613032ULL)->hide();
