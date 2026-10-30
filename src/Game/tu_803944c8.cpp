@@ -51,6 +51,11 @@ struct MsgSequenceInit {
         *(void**)this=lbl_804AF774;data[0x5c]=1;
     }
 };
+static inline void msgRenderingSub(u8* sub,void* reference) {
+    __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(sub,reference);
+    *(void**)sub=lbl_804AF6E4;
+    *(s32*)(sub+0x1d8)=0;*(s32*)(sub+0x1dc)=0;sub[0x1e8]=0;
+}
 struct MsgRenderingInit {
     u8 data[0x2dc];
     MsgRenderingInit(u8* owner) {
