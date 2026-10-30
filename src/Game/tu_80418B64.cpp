@@ -447,6 +447,8 @@ struct HudPaneNames8041 {
     u64 ba0[4];
 };
 
+static inline const HudPaneNames8041* HudNames8041() { return (const HudPaneNames8041*)lbl_8048D320; }
+
 struct HudFade8041 {
     u8 pad000[0x118];
     f32 fade[4];
@@ -459,14 +461,18 @@ extern "C" void fn_8037EB4C(void);
 #pragma dont_inline on
 extern f32 lbl_80543A18;
 extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
-    const u8* base = (const u8*)lbl_8048D320;
-    s32 off = idx * 4;
-    u8* p = self + off;
+    const HudPaneNames8041* tbl = (const HudPaneNames8041*)lbl_8048D320;
+    u8* p;
+    s32 off;
+    off = idx * 4;
+    p = self + off;
     f32 v29 = *(f32*)(p + 0x118);
     f32 v30 = *(f32*)(p + 0x138);
     f32 v31 = *(f32*)(p + 0x148);
     s32 k;
     s32 j;
+    const u64* a;
+    const u64* b;
     if (idx >= 2) {
         fn_80402E08(*(u8**)(p + 0x74), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0x84), lbl_80543A00, fn_8043D57C(lbl_8053AED0));
@@ -580,44 +586,44 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
     }
 
     if (v29 != *(f32*)(p + 0x118) || v30 != *(f32*)(p + 0x138) || v31 != *(f32*)(p + 0x148) || (u8)flag != 0) {
-        const u64* t0 = (const u64*)(base + 0x4f8) + idx * 2;
-        (*(SubObj**)(self + 4))->w13(t0[0])->w07((s32)((f32)self[0x24c] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 4))->w13(t0[1])->w07((s32)((f32)self[0x24d] * *(f32*)(p + 0x118)));
-        const u64* a = (const u64*)(base + 0x3b8) + idx * 5;
-        const u64* b = (const u64*)(base + 0x458) + idx * 5;
+        HudFade8041* h = (HudFade8041*)self;
+        (*(SubObj**)(self + 4))->w13(tbl->a4f8[idx][0])->w07((s32)((f32)self[0x24c] * *(f32*)(p + 0x118)));
+        (*(SubObj**)(self + 4))->w13(tbl->a4f8[idx][1])->w07((s32)((f32)self[0x24d] * *(f32*)(p + 0x118)));
+        a = tbl->a3b8[idx];
+        b = tbl->a458[idx];
         for (j = 0; j < 5; j++) {
-            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x24e] * ((f32*)(self + 0x118))[idx]));
-            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x24f] * ((f32*)(self + 0x118))[idx]));
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x24e] * h->fade[idx]));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x24f] * h->fade[idx]));
             a++; b++;
         }
-        a = (const u64*)(base + 0x838) + idx * 3;
-        b = (const u64*)(base + 0x898) + idx * 3;
+        a = tbl->a838[idx];
+        b = tbl->a898[idx];
         for (k = 0; k < 3; k++) {
-            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x258 + k] * ((f32*)(self + 0x118))[idx]));
-            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25b + k] * ((f32*)(self + 0x118))[idx]));
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x258 + k] * h->fade[idx]));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25b + k] * h->fade[idx]));
             a++; b++;
         }
-        a = (const u64*)(base + 0x538) + idx * 12;
-        b = (const u64*)(base + 0x6b8) + idx * 12;
+        a = tbl->a538[idx];
+        b = tbl->a6b8[idx];
         for (k = 0; k < 12; k++) {
-            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x25e] * ((f32*)(self + 0x118))[idx]));
-            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25f] * ((f32*)(self + 0x118))[idx]));
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x25e] * h->fade[idx]));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25f] * h->fade[idx]));
             a++; b++;
         }
-        a = (const u64*)(base + 0x8f8) + idx * 6;
+        a = tbl->a8f8[idx];
         for (k = 0; k < 6; k++) {
-            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x260 + k] * ((f32*)(self + 0x118))[idx]));
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x260 + k] * h->fade[idx]));
             a++;
         }
-        (*(SubObj**)(self + 4))->w13(((const u64*)(base + 0xb40))[idx])->w07((s32)((f32)self[0x266] * *(f32*)(p + 0x138)));
-        (*(SubObj**)(self + 0x18))->w13(((const u64*)(base + 0xb20))[idx])->w07((s32)((f32)self[0x267] * *(f32*)(p + 0x148)));
-        (*(SubObj**)(self + 0x18))->w13(((const u64*)(base + 0xae0))[idx])->w07((s32)((f32)self[0x268] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 0x18))->w13(((const u64*)(base + 0xb00))[idx])->w07((s32)((f32)self[0x269] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 4))->w13(((const u64*)(base + 0xb80))[idx])->w07((s32)((f32)self[0x26a] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 4))->w13(((const u64*)(base + 0xba0))[idx])->w07((s32)((f32)self[0x26b] * *(f32*)(p + 0x118)));
-        a = (const u64*)(base + 0x9d8) + idx * 4;
+        (*(SubObj**)(self + 4))->w13(tbl->b40[idx])->w07((s32)((f32)self[0x266] * *(f32*)(p + 0x138)));
+        (*(SubObj**)(self + 0x18))->w13(tbl->b20[idx])->w07((s32)((f32)self[0x267] * *(f32*)(p + 0x148)));
+        (*(SubObj**)(self + 0x18))->w13(tbl->ae0[idx])->w07((s32)((f32)self[0x268] * *(f32*)(p + 0x118)));
+        (*(SubObj**)(self + 0x18))->w13(tbl->b00[idx])->w07((s32)((f32)self[0x269] * *(f32*)(p + 0x118)));
+        (*(SubObj**)(self + 4))->w13(tbl->b80[idx])->w07((s32)((f32)self[0x26a] * *(f32*)(p + 0x118)));
+        (*(SubObj**)(self + 4))->w13(tbl->ba0[idx])->w07((s32)((f32)self[0x26b] * *(f32*)(p + 0x118)));
+        a = tbl->a9d8[idx];
         for (k = 0; k < 4; k++) {
-            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x26c + k] * ((f32*)(self + 0x118))[idx]));
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x26c + k] * h->fade[idx]));
             a++;
         }
     }
