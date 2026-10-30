@@ -432,6 +432,23 @@ extern "C" u8 fn_80384C58(s32,s32);
 extern "C" void fn_801F6884(void*);
 extern const s32 lbl_804A2B08[];
 extern const f32 lbl_8053E4BC;
+extern const f32 lbl_8053E4C4;
+static inline void sykyPrepareBounds(u8* p, JGeometry::TVec3<f32>& marker, JGeometry::TVec3<f32>& spawn, JGeometry::TVec3<f32>& saved, JGeometry::TBox2<f32>& box) {
+    marker = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    marker.y -= lbl_8053E4BC;
+    spawn.x = *(f32*)(p + 0xc);
+    spawn.y = *(f32*)(p + 0x10);
+    spawn.z = *(f32*)(p + 0x14);
+    saved = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
+    box.addPos(*(JGeometry::TVec2<f32>*)&spawn);
+}
+static inline u16 sykyFacingAngle(const f32 x, const f32 y) {
+    f32 radians=JMath::atanTable_.atan2_(x,y);
+    return (u16)(s32)(radians*lbl_8053E4C4);
+}
+
+extern const f32 lbl_8053E4BC;
 extern const f32 lbl_8053E4C0;
 extern const f32 lbl_8053E4C4;
 extern const f32 lbl_8053E4C8;
@@ -446,19 +463,20 @@ extern "C" void fn_8019F3AC(u8* p) {
  JGeometry::TVec3<f32> copy0,copy1,copy4,copy6;
  JGeometry::TVec3<f32> dir0,dir1,dir2,dir6;
  f32 dist0,dist1,dist2,dist6;
- s32 i,count,id,direction;
- marker=(*(JGeometry::TVec3<f32>*)(p+0xc));marker.y-=lbl_8053E4BC;
- spawn.set((*(f32*)(p+0xc)),(*(f32*)(p+0x10)),(*(f32*)(p+0x14)));
+ int direction,id,count;
+ marker=(*(JGeometry::TVec3<f32>*)(p+0xc));
+ spawn.x=*(f32*)(p+0xc);spawn.y=*(f32*)(p+0x10);spawn.z=*(f32*)(p+0x14);
  saved=(*(JGeometry::TVec3<f32>*)(p+0xc));
+ marker.y-=lbl_8053E4BC;
  box.set(*(JGeometry::TBox2<f32>*)(p+0x60));
- box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
+ box.addPos(*(JGeometry::TVec2<f32>*)&spawn);
  fn_80239914(&box,(*(s32*)(p+4)),(*(s32*)(p+0x198)));
  box=*(JGeometry::TBox2<f32>*)(p+0x70);
  box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
  switch((*(s32*)(p+0x230))){
  case 0:{
    int different=0;
-   for(i=0;i<4;i++){s32 room=(*(s32*)(p+4));if(room!=fn_8023DE58(i)){different=1;break;}}
+   for(int i=0;i<4;i++){s32 room=(*(s32*)(p+4));if(room!=fn_8023DE58(i)){different=1;break;}}
    if(different){
      fn_8022FEB8(&box,(*(s32*)(p+4)),(*(s32*)(p+0x198)),1,0);
      (*(s32*)(p+0x250))=fn_8022FD8C((*(s32*)(p+0x198)));
@@ -467,7 +485,7 @@ extern "C" void fn_8019F3AC(u8* p) {
      if(!fn_8038AD24((*(s32*)(p+0x250)),0x342,handle,room,&copy0,0))break;
      fn_801EE8F4(p,&dir0,&dist0,(*(s32*)(p+0x250))+1);
      if(dist0<lbl_8053E4C0){
-  u16 a=(u16)(s32)(JMath::atanTable_.atan2_(-dir0.x,-dir0.y)*lbl_8053E4C4);
+  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir0.x,-dir0.y));
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -482,7 +500,7 @@ extern "C" void fn_8019F3AC(u8* p) {
      if(!fn_8038AD24((*(s32*)(p+0x250)),0x334,handle,room,&copy1,0))break;
      fn_801EE8F4(p,&dir1,&dist1,(*(s32*)(p+0x250))+1);
      if(dist1<lbl_8053E4C0){
-  u16 a=(u16)(s32)(JMath::atanTable_.atan2_(-dir1.x,-dir1.y)*lbl_8053E4C4);
+  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir1.x,-dir1.y));
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -508,7 +526,7 @@ extern "C" void fn_8019F3AC(u8* p) {
      (*(s32*)(p+0x23c))=120;(*(s32*)(p+0x240))=0;(*(s32*)(p+0x244))=0;
      fn_801EE8F4(p,&dir2,&dist2,2);
      if(dist2<lbl_8053E4C0){
-  u16 a=(u16)(s32)(JMath::atanTable_.atan2_(-dir2.x,-dir2.y)*lbl_8053E4C4);
+  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir2.x,-dir2.y));
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -517,13 +535,13 @@ extern "C" void fn_8019F3AC(u8* p) {
      (*(u8*)(p+0x28c))=1;(*(s32*)(p+0x230))=3;
    }break;
  case 3:{
-   spawn.set((*(f32*)(p+0xc)),(*(f32*)(p+0x10)),(*(f32*)(p+0x14)));
+   spawn.x=*(f32*)(p+0xc);spawn.y=*(f32*)(p+0x10);spawn.z=*(f32*)(p+0x14);
    (*(f32*)(p+0xc))=lbl_8053E4C8;(*(f32*)(p+0x10))=lbl_8053E4CC;
    box=*(JGeometry::TBox2<f32>*)(p+0x70);box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
    fn_80239914(&box,(*(s32*)(p+4)),(*(s32*)(p+0x198)));
    (*(JGeometry::TVec3<f32>*)(p+0xc)).set(spawn);
    int active=0;
-   for(i=0;i<4;i++)if(fn_8023F264(i) && fn_8023DE58(i)<8)active=1;
+   for(int i=0;i<4;i++)if(fn_8023F264(i) && fn_8023DE58(i)<8)active=1;
    if(!active){
      u8* mgr=(u8*)fn_802D6A9C();
      camera=*(JGeometry::TBox2<f32>*)(mgr+0xcc);
@@ -535,12 +553,12 @@ extern "C" void fn_8019F3AC(u8* p) {
        c[0x7f6]=0;
      }
      if((*(s32*)(p+0x260))==0){
-       for(i=0;i<4;i++){((s32*)(p+0x26c))[i]=fn_802373EC(i);((s32*)(p+0x27c))[i]=fn_8023725C(i);fn_802372F8(i,4,1);}
+       for(int i=0;i<4;i++){((SykySavedPlayers*)p)->movement[i]=fn_802373EC(i);((SykySavedPlayers*)p)->mode[i]=fn_8023725C(i);fn_802372F8(i,4,1);}
        (*(s32*)(p+0x260))=1;
      }
    }
    count=0;
-   for(i=0;i<4;i++){
+   for(int i=0;i<4;i++){
      if(lbl_804C6330[fn_8022F340(i)]>=10)lbl_8053ABB8[i]=1;
      if(lbl_8053ABB8[i]==1 || fn_8022F514(i))count++;
    }
@@ -549,14 +567,14 @@ extern "C" void fn_8019F3AC(u8* p) {
      if((*(s32*)(p+0x25c))>70){
        (*(s32*)(p+0x2ac))=-1;
        if(!fn_801F68E0(fn_801F856C()))break;
-       for(i=0;i<4;i++)fn_80230C6C(i);
+       for(int i=0;i<4;i++)fn_80230C6C(i);
        fn_801F0D20(p,0x3b);fn_80458508(lbl_8053AF80,0);
        (*(s32*)(p+0x98))=2;(*(s32*)(p+0x24c))=0;(*(s32*)(p+0x250))=0;(*(s32*)(p+0x254))=0;(*(s32*)(p+0x258))=0;(*(s32*)(p+0x25c))=0;
        (*(s32*)(p+0x23c))=0;(*(s32*)(p+0x240))=0;(*(s32*)(p+0x244))=0;(*(u8*)(p+0x28c))=0;(*(s32*)(p+0x230))=4;break;
      }
    }
    if((*(s32*)(p+0x258))==0){
-     count=0;for(i=0;i<4;i++)if(lbl_804C6330[i]>=5||fn_8022F514(i))count++;
+     count=0;for(int i=0;i<4;i++)if(lbl_804C6330[i]>=5||fn_8022F514(i))count++;
      if(count>=4){fn_801F0D20(p,0x3f);fn_80458508(lbl_8053AF80,1);(*(s32*)(p+0x258))=1;}
    }
    if((*(s32*)(p+0x23c))==0){
@@ -586,7 +604,7 @@ extern "C" void fn_8019F3AC(u8* p) {
    (*(s32*)(p+0x24c))++;
    if((*(s32*)(p+0x24c))>50){
      (*(s32*)(p+0x24c))=51;
-     if((*(s32*)(p+0x2ac))<0){for(i=0;i<4;i++)if(!fn_8022F478(i)){(*(s32*)(p+0x2ac))=i;break;}}
+     if((*(s32*)(p+0x2ac))<0){for(int i=0;i<4;i++)if(!fn_8022F478(i)){(*(s32*)(p+0x2ac))=i;break;}}
      fn_8022FE80((*(s32*)(p+0x2ac)),fn_8023DE58((*(s32*)(p+0x2ac))),(*(s32*)(p+0x198)),0,0);
      if((*(s32*)(p+0x2ac))==fn_8022FD8C((*(s32*)(p+0x198)))){
        s32 player=(*(s32*)(p+0x2ac));s32 handle=(*(s32*)(p+0x198));s32 room=(*(s32*)(p+4));copy4=marker;
@@ -597,7 +615,7 @@ extern "C" void fn_8019F3AC(u8* p) {
    fn_8022FE80((*(s32*)(p+0x2ac)),fn_8023DE58((*(s32*)(p+0x2ac))),(*(s32*)(p+0x198)),0,0);
    if(fn_803865B8((*(s32*)(p+0x2ac))) && fn_80384C58((*(s32*)(p+0x2ac)),(*(s32*)(p+0x198)))){
      fn_801F6884(fn_801F856C());
-     for(i=0;i<4;i++)if(!fn_8022F514(i))fn_802372F8(i,((s32*)(p+0x26c))[i],((s32*)(p+0x27c))[i]);
+     for(int i=0;i<4;i++)if(!fn_8022F514(i))fn_802372F8(i,((SykySavedPlayers*)p)->movement[i],((SykySavedPlayers*)p)->mode[i]);
      fn_80138B7C(lbl_8053AAF8);((Actor*)p)->v10(0xff,1);fn_8022B17C();(*(s32*)(p+0x230))=6;
    }break;
  case 6:{
@@ -608,7 +626,7 @@ extern "C" void fn_8019F3AC(u8* p) {
    if(!fn_8038AD24((*(s32*)(p+0x250)),0x338,handle,room,&copy6,0))break;
    fn_801EE8F4(p,&dir6,&dist6,(*(s32*)(p+0x250))+1);
    if(dist6<lbl_8053E4C0){
-  u16 a=(u16)(s32)(JMath::atanTable_.atan2_(-dir6.x,-dir6.y)*lbl_8053E4C4);
+  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir6.x,-dir6.y));
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -623,7 +641,7 @@ extern "C" void fn_8019F3AC(u8* p) {
    fn_8022FEB8(&box,(*(s32*)(p+4)),(*(s32*)(p+0x198)),1,0);
    if(fn_80388CAC((*(s32*)(p+0x250)),(*(s32*)(p+0x198))))(*(s32*)(p+0x230))=0;break;
  }
- for(i=0;i<4;i++)if(((s32*)(p+0x238))[i]>0)((s32*)(p+0x238))[i]--;
+ for(int i=0;i<4;i++)if(((s32*)(p+0x238))[i]>0)((s32*)(p+0x238))[i]--;
  if((*(s32*)(p+0x238))==0){
    (*(s32*)(p+0x264))=lbl_804A2B08[(*(s32*)(p+0x248))];(*(s32*)(p+0x238))=15;(*(s32*)(p+0x248))++;(*(s32*)(p+0x248))&=3;
  }
