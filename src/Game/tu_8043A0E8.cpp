@@ -1653,6 +1653,9 @@ extern "C" u8 lbl_80529DEC[];
 extern "C" u8 lbl_8048F710[];
 extern "C" void* lbl_8053AED0;
 extern "C" char* lbl_8053AAF8;
+extern u8* lbl_8053AD78;
+extern u8 lbl_804AF86C[];
+extern const f32 lbl_80543D28;
 extern "C" void fn_8043F504(u8* self) {
     s32 i;
     u8* p;
