@@ -71,6 +71,36 @@ struct ActorVt_gnon {
     virtual void setShadow(s32 type, f32 x, f32 y);
 };
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+#include "JSystem/JGeometry/Vec.h"
+struct GnonVirtuals : ActorVt_gnon {
+virtual u8 v9(f32,f32,f32);
+virtual void v10();virtual void v11();virtual void v12();virtual void v13();virtual void v14();virtual void v15();virtual void v16();virtual void v17();virtual void v18();
+virtual void v19();virtual void v20(s32);
+};
+extern "C" void fn_8018E890(void*);
+extern "C" void fn_801546BC(void*);
+extern "C" void fn_80154718(void*);
+extern "C" void fn_8017ECC0();
+extern "C" void fn_801F3D94(void*,s32);
+extern "C" u8 fn_801F2FAC(void*);
+extern "C" s32 fn_801F285C(void*,s32,s32,s32,s32);
+extern "C" void fn_801F3128(void*,void*);
+extern "C" void fn_80238548(s32,s32,void*,s32);
+extern "C" s32 fn_801F2718(void*,u32);
+extern "C" void* fn_8015445C(s32);
+extern "C" u16 fn_8018A590();
+extern "C" u32 fn_801544C8(void*);
+extern "C" void fn_801F37AC(void*,s32,void*,s32,s32,s32);
+extern "C" void fn_801544D0(void*,s32);
+extern "C" void fn_8018A5A8(void*,s32);
+extern "C" void fn_801F71A4(void*,f32,f32,f32);
+extern "C" void fn_801545F0(void*,void*);
+extern "C" void fn_801F2B20(void*,s32);
+extern "C" void fn_80154590(void*,f32,f32,f32,f32);
+extern "C" s32 fn_80154510(void*);
+extern "C" s32 fn_801545C0(void*,s32,s32);
+extern u8 lbl_8053AB90,lbl_8053AB91;
+extern const f32 lbl_8053E29C,lbl_8053E2A0,lbl_8053E2A4,lbl_8053E2A8,lbl_8053E2AC,lbl_8053E2B0,lbl_8053E2B4,lbl_8053E2B8,lbl_8053E2BC,lbl_8053E2C0,lbl_8053E2C4,lbl_8053E2C8,lbl_8053E2CC,lbl_8053E2D0,lbl_8053E2D4;
 
 extern "C" void fn_80192038(ActorVt_gnon* this_) {
     fn_801F0E34(this_, 0x40006, 0);
