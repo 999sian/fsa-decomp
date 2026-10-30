@@ -937,7 +937,7 @@ extern "C" void fn_8039C630(MsgProc* p, u8 kind, s32 count) {
 struct MsgMeasure {
     u8 pad0[0x38];
     JUTFont* font;            // 0x38
-    u8 pad3c[0x44 - 0x3c];
+    u32 bits[2];              // 0x3c
     f32 scale;                // 0x44
     f32 fontW;                // 0x48
     f32 lineW[(0xf4 - 0x4c) / 4];  // 0x4c
