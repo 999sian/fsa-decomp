@@ -739,12 +739,15 @@ static inline void key0LinkPosKey(const Key0Pt& pos, const Key0Pt& key, u32 pack
     fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
 }
 
+static inline u32 key0MgrBits() {
+    u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+    return ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+}
+
 static inline void key0LinkHere2(char* p) {
-    u32 x18;
     u32 packed = key0PackActorFlags((u8*)p);
     if (!fn_802DCD0C(fn_802D6A9C())) {
-        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-        packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+        packed |= key0MgrBits();
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
