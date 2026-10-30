@@ -76,12 +76,6 @@ extern "C" void fn_801F71A4(f32* value, f32 target, f32 rate, f32 limit);
 extern "C" u8 fn_801F2618(Actor* this_, Vec* push, s32 flag);
 extern "C" u8 fn_802265DC(f32* pos, s32 room, s32 flag);
 extern "C" s32 fn_80346330(u8* this_);
-namespace JMath {
-struct TSinCosTableFSA {
-    f32 mTable[2048][2];
-};
-extern TSinCosTableFSA sincosTable_;
-}
 extern void* lbl_8053AAF8;
 extern const f32 lbl_805423B8;
 extern const f32 lbl_805423BC;
