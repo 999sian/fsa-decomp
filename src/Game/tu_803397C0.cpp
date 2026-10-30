@@ -94,56 +94,273 @@ extern const f32 lbl_80542108;
 extern const f32 lbl_8054210C;
 extern "C" void fn_802F6CF4(void* obj, JGeometry::TVec3f* pos, void* res, DrawRec* rec);
 extern "C" void fn_801F06F0(u8* a, void* res, s32 id, void* rec, s32 p5, f32 sx, f32 sy);
+static inline void setRotZ_80339AEC(Mtx m, s16 angle) {
+    f32 s = JMASinShort(angle);
+    f32 c = JMACosShort(angle);
+    m[0][0] = c;
+    m[0][1] = -s;
+    m[1][0] = s;
+    m[1][1] = c;
+    m[2][2] = 1.0f;
+    m[2][1] = 0.0f;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[0][2] = 0.0f;
+}
+static inline void setRotY_80339AEC(Mtx m, s16 angle) {
+    f32 s = JMASinShort(angle);
+    f32 c = JMACosShort(angle);
+    m[0][0] = c;
+    m[1][1] = 1.0f;
+    m[0][2] = s;
+    m[2][0] = -s;
+    m[2][2] = c;
+    m[2][1] = 0.0f;
+    m[1][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[0][1] = 0.0f;
+}
 extern "C" void fn_801EFD34(u8* a, void* res, void* rec, s32 n, f32 x, f32 y, f32 z);
 extern "C" void PSMTXIdentity(f32 m[3][4]);
 extern "C" void fn_80339AEC(u8* self) {
-    f32 m1[3][4];
-    f32 m2[3][4];
-    u8 tbl[16];
-    s32 neg1;
-    s32 zero;
-    s32 zero2;
-    u8 flags[11];
-    s32 three;
-    u8 flags2[3];
-    s32 neg2;
-    s32 zero3;
-    s32 two;
-    f32 v1[3];
-    f32 v2[3];
-    f32 v3[3];
-    f32 v4[3];
-    for (u8 i = 0; i < 16; i += 8) {
-        tbl[i] = i;
-        tbl[i + 1] = i + 1;
-        tbl[i + 2] = i + 2;
-        tbl[i + 3] = i + 3;
-        tbl[i + 4] = i + 4;
-        tbl[i + 5] = i + 5;
-        tbl[i + 6] = i + 6;
-        tbl[i + 7] = i + 7;
+    struct ResMgr {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void* getRes(u32 type, const char* name);
+    };
+    DrawRec rec;
+    Mtx rot;
+    Mtx trans;
+    f32 s;
+    f32 c;
+    PSMTXIdentity(rot);
+    PSMTXIdentity(trans);
+    rec.b1c = 1;
+    rec.b1d = 1;
+    if (*(s32*)(self + 0x230) != 0 && *(s32*)(self + 0x230) != 4) {
+        if (*(s32*)(self + 0x254) == 1) {
+            *(u8*)&rec.w14 = 0x96;
+        }
+        switch (*(u32*)(self + 0x24c)) {
+        case 0:
+        case 8: {
+            PSMTXTrans(trans, -8.0f, -8.0f, 0.0f);
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[0][1] = -s;
+            rot[1][0] = s;
+            rot[1][1] = c;
+            rot[2][2] = 1.0f;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[2][0] = 0.0f;
+            rot[0][2] = 0.0f;
+            PSMTXConcat(rot, trans, rot);
+            rec.w18 = rot;
+            JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
+            if (*(s32*)(self + 4) < 8) {
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "floor1_smp.bin"), &rec);
+            }
+            rec.b1d = 0;
+            *(u8*)&rec.w14 = 0;
+            ((u8*)&rec.w10)[0] = 0x28;
+            ((u8*)&rec.w10)[1] = 0x28;
+            ((u8*)&rec.w10)[2] = 0x28;
+            f32 a = 223.0f - 0.5f * *(f32*)(self + 0x14);
+            ((u8*)&rec.w10)[3] = (s32)(159.0f >= a ? 159.0f : a);
+            JGeometry::TVec3f pos2(*(f32*)(self + 0xc), *(f32*)(self + 0x10), 0.0f);
+            if (*(s32*)(self + 4) < 8) {
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos2, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "floor1_smp.bin"), &rec);
+            }
+            break;
+        }
+        case 1: {
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[1][1] = 1.0f;
+            rot[0][2] = s;
+            rot[2][0] = -s;
+            rot[2][2] = c;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[1][0] = 0.0f;
+            rot[0][1] = 0.0f;
+            rec.w18 = rot;
+            fn_801F06F0(self, (void*)"enemy_both2_sob.bin", 0x27, &rec, 7, 1.0f, 1.0f);
+            break;
+        }
+        case 2: {
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[1][1] = 1.0f;
+            rot[0][2] = s;
+            rot[2][0] = -s;
+            rot[2][2] = c;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[1][0] = 0.0f;
+            rot[0][1] = 0.0f;
+            rec.w18 = rot;
+            s32 kind = **(s8**)(self + 0x288);
+            if (kind == 'r' || kind == 's' || kind == 'y') {
+                fn_801EFD34(self, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x54494d47, "wood_ura.bti"), &rec, 7, 0.0f, -16.0f, 0.0f);
+            } else if (kind == 'l' || kind == 'x' || kind == 'p') {
+                fn_801EFD34(self, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x54494d47, "wood_yasi.bti"), &rec, 7, 0.0f, -16.0f, 0.0f);
+            } else {
+                fn_801EFD34(self, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x54494d47, "wood_omote.bti"), &rec, 7, 0.0f, -16.0f, 0.0f);
+            }
+            break;
+        }
+        case 3: {
+            PSMTXTrans(trans, -48.0f, -48.0f, 0.0f);
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[0][1] = -s;
+            rot[1][0] = s;
+            rot[1][1] = c;
+            rot[2][2] = 1.0f;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[2][0] = 0.0f;
+            rot[0][2] = 0.0f;
+            PSMTXConcat(rot, trans, rot);
+            rec.w18 = rot;
+            JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
+            if (*(s32*)(self + 4) < 8) {
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "house_smp.bin"), &rec);
+            }
+            rec.b1d = 0;
+            *(u8*)&rec.w14 = 0;
+            ((u8*)&rec.w10)[0] = 0x28;
+            ((u8*)&rec.w10)[1] = 0x28;
+            ((u8*)&rec.w10)[2] = 0x28;
+            f32 a = 223.0f - 0.5f * *(f32*)(self + 0x14);
+            ((u8*)&rec.w10)[3] = (s32)(159.0f >= a ? 159.0f : a);
+            JGeometry::TVec3f pos2(*(f32*)(self + 0xc), *(f32*)(self + 0x10), 0.0f);
+            if (*(s32*)(self + 4) < 8) {
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos2, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "house_smp.bin"), &rec);
+            }
+            break;
+        }
+        case 4: {
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[1][1] = 1.0f;
+            rot[0][2] = s;
+            rot[2][0] = -s;
+            rot[2][2] = c;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[1][0] = 0.0f;
+            rot[0][1] = 0.0f;
+            rec.w18 = rot;
+            fn_801F06F0(self, (void*)"enemy_gc_sob.bin", 0x16d, &rec, 7, 1.0f, 1.0f);
+            break;
+        }
+        case 5: {
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[1][1] = 1.0f;
+            rot[0][2] = s;
+            rot[2][0] = -s;
+            rot[2][2] = c;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[1][0] = 0.0f;
+            rot[0][1] = 0.0f;
+            rec.w18 = rot;
+            fn_801F06F0(self, (void*)"enemy_both2_sob.bin", 0x21, &rec, 7, 1.0f, 1.0f);
+            break;
+        }
+        case 6:
+        case 9: {
+            PSMTXTrans(trans, -16.0f, -16.0f, 0.0f);
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[0][1] = -s;
+            rot[1][0] = s;
+            rot[1][1] = c;
+            rot[2][2] = 1.0f;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[2][0] = 0.0f;
+            rot[0][2] = 0.0f;
+            PSMTXConcat(rot, trans, rot);
+            rec.w18 = rot;
+            JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
+            if (*(s32*)(self + 4) < 8) {
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "statue_smp.bin"), &rec);
+            }
+            rec.b1d = 0;
+            *(u8*)&rec.w14 = 0;
+            ((u8*)&rec.w10)[0] = 0x28;
+            ((u8*)&rec.w10)[1] = 0x28;
+            ((u8*)&rec.w10)[2] = 0x28;
+            f32 a = 223.0f - 0.5f * *(f32*)(self + 0x14);
+            ((u8*)&rec.w10)[3] = (s32)(159.0f >= a ? 159.0f : a);
+            JGeometry::TVec3f pos2(*(f32*)(self + 0xc), *(f32*)(self + 0x10), 0.0f);
+            if (*(s32*)(self + 4) < 8) {
+                fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos2, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "statue_smp.bin"), &rec);
+            }
+            break;
+        }
+        case 7: {
+            PSMTXTrans(trans, -8.0f, -8.0f, 0.0f);
+            s = JMASinShort(*(s16*)(self + 0x25a));
+            c = JMACosShort(*(s16*)(self + 0x25a));
+            rot[0][0] = c;
+            rot[0][1] = -s;
+            rot[1][0] = s;
+            rot[1][1] = c;
+            rot[2][2] = 1.0f;
+            rot[2][1] = 0.0f;
+            rot[1][2] = 0.0f;
+            rot[2][0] = 0.0f;
+            rot[0][2] = 0.0f;
+            PSMTXConcat(rot, trans, rot);
+            rec.w18 = rot;
+            if (*(u8*)(self + 0x258) != 0) {
+                JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
+                if (*(s32*)(self + 4) < 8) {
+                    fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "empty_smp.bin"), &rec);
+                }
+            } else {
+                JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
+                if (*(s32*)(self + 4) < 8) {
+                    fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "treasure_smp.bin"), &rec);
+                }
+            }
+            rec.b1d = 0;
+            *(u8*)&rec.w14 = 0;
+            ((u8*)&rec.w10)[0] = 0x28;
+            ((u8*)&rec.w10)[1] = 0x28;
+            ((u8*)&rec.w10)[2] = 0x28;
+            f32 a = 223.0f - 0.5f * *(f32*)(self + 0x14);
+            ((u8*)&rec.w10)[3] = (s32)(159.0f >= a ? 159.0f : a);
+            if (*(u8*)(self + 0x258) != 0) {
+                JGeometry::TVec3f pos2(*(f32*)(self + 0xc), *(f32*)(self + 0x10), 0.0f);
+                if (*(s32*)(self + 4) < 8) {
+                    fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos2, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "empty_smp.bin"), &rec);
+                }
+            } else {
+                JGeometry::TVec3f pos2(*(f32*)(self + 0xc), *(f32*)(self + 0x10), 0.0f);
+                if (*(s32*)(self + 4) < 8) {
+                    fn_802F6CF4(((void**)lbl_8053AB10)[8], &pos2, (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->getRes(0x534d5020, "treasure_smp.bin"), &rec);
+                }
+            }
+            break;
+        }
+        }
     }
-    neg1 = -1;
-    zero = 0;
-    zero2 = 0;
-    flags[0] = 0;
-    flags[1] = 0;
-    flags[2] = 0;
-    flags[3] = 1;
-    flags[4] = 1;
-    flags[5] = 0;
-    flags[6] = 0;
-    flags[7] = 0;
-    flags[8] = 0;
-    flags[9] = 0;
-    flags[10] = 1;
-    three = 3;
-    neg2 = -1;
-    two = 2;
-    PSMTXIdentity(m2);
-    PSMTXIdentity(m1);
-    flags[0] = 1;
-    flags[1] = 1;
 }
 
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
