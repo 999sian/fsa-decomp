@@ -1,5 +1,5 @@
 #include "types.h"
-#include <math.h>
+#include "std/math.h"
 #include "JSystem/JGeometry/Vec.h"
 #define POOH_S32(p,o) (*(s32*)((u8*)(p)+(o)))
 #define POOH_F32(p,o) (*(f32*)((u8*)(p)+(o)))
