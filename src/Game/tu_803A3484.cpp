@@ -66,7 +66,6 @@ static inline f32 titleFadePulse(u8* self) {
         value=1.0f;
         if(t>=hold+2*period) *(s16*)(self+0x7c)=0;
     }
-    return value;
 }
 
 static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
