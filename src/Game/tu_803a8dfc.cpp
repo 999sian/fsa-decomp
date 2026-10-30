@@ -3510,9 +3510,6 @@ public:
 private:
     u8 field_00[0x5c];
 };
-static inline f32 MsgAddMenuY(f32 y, const f32 offset) {
-    return y + offset;
-}
 static inline void MsgReportFontSize(const char* format, const J2DPane* pane) {
     OSReport(format, *(const u16*)((const u8*)pane + 0x132));
 }
@@ -3602,7 +3599,7 @@ OSInitFastCast();
 *(void**)(p+0x2c)=load__20J2DAnmLoaderDataBaseFPCv(fn_80403104('SCRN',base+0x2f4)); (*(J2DScreen**)(p+12))->setAnimation(*(J2DAnmTextureSRTKey**)(p+0x2c));
 ResTIMG* image=(ResTIMG*)fn_804030C4('TIMG',base+0x304);
 picture=new J2DPicture(image); *(J2DPicture**)(p+0x170)=picture;
-(*(J2DPicture**)(p+0x170))->setBlackWhite(JUtility::TColor(255),JUtility::TColor(0));
+(*(J2DPicture**)(p+0x170))->setBlackWhite(JUtility::TColor(0xffU),JUtility::TColor(0U));
 obj=(*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL);height=*(f32*)((u8*)obj+0x2c)-*(f32*)((u8*)obj+0x24);
 a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1];
 a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613035ULL))[1]+a;
