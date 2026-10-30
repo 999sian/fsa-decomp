@@ -362,7 +362,8 @@ static inline bool EZZR_IsNearBarrier(EZZR* p) {
 }
 
 static inline u16 EZZR_AngleTo(const Vec& from, const JGeometry::TVec3f& to) {
-    f32 rad = JMath::atanTable_.atan2_(to.x - from.x, to.y - from.y);
+    JGeometry::TVec2f d(to.x - from.x, to.y - from.y);
+    f32 rad = JMath::atanTable_.atan2_(d.x, d.y);
     return (s32)(rad * lbl_8053C96C);
 }
 
