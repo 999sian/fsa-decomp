@@ -54,10 +54,12 @@ struct MsgSequenceInit {
 struct MsgRenderingInit {
     u8 data[0x2dc];
     MsgRenderingInit(void* ref) {
-        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(this,ref);
+        u8* sub;
+        void* reference=ref;
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(this,reference);
         *(void**)this=lbl_804AF72C;
-        u8* sub=data+0x38;
-        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(sub,ref);
+        sub=data+0x38;
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(sub,reference);
         *(void**)sub=lbl_804AF6E4;
         *(s32*)(sub+0x1d8)=0;*(s32*)(sub+0x1dc)=0;sub[0x1e8]=0;
     }
@@ -1014,7 +1016,7 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     (*(J2DPicture**)(p+0x5c))->setBlackWhite(JUtility::TColor(255,255,140,0),JUtility::TColor(255,255,140,255));
     (*(J2DPicture**)(p+0x5c))->rotate(lbl_80543224,lbl_80543228,(J2DRotateAxis)'z',lbl_80543240);
     (*(f32*)(p+0x118))=0.0f;
-    (*(s16*)(p+0x198))=(s32)(lbl_8054322C*msgRandom())+10;
+    (*(s16*)(p+0x198))=(s32)(msgRandomScaled(lbl_8054322C))+10;
     (*(s16*)(p+0x19a))=-96;(*(s16*)(p+0x19c))=0;
     *(void**)(p+4)=0;
     *(JMessage::TResourceContainer**)(p+4)=new JMessage::TResourceContainer;
@@ -1030,14 +1032,14 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     *(void**)(p+0x14)=0;
     *(void**)(p+0x14)=new MsgRenderingInit(*(void**)(p+0xc));
     *(void**)(*(u8**)(p+0x14)+0x2bc)=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->getFont();
-    *(void**)(*(u8**)(p+0x14)+0x2c0)=p+0x1ab;
-    *(void**)(*(u8**)(p+0x14)+0x2c4)=p+0x2ab;
+    { u8* processor=*(u8**)(p+0x14); *(void**)(processor+0x2c0)=p+0x1ab; *(void**)(processor+0x2c4)=p+0x2ab; }
     *(void**)(*(u8**)(p+0x14)+0x2d8)=*(void**)(p+0x3c0);
     { J2DTextBox* tb=(J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'); (*(f32*)(p+0x60))=tb->mFontSize.x; (*(f32*)(p+0x64))=tb->mFontSize.y; }
     (*(f32*)(p+0xb0))=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->mLineSpacing;
-    (*(f32*)(p+0xb4))=1.0f;
+    f32 scale=lbl_8054321C;
+    (*(f32*)(p+0xb4))=scale;
     J2DTextBox::TFontSize fs;
-    fs.x=(*(f32*)(p+0x60))*1.0f;fs.y=(*(f32*)(p+0x64))*1.0f;
+    fs.x=(*(f32*)(p+0x60))*scale;fs.y=(*(f32*)(p+0x64))*scale;
     setTBFontSize((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'),fs);
     ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->setLineSpace((*(f32*)(p+0xb0))*1.0f);
     setTBFontSize((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'),fs);
