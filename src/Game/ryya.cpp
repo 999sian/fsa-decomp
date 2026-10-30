@@ -65,11 +65,6 @@ static inline void ryyaStop(char* obj,JGeometry::TVec3f& v) {
     v.setAll(0.0f);
     *(JGeometry::TVec3f*)(obj+0x3c)=v;
 }
-static inline f32 ryyaDistance(char* p,char* obj) {
-    f32 dy=*(f32*)(obj+0x10)-*(f32*)(p+0x10);
-    f32 dx=*(f32*)(obj+0xc)-*(f32*)(p+0xc);
-    return std::sqrtf(dx*dx+dy*dy);
-}
 static inline void ryyaPlayerDirection(char* p,const JGeometry::TVec3f& delta) {
     f32 radians=JMath::atanTable_.atan2_(-delta.x,-delta.y);
     radians *= lbl_8053E64C;
