@@ -41,7 +41,8 @@ static inline void DdgoChangeState(char* t, s32 state) {
     }
 }
 static inline void DdgoSetVelocity(char* t, f32 a, f32 b) {
-    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=lbl_8053E7D8;
+    f32 zero=0.0f;
+    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=0.0f;
     switch (*(s32*)(t+0x98)) {
     case 0: *(f32*)(t+0x268)=a; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
     case 1: *(f32*)(t+0x268)=b; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
@@ -50,8 +51,8 @@ static inline void DdgoSetVelocity(char* t, f32 a, f32 b) {
     }
 }
 static inline void DdgoStop(char* t) {
-    *(f32*)(t+0x270)=lbl_8053E7D8; *(f32*)(t+0x26c)=lbl_8053E7D8; *(f32*)(t+0x268)=lbl_8053E7D8;
-    *(f32*)(t+0x44)=lbl_8053E7D8; *(f32*)(t+0x40)=lbl_8053E7D8; *(f32*)(t+0x3c)=lbl_8053E7D8;
+    *(f32*)(t+0x270)=0.0f; *(f32*)(t+0x26c)=0.0f; *(f32*)(t+0x268)=0.0f;
+    *(f32*)(t+0x44)=0.0f; *(f32*)(t+0x40)=0.0f; *(f32*)(t+0x3c)=0.0f;
 }
 static inline s32 DdgoOldDirection(char* t) {
     s32 dir=3;
