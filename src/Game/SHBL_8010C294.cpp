@@ -298,6 +298,9 @@ static inline void SHBL_updateTrail(u8* p) {
         else U(P(p,0x374),0xf4)&=~1;
     }
 }
+static inline f32 SHBL_cosAt(const f32* table, s16 angle) {
+    return table[((u16)angle>>5)*2];
+}
 static inline bool SHBL_ground(u8* p) {
     if(F(p,0x14)<=0.0f) {
         F(p,0x14)=0.0f;
@@ -311,8 +314,11 @@ static inline bool SHBL_ground(u8* p) {
 extern "C" void fn_8010CA44(u8* p) {
     JGeometry::TBox2<f32> box;
     JGeometry::TVec2<f32> hit;
+    JGeometry::TVec3<f32> probe2;
+    JGeometry::TVec3<f32> probe7;
+    JGeometry::TVec3<f32> probe9;
     v03__5ActorFv(p);
-    F(p,0x26c)=lbl_8053C4D4;
+    F(p,0x26c)=1.0f;
     box.set(*(JGeometry::TBox2<f32>*)(p+0x60));
     box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
     if(I(p,0x238)!=12 && I(p,0x238)!=13) {
@@ -321,7 +327,7 @@ extern "C" void fn_8010CA44(u8* p) {
     switch(U(p,0x238)) {
     case 0: {
         fn_801F2DB4(p,0x4e554c4c,0x4e554c4c,0);
-        F(p,0x26c)=lbl_8053C490;
+        F(p,0x26c)=0.0f;
         u16 angle;
         s32 b;
         s32 player;
@@ -338,40 +344,46 @@ extern "C" void fn_8010CA44(u8* p) {
     case 2: {
         s32 target=I(p,0x23c);
         if(target>=0) {
-            u16 angle=0;
-            s32 b=0;
-            s32 player=0;
-            f32 distance=lbl_8053C490;
+            u16 angle;
+            f32 distance;
+            s32 player;
+            s32 b;
+            angle=0;b=0;player=0;distance=0.0f;
             fn_801EEC98(p,P(p,0x198),&angle,&b,&distance,&player,target,2);
             const f32* cosine=&JMath::sincosTable_.mTable[0].second;
             s16 diff=S(p,0x230)-angle;
             s16 step;
-            if(cosine[((u16)diff>>5)*2]>=lbl_8053C490)
+            if(cosine[((u16)diff>>5)*2]>=0.0f)
                 step=100+(s32)JGeometry::TUtilf::abs(lbl_8053C4C0*JMath::sincosTable_.sinShort(diff));
             else step=700;
             fn_801CD930(&S(p,0x230),(s16)angle,step);
             if(distance>=lbl_8053C4C4) fn_801CD950(&F(p,0x264),lbl_8053C4B8,lbl_8053C4C8);
             else fn_801CD950(&F(p,0x264),lbl_8053C4CC,lbl_8053C4D0);
-            F(p,0x3c)=F(p,0x264)*JMath::sincosTable_.sinShort(S(p,0x230));
-            F(p,0x40)=F(p,0x264)*cosine[((u16)S(p,0x230)>>5)*2];
-            F(p,0x44)=lbl_8053C490;
+            f32 speed=F(p,0x264);
+            f32 sine=JMath::sincosTable_.sinShort(S(p,0x230));
+            sine=speed*sine;
+            F(p,0x3c)=sine;
+            f32 cosSpeed=F(p,0x264);
+            f32 cosineValue=cosine[((u16)S(p,0x230)>>5)*2];
+            cosineValue=cosSpeed*cosineValue;
+            F(p,0x40)=cosineValue;
+            F(p,0x44)=0.0f;
             V(p,0xc)+=V(p,0x3c);
             F(p,0x26c)=V(p,0x3c).length()/lbl_8053C4B8;
-            if(F(p,0x26c)>=lbl_8053C4D4) F(p,0x26c)=lbl_8053C4D4;
+            if(F(p,0x26c)>=1.0f) F(p,0x26c)=1.0f;
             SHBL_updateTrail(p);
             fn_801F0E34(p,0x3007b,0);
         }
         F(p,0x260)+=(lbl_8053C4B4*F(p,0x264))/lbl_8053C4B8;
-        if(F(p,0x260)>=lbl_8053C4A4) F(p,0x260)=lbl_8053C4A4;
-        f32 half=lbl_8053C4BC*F(p,0x260);
-        SHBL_setBox(p,half,-half);
+        if(F(p,0x260)>=2.0f) F(p,0x260)=2.0f;
+        f32 half=8.0f*F(p,0x260);
+        F(p,0x60)=-half;F(p,0x64)=-half;F(p,0x68)=half;F(p,0x6c)=half;
         F(p,0x70)=F(p,0x60);F(p,0x74)=F(p,0x64);F(p,0x78)=F(p,0x68);F(p,0x7c)=F(p,0x6c);
         F(p,0x80)=F(p,0x60);F(p,0x84)=F(p,0x64);F(p,0x88)=F(p,0x68);F(p,0x8c)=F(p,0x6c);
         fn_801F2DB4(p,0x4e554c4c,0x4e554c4c,0);
         if(fn_801F2B7C(p,-100,-1,1)) fn_8010C294(p,7);
         {
-            JGeometry::TVec3<f32> probe;
-            if(fn_801F2618(p,&probe,0)) fn_8010C294(p,5);
+            if(fn_801F2618(p,&probe2,0)) fn_8010C294(p,5);
         }
         break;
     }
@@ -383,10 +395,14 @@ extern "C" void fn_8010CA44(u8* p) {
     }
     case 4:
         if(I(p,0x258)>0) {
-            JGeometry::TVec3<f32> velocity(lbl_8053C490,lbl_8053C490,lbl_8053C490);
-            s32 room=I(p,4);
-            s16 angle=0;
-            JGeometry::TVec3<f32> pos(V(p,0xc));
+            JGeometry::TVec3<f32> pos;
+            JGeometry::TVec3<f32> velocity;
+            s32 room;
+            s16 angle;
+            angle=0;
+            velocity.set(0.0f,0.0f,0.0f);
+            room=I(p,4);
+            pos=V(p,0xc);
             fn_800FDEA0(p+0x2ac,&pos,&velocity,&room,&angle,0x200,lbl_8053C494);
             F(p,0x3c)=velocity.x;F(p,0x40)=velocity.y;F(p,0x44)=velocity.z;
             V(p,0xc)+=V(p,0x3c);
@@ -402,7 +418,7 @@ extern "C" void fn_8010CA44(u8* p) {
         if(SHBL_ground(p)) fn_8010C294(p,6);
         break;
     case 6:
-        F(p,0x26c)=lbl_8053C490;
+        F(p,0x26c)=0.0f;
         fn_801F2DB4(p,0x4e554c4c,0x4e554c4c,0);
         fn_80239914(&box,I(p,4),I(p,0x198));
         I(p,0x244)++;
@@ -411,18 +427,36 @@ extern "C" void fn_8010CA44(u8* p) {
     case 7: {
         I(p,0x248)++;
         if(I(p,0x248)>60) {fn_801F2B7C(p,-100,-1,1);I(p,0x248)=60;}
-        JGeometry::TVec3<f32> probe;
-        if(fn_801F2618(p,&probe,0)) {fn_8010C294(p,5);break;}
+        if(fn_801F2618(p,&probe7,0)) {fn_8010C294(p,5);break;}
         if(fn_801CD950(&F(p,0x264),lbl_8053C4E8,lbl_8053C4EC)==0) fn_8010C294(p,2);
-        F(p,0x3c)=F(p,0x264)*JMath::sincosTable_.sinShort(S(p,0x230));
-        F(p,0x40)=F(p,0x264)*JMath::sincosTable_.cosShort(S(p,0x230));
-        F(p,0x44)=lbl_8053C490;
+        f32 speed=F(p,0x264);
+        f32 sine=JMath::sincosTable_.sinShort(S(p,0x230));
+        sine=speed*sine;
+        F(p,0x3c)=sine;
+        f32 cosSpeed=F(p,0x264);
+        f32 cosineValue=JMath::sincosTable_.cosShort(S(p,0x230));
+        cosineValue=cosSpeed*cosineValue;
+        F(p,0x40)=cosineValue;
+        F(p,0x44)=0.0f;
         V(p,0xc)+=V(p,0x3c);
-        SHBL_updateTrail(p);
+        {
+
+    if(I(p,4)==0) {
+        if(P(p,0x374)==0)
+            P(p,0x374)=(u8*)fn_8013CC50(I(p,4),p+0xc,0x3d3,0,0,0,0,1,lbl_8053C494);
+        JGeometry::TVec3<f32> pos(V(p,0xc));
+        pos.y=lbl_8053C498*F(p,0x260)+F(p,0x10);
+        fn_8013CB44(P(p,0x374),&pos,0,0,1);
+        B(P(p,0x374),0xbb)=0x80;
+        if(F(p,0x264)<0.2f) U(P(p,0x374),0xf4)|=1;
+        else U(P(p,0x374),0xf4)&=~1;
+    }
+
+        }
         break;
     }
     case 8:
-        F(p,0x26c)=lbl_8053C490;
+        F(p,0x26c)=0.0f;
         if(B(p,0xc4)) {
             JGeometry::TVec3<f32>* pos=fn_8023E7B0(I(p,0xc8));
             F(p,0xc)=pos->x;F(p,0x10)=pos->y;F(p,0x14)=pos->z;
@@ -430,8 +464,7 @@ extern "C" void fn_8010CA44(u8* p) {
         } else fn_8010C294(p,9);
         break;
     case 9: {
-        JGeometry::TVec3<f32> probe;
-        if(fn_801F2B7C(p,I(p,0x114),I(p,0x23c),1) || fn_801F2B20(p,0) || fn_801F2618(p,&probe,0)) {
+        if(fn_801F2B7C(p,I(p,0x114),I(p,0x23c),1) || fn_801F2B20(p,0) || fn_801F2618(p,&probe9,0)) {
             fn_8010C294(p,10);break;
         }
         fn_801CD950(&F(p,0x44),lbl_8053C4AC,lbl_8053C4B0);
