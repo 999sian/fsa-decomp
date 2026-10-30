@@ -246,12 +246,12 @@ extern "C" void fn_80362634(void*);
 extern "C" void fn_8036E544(void*);
 static inline void Endm_updateView(char* p) {
     JGeometry::TBox2<f32> bounds;
-    JGeometry::TVec2<f32> pos;
     JGeometry::TVec2<f32> tmp;
+    JGeometry::TVec2<f32> pos;
     {
         f32* dummy = &tmp.x;
-        f32 y0;
         f32 x0;
+        f32 y0;
         x0 = *(f32*)(p + 0x250);
         y0 = *(f32*)(p + 0x254);
         JGeometry::TVec2<f32> off(0.0f, -30.0f);
@@ -301,7 +301,6 @@ static inline u8 Endm_tick(s32* timer) {
 }
 
 extern "C" void fn_802E9B6C(char* p) {
-    const u8* data = lbl_8046F280;
     ++*(s32*)(p + 0x234);
     switch (*(s32*)(p + 0x23c)) {
     case 0:
@@ -344,11 +343,11 @@ extern "C" void fn_802E9B6C(char* p) {
         } else *((u8*)lbl_8053AF30 + 0x14) = 1;
         break;
     case 3:
-        if (((const u8 (*)[20])(data+0xf0))[0][*(u8*)(p+0x230)] == 0) {
-            fn_804432DC(lbl_8053AEF0, ((const u8 (*)[20])(data+0xf0))[0][*(u8*)(p+0x230)], 200, 200);
+        if (Endm_fades[*(u8*)(p+0x230)] == 0) {
+            fn_804432DC(lbl_8053AEF0, Endm_fades[*(u8*)(p+0x230)], 200, 200);
             *(s32*)(p + 0x27c) = 430;
         } else {
-            fn_804432DC(lbl_8053AEF0, ((const u8 (*)[20])(data+0xf0))[0][*(u8*)(p+0x230)], 0, 200);
+            fn_804432DC(lbl_8053AEF0, Endm_fades[*(u8*)(p+0x230)], 0, 200);
             *(s32*)(p + 0x27c) = 200;
         }
         *(s32*)(p + 0x23c) = 4;
@@ -357,9 +356,9 @@ extern "C" void fn_802E9B6C(char* p) {
     case 4:
         if (Endm_tick((s32*)(p + 0x27c))) {
             int n = *(u8*)(p + 0x230);
-            if (data[0x104 + n]) {
-                fn_8043A268(lbl_8053AED0, ((int*)data)[n], ((int*)(data+0x44))[n],
-                    ((s16*)(data+0x88))[n], ((f32*)lbl_804D56A8)[n*2], ((f32*)lbl_804D56A8)[n*2+1]);
+            if (Endm_effects[n]) {
+                fn_8043A268(lbl_8053AED0, ((u32*)lbl_8046F280)[n], Endm_layers[n],
+                    Endm_times[n], ((f32*)lbl_804D56A8)[n*2], ((f32*)lbl_804D56A8)[n*2+1]);
             }
             *(f32*)(p + 0x274) = lbl_80541318;
             f32 cur = *(f32*)(p + 0x270);
@@ -369,8 +368,8 @@ extern "C" void fn_802E9B6C(char* p) {
                 else *(f32*)(p + 0x278) = -step;
                 *(f32*)(p + 0x274) = lbl_80541318;
             }
-            u32 a = ((u16*)(data+0xac))[*(u8*)(p+0x28c)];
-            u32 b = ((u16*)(data+0xac))[*(u8*)(p+0x28c)+1];
+            u32 a = Endm_paths[*(u8*)(p+0x28c)];
+            u32 b = Endm_paths[*(u8*)(p+0x28c)+1];
             char* rec = (char*)fn_802D6A9C();
             *(u32*)(rec+4)=a; *(u32*)(rec+8)=b;
             fn_802D9CD8(fn_802D6A9C());
@@ -420,8 +419,8 @@ extern "C" void fn_802E9B6C(char* p) {
         }
         *(u8*)(p+0x28d)=**(u8**)(p+0x290);
         if (*(u8*)(p+0x28d)==0xff) { *(s32*)(p+0x23c)=7; break; }
-        u32 a=((u16*)(data+0xac))[*(u8*)(p+0x28c)];
-        u32 b=((u16*)(data+0xac))[*(u8*)(p+0x28c)+1];
+        u32 a=Endm_paths[*(u8*)(p+0x28c)];
+        u32 b=Endm_paths[*(u8*)(p+0x28c)+1];
         char* rec=(char*)fn_802D6A9C();
         *(u32*)(rec+4)=a; *(u32*)(rec+8)=b;
         if (*(u8*)(p+0x28d)==0) { s32 v[2]; v[0]=0; v[1]=-1; fn_802DCD1C(fn_802D6A9C(),v); }
