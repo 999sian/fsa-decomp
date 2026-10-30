@@ -72,18 +72,43 @@ extern "C" void fn_8034549C(char* this_) {
     fn_801F06F0(this_, lbl_80471FF8, *(s32*)(this_ + 0x24c) + 0x283, &param, -1, sc, sc);
 }
 
-extern "C" void fn_801F71A4(f32, f32, f32, f32);
-extern "C" s32 fn_80345744(Actor* this_) {
+extern "C" void fn_801F71A4(f32* value, f32 target, f32 rate, f32 limit);
+extern "C" u8 fn_801F2618(Actor* this_, Vec* push, s32 flag);
+extern "C" u8 fn_802265DC(f32* pos, s32 room, s32 flag);
+extern "C" s32 fn_80346330(u8* this_);
+namespace JMath {
+struct TSinCosTableFSA {
+    f32 mTable[2048][2];
+};
+extern TSinCosTableFSA sincosTable_;
+}
+extern void* lbl_8053AAF8;
+extern const f32 lbl_805423B8;
+extern const f32 lbl_805423BC;
+extern const f32 lbl_805423C0;
+extern const f32 lbl_805423C4;
+extern const f32 lbl_805423C8;
+extern const f32 lbl_805423CC;
+extern const f32 lbl_805423D0;
+extern const f32 lbl_805423D4;
+extern const f32 lbl_805423D8;
+extern const f32 lbl_805423DC;
+extern const f32 lbl_805423E0;
+extern const f32 lbl_805423E4;
+extern const f32 lbl_805423E8;
+extern const f32 lbl_805423EC;
+extern const f32 lbl_805423F0;
+extern const f32 lbl_805423F4;
+extern const f32 lbl_805423F8;
+static inline f32 tuRandUnit() {
+    u8* g = (u8*)lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    return *(f32*)&bits - lbl_805423A8;
+}
+extern "C" void fn_80345744(Actor* this_) {
     u8* self = (u8*)this_;
-    s32 state;
-
-    fn_801F71A4(*(f32*)(self + 0x254), 0.0f, 0.0f, *(f32*)(self + 0x260));
-    fn_801F71A4(*(f32*)(self + 0x258), 0.0f, 0.0f, *(f32*)(self + 0x260));
-    state = *(s32*)(self + 0x230);
-    if (state == 3) {
-        return 0;
-    }
-    return 0;
+    fn_801F71A4((f32*)(self + 0x3c), *(f32*)(self + 0x254), lbl_805423B8, *(f32*)(self + 0x260));
 }
 
 extern "C" void fn_801EEC98(void*, s32, u16*, s32*, f32*, s32*, s32, s32);
@@ -211,14 +236,21 @@ extern "C" s32 fn_803466C0(s32 param_1, s32 param_2, s32 param_3) {
     return 1;
 }
 
+#pragma opt_common_subs off
 extern "C" void fn_80346704(Actor* this_) {
-    u16 tiles[713];
     u32 spawn = *(u32*)((u8*)this_ + 0x90);
-    u8* self = (u8*)this_;
-    s32 extra;
-    s32 range;
+    u16 tiles[713];
+    register u8* self = (u8*)this_;
     u32 count;
+    s32 room;
+    s32 extra;
+    s32 col;
     s32 n;
+    s32 range;
+    s32 w;
+    s32 h;
+    s32 v;
+    s32 x;
 
     *(u32*)(self + 0x90) = spawn & 0xfff;
     extra = (spawn >> 12) & 0xff;
@@ -246,7 +278,7 @@ extern "C" void fn_80346704(Actor* this_) {
 
     count = *(u32*)(self + 0x90);
     if (count != 0) {
-        s32 room = *(s32*)(self + 0x4);
+        room = *(s32*)(self + 0x4);
         u8* mgr = fn_802D6A9C();
         f32* box;
         if (room < 8) {
@@ -256,14 +288,14 @@ extern "C" void fn_80346704(Actor* this_) {
         }
         f32 x0 = box[0];
         f32 y0 = box[1];
-        s32 w = (s32)(box[2] - x0);
-        s32 h = (s32)(box[3] - y0);
+        w = (s32)(box[2] - x0);
+        h = (s32)(box[3] - y0);
         n = 0;
-        s32 col = 1;
-        for (s32 x = 16; x < w; x += 16, col++) {
+        x = 16;
+        for (col = 1; x < w; col++, x += 16) {
             f32 fx = (f32)x + x0;
-            s32 v = col + 0x20;
-            for (s32 y = 16; y < h; y += 16, v += 0x20) {
+            v = col + 0x20;
+            for (s32 y = 16; y < h; v += 0x20, y += 16) {
                 f32 pos[2];
                 pos[0] = fx;
                 pos[1] = (f32)y + y0;
@@ -273,7 +305,7 @@ extern "C" void fn_80346704(Actor* this_) {
                         return;
                     }
                     tiles[n] = v;
-                    n++;
+                    n += 1;
                 }
             }
         }
@@ -290,7 +322,13 @@ extern "C" void fn_80346704(Actor* this_) {
             f32 fx = (f32)((t & 0x1f) << 4) + x0;
             f32 fy = (f32)(((t >> 5) & 0x7ff) << 4) + y0;
             for (s32 j = 0; j < num; j++) {
-                tuSpawnFish(self, fx, fy);
+                Vec pos;
+                f32 ry = tuRandF();
+                f32 rx = tuRandF();
+                pos.z = lbl_805423A0;
+                pos.y = lbl_805423D0 * ry + fy;
+                pos.x = lbl_805423D0 * rx + fx;
+                Actor_CreateByID(fn_801F856C(), 0x46495348, *(s32*)(self + 0x4), &pos, 0, -1, -1);
                 k++;
             }
         }
@@ -306,6 +344,6 @@ extern "C" void fn_80346704(Actor* this_) {
     *(f32*)(self + 0x260) = lbl_805423D4;
     *(s32*)(self + 0x230) = 0;
 }
-
+#pragma opt_common_subs reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
