@@ -2026,7 +2026,7 @@ static inline void resetMenuFrames(PaneRef* const* slot) {
 #pragma opt_propagation off
 static inline u32 menuInputText(u32* table, int index) { return table[index]; }
 #pragma opt_propagation on
-#pragma opt_propagation on
+#pragma opt_propagation off
 #pragma opt_common_subs off
 extern "C" void fn_8040D3D0(u8* self){
 Tbl8048C1F8* tbl=&lbl_8048C1F8;
@@ -2059,7 +2059,7 @@ u8* p=self;for(int k=0;k<18;k++,p+=4){resetMenuFrames((PaneRef**)(p+0xd4));}
 *(s16*)(self+0x41e)=0;
 if(*(s32*)(self+0x340)!=8&&*(s32*)(self+0x340)!=9&&*(s32*)(self+0x340)!=10&&*(s32*)(self+0x340)!=11&&*(s32*)(self+0x340)!=12){
 char name[11];snprintf(name,11,tbl->pictureFormat,*(s32*)(self+0x340)+1,*(s32*)(self+0x348)+1);
-resource=(ResTIMG*)fn_80403184('TIMG',name);
+resource=(const ResTIMG*)fn_80403184('TIMG',name);
 ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->remove((u8)0);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->append(resource,lbl_805438BC);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->setBlendRatio(0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
 ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->remove((u8)0);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->append(resource,lbl_805438BC);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->setBlendRatio(0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
 fn_803832BC(self+0x564,menuInputText(tbl->text[0],*(s32*)(self+0x340)),0,0,0);
