@@ -18,19 +18,73 @@ extern "C" void* fn_802F184C(void* this_, short how) {
     return this_;
 }
 
-struct Tfl2Rect { f32 x0, y0, x1, y1; };
-struct Tfl2RoomCfg {
-    u8 pad[0xcc];
-    Tfl2Rect rectA;
-    Tfl2Rect rectB;
-};
+#include "JSystem/JGeometry/Vec.h"
+struct Tfl2Rect { f32 x0,y0,x1,y1; };
+struct Tfl2RoomCfg { u8 pad[0xcc]; Tfl2Rect rectA,rectB; };
 struct Tfl2Root { u8 pad[0x20]; void* x20; };
-extern "C" Tfl2RoomCfg* fn_802D6A9C(void);
-extern "C" void fn_802F9974(void* layer, u32 room, u32 tile, s32 kind);
+extern "C" Tfl2RoomCfg* fn_802D6A9C();
+extern "C" void fn_802F9974(void*,u32,u32,s32);
 extern Tfl2Root* lbl_8053AB10;
 extern u8* lbl_8053AAF8;
 extern const s32 lbl_8046F788[];
 extern const s32 lbl_8046F7A4[];
+extern "C" void fn_80239914(void*,s32,void*);
+extern "C" s32 fn_8023AF14(void*,s32,s32,f32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" u8 fn_8022F478(s32);
+extern "C" void fn_8023A89C(void*,s32,void*);
+extern "C" u8 fn_8023A97C(s32,void*,s32,void*);
+extern "C" s32 fn_801F2718(void*,u32);
+extern "C" u8 fn_80234F68(s32);
+extern "C" u16 fn_802F9908(void*,u32,u32);
+extern "C" void fn_8013CC50(u32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void fn_801F0E34(void*,u32,u32);
+extern "C" void fn_802D79E8(void*,s32,s32,f32,f32);
+extern "C" const char* fn_802D9C4C(void*);
+struct Tfl2Virtual {
+virtual void v0();
+virtual void v1();
+virtual void v2();
+virtual void v3();
+virtual void v4();
+virtual void v5();
+virtual void v6();
+virtual void v7();
+virtual void v8();
+virtual void v9();
+virtual void trigger(s32,s32);
+virtual u8 ready();
+};
+extern f32 lbl_80541440;
+extern f32 lbl_80541444;
+extern f32 lbl_80541454;
+extern f32 lbl_80541464;
+extern f32 lbl_80541468;
+extern f32 lbl_8054146C;
+extern f32 lbl_80541470;
+extern f32 lbl_80541474;
+extern f32 lbl_80541478;
+extern f32 lbl_8054147C;
+extern f32 lbl_80541480;
+extern f32 lbl_80541484;
+extern f32 lbl_80541488;
+extern f32 lbl_8054148C;
+extern f32 lbl_80541490;
+extern f32 lbl_80541494;
+extern f32 lbl_80541498;
+extern f32 lbl_8054149C;
+extern f32 lbl_805414A8;
+extern f32 lbl_805414B8;
+extern f32 lbl_805414BC;
+extern f64 lbl_805414A0,lbl_805414B0;
+static inline void tfl2Effect(u8* p,s32 id,s32 mode) {
+ JGeometry::TVec3<f32> v;
+ v.x=lbl_80541454+*(f32*)(p+0xc);v.y=lbl_80541454+*(f32*)(p+0x10);v.z=lbl_80541440;
+ fn_8013CC50(*(u32*)(p+4),&v,id,mode,0,0,0,1,lbl_80541444);
+}
+extern "C" void fn_802F25C0(u8* this_) {
+    s32 state=*(s32*)(this_+0x234);
+}
 
 // TFL2 init (vtable slot 1)
 static inline s32 tfl2Clamp(s32 v) {
