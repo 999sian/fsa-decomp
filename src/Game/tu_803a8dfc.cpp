@@ -2879,7 +2879,7 @@ extern const f32 lbl_80476378[];
 extern const f32 lbl_80543434;
 extern const f32 lbl_80543438;
 extern const f32 lbl_8054343C;
-static inline s32 findMenuEmitter(const Menu_Main* self) {
+static inline s32 findMenuEmitter(const void* self) {
     for(s32 i=0;i<30;++i) if(((Menu_Main*)self)->emitters[i]==0) return i;
     return -1;
 }
@@ -2891,8 +2891,10 @@ static inline void spawnMenuEmitter(void* self,u32 kind,f32 scale) {
         ((Menu_Main*)self)->emitters[slot]->flags |= 0x40;
     }
 }
+#pragma opt_loop_invariants off
 extern "C" void fn_803B236C(void* this_) {
-    u8* self=(u8*)this_;
+    Menu_Main* menu=(Menu_Main*)this_;
+    u8* self=(u8*)menu;
     s32 arr[4];
     if(*(s16*)(self+0x458)<=0) {
         s32 cnt=0;
@@ -2915,21 +2917,57 @@ extern "C" void fn_803B236C(void* this_) {
         *(f32*)(self+0x244)=lbl_80543434*lbl_8053AAF8->rnd.get_ufloat_1()+lbl_80476368[*(s16*)(self+0x45e)];
         *(f32*)(self+0x248)=lbl_80543434*lbl_8053AAF8->rnd.get_ufloat_1()+lbl_80476378[*(s16*)(self+0x45e)];
         f32 scale=lbl_805433E8*lbl_8053AAF8->rnd.get_ufloat_1()+lbl_80543438;
-        spawnMenuEmitter((Menu_Main*)self,0x56c,scale);
+        { s32 slot=findMenuEmitter(menu);
+    if(slot!=-1) {
+        FVec3 pos(lbl_8054343C+menu->position.x,lbl_8054343C+menu->position.y,lbl_805433C8);
+        menu->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,0x56c,0,0,0,0,1,scale);
+        menu->emitters[slot]->flags|=0x40;
+    }
+}
         switch(*(s16*)(self+0x45c)) {
-        case 0: spawnMenuEmitter((Menu_Main*)self,0x56e,scale);break;
-        case 1: spawnMenuEmitter((Menu_Main*)self,0x570,scale);break;
-        case 2: spawnMenuEmitter((Menu_Main*)self,0x56d,scale);break;
-        case 3: spawnMenuEmitter((Menu_Main*)self,0x56f,scale);break;
-        default:spawnMenuEmitter((Menu_Main*)self,0x571,scale);break;
+        case 0: { s32 slot=findMenuEmitter(menu);
+    if(slot!=-1) {
+        FVec3 pos(lbl_8054343C+menu->position.x,lbl_8054343C+menu->position.y,lbl_805433C8);
+        menu->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,0x56e,0,0,0,0,1,scale);
+        menu->emitters[slot]->flags|=0x40;
+    }
+}break;
+        case 1: { s32 slot=findMenuEmitter(menu);
+    if(slot!=-1) {
+        FVec3 pos(lbl_8054343C+menu->position.x,lbl_8054343C+menu->position.y,lbl_805433C8);
+        menu->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,0x570,0,0,0,0,1,scale);
+        menu->emitters[slot]->flags|=0x40;
+    }
+}break;
+        case 2: { s32 slot=findMenuEmitter(menu);
+    if(slot!=-1) {
+        FVec3 pos(lbl_8054343C+menu->position.x,lbl_8054343C+menu->position.y,lbl_805433C8);
+        menu->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,0x56d,0,0,0,0,1,scale);
+        menu->emitters[slot]->flags|=0x40;
+    }
+}break;
+        case 3: { s32 slot=findMenuEmitter(menu);
+    if(slot!=-1) {
+        FVec3 pos(lbl_8054343C+menu->position.x,lbl_8054343C+menu->position.y,lbl_805433C8);
+        menu->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,0x56f,0,0,0,0,1,scale);
+        menu->emitters[slot]->flags|=0x40;
+    }
+}break;
+        default:{ s32 slot=findMenuEmitter(menu);
+    if(slot!=-1) {
+        FVec3 pos(lbl_8054343C+menu->position.x,lbl_8054343C+menu->position.y,lbl_805433C8);
+        menu->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,0x571,0,0,0,0,1,scale);
+        menu->emitters[slot]->flags|=0x40;
+    }
+}break;
         }
         u32 msg=0x30029;
         (*(MsgSinkObj2**)(self+0x184))->send(&msg);
         for(s32 i=0;i<10;i++) {
-            if(*(s32*)(self+0x2c8+i*4)==-1) {
-                FVec3* p=(FVec3*)(self+0x250+i*12);
+            if(menu->countdown[i]==-1) {
+                FVec3* p=&menu->positions[i];
                 p->x=*(f32*)(self+0x244);p->y=*(f32*)(self+0x248);p->z=*(f32*)(self+0x24c);
-                *(s32*)(self+0x2c8+i*4)=0x3a;
+                menu->countdown[i]=0x3a;
                 break;
             }
         }
@@ -2942,7 +2980,7 @@ extern "C" void fn_803B236C(void* this_) {
         }
     } else (*(s16*)(self+0x458))--;
 }
-
+#pragma opt_loop_invariants reset
 struct PFlag {
     u8 v;
 };
