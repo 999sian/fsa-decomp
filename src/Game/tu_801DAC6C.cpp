@@ -88,15 +88,22 @@ extern "C" void fn_801DADD0(void* record) {
 
 typedef void (*VFn)(void*);
 
+static inline void resetLinkedActor(ItemBase* actor) {
+    if (actor != 0) {
+        *(s32*)((u8*)actor + 0x10c) = -1;
+        actor->v07();
+    }
+}
+
 extern "C" void fn_801DAE24(const LinkMgr* mgr) {
-    s32 i;
+    int i;
     const s32* ids = (const s32*)mgr;
-    s32 none = -1;
-    s32 n = mgr->mCount;
-    for (i = 0; i < n; i++) {
+    const u32 none = 0xffffffffU;
+    int count = mgr->getCount();
+    for (i = 0; i < count; i++) {
         ItemBase* actor = (ItemBase*)fn_801F666C(fn_801F856C(), ids[2]);
         if (actor != 0) {
-            *(s32*)((u8*)actor + 0x10c) = none;
+            *(u32*)((u8*)actor + 0x10c) = none;
             actor->v07();
         }
         ids++;
