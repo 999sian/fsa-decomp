@@ -180,6 +180,11 @@ struct Obj240 {
 extern "C" f32 lbl_805438C8;
 extern "C" void fn_8042EB24(void*);
 extern "C" void fn_8037AA58();
+extern void* lbl_8053AEC4;
+extern "C" void fn_8040873C(u8*);
+extern "C" u8 fn_80404270(void*, s32);
+extern "C" void animationTransform__7J2DPaneFv(void*);
+extern "C" void animation__9J2DScreenFv(void*);
 
 static inline f32 paneSpan(const f32* bounds) {
 	return bounds[2] - bounds[0];
