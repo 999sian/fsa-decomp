@@ -3501,11 +3501,22 @@ extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
     return p;
 }
 
-extern void __construct_array(void* p, void* ctor, void* dtor, s32 size, s32 count);
+extern "C" void __construct_array(void* p, void* ctor, void* dtor, s32 size, s32 count);
 extern "C" void __ct__Q29JGeometry8TVec3_f_Fv(void);
 extern void fn_803B7B90(void* thisPtr);
-extern "C" void fn_803B6FD8(void* this_) {
+extern "C" void __mtspr(u32,u32);
+extern "C" void OSReport(const char*,...);
+extern "C" void* load__20J2DAnmLoaderDataBaseFPCv(const void*);
+extern "C" void* fn_804030C4(u32,const char*);
+extern "C" void fn_8045B46C(void*,s8,s32,s32,s32);
+extern "C" void __ct__14WaveControllerFlll(void*,s32,s32,s32);
+#pragma opt_common_subs off
+extern "C" void* fn_803B6FD8(void* this_) {
     u8* p = (u8*)this_;
+ const char* base=(const char*)lbl_80476208;
+ s32 i;
+ f32 b,a,height;
+ void* obj; J2DScreen* screen; J2DPicture* picture;
     *(void**)p = lbl_804AF9A0;
     __construct_array(p + 0x250, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0xa);
     __construct_array(p + 0x2f0, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 4);
@@ -3558,14 +3569,87 @@ extern "C" void fn_803B6FD8(void* this_) {
     *(s32*)(p + 0x1a4) = 0;
     *(s32*)(p + 0x1b4) = 0;
     *(s32*)(p + 0x1c4) = 0;
-    *(J2DScreen**)(p + 0x4) = new J2DScreen();
-    ((J2DScreen*)*(void**)(p + 0x4))->setPriority((char*)&lbl_80476208 + 0x224, 0x1100000, (JKRArchive*)((void**)lbl_8053AD68)[6]);
-    *(J2DScreen**)(p + 0x10) = new J2DScreen();
-    ((J2DScreen*)*(void**)(p + 0x10))->setPriority((char*)&lbl_80476208 + 0x234, 0x1100000, (JKRArchive*)((void**)lbl_8053AD68)[6]);
+    screen=new J2DScreen(); *(J2DScreen**)(p+0x4)=screen;
+    ((J2DScreen*)*(void**)(p + 0x4))->setPriority(base + 0x224, 0x1100000, (JKRArchive*)((void**)lbl_8053AD68)[6]);
+    screen=new J2DScreen(); *(J2DScreen**)(p+0x10)=screen;
+    ((J2DScreen*)*(void**)(p + 0x10))->setPriority(base + 0x234, 0x1100000, (JKRArchive*)((void**)lbl_8053AD68)[6]);
+OSReport(base+0x248,*(u16*)((u8*)(*(J2DScreen**)(p+0x10))->search(0x0000546d6d743031ULL)+0x132));
+OSReport(base+0x258,*(u16*)((u8*)(*(J2DScreen**)(p+0x10))->search(0x0000546d6d743032ULL)+0x132));
+screen=new J2DScreen(); *(J2DScreen**)(p+0x1c)=screen; (*(J2DScreen**)(p+0x1c))->setPriority(base+0x268,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
+screen=new J2DScreen(); *(J2DScreen**)(p+8)=screen; (*(J2DScreen**)(p+8))->setPriority(base+0x278,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
+screen=new J2DScreen(); *(J2DScreen**)(p+0x14)=screen; (*(J2DScreen**)(p+0x14))->setPriority(base+0x288,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
+OSReport(base+0x248,*(u16*)((u8*)(*(J2DScreen**)(p+0x14))->search(0x0000546d6d743031ULL)+0x132));
+OSReport(base+0x258,*(u16*)((u8*)(*(J2DScreen**)(p+0x14))->search(0x0000546d6d743032ULL)+0x132));
+screen=new J2DScreen(); *(J2DScreen**)(p+0xc)=screen; (*(J2DScreen**)(p+0xc))->setPriority(base+0x29c,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
+screen=new J2DScreen(); *(J2DScreen**)(p+0x18)=screen; (*(J2DScreen**)(p+0x18))->setPriority(base+0x2ac,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
+screen=new J2DScreen(); *(J2DScreen**)(p+0x20)=screen; (*(J2DScreen**)(p+0x20))->setPriority(base+0x2c0,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
+OSInitFastCast();
+*(void**)(p+0x24)=load__20J2DAnmLoaderDataBaseFPCv(fn_80403104('SCRN',base+0x2d4)); (*(J2DScreen**)(p+4))->setAnimation(*(J2DAnmTextureSRTKey**)(p+0x24));
+*(void**)(p+0x28)=load__20J2DAnmLoaderDataBaseFPCv(fn_80403104('SCRN',base+0x2e4)); (*(J2DScreen**)(p+8))->setAnimation(*(J2DAnmTextureSRTKey**)(p+0x28));
+*(void**)(p+0x2c)=load__20J2DAnmLoaderDataBaseFPCv(fn_80403104('SCRN',base+0x2f4)); (*(J2DScreen**)(p+12))->setAnimation(*(J2DAnmTextureSRTKey**)(p+0x2c));
+ResTIMG* image=(ResTIMG*)fn_804030C4('TIMG',base+0x304);
+picture=new J2DPicture(image); *(J2DPicture**)(p+0x170)=picture;
+(*(J2DPicture**)(p+0x170))->setBlackWhite(JUtility::TColor(0),JUtility::TColor(255));
+obj=(*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL);height=*(f32*)((u8*)obj+0x2c)-*(f32*)((u8*)obj+0x24);
+a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1];
+a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613035ULL))[1]+a;
+b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL))[1];
+b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]+b;
+*(f32*)(p+0x3f0)=height*lbl_805433E8+(getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1]+b-a);
+*(f32*)(p+1012)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x5074746c626b3035ULL))[1];
+*(f32*)(p+1016)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x50656d6273623036ULL))[1];
+*(f32*)(p+1020)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x0050726d68623036ULL))[1];
+*(f32*)(p+1024)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x506c6c6f73623036ULL))[1];
+*(f32*)(p+1044)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x5077696e626b3035ULL))[1];
+*(f32*)(p+1048)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x50647277626b3035ULL))[1];
+*(f32*)(p+1032)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x00506c68626b3032ULL))[1];
+*(f32*)(p+1028)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x00506468626b3032ULL))[1];
+*(f32*)(p+1036)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x0050666f626b3032ULL))[1];
+*(f32*)(p+1040)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x00506861626b3032ULL))[1];
+*(J2DPane**)(p+112)=(*(J2DScreen**)(p+0x20))->search(0x5074746c626b3035ULL);
+*(J2DPane**)(p+116)=(*(J2DScreen**)(p+0x20))->search(0x50647277626b3035ULL);
+*(J2DPane**)(p+120)=(*(J2DScreen**)(p+0x20))->search(0x5077696e626b3035ULL);
+*(J2DPane**)(p+124)=(*(J2DScreen**)(p+0x20))->search(0x000050776e723031ULL);
+*(J2DPane**)(p+128)=(*(J2DScreen**)(p+0x20))->search(0x000050776e723032ULL);
+*(J2DPane**)(p+140)=(*(J2DScreen**)(p+0x20))->search(0x50656d6273623036ULL);
+*(J2DPane**)(p+144)=(*(J2DScreen**)(p+0x20))->search(0x0050726d68623036ULL);
+*(J2DPane**)(p+148)=(*(J2DScreen**)(p+0x20))->search(0x506c6c6f73623036ULL);
+*(J2DPane**)(p+152)=(*(J2DScreen**)(p+0x20))->search(0x00506c68626b3032ULL);
+*(J2DPane**)(p+156)=(*(J2DScreen**)(p+0x20))->search(0x00506468626b3032ULL);
+*(J2DPane**)(p+160)=(*(J2DScreen**)(p+0x20))->search(0x00506861626b3032ULL);
+*(J2DPane**)(p+164)=(*(J2DScreen**)(p+0x20))->search(0x0050666f626b3032ULL);
+(*(u8**)(p+112))[0xb0]=1;
+(*(u8**)(p+116))[0xb0]=0;
+(*(u8**)(p+120))[0xb0]=0;
+(*(u8**)(p+124))[0xb0]=0;
+(*(u8**)(p+128))[0xb0]=0;
+(*(u8**)(p+140))[0xb0]=0;
+(*(u8**)(p+144))[0xb0]=0;
+(*(u8**)(p+148))[0xb0]=0;
+(*(u8**)(p+152))[0xb0]=0;
+(*(u8**)(p+156))[0xb0]=0;
+(*(u8**)(p+164))[0xb0]=0;
+(*(u8**)(p+160))[0xb0]=0;
+*(f32*)(p+0x244)=lbl_805433C8;*(f32*)(p+0x248)=lbl_805433C8;*(f32*)(p+0x24c)=lbl_805433C8;
+for(i=0;i<4;i++){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(p+0x174+i*4)=obj;}
+obj=operator new(0x5c);if(obj)__ct__14WaveControllerFlll(obj,(s32)(p+0x244),0,8);*(void**)(p+0x184)=obj;
+((JGeometry::TVec3f*)(p+0x250))[0].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+712)=-1;
+((JGeometry::TVec3f*)(p+0x250))[1].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+716)=-1;
+((JGeometry::TVec3f*)(p+0x250))[2].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+720)=-1;
+((JGeometry::TVec3f*)(p+0x250))[3].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+724)=-1;
+((JGeometry::TVec3f*)(p+0x250))[4].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+728)=-1;
+((JGeometry::TVec3f*)(p+0x250))[5].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+732)=-1;
+((JGeometry::TVec3f*)(p+0x250))[6].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+736)=-1;
+((JGeometry::TVec3f*)(p+0x250))[7].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+740)=-1;
+((JGeometry::TVec3f*)(p+0x250))[8].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+744)=-1;
+((JGeometry::TVec3f*)(p+0x250))[9].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+748)=-1;
+if(*(s32*)(lbl_80529DEC+0x118)==9 && *(s32*)(lbl_80529DEC+0x11c)==3){*(s32*)(lbl_80529DEC+0x118)=7;*(s32*)(lbl_80529DEC+0x11c)=3;}
+return p;
 }
-
+#pragma opt_common_subs reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JMath/JMath.h"
+#include "dolphin/os/OSFastCast.h"
 extern const f32 lbl_805433CC, lbl_805433D0, lbl_805433D4, lbl_805433E8, lbl_805433EC, lbl_805433F0, lbl_805433F4, lbl_805433F8, lbl_805433FC, lbl_80543400;
 extern u8 lbl_8050EC80[];
 extern "C" u32 fn_80309D6C(void*, s32, s32);
@@ -3702,10 +3786,11 @@ extern "C" void fn_803AA1F8(void* this_) {
 
 extern const u16 lbl_80543390[4];
 
+#pragma push
+#pragma dont_inline on
 extern "C" void fn_803AA8F8(void* this_) {
-    u8* self = (u8*)this_;
-    IntroTags* tbl = (IntroTags*)lbl_80476208;
     Menu_Intro* ip = (Menu_Intro*)this_;
+    IntroTags* tbl = (IntroTags*)lbl_80476208;
     s32 i;
     s32 j;
     s32 t;
@@ -3713,33 +3798,45 @@ extern "C" void fn_803AA8F8(void* this_) {
     f32 off;
     u8* q3;
     u8* v;
+    const u16* ids;
     f32 dy;
     f32 x0;
+    J2DPane* pane_;
+#define self ((u8*)ip)
     switch (self[0x4c1]) {
     case 0x00:
     case 0x05:
         break;
     case 0x01:
-        if (--ip->timer == 0) {
+        ip->timer--;
+        if (ip->timer == 0) {
             ip->timer = 150;
             if (ip->cur < 2) {
-                ip->screens[ip->cur]->search(0x004e646174613031ULL)->mIsVisible = 1;
-                ip->screens[ip->cur]->search(0x004e646174613032ULL)->mIsVisible = 1;
-                ip->screens[ip->cur]->search(0x00506d6d776b3032ULL)->mIsVisible = 1;
+                pane_ = ip->screens[ip->cur]->search(0x004e646174613031ULL);
+                pane_->mIsVisible = 1;
+                pane_ = ip->screens[ip->cur]->search(0x004e646174613032ULL);
+                pane_->mIsVisible = 1;
+                pane_ = ip->screens[ip->cur]->search(0x00506d6d776b3032ULL);
+                pane_->mIsVisible = 1;
                 if (ip->cur < 2) {
-                    for (i = 0; i < 13; i++) {
-                        ip->screens[ip->cur]->search(tbl->title[i])->setAlpha((u8)(ip->alphaTitle[i] * lbl_805433C8));
+                    const u64* k = tbl->title;
+                    for (i = 0; i < 13; i++, k++) {
+                        ip->screens[ip->cur]->search(*k)->setAlpha((u8)(ip->alphaTitle[i] * lbl_805433C8));
                     }
                 }
-                for (j = 0; j < ip->count; j++) {
+                const u64* k3 = tbl->p3[0];
+                const u64* k2 = tbl->p2[0];
+                for (j = 0; j < ip->count; j++, k3 += 3, k2 += 2) {
                     if (ip->cur < 2) {
-                        for (i = 0; i < 3; i++) {
-                            ip->screens[ip->cur]->search(tbl->p3[j][i])->setAlpha((u8)(ip->alpha3[i] * lbl_805433C8));
+                        const u64* k = k3;
+                        for (i = 0; i < 3; i++, k++) {
+                            ip->screens[ip->cur]->search(*k)->setAlpha((u8)(ip->alpha3[i] * lbl_805433C8));
                         }
                     }
                     if (ip->cur < 2) {
-                        for (i = 0; i < 2; i++) {
-                            ip->screens[ip->cur]->search(tbl->p2[j][i])->setAlpha((u8)(ip->alpha[i] * lbl_805433C8));
+                        const u64* k = k2;
+                        for (i = 0; i < 2; i++, k++) {
+                            ip->screens[ip->cur]->search(*k)->setAlpha((u8)(ip->alpha[i] * lbl_805433C8));
                         }
                     }
                     ip->selected[j] = 0xff;
@@ -3806,9 +3903,8 @@ extern "C" void fn_803AA8F8(void* this_) {
         fn_803ADC0C((Menu_Slide*)this_);
         break;
     case 0x15:
-        n = 0;
         q3 = self;
-        for (i = 0; i < *(s32*)(self + 0x454); q3 += 4, i++) {
+        for (i = n = 0; i < *(s32*)(self + 0x454); q3 += 4, i++) {
             if (*(s32*)(q3 + 0x370) < fn_80403070(fn_80403414(i))) {
                 *(s32*)(q3 + 0x370) += 2;
             }
@@ -3866,10 +3962,9 @@ extern "C" void fn_803AA8F8(void* this_) {
             self[0x4dd] = 0;
         }
         if (*(s32*)(self + 0x440) == 0x95) {
-            const u16* ids = lbl_80543390;
             q3 = self;
             v = self;
-            for (i = 0; i < *(s32*)(self + 0x454); q3 += 4, ids++, v += 12, i++) {
+            for (i = 0, ids = lbl_80543390; i < *(s32*)(self + 0x454); q3 += 4, ids++, v += 12, i++) {
                 if (self[0x4db] & (u8)(1 << (i + 4))) {
                     if (*(void**)(q3 + 0x188) == 0) {
                         *(void**)(q3 + 0x188) = fn_8013CC50(0, (FVec3*)(v + 0x2f0), *ids, 0, -1, 0, 0, 1, lbl_805433D4);
@@ -3919,16 +4014,21 @@ extern "C" void fn_803AA8F8(void* this_) {
             self[0x4c1] = 0x20;
         } else if (t >= 0x8a) {
             off = lbl_80543404 * ((f32)(12 - (t - 0x8a)) / lbl_80543408);
-            (*(J2DPane**)(self + 0xa4))->move(getBounds__7J2DPaneFv(*(void**)(self + 0xa4))[0], *(f32*)(self + 0x40c) + off);
+            x0 = getBounds__7J2DPaneFv(*(void**)(self + 0xa4))[0];
+            (*(J2DPane**)(self + 0xa4))->move(x0, *(f32*)(self + 0x40c) + off);
             if (*(s32*)(self + 0x440) == 0x8a) {
                 (*(J2DPane**)(self + 0xa4))->mIsVisible = 0;
                 (*(J2DPane**)(self + 0x70))->mIsVisible = 1;
-                (*(J2DPane**)(self + 0x70))->move(getBounds__7J2DPaneFv(*(void**)(self + 0x70))[0], *(f32*)(self + 0x3f4) + off);
+                x0 = getBounds__7J2DPaneFv(*(void**)(self + 0x70))[0];
+                (*(J2DPane**)(self + 0x70))->move(x0, *(f32*)(self + 0x3f4) + off);
             }
         } else if (t >= 0x80) {
-            (*(J2DPane**)(self + 0x70))->move(getBounds__7J2DPaneFv(*(void**)(self + 0x70))[0], *(f32*)(self + 0x3f4) + lbl_80543404 * ((f32)(t - 0x80) / lbl_80543408));
+            x0 = getBounds__7J2DPaneFv(*(void**)(self + 0x70))[0];
+            off = lbl_80543404 * ((f32)(t - 0x80) / lbl_80543408);
+            (*(J2DPane**)(self + 0x70))->move(x0, *(f32*)(self + 0x3f4) + off);
             if (*(s32*)(self + 0x440) == 0x80) {
-                (*(J2DPane**)(self + 0xa4))->move(getBounds__7J2DPaneFv(*(void**)(self + 0x70))[0], *(f32*)(self + 0x3f4));
+                x0 = getBounds__7J2DPaneFv(*(void**)(self + 0x70))[0];
+                (*(J2DPane**)(self + 0xa4))->move(x0, *(f32*)(self + 0x3f4));
             }
         }
         break;
@@ -3979,5 +4079,6 @@ extern "C" void fn_803AA8F8(void* this_) {
         *(f32*)(v + 0x2f8) = lbl_805433C8;
     }
     fn_803B2FB0((Menu_803B2FB0*)self);
+#undef self
 }
-
+#pragma pop
