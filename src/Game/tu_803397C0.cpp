@@ -84,6 +84,15 @@ extern "C" void fn_80339820(u8* this_) {
 }
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
+#include "Game/ItemBase.h"
+extern "C" char lbl_80471D60[];
+extern "C" void* lbl_8053AB10;
+extern const f32 lbl_805420FC;
+extern const f32 lbl_80542100;
+extern const f32 lbl_80542104;
+extern const f32 lbl_80542108;
+extern const f32 lbl_8054210C;
+extern "C" void fn_802F6CF4(void* obj, JGeometry::TVec3f* pos, void* res, DrawRec* rec);
 extern "C" void fn_801F06F0(u8* a, void* res, s32 id, void* rec, s32 p5, f32 sx, f32 sy);
 extern "C" void fn_801EFD34(u8* a, void* res, void* rec, s32 n, f32 x, f32 y, f32 z);
 extern "C" void PSMTXIdentity(f32 m[3][4]);
