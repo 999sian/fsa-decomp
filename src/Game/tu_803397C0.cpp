@@ -192,7 +192,7 @@ static inline void setRotY_80339AEC(Mtx m, s16 angle) {
 }
 extern "C" void fn_801EFD34(u8* a, void* res, void* rec, s32 n, f32 x, f32 y, f32 z);
 extern "C" void PSMTXIdentity(f32 m[3][4]);
-extern "C" void fn_80339AEC(u8* const self) {
+extern "C" void fn_80339AEC(u8* self) {
     struct ResMgr {
         virtual void v0();
         virtual void v1();
@@ -203,8 +203,6 @@ extern "C" void fn_80339AEC(u8* const self) {
     DrawRec rec;
     Mtx rot;
     Mtx trans;
-    f32 s;
-    f32 c;
     PSMTXIdentity(rot);
     PSMTXIdentity(trans);
     rec.b1c = 1;
@@ -217,17 +215,7 @@ extern "C" void fn_80339AEC(u8* const self) {
         case 0:
         case 8: {
             PSMTXTrans(trans, -8.0f, -8.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            rotZcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
@@ -247,34 +235,13 @@ extern "C" void fn_80339AEC(u8* const self) {
             }
             break;
         }
-        case 1: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+        case 1:
+            rotYcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             rec.w18 = rot;
             fn_801F06F0(self, (void*)"enemy_both2_sob.bin", 0x27, &rec, 7, 1.0f, 1.0f);
             break;
-        }
         case 2: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+            rotYcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             rec.w18 = rot;
             s32 kind = **(s8**)(self + 0x288);
             if (kind == 'r' || kind == 's' || kind == 'y') {
@@ -288,17 +255,7 @@ extern "C" void fn_80339AEC(u8* const self) {
         }
         case 3: {
             PSMTXTrans(trans, -48.0f, -48.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            rotZcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
@@ -318,52 +275,20 @@ extern "C" void fn_80339AEC(u8* const self) {
             }
             break;
         }
-        case 4: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+        case 4:
+            rotYcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             rec.w18 = rot;
             fn_801F06F0(self, (void*)"enemy_gc_sob.bin", 0x16d, &rec, 7, 1.0f, 1.0f);
             break;
-        }
-        case 5: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+        case 5:
+            rotYcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             rec.w18 = rot;
             fn_801F06F0(self, (void*)"enemy_both2_sob.bin", 0x21, &rec, 7, 1.0f, 1.0f);
             break;
-        }
         case 6:
         case 9: {
             PSMTXTrans(trans, -16.0f, -16.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            rotZcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
@@ -385,17 +310,7 @@ extern "C" void fn_80339AEC(u8* const self) {
         }
         case 7: {
             PSMTXTrans(trans, -8.0f, -8.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            rotZcs_80339AEC(rot, JMACosShort(*(s16*)(self + 0x25a)), JMASinShort(*(s16*)(self + 0x25a)));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             if (*(u8*)(self + 0x258) != 0) {
@@ -436,6 +351,38 @@ extern "C" void fn_80339AEC(u8* const self) {
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
 extern "C" s32 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" const f32 lbl_80542110;
+extern "C" void* lbl_8053AC98;
+extern "C" u16 fn_8022461C(f32*,s32);
+extern "C" u16 fn_80226850(f32*,s32);
+extern "C" void fn_802A381C(void*,f32*,s32,s32);
+extern "C" void fn_8029D8F0(void*,f32*,s32,s32,s32);
+extern "C" s32 fn_801F2718(void*,u32);
+extern "C" u8* fn_801F666C(void*,s32);
+extern "C" void fn_801F0E34(void*,u32,s32);
+extern "C" void fn_801EEC98(void*,s32,u16*,s32*,f32*,s32*,s32,s32);
+extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" s32 fn_801F8544(void*,u32,s32,void*,s32);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D800C(void*,s32);
+extern "C" void fn_8030C210(void*,void*);
+extern "C" u8 fn_801F6758(void*,s32,f32);
+extern "C" u8 fn_801F2B7C(void*,s32,s32,s32);
+extern "C" s32 fn_801F285C(void*,s32,s32*,s32,s32);
+extern "C" void* fn_8022F340(s32);
+extern "C" s32 fn_802357E0(void*);
+extern "C" void fn_802359A4(void*,s32);
+extern "C" void fn_801F6718(void*,void*,s32,void*,s32,s32);
+extern "C" s32 fn_8023E724(s32);
+extern "C" s32 fn_8023B6CC(s32);
+extern "C" void fn_801F37AC(void*,s32,s32,s32,s32,s32);
+extern const f32 lbl_80542114;
+extern const f32 lbl_80542118;
+extern const f32 lbl_8054211C;
+extern const f32 lbl_80542120;
+extern const f32 lbl_80542124;
+extern const f32 lbl_80542128;
+extern const f32 lbl_8054212C;
+
 extern "C" void fn_8033A658(u8* this_) {
     fn_801F71A4(this_ + 0x3c, *(f32*)(this_ + 0x27c), lbl_805420EC, lbl_80542110);
     fn_801F71A4(this_ + 0x40, *(f32*)(this_ + 0x280), lbl_805420EC, lbl_80542110);
