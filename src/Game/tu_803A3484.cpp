@@ -68,6 +68,8 @@ static inline void titleFadePulse(u8* self,f32& value) {
     }
 }
 
+static inline void setTitleAlpha(J2DPane* pane,f32 alpha) { pane->setAlpha((u8)alpha); }
+
 static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
     (*(J2DScreen**)(self + 0x4))->search(0x506e7464)->setAlpha((u8)*(f32*)(self + 0x4c));
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3031ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
