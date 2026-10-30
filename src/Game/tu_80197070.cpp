@@ -825,7 +825,7 @@ next:
 #else
 extern "C" void fn_8019C500(Pos_8019* this_, int flag) {
     Pos_8019* p;
-    s32 id;
+    int id;
     s32 i;
     Vec_8019 pos;
     p=this_;
