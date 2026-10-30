@@ -24,10 +24,10 @@ static inline void fn_803A7898_child(char* p, s32 off, u64 key) {
     void* obj = __nw__FUl(0x2c);
     if (obj != 0) {
         *(void**)obj = lbl_804AF86C;
-        *(void**)(p + off) = obj;
-        J2DPane* found = (*(J2DScreen**)(p + 0x4))->search(key);
-        fn_80402F04(*(void**)(p + off), found);
     }
+    *(void**)(p + off) = obj;
+    J2DPane* found = (*(J2DScreen**)(p + 0x4))->search(key);
+    fn_80402F04(*(void**)(p + off), found);
 }
 
 // ---- from src/Game/Dtor_lbl804AF860_803A7708.cpp ----
