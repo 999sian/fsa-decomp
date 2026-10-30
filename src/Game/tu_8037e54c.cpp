@@ -204,7 +204,7 @@ static inline u8 fn_8037F580_getw(char* buf, s32* idx) {
     return ((u8*)&info)[1];
 }
 
-static inline f32 fn_8037F580_adv(f32 acc, f32 scale, u8 w, char* buf, s32* idx, char ch) {
+static inline f32 fn_8037F580_adv(f32 acc, f32 scale, s32 w, char* buf, s32* idx, char ch) {
     *idx += 1;
     buf[*idx] = ch;
     return scale * (f32)(s32)w + acc;
