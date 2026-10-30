@@ -295,6 +295,56 @@ static inline void Endm_updateView(char* p) {
     }
     fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &pos.x, (f32)(s32)*(f32*)(p + 0x270));
 }
+static inline void Endm_updateView(char* p, JGeometry::TVec2<f32>& pos) {
+    JGeometry::TBox2<f32> bounds;
+    JGeometry::TVec2<f32> tmp;
+    {
+        f32* dummy = &tmp.x;
+        f32 x0;
+        f32 y0;
+        x0 = *(f32*)(p + 0x250);
+        y0 = *(f32*)(p + 0x254);
+        JGeometry::TVec2<f32> off(0.0f, -30.0f);
+        tmp.x = x0;
+        tmp.y = y0;
+        pos.x = x0 + off.x;
+        f64 d = pos.x;
+        f32 px = (f32)d;
+        pos.y = y0 + off.y;
+        bounds = *(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10 + 0x24) + 0x164);
+        tmp.x = pos.x;
+        tmp.y = pos.y;
+        f32 half = 0.5f;
+        f32 w = bounds.f.x - bounds.i.x;
+        f32 hw = w * half;
+        f32 h = bounds.f.y - bounds.i.y;
+        f32 hh = h * half;
+        f32 hh2 = h * half;
+        if (px + hw >= *(f32*)(p + 0x268)) {
+            pos.x = *(f32*)(p + 0x268) - hw;
+        } else if (px - hw <= *(f32*)(p + 0x260)) {
+            pos.x = *(f32*)(p + 0x260) + hw;
+        }
+        if (pos.y + hh >= *(f32*)(p + 0x26c)) {
+            pos.y = *(f32*)(p + 0x26c) - hh2;
+        } else if (pos.y - h * half <= *(f32*)(p + 0x264)) {
+            pos.y = *(f32*)(p + 0x264) + h * half;
+        }
+    }
+    if (*(f32*)(p + 0x270) != *(f32*)(p + 0x274)) {
+        *(f32*)(p + 0x270) = *(f32*)(p + 0x270) + *(f32*)(p + 0x278);
+        if (*(f32*)(p + 0x278) < 0.0f) {
+            if (*(f32*)(p + 0x270) < *(f32*)(p + 0x274)) {
+                *(f32*)(p + 0x270) = *(f32*)(p + 0x274);
+            }
+        } else {
+            if (*(f32*)(p + 0x270) > *(f32*)(p + 0x274)) {
+                *(f32*)(p + 0x270) = *(f32*)(p + 0x274);
+            }
+        }
+    }
+    fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &pos.x, (f32)(s32)*(f32*)(p + 0x270));
+}
 static inline u8 Endm_tick(s32* timer) {
     if (*timer) --*timer;
     return (u32)__cntlzw(*timer) >> 5;
@@ -355,10 +405,10 @@ extern "C" void fn_802E9B6C(char* p) {
         break;
     case 4:
         if (Endm_tick((s32*)(p + 0x27c))) {
-            int n = *(u8*)(p + 0x230);
+            u32 n = *(u8*)(p + 0x230);
             if (Endm_effects[n]) {
                 fn_8043A268(lbl_8053AED0, ((u32*)lbl_8046F280)[n], Endm_layers[n],
-                    Endm_times[n], ((f32*)lbl_804D56A8)[n*2], ((f32*)lbl_804D56A8)[n*2+1]);
+                    Endm_times[n], ((f32(*)[2])lbl_804D56A8)[n][0], ((f32(*)[2])lbl_804D56A8)[n][1]);
             }
             *(f32*)(p + 0x274) = lbl_80541318;
             f32 cur = *(f32*)(p + 0x270);
@@ -373,12 +423,17 @@ extern "C" void fn_802E9B6C(char* p) {
             char* rec = (char*)fn_802D6A9C();
             *(u32*)(rec+4)=a; *(u32*)(rec+8)=b;
             fn_802D9CD8(fn_802D6A9C());
-            u32 oldA=*(u32*)(p+0x280), oldB=*(u32*)(p+0x284);
+            u32 oldB;
+            u32 oldA;
+            oldA=*(u32*)(p+0x280); oldB=*(u32*)(p+0x284);
             rec=(char*)fn_802D6A9C();
             *(u32*)(rec+4)=oldB; *(u32*)(rec+8)=oldA;
-            s32 count=*(s32*)(fn_801F856C()+0x1008);
-            for (s32 i=0;i<count;++i) {
-                *(char**)(p+0x240)=*(char**)(fn_801F856C()+8+i*4);
+            s32 i;
+            s32 offset;
+            s32 count;
+            count=*(s32*)(fn_801F856C()+0x1008);
+            for (i=0,offset=0;i<count;++i,offset+=4) {
+                *(char**)(p+0x240)=*(char**)(fn_801F856C()+8+offset);
                 char* actor=*(char**)(p+0x240);
                 if (!actor || *(u32*)(actor+0x1a0)!=0x454f574c || *(u8*)(actor+0x11c)!=1 || (*(u32*)(actor+0x90)&0x100)) continue;
                 if (*(u8*)(p+0x230)>=4 && *(u8*)(p+0x230)<=6 && !(*(u32*)(actor+0x90)&7)) continue;
@@ -427,7 +482,9 @@ extern "C" void fn_802E9B6C(char* p) {
         else if (*(u8*)(p+0x28d)==1) { s32 v[2]; v[0]=0; v[1]=1; fn_802DCD1C(fn_802D6A9C(),v); }
         else if (*(u8*)(p+0x28d)==2) { s32 v[2]; v[0]=-1; v[1]=0; fn_802DCD1C(fn_802D6A9C(),v); }
         else if (*(u8*)(p+0x28d)==3) { s32 v[2]; v[0]=1; v[1]=0; fn_802DCD1C(fn_802D6A9C(),v); }
-        u32 oldA=*(u32*)(p+0x280), oldB=*(u32*)(p+0x284);
+        u32 oldB;
+            u32 oldA;
+            oldA=*(u32*)(p+0x280); oldB=*(u32*)(p+0x284);
         rec=(char*)fn_802D6A9C();
         *(u32*)(rec+4)=oldB; *(u32*)(rec+8)=oldA;
         *(s32*)(p+0x23c)=6;
@@ -471,7 +528,13 @@ extern "C" void fn_802E9B6C(char* p) {
         } else {
             Endm_updateView(p);
             --*(s32*)(p+0x27c);
-            if(!*(s32*)(p+0x27c)) goto finish;
+            if(!*(s32*)(p+0x27c)) {
+            finish:
+                *(s32*)(p+0x27c)=60;
+                fn_80119998(fn_80119DD0(),100,0,2,0,0,20,0);
+                *(s32*)(p+0x23c)=8;
+                break;
+            }
             JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(*(char**)(p+0x240)+0xc);
             JGeometry::TBox2<f32> box;
             box=*(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10+0x24)+0x164);
@@ -481,12 +544,8 @@ extern "C" void fn_802E9B6C(char* p) {
             }
             u8 inside=0;
             if(pos.x>=box.i.x && pos.y>=box.i.y && pos.x<box.f.x && pos.y<box.f.y) inside=1;
-            if(!inside || !*(u8*)(*(char**)(p+0x240)+0x11c)) {
-            finish:
-                *(s32*)(p+0x27c)=60;
-                fn_80119998(fn_80119DD0(),100,0,2,0,0,20,0);
-                *(s32*)(p+0x23c)=8;
-            }
+            if(!inside) goto finish;
+            if(!*(u8*)(*(char**)(p+0x240)+0x11c)) goto finish;
         }
         break;
     case 8:
@@ -501,9 +560,13 @@ extern "C" void fn_802E9B6C(char* p) {
             *(f32*)(p+0xc)=*(f32*)(p+0x258);
             *(f32*)(p+0x10)=*(f32*)(p+0x25c);
             *(char**)(p+0x240)=0;
-            s32 count=*(s32*)(fn_801F856C()+0x1008);
-            for(s32 i=0;i<count;++i) {
-                char* a=*(char**)(fn_801F856C()+8+i*4);
+            s32 offset;
+            char* a;
+            s32 i;
+            s32 count;
+            count=*(s32*)(fn_801F856C()+0x1008);
+            for(i=0,offset=0;i<count;++i,offset+=4) {
+                a=*(char**)(fn_801F856C()+8+i*4);
                 if(!a || *(u8*)(a+0x11c)!=1) continue;
                 u32 id=*(u32*)(a+0x1a0);
                 if(id==0x454f574c) { fn_803613D0(a); *(u8*)(a+0x11c)=0; }
