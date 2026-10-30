@@ -12,6 +12,24 @@ extern void* lbl_8053AAF8;
 #include "JSystem/JUtility/JUTFont.h"
 #include <string.h>
 #include <stdio.h>
+#include "JSystem/JMessage/control.h"
+extern "C" void* __nw__FUl(u32);
+extern "C" void fn_8045B46C(void*,s8,void*,s32,s32);
+extern "C" const ResTIMG* fn_804030C4(u32,const char*);
+extern "C" void __ct__Q28JMessage18TSequenceProcessorFPCQ28JMessage10TReferencePQ28JMessage8TControl(void*,void*,void*);
+extern "C" void __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(void*,void*);
+extern void* lbl_804AF6D4[];
+extern void* lbl_804AF774[];
+extern void* lbl_804AF72C[];
+extern void* lbl_804AF6E4[];
+extern void* __vt__Q28JMessage10TReference[];
+extern f32 lbl_8054321C,lbl_80543224,lbl_80543228,lbl_80543240,lbl_8054322C;
+struct MsgResourceAccess {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void* get(u32,const char*);
+};
+extern void* lbl_804AF5A0[];
+extern u8 lbl_80529DEC[];
 
 // String scratch buffers (snprintf/strcat targets).
 static char lbl_8050E518[0x10];
