@@ -635,8 +635,6 @@ u32 fn_8040F474(void) {
 	return *(u32*)(lbl_8053ADF8 + 0x668);
 }
 
-#pragma opt_propagation off
-#pragma opt_common_subs off
 extern "C" void fn_8040F480(u8* self) {
 Tbl8048C1F8* tbl=&lbl_8048C1F8;
 u8 mode=0;
@@ -824,8 +822,6 @@ break;
 }
 lbl_80529DEC[0x237]=0;
 }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
 
 extern "C" void fn_80408114(u8* self);
 extern "C" void fn_8040732C(u8* self);
