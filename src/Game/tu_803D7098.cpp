@@ -326,11 +326,6 @@ extern "C" void fn_803D7098(u8* param_1) {
     fn_80402E08(*(void**)(param_1 + 0x44), *(f32*)(param_1 + 0x58), *(f32*)(param_1 + 0x5c));
 }
 
-static inline J2DPicture::TCornerColor selectionCornerColors(J2DPicture* picture) {
-    J2DPicture::TCornerColor colors;
-    picture->getCornerColor(colors);
-    return colors;
-}
 
 extern "C" u32 fn_80309A9C(void*, s32, s32);
 extern "C" void fn_80431A9C(void*, s32, s32, void*);
