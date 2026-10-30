@@ -12,6 +12,8 @@
 extern const f32 lbl_80541D88;
 extern const f32 lbl_80541DFC;
 
+union RupyRandomBits { u32 word; f32 value; };
+
 struct RupyTbl {
     s32 frame[12];
     u16 se0[12];
