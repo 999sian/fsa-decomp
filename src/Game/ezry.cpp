@@ -28,8 +28,12 @@ extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
 extern "C" void fn_8013CB44(void* emitter, f32* pos, u32 a, u32 b, u32 c);
 extern "C" void fn_801F71A4(void* obj, f32 a, f32 b, f32 c);
 
+static inline u8 ezryCount() {
+    return lbl_80529DEC[0x24f];
+}
+
 static inline void ezryPlaySe(s32 id) {
-    fn_8043D67C(lbl_8053AED0, id, 0, lbl_80529DEC[0x24f]);
+    fn_8043D67C(lbl_8053AED0, id, 0, ezryCount());
 }
 
 struct EzryRandom {
@@ -166,10 +170,9 @@ extern "C" void fn_8016088C(char* p) {
         *(u8*)(p + 0x268) = 1;
         if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
             u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
-            u8 flags = rec[0x87];
-            if (!(flags & 1)) {
-                rec[0x87] = flags | 1;
-                fn_8043D67C(lbl_8053AED0, 0x339, 0, lbl_80529DEC[0x24f]);
+            if (!(rec[0x87] & 1)) {
+                rec[0x87] |= 1;
+                ezryPlaySe(0x339);
             }
         }
         *(u32*)(p + 0xb0) = 0x20000;
@@ -339,8 +342,7 @@ extern "C" void fn_8016088C(char* p) {
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(manager, *(void**)(p + 0x294));
             }
             if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
-                u8* g = lbl_80529DEC;
-                fn_8043D67C(lbl_8053AED0, 0x33a, 0, g[0x24f]);
+                ezryPlaySe(0x33a);
             }
             *(u8*)(p + 0x11c) = 0;
         }
