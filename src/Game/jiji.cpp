@@ -306,6 +306,15 @@ extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32
 extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
 
 extern f32 lbl_80543054;
+#include "JSystem/JGeometry/Box.h"
+static inline void jijiExpandBox(JGeometry::TBox2<f32>* dst,f32* src,f32 v) {
+    dst->set(src[0]-v,src[1]-v,v+src[2],v+src[3]);
+}
+static inline void jijiBoxTranslate(JGeometry::TBox2<f32>* b,u8* p) {
+    JGeometry::TVec2<f32> pos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+    b->addPos(pos);
+}
+
 extern f32 lbl_8054304C;
 extern "C" void fn_801EE558(void*, JGeometry::TVec3<f32>*, f32*, s32);
 
@@ -409,6 +418,156 @@ extern "C" void fn_8037B7F8(u8* this_) {
                     0, 2, -1, 0, 0, 0);
     }
 }
+
+extern "C" void fn_8037BC30(u8* p) {
+    s32 ready=0;
+    s32 active=0;
+    f32 box[4];
+    f32 range[4];
+    for(int k=0;k<4;k++) box[k]=((f32*)(p+0x60))[k];
+    jijiBoxPos(box,p);
+    if(*(s32*)(p+0x230)!=3 && *(s32*)(p+0x230)!=4)
+        fn_80239914(box,*(s32*)(p+4),*(s32*)(p+0x198));
+    if(*(s32*)(p+0x258)==4 && *(u8*)(p+0x273)==1) {
+        *(u8*)(p+0x273)=0;
+        --*(s32*)(p+0x234);
+        (((Jiji*)p)->*lbl_804AEC48[*(s32*)(p+0x258)])();
+        return;
+    }
+    if(*(u8*)(p+0x272)==1) {
+        if(*(s32*)(p+0x268)==1) jijiExpand(range,(f32*)(p+0x60),16.0f);
+        else if(*(s32*)(p+0x268)==2) {for(int k=0;k<4;k++) range[k]=((f32*)(p+0x60))[k];}
+        else if(*(s32*)(p+0x268)==3) jijiExpand(range,(f32*)(p+0x60),40.0f);
+    } else {
+        if(*(s32*)(p+0x268)==1) jijiExpand(range,(f32*)(p+0x60),28.0f);
+        else if(*(s32*)(p+0x268)==2) jijiExpand(range,(f32*)(p+0x60),12.0f);
+        else if(*(s32*)(p+0x268)==3) jijiExpand(range,(f32*)(p+0x60),48.0f);
+    }
+    jijiBoxPos(range,p);
+    if(*(s32*)(p+0x230)==2) {
+        *(JGeometry::TVec3<f32>*)(p+0xc)+=*(JGeometry::TVec3<f32>*)(p+0x3c);
+        *(f32*)(p+0x44)-=0.2f;
+    }
+    switch(*(s32*)(p+0x230)) {
+    case 0:
+        if(*(s32*)(p+4)<8) *(s32*)(p+0x230)=1;
+        else *(s32*)(p+0x230)=3;
+        if(*(s32*)(p+0x258)==18 || *(s32*)(p+0x258)==19 || *(s32*)(p+0x258)==20)
+            *(void**)(p+0x278)=fn_8013CC50(*(s32*)(p+4),p+0xc,0x1fe,0,0,0,0,1,1.0f);
+        break;
+    case 3:
+        for(s32 i=0;i<4;i++) {
+            if((u8)((*((u8*)lbl_8053AAF8+0x82)&(u8)(1<<i))!=0)==1) {
+                active++;
+                if(!fn_80303750(i) || !fn_8022C8EC(i)) ready++;
+            }
+        }
+        if(ready==active) *(s32*)(p+0x230)=1;
+        break;
+    case 4:
+        if(*(s32*)(p+4)<8) {
+            JGeometry::TVec3<f32> pos;
+            pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
+            pos.y+=32.0f;
+            pos.z+=16.0f;
+            fn_8013CC50(*(s32*)(p+4),&pos,0x17d,1,0,0,0,1,1.0f);
+            fn_8015F8FC(*(void**)(lbl_8053AB10+0x30),*(s32*)(p+4),&pos,3);
+        }
+        *(s32*)(p+0x230)=1;
+        break;
+    case 1:
+        jijiFace(p,0);
+        if(fn_8022B160()) break;
+        if(*(s32*)(p+0x268)==0)
+            fn_8022FEB8(box,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
+        else if(*(u8*)(p+0x272)==1)
+            fn_8022FEB8(range,*(s32*)(p+4),*(s32*)(p+0x198),0,0);
+        else {
+            if(fn_8023AF14(range,*(s32*)(p+4),0,500.0f)==-1) *(u8*)(p+0x272)=1;
+            break;
+        }
+        *(s32*)(p+0x244)=fn_8022FD8C(*(s32*)(p+0x198));
+        if(*(s32*)(lbl_80529DEC+0x118)>=8 && *(s32*)(lbl_80529DEC+0x11c)==0)
+            *(s32*)(p+0x250)=fn_8037E54C(*(s32*)(p+0x244));
+        else if(*(u8*)(lbl_8050DB0C+4)) *(s32*)(p+0x250)=*(s16*)(lbl_8050DB0C+6);
+        if(*(s32*)(p+0x244)<0) break;
+        if(fn_8023E724(*(s32*)(p+0x244))[2]!=0.0f) break;
+        if(!fn_802300EC(*(s32*)(p+0x244))) break;
+        if(!fn_8038C678(*(s32*)(p+0x244),*(s32*)(p+0x250),*(s32*)(p+0x198),*(s32*)(p+4),*(JGeometry::TVec3<f32>*)(p+0xc),16)) break;
+        *(s32*)(p+0x24c)=0;
+        jijiFace(p,*(s32*)(p+0x244)+1);
+        *(s32*)(p+0x230)=5;
+        *(s32*)(p+0x240)=0;
+        if(*(s32*)(p+0x258)==18 || *(s32*)(p+0x258)==19 || *(s32*)(p+0x258)==20) fn_801F0E34(p,0x60001,0);
+        break;
+    case 2:
+        if(*(f32*)(p+0x14)<=0.0f) {
+            *(f32*)(p+0x14)=0.0f;
+            *(f32*)(p+0x44)=0.0f;
+            *(f32*)(p+0x40)=0.0f;
+            *(f32*)(p+0x3c)=0.0f;
+            *(s32*)(p+0x230)=1;
+            fn_8013CC50(*(s32*)(p+4),p+0xc,0x3cf,0,-1,0,0,1,1.5f);
+            fn_802D79E8(fn_802D6A9C(),*(s32*)(p+4),0,4.0f,0.0f);
+        }
+        break;
+    case 5:
+        if(*(s32*)(p+0x268)==0) fn_8022FF8C(*(s32*)(p+0x244),box,*(s32*)(p+4),*(s32*)(p+0x198),1,0);
+        else fn_8022FF8C(*(s32*)(p+0x244),range,*(s32*)(p+4),*(s32*)(p+0x198),0,0);
+        if(!fn_80388CAC(*(s32*)(p+0x244),*(s32*)(p+0x198))) break;
+        *(s32*)(p+0x240)=0;
+        *(s32*)(p+0x244)=-1;
+        ((void(*)(u8*,s32,s32))(*(void***)(p))[12])(p,255,1);
+        if(*(s32*)(p+0x268)!=0) {*(u8*)(p+0x272)=0; *(s32*)(p+0x268)=0;}
+        if(*(s32*)(p+0x254)) *(s32*)(p+0x230)=6;
+        else *(s32*)(p+0x230)=1;
+        if(*(AnimEffectRec**)(p+0x274)) fn_80316E50(*(AnimEffectRec**)(p+0x274),*(s32*)(p+4),*(JGeometry::TVec3<f32>*)(p+0xc));
+        break;
+    case 6:
+        ++*(s32*)(p+0x240);
+        if(*(s32*)(p+0x240)<150) break;
+        if(*(s32*)(p+4)<8) {
+            JGeometry::TVec3<f32> pos;
+            pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
+            pos.y+=32.0f; pos.z+=16.0f;
+            fn_8013CC50(*(s32*)(p+4),&pos,0x17d,1,0,0,0,1,1.0f);
+            fn_8015F8FC(*(void**)(lbl_8053AB10+0x30),*(s32*)(p+4),p+0xc,3);
+        }
+        if(*(void**)(p+0x278)) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824()+0xc),*(void**)(p+0x278));
+            *(void**)(p+0x278)=0;
+        }
+        fn_801F0E34(p,0x40017,0);
+        *(u8*)(p+0x11c)=0;
+        break;
+    }
+    if(*(s32*)(p+0x258)==18 || *(s32*)(p+0x258)==19 || *(s32*)(p+0x258)==20) {
+        f32 dist;
+        fn_801EE558(p,0,&dist,0);
+        if(*(s32*)(p+0x230)==5) {
+            *(u8*)(p+0x270)+=2;
+            if(*(u8*)(p+0x270)>=200) *(u8*)(p+0x270)=200;
+            *(s32*)(p+0x26c)=0;
+        } else if(dist<48.0f) {
+            if((*(s32*)(p+0x26c)&1)==0) {
+                *(u8*)(p+0x270)+=2;
+                if(*(u8*)(p+0x270)>=200) ++*(s32*)(p+0x26c);
+            } else {
+                --*(u8*)(p+0x270);
+                if(*(s32*)(p+0x26c)<6) {if(*(u8*)(p+0x270)<=80) ++*(s32*)(p+0x26c);}
+                else if(*(u8*)(p+0x270)<=40) ++*(s32*)(p+0x26c);
+            }
+            if(*(s32*)(p+0x26c)>=8) *(s32*)(p+0x26c)=0;
+        } else {
+            if(*(u8*)(p+0x270)>2) *(u8*)(p+0x270)-=2;
+            else *(u8*)(p+0x270)=0;
+            *(s32*)(p+0x26c)=0;
+        }
+    }
+    --*(s32*)(p+0x234);
+    (((Jiji*)p)->*lbl_804AEC48[*(s32*)(p+0x258)])();
+}
+
 #pragma opt_propagation reset
 struct JijiAnimEntry { u16 a, b; };
 extern "C" void fn_801EE558(void* this_, JGeometry::TVec3<f32>* dir, f32* dist, s32 p);
