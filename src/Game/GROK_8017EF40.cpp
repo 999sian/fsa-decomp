@@ -53,7 +53,7 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     m[0][0]=scaleX*(cy*cz);
     m[1][0]=scaleX*(cy*sz);
     m[2][0]=scaleX*-sy;
-    m[0][1]=scaleY*(ss*cz-cs);
+    m[0][1]=scaleY*__fmsubs(ss,cz,cs);
     m[1][1]=scaleY*(ss*sz+cc);
     m[2][1]=scaleY*(sx*cy);
     m[0][2]=scaleZ*(cc*sy+sx*sz);
@@ -67,8 +67,9 @@ extern "C" void fn_8017EF98(u8* p) {
     f32 m[3][4];
     JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(p+0xc);
     m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-    if(*(s32*)(p+0x230)==0 || *(s32*)(p+0x230)==1 || *(s32*)(p+0x230)==23) return;
-    if(*(u32*)(p+0x90)==1) return;
+    if(*(s32*)(p+0x230)==0 || *(s32*)(p+0x230)==1) return;
+    if(*(s32*)(p+0x230)==23) return;
+    switch(*(u32*)(p+0x90)) { case 1: return; default: break; }
     f32 offset;
     if(*(u32*)(p+0x90)==2 || *(u32*)(p+0x90)==3) {
         if(*(u16*)(p+0x94)==0) return;
@@ -83,14 +84,15 @@ extern "C" void fn_8017EF98(u8* p) {
         return;
     }
     s32 room=*(s32*)(p+4);
-    if(fn_802D6A9C()[0x131df+room]!=0) {
+    u8* mgr=fn_802D6A9C();
+    if((mgr+0x10000)[0x31df+room]!=0) {
         if(*(u32*)(p+0x90)==8) {
             if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
             fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
             return;
         }
         if(*(u32*)(p+0x90)==4 || *(u32*)(p+0x90)==5) {
-            if(lbl_8053AB70==*(u32*)(p+0x90)) fn_80307AC8(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x29,0,0,-1);
+            if((s32)lbl_8053AB70==*(s32*)(p+0x90)) fn_80307AC8(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x29,0,0,-1);
             return;
         }
         if(*(u32*)(p+0x90)==10) {
@@ -125,11 +127,11 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        texture=fn_804032E8(0x47524f43,t->normal[index]);
-        offset=t->normalY[index];
+        texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x80))[index]);
+        offset=((const f32*)((u8*)t+0xf8))[index];
     } else {
-        texture=fn_804032E8(0x47524f43,t->special[index]);
-        offset=t->specialY[index];
+        texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x170))[index]);
+        offset=((const f32*)((u8*)t+0x1e0))[index];
     }
     grokRotation(m,1.0f,1.0f,1.0f);
     if(*(s32*)(p+0x98)==0) grokRotation(m,-1.0f,1.0f,1.0f);
@@ -148,8 +150,8 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        texture=fn_804032E8(0x47524f43,t->normal[index]);offset=t->normalY[index];
-    } else { texture=fn_804032E8(0x47524f43,t->special[index]);offset=t->specialY[index]; }
+        texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x80))[index]);offset=((const f32*)((u8*)t+0xf8))[index];
+    } else { texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x170))[index]);offset=((const f32*)((u8*)t+0x1e0))[index]; }
     rec.b1d=1;
     if(*(s32*)(p+0x230)!=15) rec.b1f=0;
     else rec.b1d=0;
