@@ -210,9 +210,10 @@ struct PlayerAreas2 {
 
 inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::TVec3<f32>& b, f32 epsilon) {
     bool equal=false;
+    bool xy=false;
     if(JGeometry::TUtilf::epsilonEquals(a.x,b.x,epsilon) &&
-       JGeometry::TUtilf::epsilonEquals(a.y,b.y,epsilon) &&
-       JGeometry::TUtilf::epsilonEquals(a.z,b.z,epsilon)) equal=true;
+       JGeometry::TUtilf::epsilonEquals(a.y,b.y,epsilon)) xy=true;
+    if(xy && JGeometry::TUtilf::epsilonEquals(a.z,b.z,epsilon)) equal=true;
     return equal;
 }
 struct PlayerPos {
