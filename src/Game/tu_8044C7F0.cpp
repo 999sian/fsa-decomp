@@ -515,6 +515,17 @@ extern "C" void* fn_8045270C(u8* self, s16 deleting) {
 extern "C" void __construct_array(void*, void*, void*, u32, u32);
 extern "C" void __ct__Q28JUtility6TColorFv(void*);
 extern "C" void fn_80453830(void*);
+extern "C" void* lbl_804AF86C[];
+struct MenuRes8044 {
+    void* vt;
+    u8* data;
+    u8 pad[0x24];
+    MenuRes8044() { vt = lbl_804AF86C; }
+};
+struct MenuAnm8044 {
+    virtual void v08();
+    virtual void searchUpdateMaterialID(J2DScreen*);
+};
 extern "C" void fn_80452A80(u8* self) {
     *(void**)self = lbl_804B1D58;
     __construct_array(self + 0x144, __ct__Q28JUtility6TColorFv, 0, 4, 2);
