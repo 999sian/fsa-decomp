@@ -261,41 +261,420 @@ extern "C" void fn_801DE9F4(void* this_) {
 }
 
 extern "C" void fn_801E0CF4(char* this_);
+#pragma opt_propagation off
+static inline u8 thnkPlayerActive(s32 player) {
+    u8 active = 0;
+    if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) active = 1;
+    return active;
+}
+static inline u8 thnkPlayerValid(s32 player) {
+    u8 valid = 0;
+    if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = 1;
+    return valid;
+}
 extern "C" void fn_801DEA70(void* this_) {
     char* p = (char*)this_;
     s32 state;
     s32 idx;
     void* found;
-
-    if (*(u16*)(p + 0x2cc) != 0) {
-        return;
-    }
-    fn_801E0CF4((char*)this_);
-    fn_801CCF7C();
-    idx = *(s32*)(p + 0x2ac);
-    found = 0;
-    if (idx >= 0) {
-        found = fn_801F666C(fn_801F856C(), idx);
-    }
-    if (found == 0) {
-        idx = *(s32*)(p + 0x2b0);
-        if (idx >= 0) {
-            found = fn_801F666C(fn_801F856C(), idx);
+    s32 pause;
+    if (*(u16*)(p+0x2cc)==0) fn_801E0CF4(p);
+    pause=fn_801CCF7C();
+    idx=*(s32*)(p+0x2ac); found=0;
+    if(idx>=0)found=fn_801F666C(fn_801F856C(),idx);
+    if(!found){idx=*(s32*)(p+0x2b0);if(idx>=0)found=fn_801F666C(fn_801F856C(),idx);}
+    if(!found){idx=*(s32*)(p+0x2b4);if(idx>=0)found=fn_801F666C(fn_801F856C(),idx);}
+    state=*(s32*)(p+0x248);
+    switch(state) {
+    case 0:
+        if((u8)pause)break;
+        if(*(u16*)(p+0x2cc)) {--*(u16*)(p+0x2cc);break;}
+        if(*(s32*)(p+0x2a8)>=0){*(u32*)(p+0x230)|=0x120000;fn_801E1594(this_,1);break;}
+        if(*(u32*)(p+0x230)&0x40000)break;
+        idx=*(s32*)(p+0x2ac);
+        if(idx<0 || !fn_801F666C(fn_801F856C(),idx)) {
+            idx=*(s32*)(p+0x2b0);
+            if(idx<0 || !fn_801F666C(fn_801F856C(),idx))break;
         }
-    }
-    if (found == 0) {
-        idx = *(s32*)(p + 0x2b4);
-        if (idx >= 0) {
-            found = fn_801F666C(fn_801F856C(), idx);
+        if(!fn_801E3250(*(s32*)(p+4),0))fn_801E1594(this_,1);
+        break;
+    case 1:
+        if(*(u32*)(p+0x230)&0x20000) {
+            if(*(u32*)(p+0x230)&0x4000)break;
+            s32 player=*(s32*)(p+0x2a8);
+            if(player<0)break;
+            u8 valid=0;
+            u8 active=0;
+            if(fn_802375B0(player)==0 && fn_801CCFE4(player))active=1;
+            if(active && player<fn_80138A30(lbl_8053AAF8))valid=1;
+            if(!valid)break;
+            s32 room=*(s32*)(p+4);
+            if(!(fn_8023DE58(*(s32*)(p+0x2a8))==room))break;
+            if(!(fabs(((f32*)fn_8023E724(*(s32*)(p+0x2a8)))[0]-*(f32*)(p+0xc))<lbl_8053F498))break;
+            if(!(fabs(((f32*)fn_8023E724(*(s32*)(p+0x2a8)))[1]-*(f32*)(p+0x10))<lbl_8053F498))break;
+            fn_8022FE80(*(s32*)(p+0x2a8),*(s32*)(p+4),*(s32*)(p+0x198),0,0);
+            if(*(s32*)(p+0x2a8)!=fn_8022FD8C(*(s32*)(p+0x198)))break;
+            if(!fn_802308E0(*(s32*)(p+0x2a8)))break;
+            f32 v[3];v[0]=lbl_8053F480;v[1]=lbl_8053F480;v[2]=lbl_8053F480;
+            if(fn_8038AD24(*(s32*)(p+0x2a8),0xf0,*(s32*)(p+0x198),*(s32*)(p+4),v,4))fn_801E1594(this_,15);
+            else fn_8023061C(*(s32*)(p+0x2a8),0);
+        } else {
+            if(*(s32*)(p+0x2bc)>=0 || (*(u32*)(p+0x230)&0x4000) || !found)break;
+            f32 dx=*(f32*)((char*)found+0xc)-*(f32*)(p+0xc);
+            f32 dy=*(f32*)((char*)found+0x10)-*(f32*)(p+0x10);
+            f32 xx=dx*dx;
+            f32 yy=dy*dy;
+            if(xx+yy<=lbl_8053F49C)fn_801E1594(this_,2);
         }
-    }
-    state = *(s32*)(p + 0x248);
-    switch (state) {
-    default:
+        break;
+    case 2: {
+        f32 height=lbl_8053F498;
+        if(*(u32*)(p+0x230)&0x20000)height=lbl_8053F4A0;
+        else {
+            s32 i=*(s32*)(p+0x2ac);
+            if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;
+            else {i=*(s32*)(p+0x2b0);if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;}
+        }
+        if(*(f32*)(p+0x14)<=height){*(f32*)(p+0x14)=height;fn_801E1594(this_,3);}
         break;
     }
+    case 3:fn_801E002C(this_,found);break;
+    case 4: {
+        f32 limit=lbl_8053F4A4;
+        if(*(f32*)(p+0x14)>=limit){*(f32*)(p+0x14)=limit;fn_801E1594(this_,1);}break;
+    }
+    case 5:
+        if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270)) {
+            *(s32*)(p+0x98)=fn_801CD354(*(s32*)(p+0x98));
+            f32 limit=lbl_8053F4A4;
+            if(*(f32*)(p+0x14)>=limit){*(f32*)(p+0x14)=limit;fn_801E1594(this_,1);}
+            else fn_801E1594(this_,4);
+        }break;
+    case 6:
+        if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270)){
+            *(s32*)(p+0x98)=fn_801CD354(*(s32*)(p+0x98));
+            if(*(s32*)(p+0x2d0)>=0){fn_801E1594(this_,*(s32*)(p+0x2d0));*(s32*)(p+0x2d0)=-1;}
+            else fn_801E1594(this_,1);
+        }break;
+    case 7:fn_801DF9D8(this_,found);break;
+    case 8:if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270))fn_801E1594(this_,9);break;
+    case 9:if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270))fn_801E1594(this_,10);break;
+    case 10:
+        if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270) && fn_801D0DD4(this_)){
+            if(fn_801E2F40(this_))fn_801E1594(this_,14);else fn_801E1594(this_,11);
+        }break;
+    case 11:if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270))fn_801E1594(this_,12);break;
+    case 12:
+        if((u8)pause || !fn_801D21F0(p+0x270))break;
+        if(*(s32*)(p+0x24c)>=*(s32*)(p+0x250)){fn_801E1594(this_,13);break;}
+        {s32 i=fn_801D05F8(this_,p+0xc,lbl_8053F480);if(i>=0){
+            s32 dir=fn_801D0020(this_,p+0xc,i,0);
+            if(dir!=*(s32*)(p+0x98)){*(s32*)(p+0x98)=dir;fn_801D22DC(p+0x270,*(s32*)(p+0x98)+8,0,0);}
+        }}break;
+    case 13:
+        if(*(s32*)(p+0x24c)>1 && fn_801D21F0(p+0x270)){
+        *(u32*)(p + 0x230) |= 0x4000;
+        *(f32*)(p + 0x2c8) = *(f32*)(p + 0x10);
+        {
+            s32 room;
+            u8 flag;
+            f32 lower;
+            f32 upper;
+            f32 pos;
+            room = *(s32*)(p + 4);
+            char* rec = (char*)fn_802D6A9C();
+            char* field = (room < 8) ? rec + 0xcc : rec + 0xdc;
+            flag = 0;
+            upper = lbl_8053F4A4 + *(f32*)(field + 0x8);
+            pos = *(f32*)(p + 0xc);
+            lower = *(f32*)field - lbl_8053F4A4;
+            flag=thnkIsLeft(pos,*(s32*)(p+4));
+            if (flag && lower < *(f32*)(p + 0xc)) {
+                *(f32*)(p + 0x2c4) = upper;
+            } else {
+                *(f32*)(p + 0x2c4) = lower;
+            }
+            switch (*(s32*)(p + 0x248)) {
+            case 0xd:
+                if (*(f32*)(p + 0xc) < *(f32*)(p + 0x2c4)) {
+                    *(s32*)(p + 0x98) = 0;
+                } else {
+                    *(s32*)(p + 0x98) = 1;
+                }
+                if (*(f32*)(p + 0x14) >= 30.0f) {
+                    *(f32*)(p + 0x14) = 30.0f;
+                    fn_801E1594(this_, 1);
+                } else {
+                    fn_801E1594(this_, 4);
+                }
+                break;
+            case 7: {
+                u8 hit = 0;
+                switch (*(s32*)(p + 0x98)) {
+                case 0:
+                    if (upper < *(f32*)(p + 0xc) - lbl_8053F4AC) {
+                        hit = 1;
+                    }
+                    break;
+                case 1:
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < upper) {
+                        hit = 1;
+                    }
+                    break;
+                }
+                if (hit) {
+                    *(f32*)(p + 0x2c4) = upper;
+                } else {
+                    *(f32*)(p + 0x2c4) = lower;
+                }
+                fn_801E1594(this_, 5);
+                break;
+            }
+            default: {
+                f32 cur = *(f32*)(p + 0x2c4);
+                u8 hit = 0;
+                switch (*(s32*)(p + 0x98)) {
+                case 0:
+                    if (cur < *(f32*)(p + 0xc) - lbl_8053F4AC) {
+                        hit = 1;
+                    }
+                    break;
+                case 1:
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < cur) {
+                        hit = 1;
+                    }
+                    break;
+                }
+                if (hit) {
+                    fn_801E1594(this_, 5);
+                } else {
+                    if (*(f32*)(p + 0x14) >= 30.0f) {
+                        *(f32*)(p + 0x14) = 30.0f;
+                        fn_801E1594(this_, 1);
+                    } else {
+                        fn_801E1594(this_, 4);
+                    }
+                }
+                break;
+            }
+            }
+        }
+        }break;
+    case 14:
+        if(lbl_8053F480!=*(f32*)(p+0x54)){
+            fn_801CD950(p+0x54,lbl_8053F480,lbl_8053F4B0);
+            *(f32*)(p+0x58)=*(f32*)(p+0x54);*(f32*)(p+0x5c)=*(f32*)(p+0x54);
+        }else fn_801E1594(this_,0);
+        break;
+    case 15:
+        if(!fn_803865B8(*(s32*)(p+0x2a8)))break;
+        if(fn_8037EFB4(*(s32*)(p+0x2a8))==0) {
+            if(fn_80236228(*(s32*)(p+0x2a8))<20){if(fn_8038470C(*(s32*)(p+0x2a8),0xf1))fn_801E1594(this_,17);}
+            else {if(fn_80384C58(*(s32*)(p+0x2a8),*(s32*)(p+0x198)))fn_801E1594(this_,18);}
+        }else {if(fn_8038470C(*(s32*)(p+0x2a8),0xf2))fn_801E1594(this_,16);}
+        break;
+    case 16:
+        if(fn_803865B8(*(s32*)(p+0x2a8)) && fn_80384C58(*(s32*)(p+0x2a8),*(s32*)(p+0x198))){
+            fn_8023061C(*(s32*)(p+0x2a8),0);
+        *(u32*)(p + 0x230) |= 0x4000;
+        *(f32*)(p + 0x2c8) = *(f32*)(p + 0x10);
+        {
+            s32 room;
+            u8 flag;
+            f32 upper;
+            f32 lower;
+            f32 pos;
+            room = *(s32*)(p + 4);
+            char* rec = (char*)fn_802D6A9C();
+            char* field = (room < 8) ? rec + 0xcc : rec + 0xdc;
+            flag = 0;
+            upper = lbl_8053F4A4 + *(f32*)(field + 0x8);
+            pos = *(f32*)(p + 0xc);
+            lower = *(f32*)field - lbl_8053F4A4;
+            flag=thnkIsLeft(pos,*(s32*)(p+4));
+            if (flag && lower < *(f32*)(p + 0xc)) {
+                *(f32*)(p + 0x2c4) = upper;
+            } else {
+                *(f32*)(p + 0x2c4) = lower;
+            }
+            switch (*(s32*)(p + 0x248)) {
+            case 0xd:
+                if (*(f32*)(p + 0xc) < *(f32*)(p + 0x2c4)) {
+                    *(s32*)(p + 0x98) = 0;
+                } else {
+                    *(s32*)(p + 0x98) = 1;
+                }
+                if (*(f32*)(p + 0x14) >= 30.0f) {
+                    *(f32*)(p + 0x14) = 30.0f;
+                    fn_801E1594(this_, 1);
+                } else {
+                    fn_801E1594(this_, 4);
+                }
+                break;
+            case 7: {
+                u8 hit = 0;
+                switch (*(s32*)(p + 0x98)) {
+                case 0:
+                    if (upper < *(f32*)(p + 0xc) - lbl_8053F4AC) {
+                        hit = 1;
+                    }
+                    break;
+                case 1:
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < upper) {
+                        hit = 1;
+                    }
+                    break;
+                }
+                if (hit) {
+                    *(f32*)(p + 0x2c4) = upper;
+                } else {
+                    *(f32*)(p + 0x2c4) = lower;
+                }
+                fn_801E1594(this_, 5);
+                break;
+            }
+            default: {
+                f32 cur = *(f32*)(p + 0x2c4);
+                u8 hit = 0;
+                switch (*(s32*)(p + 0x98)) {
+                case 0:
+                    if (cur < *(f32*)(p + 0xc) - lbl_8053F4AC) {
+                        hit = 1;
+                    }
+                    break;
+                case 1:
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < cur) {
+                        hit = 1;
+                    }
+                    break;
+                }
+                if (hit) {
+                    fn_801E1594(this_, 5);
+                } else {
+                    if (*(f32*)(p + 0x14) >= 30.0f) {
+                        *(f32*)(p + 0x14) = 30.0f;
+                        fn_801E1594(this_, 1);
+                    } else {
+                        fn_801E1594(this_, 4);
+                    }
+                }
+                break;
+            }
+            }
+        }
+        }break;
+    case 17:
+        if(fn_803865B8(*(s32*)(p+0x2a8)) && fn_80384C58(*(s32*)(p+0x2a8),*(s32*)(p+0x198)))fn_801E1594(this_,18);
+        break;
+    case 18:{
+        f32 height=lbl_8053F498;
+        if(*(u32*)(p+0x230)&0x20000)height=lbl_8053F4A0;
+        else {
+            s32 i=*(s32*)(p+0x2ac);
+            if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;
+            else {i=*(s32*)(p+0x2b0);if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;}
+        }
+        if(*(f32*)(p+0x14)<=height) {
+            *(f32*)(p+0x14)=height;
+            fn_80237524(*(s32*)(p+0x2a8),0x180);
+            fn_8023619C(*(s32*)(p+0x2a8),-20);
+            fn_8023061C(*(s32*)(p+0x2a8),0);
+            *(u32*)(p+0x230)&=~0x100000;
+            *(u32*)(p+0x230)|=0x80000;
+            fn_801E1AB4(this_,1);
+            fn_801F0E34(this_,0x5001b,0);
+        *(u32*)(p + 0x230) |= 0x4000;
+        *(f32*)(p + 0x2c8) = *(f32*)(p + 0x10);
+        {
+            s32 room;
+            u8 flag;
+            f32 upper;
+            f32 lower;
+            f32 pos;
+            room = *(s32*)(p + 4);
+            char* rec = (char*)fn_802D6A9C();
+            char* field = (room < 8) ? rec + 0xcc : rec + 0xdc;
+            flag = 0;
+            upper = lbl_8053F4A4 + *(f32*)(field + 0x8);
+            pos = *(f32*)(p + 0xc);
+            lower = *(f32*)field - lbl_8053F4A4;
+            flag=thnkIsLeft(pos,*(s32*)(p+4));
+            if (flag && lower < *(f32*)(p + 0xc)) {
+                *(f32*)(p + 0x2c4) = upper;
+            } else {
+                *(f32*)(p + 0x2c4) = lower;
+            }
+            switch (*(s32*)(p + 0x248)) {
+            case 0xd:
+                if (*(f32*)(p + 0xc) < *(f32*)(p + 0x2c4)) {
+                    *(s32*)(p + 0x98) = 0;
+                } else {
+                    *(s32*)(p + 0x98) = 1;
+                }
+                if (*(f32*)(p + 0x14) >= 30.0f) {
+                    *(f32*)(p + 0x14) = 30.0f;
+                    fn_801E1594(this_, 1);
+                } else {
+                    fn_801E1594(this_, 4);
+                }
+                break;
+            case 7: {
+                u8 hit = 0;
+                switch (*(s32*)(p + 0x98)) {
+                case 0:
+                    if (upper < *(f32*)(p + 0xc) - lbl_8053F4AC) {
+                        hit = 1;
+                    }
+                    break;
+                case 1:
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < upper) {
+                        hit = 1;
+                    }
+                    break;
+                }
+                if (hit) {
+                    *(f32*)(p + 0x2c4) = upper;
+                } else {
+                    *(f32*)(p + 0x2c4) = lower;
+                }
+                fn_801E1594(this_, 5);
+                break;
+            }
+            default: {
+                f32 cur = *(f32*)(p + 0x2c4);
+                u8 hit = 0;
+                switch (*(s32*)(p + 0x98)) {
+                case 0:
+                    if (cur < *(f32*)(p + 0xc) - lbl_8053F4AC) {
+                        hit = 1;
+                    }
+                    break;
+                case 1:
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < cur) {
+                        hit = 1;
+                    }
+                    break;
+                }
+                if (hit) {
+                    fn_801E1594(this_, 5);
+                } else {
+                    if (*(f32*)(p + 0x14) >= 30.0f) {
+                        *(f32*)(p + 0x14) = 30.0f;
+                        fn_801E1594(this_, 1);
+                    } else {
+                        fn_801E1594(this_, 4);
+                    }
+                }
+                break;
+            }
+            }
+        }
+        }break;
+    }
+    }
+    fn_801E2D88(this_);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801DF9D8(void* this_, void* obj) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x24c) < *(s32*)(p + 0x250)) {
