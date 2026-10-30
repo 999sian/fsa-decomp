@@ -1,6 +1,8 @@
 // LPLK_800F6820: .text 0x800F6820-0x800F7FCC (actor LPLK)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 
@@ -281,7 +283,10 @@ u16 angle;
 s32 id,priority,player,amount;
 bool grounded;
 f32 absY,absX,oldV;
-f32 vertical,gravity,zero,dy,speed;
+register f32 zero;
+register f32 vertical;
+register f32 gravity;
+f32 dy,speed;
 f32 px,py,height;
 s32 kind;
 angle=0;dist=lbl_8053BF48;quad=0;target=-1;
