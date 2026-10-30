@@ -53,13 +53,6 @@ extern "C" void fn_8013A884(u32*);
 inline f32 turtleRand() {
     return ((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
 }
-extern const f32 lbl_805426AC;
-extern const f32 lbl_805426B0;
-inline s32 createTurtle52870(char* p,u32 param,f32 offset) {
-    JGeometry::TVec3<f32> pos;
-    pos.set(32.0f+F(p,0x288),(F(p,0x280)+F(p,0x28c))*0.5f+offset,32.0f);
-    return Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param,-1,-1);
-}
 #pragma opt_common_subs on
 extern "C" u32 __cvt_fp2unsigned(f64);
 #pragma opt_lifetimes off
