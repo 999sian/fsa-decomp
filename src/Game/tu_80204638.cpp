@@ -4,7 +4,9 @@ struct ActorGroups80204638 {
     u8* actors[10][2];
 };
 static u8 lbl_804CADE0[0xd0];
+#pragma exceptions off
 #include "Game/SinitPoolChain.h"
+#pragma exceptions on
 
 
 extern "C" u8 fn_80204D44(u8* param_1);
