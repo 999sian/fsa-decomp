@@ -28,7 +28,10 @@ struct GbaChan {
     u8 mq[0x20];
     u32 msg;
     void* cb;
-    GbaPkt pkt;
+    union {
+        GbaPkt pkt;
+        u8 pktBytes[0x20];
+    };
     u32 tick;
     u8* program;      // 0x4c
     u32 programLen;   // 0x50
