@@ -289,7 +289,6 @@ extern "C" void fn_802B5284(char* p) {
 
 extern "C" void fn_802B5360(char* p) {
     Rgba802B c;
-    Vec802B v;
     *(void**)(p + 0x234) = 0;
     *(void**)(p + 0x238) = 0;
     *(void**)(p + 0x23c) = 0;
@@ -541,9 +540,10 @@ extern "C" void fn_802B5360(char* p) {
         break;
     }
     *(WaveController**)(p + 0x230) = new WaveController(0, 0, 8);
-    v = *(Vec802B*)(p + 0xc);
+    JGeometry::TVec3<f32> v;
+    v = *(JGeometry::TVec3<f32>*)(p + 0xc);
     ((Actor802B*)p)->v14();
-    *(Vec802B*)(p + 0xc) = v;
+    *(JGeometry::TVec3<f32>*)(p + 0xc) = v;
     p[0x11f] = 1;
 }
 
