@@ -248,6 +248,12 @@ extern "C" void fn_80238E08(s32 handle);
 extern "C" void fn_80238D50(s32 handle);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
 
+struct YasiRoomMgr {
+    u8 cur;
+    u8 pad[3];
+    u8 rooms[4][0x784];
+};
+
 struct YasiFlags {
     u32 sw3 : 5;
     u32 sw2 : 5;
