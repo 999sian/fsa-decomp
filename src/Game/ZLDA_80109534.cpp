@@ -2,6 +2,9 @@
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
+
+extern u8 lbl_8053AA81;
 
 extern "C" void* fn_801F856C();
 extern const f32 lbl_8053C3E4;
@@ -199,9 +202,9 @@ extern "C" s32 fn_801096C8(u8* self, u32 state) {
 }
 
 extern "C" s32 fn_80109AE0(char* self, f32* out) {
-    out[2] = lbl_8053C3E0;
-    out[1] = lbl_8053C3E0;
-    out[0] = lbl_8053C3E0;
+    out[2] = 0.0f;
+    out[1] = 0.0f;
+    out[0] = 0.0f;
     s32 id = fn_801F7A08(fn_801F856C(), 0x43495243);
     if (id < 0) return 0;
     char* o = (char*)fn_801F666C(fn_801F856C(), id);
@@ -211,8 +214,12 @@ extern "C" s32 fn_80109AE0(char* self, f32* out) {
     f32 a[4], b[4];
     fn_801F31C4(self, a);
     fn_801F31C4(o, b);
-    b[0] += lbl_8053C410;
-    b[1] += lbl_8053C410;
+    f32 bx = b[0];
+    f32 by = b[1];
+    by += lbl_8053C410;
+    bx += lbl_8053C410;
+    b[0] = bx;
+    b[1] = by;
     b[2] += lbl_8053C3EC;
     b[3] += lbl_8053C3EC;
     f32 a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
@@ -223,24 +230,16 @@ extern "C" s32 fn_80109AE0(char* self, f32* out) {
     bool hit = false;
     if (a2 >= a0 && a3 >= a1) hit = true;
     if (hit) {
-        Vec p;
-        p = *(Vec*)(o + 0xc);
+        JGeometry::TVec3<f32> p;
+        p = *(JGeometry::TVec3<f32>*)(o + 0xc);
         Vec* v = (Vec*)out;
-        out[0] = *(f32*)(self + 0xc) - p.x;
-        out[1] = *(f32*)(self + 0x10) - p.y;
-        out[2] = lbl_8053C3E0;
-        f32 sq = JMathInlineVEC::PSVECSquareMag(v);
-        if (!(sq <= lbl_8053C400 * *(f32*)__float_epsilon)) {
-            f32 inv;
-            if (sq <= lbl_8053C3E0) {
-                inv = sq;
-            } else {
-                f32 y = __frsqrte(sq);
-                inv = lbl_8053C3F0 * y * (lbl_8053C414 - sq * (y * y));
-            }
-            JMathInlineVEC::PSVECScale(v, v, inv);
-        }
-        JMathInlineVEC::PSVECScale(v, v, lbl_8053C418);
+        f32 dx = *(f32*)(self + 0xc) - p.x;
+        f32 dy = *(f32*)(self + 0x10) - p.y;
+        out[0] = dx;
+        out[1] = dy;
+        out[2] = 0.0f;
+        ((JGeometry::TVec3<f32>*)out)->normalize();
+        ((JGeometry::TVec3<f32>*)out)->scale(lbl_8053C418);
         return 1;
     }
     return 0;
@@ -263,14 +262,14 @@ extern "C" void fn_80109D78(u8* this_) {
     st.a = -1;
     st.b = -1;
     for (u8 i = 0; i < 0x10; i += 8) {
-        tbl[(u8)(i + 0)] = i + 0;
-        tbl[(u8)(i + 1)] = i + 1;
-        tbl[(u8)(i + 2)] = i + 2;
-        tbl[(u8)(i + 3)] = i + 3;
-        tbl[(u8)(i + 4)] = i + 4;
-        tbl[(u8)(i + 5)] = i + 5;
-        tbl[(u8)(i + 6)] = i + 6;
-        tbl[(u8)(i + 7)] = i + 7;
+        tbl[(u8)(i + 0)] = (u8)(i + 0);
+        tbl[(u8)(i + 1)] = (u8)(i + 1);
+        tbl[(u8)(i + 2)] = (u8)(i + 2);
+        tbl[(u8)(i + 3)] = (u8)(i + 3);
+        tbl[(u8)(i + 4)] = (u8)(i + 4);
+        tbl[(u8)(i + 5)] = (u8)(i + 5);
+        tbl[(u8)(i + 6)] = (u8)(i + 6);
+        tbl[(u8)(i + 7)] = (u8)(i + 7);
     }
     st.a = -1;
     st.b = 0;
@@ -302,6 +301,13 @@ extern "C" void fn_80109D78(u8* this_) {
     } else {
         fn_801F02BC(this_, lbl_804642C0, *(s32*)(this_ + 0x34c) + 0x9b, tbl, 0x407, 0, 0, lbl_8053C3E8, lbl_8053C3E8);
     }
+}
+
+extern "C" void v03__5ActorFv(void* self);
+extern "C" void fn_80109FA4(u8* this_) {
+    v03__5ActorFv(this_);
+    *(f32*)(this_ + 0x330) = lbl_8053C3E8;
+    this_[0x339] = 1;
 }
 
 extern "C" void v01__5ActorFv(void* this_);
