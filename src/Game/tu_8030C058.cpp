@@ -336,6 +336,10 @@ static inline f32 cameraBlend(const s32 timer, const f32 speed) {
     f32 b = 180.0f * (1.0f - (0.5f * cameraCos(a) + 0.5f));
     return 0.5f * cameraCos(b) + 0.5f;
 }
+static inline f32 cameraBlendAngle(const s32 timer, const f32 speed) {
+    f32 a = speed * (180.0f * (f32)timer);
+    return 180.0f * (1.0f - (0.5f * cameraCos(a) + 0.5f));
+}
 static inline f32 cameraClampDelta(f32 value, f32 lower, f32 upper) {
     if (value < 0.0f) {
         if (value < lower) value = lower;
