@@ -1116,7 +1116,7 @@ extern "C" void fn_804257E4(void* obj) {
     u64* on1;
     u64* off1;
     u64* on2;
-    s32* counts;
+    register s32* counts;
     u64* bars;
     s32 bit;
     u64* pos = (u64*)(base + 0xdc8);
@@ -1201,13 +1201,13 @@ extern "C" void fn_804257E4(void* obj) {
             fn_80423804(this_, i);
         }
         i++;
+        sh += 2;
         tv1++;
         on1++;
         off1++;
         on2++;
         counts++;
         bars += 4;
-        sh += 2;
     }
 
     }
@@ -1261,9 +1261,9 @@ extern "C" void fn_804257E4(void* obj) {
                 }
             }
             k++;
+            pos++;
             off += 0x10;
             fp += 4;
-            pos++;
         }
     }
 
@@ -1561,6 +1561,30 @@ extern "C" void* __nw__FUl(u32 size);
 extern "C" void __ct__9J2DScreenFv(void* this_);
 extern "C" void __ct__13J2DOrthoGraphFffffff(void* this_, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);
 extern "C" void fn_80441778(void);
+extern void* lbl_804AF86C[];
+extern "C" void fn_80402F04(void*, void*);
+extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void*, const char*, u32, void*);
+static inline u8* hudCtorScreen() {
+    u8* screen = (u8*)__nw__FUl(0x118);
+    if (screen) __ct__9J2DScreenFv(screen);
+    return screen;
+}
+static inline u8* hudCtorFind(u8* screen, const u64* tag) { return GetHeart(screen, *tag); }
+static inline void hudCtorChild(u8* owner, u32 offset, u8** screen, const u64* tag) {
+    u8* child = (u8*)__nw__FUl(0x2c);
+    if (child) *(void**)child = lbl_804AF86C;
+    *(u8**)(owner + offset) = child;
+    u8* pane = hudCtorFind(*screen, tag);
+    fn_80402F04(*(void**)(owner + offset), pane);
+}
+static inline JUtility::TColor hudCtorColor(u8* pane, u32 slot) {
+    JUtility::TColor color;
+    ((void (*)(JUtility::TColor*, u8*))(*(void***)pane)[slot])(&color, pane);
+    return color;
+}
+static inline void hudCtorAppend(u8* pane, u32 texture, f32 blend) {
+    ((bool (*)(u8*, u32, f32))(*(void***)pane)[39])(pane, texture, blend);
+}
 extern "C" void* fn_80426DEC(u8* this_) {
     u8* p = this_;
     u8* g = lbl_8053AED0;
