@@ -30,7 +30,7 @@ extern "C" void fn_800CFE2C(void*, void*, void*);
 extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
 extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
-extern "C" void fn_800D00F0(void*, void*, void*);
+extern "C" void fn_800D00F0(void*, J3DAnmColorKey*, const J3DAnmColorKeyData*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
 extern "C" void fn_800CF678(void*, void*, void*);
 extern "C" void fn_800CF734(void*, unsigned char*, const unsigned char*);
@@ -466,7 +466,7 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
             fn_800CFE2C(param_1, param_2, p);
             break;
         case 0x50414b31:
-            fn_800D00F0(param_1, param_2, p);
+            fn_800D00F0(param_1, (J3DAnmColorKey*)param_2, (const J3DAnmColorKeyData*)p);
             break;
         case 0x434c4b31:
             fn_800D0204(param_1, (unsigned char*)param_2, p);
@@ -561,39 +561,26 @@ extern "C" void fn_800CFEF0(void* param_1, void* param_2, void* param_3) {
 
 extern "C" void fn_800D00C8(void** self, void* data)
 {
-    fn_800D00F0(self, (unsigned char*)self[1], (unsigned char*)data);
+    fn_800D00F0(self, (J3DAnmColorKey*)self[1], (const J3DAnmColorKeyData*)data);
 }
 
 #pragma opt_common_subs off
-extern "C" void fn_800D00F0(void* self, void* anm_, void* data_) {
-    s16 frame;
-    u8 attr;
-    u8* anm = (u8*)anm_;
-    const u8* data = (const u8*)data_;
-    f32 zero = lbl_8053BC80;
-    attr = data[8];
-    frame = *(const s16*)(data + 0xc);
-    *(s16*)(anm + 6) = frame;
-    u16 a = *(const u16*)(data + 0x10);
-    anm[4] = attr;
-    u16 b = *(const u16*)(data + 0xe);
-    *(f32*)(anm + 8) = zero;
-    *(u16*)(anm + 0x14) = b;
-    b = *(const u16*)(data + 0x12);
-    *(u16*)(anm + 0xc) = a;
-    a = *(const u16*)(data + 0x14);
-    *(u16*)(anm + 0xe) = b;
-    b = *(const u16*)(data + 0x16);
-    *(u16*)(anm + 0x10) = a;
-    void* table = *(void**)(data + 0x18);
-    *(u16*)(anm + 0x12) = b;
-    *(void**)(anm + 0x3c) = JSUConvertOffsetToPtr<J3DAnmColorKeyTable>(data, table);
-    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x24));
-    *(void**)(anm + 0x30) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x28));
-    *(void**)(anm + 0x34) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x2c));
-    *(void**)(anm + 0x38) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x30));
-    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(data + 0x1c));
-    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const u32*)(data + 0x20)));
+extern "C" void fn_800D00F0(void* loader, J3DAnmColorKey* anm, const J3DAnmColorKeyData* data) {
+    anm->mMaxFrame = data->mTotalFrameCount;
+    anm->mAttribute = data->mAttribute;
+    anm->mCurrentFrame = lbl_8053BC80;
+    anm->mUpdateMaterialNum = data->mUpdateMaterialNum;
+    anm->_0C = data->_10;
+    anm->_0E = data->_12;
+    anm->_10 = data->_14;
+    anm->_12 = data->_16;
+    anm->mTable = JSUConvertOffsetToPtr<J3DAnmColorKeyTable>(data, (void*)data->mTableOffset);
+    anm->_2C = JSUConvertOffsetToPtr<s16>(data, (void*)data->mRValOffset);
+    anm->_30 = JSUConvertOffsetToPtr<s16>(data, (void*)data->mGValOffset);
+    anm->_34 = JSUConvertOffsetToPtr<s16>(data, (void*)data->mBValOffset);
+    anm->_38 = JSUConvertOffsetToPtr<s16>(data, (void*)data->mAValOffset);
+    anm->mUpdateMaterialID = JSUConvertOffsetToPtr<u16>(data, (void*)data->mUpdateMaterialIDOffset);
+    anm->mNameTab.setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)data->mNameTabOffset));
 }
 #pragma opt_common_subs reset
 extern "C" void fn_800D01DC(void** self, void* data)
@@ -766,7 +753,7 @@ extern "C" void fn_800D0694(const J3DAnmTransformKey* p1, unsigned short p2, J3D
     p1->calcTransform(p1->mCurrentFrame, p2, p3);
 }
 
-extern "C" void fn_800D00F0(void*, void*, void*);
+extern "C" void fn_800D00F0(void*, J3DAnmColorKey*, const J3DAnmColorKeyData*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
 extern "C" void* fn_800D06B8(const void* ptr, const void* offset)
 {
