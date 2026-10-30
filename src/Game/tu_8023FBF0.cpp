@@ -2846,6 +2846,14 @@ s32 fn_802527B0(char* p, s32* out) {
 }
 
 #pragma opt_common_subs off
+static inline void resetTrailThreshold486(char* p,const f32 zero) {
+    PlayerTrail* t=(PlayerTrail*)p;
+    for(int i=0;i<0x31;i++) {
+        t->pos[i].x=t->x;t->pos[i].y=t->y;t->pos[i].z=t->z;
+        if(t->z>zero)t->onGround[i]=1;
+        else t->onGround[i]=0;
+    }
+}
 static inline void resetPlayerTrail486(PlayerTrail* t) {
     for(int i=0;i<0x31;i++) {
         t->pos[i].x=t->x;t->pos[i].y=t->y;t->pos[i].z=t->z;
