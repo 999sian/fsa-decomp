@@ -2,6 +2,8 @@
 // TU 80160650-801618D0 (EZRY). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AED0;
