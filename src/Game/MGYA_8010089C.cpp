@@ -1,6 +1,7 @@
 // MGYA_8010089C: .text 0x8010089C-0x80102278 (actor MGYA)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JUtility/JUTVideo.h"
 
 // ---- from Game/fn_8010089C_dtor.cpp
 
@@ -319,8 +320,8 @@ extern "C" void fn_80100D28(MGYA* this_) {
             s32 handle0 = this_->m198;
             s32 room0 = this_->m04;
             if (fn_8038AD24(this_->m238, id0, handle0, room0, (temp0 = pos, temp0), 0)) {
-                for (s32 i = 0; i < 4; i++) fn_802308E0(i);
-                for (s32 i = 0; i < 4; i++) {
+                for (int i = 0; i < 4; i++) fn_802308E0(i);
+                for (int i = 0; i < 4; i++) {
                     this_->m25C[i] = 0;
                     this_->m260[i] = 0;
                 }
@@ -352,7 +353,7 @@ extern "C" void fn_80100D28(MGYA* this_) {
             switch (fn_8037EFB4(this_->m238)) {
             case 0:
                 fn_8038470C(this_->m238, this_->m244 == 1 ? 0x329 : 0x320);
-                for (s32 i = 0; i < 4; i++) {
+                for (int i = 0; i < 4; i++) {
                     this_->m270[i] = fn_802373EC(i);
                     this_->m280[i] = fn_8023725C(i);
                     fn_802372F8(i, 5, 1);
@@ -442,7 +443,7 @@ extern "C" void fn_80100D28(MGYA* this_) {
         }
         this_->m234++;
         if (this_->m234 >= lbl_8049C8D8[this_->m244] && this_->m23C >= 120) {
-            s32 n = lbl_8053C178 * lbl_8053AAF8->rnd.get();
+            int n = lbl_8053C178 * lbl_8053AAF8->rnd.get();
             spawn[0] = lbl_8053C17C + this_->m24C.x + lbl_8053C180 * (n % 3) + (lbl_8053C184 * lbl_8053AAF8->rnd.get() - lbl_8053C188);
             spawn[1] = this_->m24C.y - lbl_8053C18C + lbl_8053C180 * (n / 3) + (lbl_8053C184 * lbl_8053AAF8->rnd.get() - lbl_8053C188);
             spawn[2] = lbl_8053C190;
@@ -518,7 +519,7 @@ extern "C" void fn_80100D28(MGYA* this_) {
             this_->m230 = 9;
             this_->m234 = 0;
             fn_801F6884(fn_801F856C());
-            for (s32 i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
                     fn_802372F8(i, this_->m270[i], this_->m280[i]);
                 }
@@ -529,11 +530,11 @@ extern "C" void fn_80100D28(MGYA* this_) {
                 }
             } else {
                 s32 best = -1;
-                for (s32 i = 0; i < this_->m244; i++) {
+                for (int i = 0; i < this_->m244; i++) {
                     if (best < this_->m268[i]) best = this_->m268[i];
                 }
                 if (best != 0) {
-                    for (s32 i = 0; i < this_->m244; i++) {
+                    for (int i = 0; i < this_->m244; i++) {
                         if (best == this_->m268[i]) {
                             fn_802D7844(fn_802D6A9C(), 1, i);
                         } else {
