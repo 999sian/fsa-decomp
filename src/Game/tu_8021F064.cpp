@@ -67,20 +67,28 @@ void fn_8021F130(ActorGroup_8021F064* g) {
 void fn_8021F1F0(ActorGroup_8021F064* g, s32 id) {
     bool found;
     s32* ptr;
-    u32 i;
-    if (g->mCount <= 0) return;
+    register int i;
+    if (g->mCount <= 0) {
+        return;
+    }
     ptr = g->mIds;
     found = false;
-    if (g->mCount <= 0) return;
+    if (g->mCount <= 0) {
+        return;
+    }
     i = found;
-    for (; (s32)i < g->mCount; i++, ptr++) {
+    for (; i < g->mCount; i++, ptr++) {
         if (!found) {
-            if (id == *ptr) found = true;
+            if (id == *ptr) {
+                found = true;
+            }
         } else {
-            ptr[-1] = *ptr;
+            *(ptr - 1) = *ptr;
         }
     }
-    if (found) g->mCount--;
+    if (found) {
+        g->mCount--;
+    }
 }
 #pragma opt_lifetimes reset
 }

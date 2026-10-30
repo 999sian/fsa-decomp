@@ -44,8 +44,9 @@ static const u8 sSeq6[13] = {4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0xFE};
 static const s32 sFrame9[4] = {0x6F, 0x77, 0x7F, 0x87};
 
 extern "C" void fn_800FE8C0(AnimSeq* a) {
-    if (a->op != a->prevOp) {
-        a->prevOp = a->op;
+    const int op = a->op;
+    if (op != a->prevOp) {
+        a->prevOp = op;
         a->timer = 0;
         a->idx = 0;
         a->flags &= ~0x20;

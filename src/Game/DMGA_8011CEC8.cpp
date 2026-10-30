@@ -129,12 +129,15 @@ extern "C" void fn_8011CF48(void* this_) {
     }
 }
 
+#pragma opt_propagation off
 #pragma opt_common_subs off
-extern "C" void fn_8011D1B8(void* const this_, const s32 state) {
+#pragma opt_strength_reduction off
+extern "C" void fn_8011D1B8(void* this_, s32 state) {
+    void* object = this_;
     char* p;
-    u32 mode;
+    s32 mode;
     s32 i;
-    p = (char*)this_;
+    p = (char*)object;
     mode = state;
     switch (mode) {
     case 0:
@@ -229,7 +232,9 @@ extern "C" void fn_8011D1B8(void* const this_, const s32 state) {
     }
     *(s32*)(p + 0x234) = state;
 }
+#pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern "C" u8 fn_8011D4B4(int param_1) {
     return *(int*)(param_1 + 0x234) == 9;
 }

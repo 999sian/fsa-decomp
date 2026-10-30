@@ -1032,7 +1032,8 @@ void JPADrawLine(JPAEmitterWorkData *work, JPABaseParticle *particle)
 
     JGeometry::TVec3f position1(particle->mPosition);
     JGeometry::TVec3f position2;
-    
+    f32 zero = 0.0f;
+
     particle->getVelVec(&position2);
     if (position2.isZero())
         return;
@@ -1043,12 +1044,10 @@ void JPADrawLine(JPAEmitterWorkData *work, JPABaseParticle *particle)
     GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
 
     GXBegin(GX_LINES, GX_VTXFMT1, 2);
-    f32 zero = 0.0f;
-    f32 one  = 1.0f;
     GXPosition3f32(position1.x, position1.y, position1.z);
     GXTexCoord2f32(zero, zero);
     GXPosition3f32(position2.x, position2.y, position2.z);
-    GXTexCoord2f32(zero, one);
+    GXTexCoord2f32(zero, 1.0f);
     GXEnd();
 
     GXSetVtxDesc(GX_VA_POS, GX_INDEX8);

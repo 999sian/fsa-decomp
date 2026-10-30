@@ -532,9 +532,15 @@ struct MenuAnm8044 {
 };
 extern "C" void fn_80402F04(void*, void*);
 extern "C" MenuAnm8044* load__20J2DAnmLoaderDataBaseFPCv(const void* p);
+#pragma opt_loop_invariants off
 extern "C" u8* fn_80452A80(u8* self) {
-    MenuTables8044* data = &lbl_80490FC8;
+    MenuTables8044* data;
+    u64* win;
+    u64* pic;
+    u64* tag;
+    u64* tag2;
     s32 i;
+    data = &lbl_80490FC8;
     *(void**)self = lbl_804B1D58;
     __construct_array(self + 0x144, __ct__Q28JUtility6TColorFv, 0, 4, 2);
     __construct_array(self + 0x14c, __ct__Q28JUtility6TColorFv, 0, 4, 2);
@@ -545,11 +551,12 @@ extern "C" u8* fn_80452A80(u8* self) {
     *(J2DScreen**)(self + 4) = new J2DScreen;
     (*(J2DScreen**)(self + 4))->setPriority((char*)data + 0x460, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x4c));
     OSInitFastCast();
+    tag = data->alpha288;
     for (i = 0; i < 4; i++) {
         *(u32*)(self + 0xd4) = fn_80403084(0x5343524e, (char*)data + 0x46c);
-        ((MenuAnm8044**)(self + 0xd8))[i] = load__20J2DAnmLoaderDataBaseFPCv(*(void**)(self + 0xd4));
-        ((MenuAnm8044**)(self + 0xd8))[i]->searchUpdateMaterialID(*(J2DScreen**)(self + 4));
-        (*(J2DScreen**)(self + 4))->search(data->alpha288[i])->setAnimation((J2DAnmTextureSRTKey*)((MenuAnm8044**)(self + 0xd8))[i]);
+        *(MenuAnm8044**)(self + 0xd8 + i * 4) = load__20J2DAnmLoaderDataBaseFPCv(*(void**)(self + 0xd4));
+        (*(MenuAnm8044**)(self + 0xd8 + i * 4))->searchUpdateMaterialID(*(J2DScreen**)(self + 4));
+        (*(J2DScreen**)(self + 4))->search(tag[i])->setAnimation((J2DAnmTextureSRTKey*)*(MenuAnm8044**)(self + 0xd8 + i * 4));
     }
     *(u32*)(self + 0x124) = 0;
     *(u32*)(self + 0xe8) = fn_80403084(0x5343524e, (char*)data + 0x478);
@@ -570,62 +577,68 @@ extern "C" u8* fn_80452A80(u8* self) {
     *(s16*)(self + 0x132) = 0;
     *(f32*)(self + 0x114) = (*(J2DScreen**)(self + 4))->search(0x5063756c3031ULL)->getBounds()->i.x;
     *(f32*)(self + 0x118) = (*(J2DScreen**)(self + 4))->search(0x5063756c3031ULL)->getBounds()->i.y;
+    pic = lbl_80490FC8.picture;
     for (i = 0; i < 3; i++) {
         f32 base = (*(J2DScreen**)(self + 4))->search(data->picture[0])->getBounds()->i.y;
-        ((f32*)(self + 0x108))[i] = (*(J2DScreen**)(self + 4))->search(data->picture[i])->getBounds()->i.y - base;
+        *(f32*)(self + 0x108 + i * 4) = (*(J2DScreen**)(self + 4))->search(pic[i])->getBounds()->i.y - base;
     }
     self[0x13b] = (*(J2DScreen**)(self + 4))->search(data->show248[0])->mAlpha;
     self[0x13c] = (*(J2DScreen**)(self + 4))->search(data->alpha268[0])->mAlpha;
     self[0x13d] = (*(J2DScreen**)(self + 4))->search(data->alpha288[0])->mAlpha;
     self[0x139] = (*(J2DScreen**)(self + 4))->search(data->alpha1a0[0])->mAlpha;
     self[0x13a] = (*(J2DScreen**)(self + 4))->search(data->alpha1d8[0])->mAlpha;
-    for (i = 0; i < 7; i++) {
-        (*(J2DScreen**)(self + 4))->search(data->alpha1a0[i])->hide();
-        (*(J2DScreen**)(self + 4))->search(data->alpha1d8[i])->hide();
+    tag = data->alpha1a0;
+    tag2 = data->alpha1d8;
+    for (i = 0; i < 7; i++, tag++, tag2++) {
+        (*(J2DScreen**)(self + 4))->search(*tag)->mIsVisible = false;
+        (*(J2DScreen**)(self + 4))->search(*tag2)->mIsVisible = false;
     }
+    win = lbl_80490FC8.window;
     for (i = 0; i < 2; i++) {
-        ((JUtility::TColor*)(self + 0x154))[i] = ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(data->picture[i]))->getBlack();
-        ((JUtility::TColor*)(self + 0x15c))[i] = ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(data->picture[i]))->getWhite();
-        ((JUtility::TColor*)(self + 0x144))[i] = ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->getBlack();
-        ((JUtility::TColor*)(self + 0x14c))[i] = ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->getWhite();
-        ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->getContentsColor(((J2DWindow::TContentsColor*)(self + 0x164))[i]);
-        ((JUtility::TColor*)(self + 0x15c))[i].a = 0xff;
-        ((JUtility::TColor*)(self + 0x154))[i].a = 0;
-        ((JUtility::TColor*)(self + 0x14c))[i].a = 0xff;
-        ((JUtility::TColor*)(self + 0x144))[i].a = 0xff;
+        *(JUtility::TColor*)(self + 0x154 + i * 4) = ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(pic[i]))->getBlack();
+        *(JUtility::TColor*)(self + 0x15c + i * 4) = ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(pic[i]))->getWhite();
+        *(JUtility::TColor*)(self + 0x144 + i * 4) = ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(win[i]))->getBlack();
+        *(JUtility::TColor*)(self + 0x14c + i * 4) = ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(win[i]))->getWhite();
+        ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(win[i]))->getContentsColor(*(J2DWindow::TContentsColor*)(self + 0x164 + i * 16));
+        self[0x15f + i * 4] = 0xff;
+        self[0x157 + i * 4] = 0;
+        self[0x14f + i * 4] = 0xff;
+        self[0x147 + i * 4] = 0xff;
     }
-    self[0x167] = 0xff; self[0x16b] = 0xff; self[0x16f] = 0xff; self[0x173] = 0xff;
-    self[0x177] = 0xc8; self[0x17b] = 0xc8; self[0x17f] = 0xc8; self[0x183] = 0xc8;
-    self[0x15c] = 0xa7; self[0x15d] = 0x4c; self[0x15e] = 0x2a;
-    self[0x154] = 0x27; self[0x155] = 0x10; self[0x156] = 0;
-    self[0x160] = 0xff; self[0x161] = 0xed; self[0x162] = 0xa0;
-    self[0x158] = 0; self[0x159] = 0; self[0x15a] = 0;
+    self[0x173] = 0xff; self[0x16f] = 0xff; self[0x16b] = 0xff; self[0x167] = 0xff;
+    self[0x183] = 0xc8; self[0x17f] = 0xc8; self[0x17b] = 0xc8; self[0x177] = 0xc8;
+    ((JUtility::TColor*)(self + 0x15c))->set(0xa7, 0x4c, 0x2a, self[0x15f]);
+    ((JUtility::TColor*)(self + 0x154))->set(0x27, 0x10, 0x00, self[0x157]);
+    ((JUtility::TColor*)(self + 0x160))->set(0xff, 0xed, 0xa0, self[0x163]);
+    ((JUtility::TColor*)(self + 0x158))->set(0x00, 0x00, 0x00, self[0x15b]);
     self[0x14c] = 0x7f; self[0x14d] = 0x51; self[0x14e] = 0x18;
     self[0x144] = 0x7f; self[0x145] = 0x51; self[0x146] = 0x18;
     self[0x150] = 0x7f; self[0x151] = 0x51; self[0x152] = 0x18;
     self[0x148] = 0x7f; self[0x149] = 0x51; self[0x14a] = 0x18;
-    self[0x164] = 0xc0; self[0x165] = 0x91; self[0x166] = 0x4c;
-    self[0x168] = 0xc0; self[0x169] = 0x91; self[0x16a] = 0x4c;
-    self[0x16c] = 0xe6; self[0x16d] = 0xe1; self[0x16e] = 0x87;
-    self[0x170] = 0xe6; self[0x171] = 0xe1; self[0x172] = 0x87;
-    self[0x174] = 0xa9; self[0x175] = 0x80; self[0x176] = 0x46;
-    self[0x178] = 0xa9; self[0x179] = 0x80; self[0x17a] = 0x46;
-    self[0x17c] = 0xa9; self[0x17d] = 0x80; self[0x17e] = 0x46;
-    self[0x180] = 0xa9; self[0x181] = 0x80; self[0x182] = 0x46;
-    (*(J2DScreen**)(self + 4))->search(data->window[1])->setAlpha(0xff);
+    ((JUtility::TColor*)(self + 0x164))->set(0xc0, 0x91, 0x4c, self[0x167]);
+    ((JUtility::TColor*)(self + 0x168))->set(0xc0, 0x91, 0x4c, self[0x16b]);
+    ((JUtility::TColor*)(self + 0x16c))->set(0xe6, 0xe1, 0x87, self[0x16f]);
+    ((JUtility::TColor*)(self + 0x170))->set(0xe6, 0xe1, 0x87, self[0x173]);
+    ((JUtility::TColor*)(self + 0x174))->set(0xa9, 0x80, 0x46, self[0x177]);
+    ((JUtility::TColor*)(self + 0x178))->set(0xa9, 0x80, 0x46, self[0x17b]);
+    ((JUtility::TColor*)(self + 0x17c))->set(0xa9, 0x80, 0x46, self[0x17f]);
+    ((JUtility::TColor*)(self + 0x180))->set(0xa9, 0x80, 0x46, self[0x183]);
+    (*(J2DScreen**)(self + 4))->search(lbl_80490FC8.window[1])->setAlpha(0xff);
     *(MenuRes8044**)(self + 8) = new MenuRes8044;
     fn_80402F04(*(void**)(self + 8), (*(J2DScreen**)(self + 4))->search(0x50626c61636bULL));
+    tag = (u64*)((u8*)data + 0x2a8);
     for (i = 0; i < 15; i++) {
-        ((MenuRes8044**)(self + 0xc))[i] = new MenuRes8044;
-        fn_80402F04(((MenuRes8044**)(self + 0xc))[i], (*(J2DScreen**)(self + 4))->search(((u64*)((u8*)data + 0x2a8))[i]));
+        *(MenuRes8044**)(self + 0xc + i * 4) = new MenuRes8044;
+        fn_80402F04(*(MenuRes8044**)(self + 0xc + i * 4), (*(J2DScreen**)(self + 4))->search(tag[i]));
     }
+    tag = (u64*)((u8*)data + 0x30);
     for (i = 0; i < 3; i++) {
-        ((MenuRes8044**)(self + 0x48))[i] = new MenuRes8044;
-        fn_80402F04(((MenuRes8044**)(self + 0x48))[i], (*(J2DScreen**)(self + 4))->search(data->picture[i]));
-        ((MenuRes8044**)(self + 0x54))[i] = new MenuRes8044;
-        fn_80402F04(((MenuRes8044**)(self + 0x54))[i], (*(J2DScreen**)(self + 4))->search(data->window[i]));
-        ((MenuRes8044**)(self + 0x60))[i] = new MenuRes8044;
-        fn_80402F04(((MenuRes8044**)(self + 0x60))[i], (*(J2DScreen**)(self + 4))->search(((u64*)((u8*)data + 0x30))[i]));
+        *(MenuRes8044**)(self + 0x48 + i * 4) = new MenuRes8044;
+        fn_80402F04(*(MenuRes8044**)(self + 0x48 + i * 4), (*(J2DScreen**)(self + 4))->search(pic[i]));
+        *(MenuRes8044**)(self + 0x54 + i * 4) = new MenuRes8044;
+        fn_80402F04(*(MenuRes8044**)(self + 0x54 + i * 4), (*(J2DScreen**)(self + 4))->search(win[i]));
+        *(MenuRes8044**)(self + 0x60 + i * 4) = new MenuRes8044;
+        fn_80402F04(*(MenuRes8044**)(self + 0x60 + i * 4), (*(J2DScreen**)(self + 4))->search(tag[i]));
     }
     *(s16*)(self + 0xf8) = 0;
     *(s16*)(self + 0xfe) = 0;
@@ -634,22 +647,20 @@ extern "C" u8* fn_80452A80(u8* self) {
     (*(UlPane**)(*(u8**)(self + 8) + 4))->setAlpha(0);
     *(s16*)(*(u8**)(self + 8) + 0x26) = 0;
     for (i = 0; i < 15; i++) {
-        fn_80402E08(((void**)(self + 0xc))[i], lbl_80543DFC, lbl_80543E18);
-        *(s16*)(((u8**)(self + 0xc))[i] + 0x22) = 0;
+        fn_80402E08(*(void**)(self + 0xc + i * 4), lbl_80543DFC, lbl_80543E18);
+        *(s16*)(*(u8**)(self + 0xc + i * 4) + 0x22) = 0;
     }
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++, pic++, win++) {
         if (i == *(s16*)(self + 0xf8)) {
-            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(data->picture[i]))->setBlackWhite(*(JUtility::TColor*)(self + 0x154), *(JUtility::TColor*)(self + 0x15c));
-            ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->setBlackWhite(*(JUtility::TColor*)(self + 0x144), *(JUtility::TColor*)(self + 0x14c));
-            J2DWindow::TContentsColor c = *(J2DWindow::TContentsColor*)(self + 0x164);
-            ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->setContentsColor(c.mColorA, c.mColorB, c.mColorC, c.mColorD);
-            (*(J2DScreen**)(self + 4))->search(data->window[i])->setAlpha(0xff);
+            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*pic))->setBlackWhite(*(JUtility::TColor*)(self + 0x154), *(JUtility::TColor*)(self + 0x15c));
+            ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(*win))->setBlackWhite(*(JUtility::TColor*)(self + 0x144), *(JUtility::TColor*)(self + 0x14c));
+            MenuSetContents8044((J2DWindow*)(*(J2DScreen**)(self + 4))->search(*win), *(J2DWindow::TContentsColor*)(self + 0x164));
+            (*(J2DScreen**)(self + 4))->search(*win)->setAlpha(0xff);
         } else {
-            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(data->picture[i]))->setBlackWhite(*(JUtility::TColor*)(self + 0x158), *(JUtility::TColor*)(self + 0x160));
-            ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->setBlackWhite(*(JUtility::TColor*)(self + 0x148), *(JUtility::TColor*)(self + 0x150));
-            J2DWindow::TContentsColor c = *(J2DWindow::TContentsColor*)(self + 0x174);
-            ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(data->window[i]))->setContentsColor(c.mColorA, c.mColorB, c.mColorC, c.mColorD);
-            (*(J2DScreen**)(self + 4))->search(data->window[i])->setAlpha(0xc8);
+            ((J2DPicture*)(*(J2DScreen**)(self + 4))->search(*pic))->setBlackWhite(*(JUtility::TColor*)(self + 0x158), *(JUtility::TColor*)(self + 0x160));
+            ((J2DWindow*)(*(J2DScreen**)(self + 4))->search(*win))->setBlackWhite(*(JUtility::TColor*)(self + 0x148), *(JUtility::TColor*)(self + 0x150));
+            MenuSetContents8044((J2DWindow*)(*(J2DScreen**)(self + 4))->search(*win), *(J2DWindow::TContentsColor*)(self + 0x174));
+            (*(J2DScreen**)(self + 4))->search(*win)->setAlpha(0xc8);
         }
     }
     self[0x136] = 0;
@@ -674,7 +685,7 @@ extern "C" u8* fn_80452A80(u8* self) {
     }
     return self;
 }
-
+#pragma opt_loop_invariants reset
 extern "C" void fn_80453830(void* thisPtr) {
 	s32* p = (s32*)thisPtr;
 	p[0] = -1;

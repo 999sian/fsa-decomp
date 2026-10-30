@@ -47,12 +47,12 @@ extern "C" void fn_802A4118(u8* this_) {
 }
 
 extern "C" void fn_802A4190(u8* this_) {
-    JGeometry::TVec3f tmp;
     f32 pos[3];
-    f32 vec[4];
+    TBoxCopy vec;
+    JGeometry::TVec3f tmp;
     s32 state = *(s32*)(this_ + 0x230);
-    f32 py = *(f32*)(this_ + 0x10);
     f32 px = *(f32*)(this_ + 0xc);
+    f32 py = *(f32*)(this_ + 0x10);
 
     switch (state) {
     case 0:
@@ -67,11 +67,12 @@ extern "C" void fn_802A4190(u8* this_) {
             }
         }
 
-        vec[0] = *(f32*)(this_ + 0x60) + px;
-        vec[1] = *(f32*)(this_ + 0x64) + py;
-        vec[2] = *(f32*)(this_ + 0x68) + px;
-        vec[3] = *(f32*)(this_ + 0x6c) + py;
-        *(s32*)(this_ + 0x238) = fn_8023AF14(vec, *(s32*)(this_ + 4), 1);
+        vec = *(TBoxCopy*)(this_ + 0x60);
+        vec.ix = vec.ix + px;
+        vec.iy = vec.iy + py;
+        vec.fx = vec.fx + px;
+        vec.fy = vec.fy + py;
+        *(s32*)(this_ + 0x238) = fn_8023AF14((f32*)&vec, *(s32*)(this_ + 4), 1);
 
         if (*(s32*)(this_ + 0x238) >= 0 && !fn_8023ED8C() && !fn_8023EBB8(*(s32*)(this_ + 0x238)) && *(f32*)(this_ + 0x14) <= lbl_805407A4) {
             tmp = *(JGeometry::TVec3f*)fn_8023E724(*(s32*)(this_ + 0x238));

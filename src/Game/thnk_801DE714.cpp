@@ -276,14 +276,16 @@ static inline u8 thnkPlayerValid(s32 player) {
 #pragma opt_common_subs reset
 #pragma opt_common_subs reset
 extern "C" void fn_801DEA70(void* this_) {
-    char* p = (char*)this_;
+    char* const p = (char*)this_;
+    u32 active;
+    s32 room;
+    u8 valid;
+    s32 player;
     s32 state;
-    int idx;
     void* found;
-    s32 pause;
     if (*(u16*)(p+0x2cc)==0) fn_801E0CF4(p);
-    pause=fn_801CCF7C();
-    idx=*(s32*)(p+0x2ac); found=0;
+    const s32 pause=fn_801CCF7C();
+    s32 idx=*(s32*)(p+0x2ac); found=0;
     if(idx>=0)found=fn_801F666C(fn_801F856C(),idx);
     if(!found){idx=*(s32*)(p+0x2b0);if(idx>=0)found=fn_801F666C(fn_801F856C(),idx);}
     if(!found){idx=*(s32*)(p+0x2b4);if(idx>=0)found=fn_801F666C(fn_801F856C(),idx);}
@@ -304,14 +306,14 @@ extern "C" void fn_801DEA70(void* this_) {
     case 1:
         if(*(u32*)(p+0x230)&0x20000) {
             if(*(u32*)(p+0x230)&0x4000)break;
-            s32 player=*(s32*)(p+0x2a8);
+            player=*(s32*)(p+0x2a8);
             if(player<0)break;
-            u8 valid=0;
-            s32 active=0;
+            valid=0;
+            active=0;
             if(fn_802375B0(player)==0 && (u8)fn_801CCFE4(player))active=1;
-            if((u8)active && player<fn_80138A30(lbl_8053AAF8))valid=1;
+            if((u8)(active & 0xff) && player<fn_80138A30(lbl_8053AAF8))valid=1;
             if(!valid)break;
-            int room=*(s32*)(p+4);
+            room=*(s32*)(p+4);
             s32 playerRoom=fn_8023DE58(*(s32*)(p+0x2a8));
             if(playerRoom!=room)break;
             if(!(fabs(((f32*)fn_8023E724(*(s32*)(p+0x2a8)))[0]-*(f32*)(p+0xc))<lbl_8053F498))break;
@@ -335,7 +337,7 @@ extern "C" void fn_801DEA70(void* this_) {
         f32 height=lbl_8053F498;
         if(*(u32*)(p+0x230)&0x20000)height=lbl_8053F4A0;
         else {
-            int i=*(s32*)(p+0x2ac);
+            s32 i=*(s32*)(p+0x2ac);
             if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;
             else {i=*(s32*)(p+0x2b0);if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;}
         }
@@ -345,7 +347,7 @@ extern "C" void fn_801DEA70(void* this_) {
     case 3:fn_801E002C(this_,found);break;
     case 4: {
         f32 z=*(f32*)(p+0x14);
-        f32 limit=30.0f;
+        const f32 limit=30.0f;
         if(z>=limit){*(f32*)(p+0x14)=limit;fn_801E1594(this_,1);}break;
     }
     case 5:
@@ -575,7 +577,7 @@ extern "C" void fn_801DEA70(void* this_) {
         f32 height=lbl_8053F498;
         if(*(u32*)(p+0x230)&0x20000)height=lbl_8053F4A0;
         else {
-            int i=*(s32*)(p+0x2ac);
+            s32 i=*(s32*)(p+0x2ac);
             if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;
             else {i=*(s32*)(p+0x2b0);if(i>=0 && fn_801F666C(fn_801F856C(),i))height=lbl_8053F4A0;}
         }

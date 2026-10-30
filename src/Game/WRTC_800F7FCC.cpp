@@ -551,7 +551,7 @@ static inline JGeometry::TVec3f WRTC_linePosition(u8* p,s32 n) {
     return result;
 }
 
-#pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 extern "C" void fn_800F953C(void* this_) {
     u8* self=(u8*)this_;
     Vec out;
@@ -559,7 +559,7 @@ extern "C" void fn_800F953C(void* this_) {
     *(s32*)(self+0xb0)=0x80004;
     self[0x1a8]=1;
     u8* p=*(u8**)(self+0x240);
-    s32 state=*(s32*)(p+0x230);
+    int state=*(s32*)(p+0x230);
     if(state==3){
         const JGeometry::TVec3f& v=WRTC_circlePosition(p);
         out=v;
@@ -569,7 +569,7 @@ extern "C" void fn_800F953C(void* this_) {
         s32 n=p[0x2ac];
         const JGeometry::TVec3f& v=WRTC_linePosition(p,n);
         out=v;
-        s32 half=(n>>1)+1;
+        int half=(n>>1)+1;
         k=(0.001f*(f32)lbl_8049C3B8[8]+0.36f)-(0.001f*(f32)lbl_8049C3B8[9]+0.032f)*(f32)half;
         *(u8*)(self+0x249)=1;
     }else if(state==1){
@@ -585,7 +585,7 @@ extern "C" void fn_800F953C(void* this_) {
     }
     WRTC_moveTowards(self,*(const JGeometry::TVec3f*)&out,k);
 }
-#pragma opt_strength_reduction reset
+#pragma opt_lifetimes reset
 extern "C" void fn_800F9C20(void* this_) {
     char* rng;
     unsigned int multiplier;

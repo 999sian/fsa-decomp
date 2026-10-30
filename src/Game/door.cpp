@@ -38,6 +38,15 @@ void fn_802C59D4(void)
 {
 }
 
+extern "C" void fn_802C59D8(char* p) {
+    JGeometry::TVec2<f32> pos(*(f32*)(p + 0x258), *(f32*)(p + 0x25c));
+    s32 room = fn_80226BC4(&pos, *(s32*)(p + 0x4));
+    switch (*(s32*)(p + 0x230)) {
+    default:
+        break;
+    }
+}
+
 } // extern "C"
 
 // ---- Actor_SetVec3_0x0.cpp ----

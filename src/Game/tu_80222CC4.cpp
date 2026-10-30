@@ -1,5 +1,4 @@
-// TU 0x80222cc4-0x802233a4.
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x80222cc4-0x802233a4 — Dodongo ('DDGO') Spawner/Controller Enemy (derived from Base_802218C8).
 #include "types.h"
 
 extern "C" {
@@ -87,36 +86,69 @@ void* lbl_804A6C38[] = {
     (void*)fn_80221114,
 };
 
-// ---- fn_80222CC4.cpp ----
+struct DdgoSub270 {
+    u8 _pad00[0x24];
+    void* mVtable; // +0x294 on DdgoHostActor
+    u8 _pad28[0x10];
+};
+
+struct DdgoChildActor {
+    u8 _pad00[0x98];
+    s32 mFacingDir;    // +0x98
+    u8 _pad9C[0x108 - 0x9C];
+    s32 mSortPriority; // +0x108
+};
+
+struct DdgoHostActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPosX;
+    /* 0x010 */ f32 mPosY;
+    /* 0x014 */ f32 mPosZ;
+    /* 0x018 */ u8 _pad18[0x44 - 0x18];
+    /* 0x044 */ f32 mVelZ;
+    /* 0x048 */ u8 _pad48[0x90 - 0x48];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u32 mField94;
+    /* 0x098 */ s32 mFacingDir;
+    /* 0x09C */ u8 _pad9C[0x230 - 0x9C];
+    /* 0x230 */ u32 mItemFlags;
+    /* 0x234 */ u8 _pad234[0x248 - 0x234];
+    /* 0x248 */ s32 mState;
+    /* 0x24C */ s32 mStateTimer;
+    /* 0x250 */ s32 mStateDuration;
+    /* 0x254 */ f32 mSpeedX;
+    /* 0x258 */ f32 mSpeedY;
+    /* 0x25C */ u8 _pad25C[0x270 - 0x25C];
+    /* 0x270 */ DdgoSub270 mAnimSub;
+    /* 0x2A8 */ u8 _pad2A8[0x2B8 - 0x2A8];
+    /* 0x2B8 */ s32 mChildDdgoId; // Handle to spawned 'DDGO' actor (-1 = none)
+};
+
 extern "C" void fn_80221184(void* this_);
 extern "C" void* fn_801F856C();
-extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" DdgoChildActor* fn_801F666C(void* base, s32 id);
 
 extern "C" void fn_80222CC4(void* this_) {
     fn_80221184(this_);
-    char* p = (char*)this_;
-    s32 id = *(s32*)(p + 0x2b8);
+    DdgoHostActor* p = (DdgoHostActor*)this_;
+    s32 id = p->mChildDdgoId;
     if (id >= 0) {
         void* base = fn_801F856C();
-        void* found = fn_801F666C(base, id);
+        DdgoChildActor* found = fn_801F666C(base, id);
         if (found != 0) {
-            *(s32*)((char*)found + 0x108) = 0;
+            found->mSortPriority = 0;
         }
-        *(s32*)(p + 0x2b8) = -1;
+        p->mChildDdgoId = -1;
     }
 }
 
-// ---- fn_80222D28.cpp ----
 extern "C" void fn_80221250(void* this_);
 extern "C" void fn_801CE4E8(void* this_);
 
-// fn_80222D28 - fn_8022313C's own vtable-0x88 override (see
-// extab_80223060.s and project_fsa_growing_area_extension.md).
-// Byte-identical logic to fn_80221BE4 (fn_80222190's own 0x88): if
-// this->0x248 == 2, calls fn_80221250, else falls through to the
-// generic 0x88 default fn_801CE4E8.
 extern "C" void fn_80222D28(void* this_) {
-    s32 state = *(s32*)((char*)this_ + 0x248);
+    s32 state = ((DdgoHostActor*)this_)->mState;
     if (state == 2) {
         fn_80221250(this_);
     } else {
@@ -124,8 +156,6 @@ extern "C" void fn_80222D28(void* this_) {
     }
 }
 
-
-// ---- fn_80222D5C / fn_80222FF0 ----
 struct Vec_80222CC4 {
     Vec_80222CC4(f32 x_, f32 y_, f32 z_) { x = x_; y = y_; z = z_; }
     f32 x, y, z;
@@ -141,12 +171,11 @@ void fn_8022149C(void* this_, s32 a);
 void fn_802217C8(void* this_);
 void fn_801D22DC(void* anim, s32 idx, s32 a, s32 b);
 u8 fn_801D21F0(void* anim);
-void* fn_801F856C();
 s32 Actor_CreateByID(void* mgr, u32 id, u32 arg, Vec_80222CC4* pos, u32 arg2, s32 a, s32 b);
 
 void fn_80222D5C(void* this_) {
-    char* p = (char*)this_;
-    switch (*(u32*)(p + 0x248)) {
+    DdgoHostActor* p = (DdgoHostActor*)this_;
+    switch ((u32)p->mState) {
     case 0:
         fn_80221408(this_);
         break;
@@ -157,28 +186,28 @@ void fn_80222D5C(void* this_) {
         fn_802212AC(this_);
         break;
     case 3:
-        if (*(s32*)(p + 0x24c) >= 0x78) {
-            fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 0x10, 0, 0);
-            *(s32*)(p + 0x24c) = 0;
-            *(s32*)(p + 0x248) = 5;
+        if (p->mStateTimer >= 0x78) {
+            fn_801D22DC(&p->mAnimSub, p->mFacingDir + 0x10, 0, 0);
+            p->mStateTimer = 0;
+            p->mState = 5;
         }
         break;
     case 4:
         fn_802216E8(this_, 0x78);
-        if (*(f32*)(p + 0x14) <= 0.0f) {
-            if (*(u32*)(p + 0x230) & 0x2000) {
-                fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 0x10, 0, 0);
-                *(s32*)(p + 0x24c) = 0;
-                *(s32*)(p + 0x248) = 5;
+        if (p->mPosZ <= 0.0f) {
+            if (p->mItemFlags & 0x2000) {
+                fn_801D22DC(&p->mAnimSub, p->mFacingDir + 0x10, 0, 0);
+                p->mStateTimer = 0;
+                p->mState = 5;
             } else {
-                *(f32*)(p + 0x44) = lbl_8053FE70;
+                p->mVelZ = lbl_8053FE70;
             }
         }
         break;
     case 5:
-        if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
-            Vec_80222CC4 pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10), 0.0f);
-            switch (*(s32*)(p + 0x98)) {
+        if (p->mStateTimer > 1 && fn_801D21F0(&p->mAnimSub)) {
+            Vec_80222CC4 pos(p->mPosX, p->mPosY, 0.0f);
+            switch (p->mFacingDir) {
             case 0:
                 pos.x += 24.0f;
                 break;
@@ -194,35 +223,35 @@ void fn_80222D5C(void* this_) {
                 pos.y -= 26.0f;
                 break;
             }
-            *(s32*)(p + 0x2b8) = Actor_CreateByID(fn_801F856C(), 'DDGO', *(u32*)(p + 0x4), &pos, 1, -1, -1);
-            s32 id = *(s32*)(p + 0x2b8);
+            p->mChildDdgoId = Actor_CreateByID(fn_801F856C(), 'DDGO', p->mRoomId, &pos, 1, -1, -1);
+            s32 id = p->mChildDdgoId;
             if (id >= 0) {
-                void* found = fn_801F666C(fn_801F856C(), id);
+                DdgoChildActor* found = fn_801F666C(fn_801F856C(), id);
                 if (found != 0) {
-                    *(s32*)((char*)found + 0x98) = *(s32*)(p + 0x98);
+                    found->mFacingDir = p->mFacingDir;
                 }
             }
-            *(s32*)(p + 0x24c) = 0;
-            *(s32*)(p + 0x248) = 6;
+            p->mStateTimer = 0;
+            p->mState = 6;
         }
         break;
     case 6:
-        if (*(s32*)(p + 0x24c) >= 0xb4) {
-            s32 id = *(s32*)(p + 0x2b8);
+        if (p->mStateTimer >= 0xb4) {
+            s32 id = p->mChildDdgoId;
             if (id >= 0) {
-                void* found = fn_801F666C(fn_801F856C(), id);
+                DdgoChildActor* found = fn_801F666C(fn_801F856C(), id);
                 if (found != 0) {
-                    *(s32*)((char*)found + 0x108) = 0;
+                    found->mSortPriority = 0;
                 }
-                *(s32*)(p + 0x2b8) = -1;
+                p->mChildDdgoId = -1;
             }
-            fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 0, 0);
-            *(s32*)(p + 0x24c) = 0;
-            *(s32*)(p + 0x248) = 7;
+            fn_801D22DC(&p->mAnimSub, p->mFacingDir, 0, 0);
+            p->mStateTimer = 0;
+            p->mState = 7;
         }
         break;
     case 7:
-        if (*(s32*)(p + 0x24c) >= 0x78) {
+        if (p->mStateTimer >= 0x78) {
             fn_8022149C(this_, 1);
         }
         break;
@@ -230,21 +259,18 @@ void fn_80222D5C(void* this_) {
 }
 
 void fn_80222FF0(void* this_) {
-    char* p = (char*)this_;
+    DdgoHostActor* p = (DdgoHostActor*)this_;
     fn_802217C8(this_);
-    *(u32*)(p + 0x98) = *(u32*)(p + 0x90) & 3;
-    *(s32*)(p + 0x248) = 4;
-    *(s32*)(p + 0x24c) = 0;
-    *(s32*)(p + 0x250) = -1;
-    *(f32*)(p + 0x254) = 0.0f;
-    *(f32*)(p + 0x258) = 0.0f;
-    fn_801D22DC(p + 0x270, 2, 0, 0);
+    p->mFacingDir = p->mSpawnParam & 3;
+    p->mState = 4;
+    p->mStateTimer = 0;
+    p->mStateDuration = -1;
+    p->mSpeedX = 0.0f;
+    p->mSpeedY = 0.0f;
+    fn_801D22DC(&p->mAnimSub, 2, 0, 0);
 }
 }
 
-// ---- fn_80223060_dtor.cpp ----
-extern "C" void* fn_801F856C();
-extern "C" void* fn_801F666C(void* base, s32 id);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 #ifndef dtor_80084580
 #define dtor_80084580(p) (::operator delete(p))
@@ -256,24 +282,24 @@ extern void* lbl_8049CC34[];
 
 extern "C" void* fn_80223060(void* this_, s16 freeFlag) {
     if (this_ != 0) {
-        char* p = (char*)this_;
-        *(void**)p = lbl_804A6C38;
-        s32 id = *(s32*)(p + 0x2b8);
+        DdgoHostActor* p = (DdgoHostActor*)this_;
+        p->mVtable = lbl_804A6C38;
+        s32 id = p->mChildDdgoId;
         if (id >= 0) {
             void* base = fn_801F856C();
-            void* found = fn_801F666C(base, id);
+            DdgoChildActor* found = fn_801F666C(base, id);
             if (found != 0) {
-                *(s32*)((char*)found + 0x108) = 0;
+                found->mSortPriority = 0;
             }
-            *(s32*)(p + 0x2b8) = -1;
+            p->mChildDdgoId = -1;
         }
         if (this_ != 0) {
-            *(void**)p = lbl_804A6A00;
+            p->mVtable = lbl_804A6A00;
             if (this_ != 0) {
-                *(void**)p = lbl_804A4808;
-                if (p + 0x270 != 0) {
-                    if (p + 0x294 != 0) {
-                        *(void**)(p + 0x294) = lbl_8049CC34;
+                p->mVtable = lbl_804A4808;
+                if (&p->mAnimSub != 0) {
+                    if (&p->mAnimSub.mVtable != 0) {
+                        p->mAnimSub.mVtable = lbl_8049CC34;
                     }
                 }
                 __dt__5ActorFv(this_, 0);
@@ -286,15 +312,12 @@ extern "C" void* fn_80223060(void* this_, s16 freeFlag) {
     return this_;
 }
 
-// ---- fn_8022313C_ctor.cpp ----
 extern "C" void* fn_802218C8(void* this_);
-extern void* lbl_804A6C38[];
 
-extern "C" void* fn_8022313C(void* this_) {
+extern "C" void* fn_8022313C(DdgoHostActor* this_) {
     fn_802218C8(this_);
-    char* p = (char*)this_;
-    *(void**)p = lbl_804A6C38;
-    *(s32*)(p + 0x2b8) = -1;
+    this_->mVtable = lbl_804A6C38;
+    this_->mChildDdgoId = -1;
     return this_;
 }
 

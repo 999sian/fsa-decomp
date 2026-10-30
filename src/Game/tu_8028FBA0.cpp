@@ -251,6 +251,7 @@ inline void fn_80290D58_inline(char* p) {
     U8(p, 0xcec) = 0;
 }
 
+#pragma opt_common_subs off
 bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeometry::TVec3<f32>* b, s32 state) {
     JGeometry::TVec3<f32> dest;
     JGeometry::TVec3<f32> up;
@@ -278,14 +279,7 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
         return false;
     }
     if (state == 0x21 && S32(p, 0x3b4) >= 8) {
-        S32(p, 0xce0) = S32(p, 0x3b4);
-        VEC(p, 0xcc8) = VEC(p, 0x8);
-        S32(p, 0x3b4) = 0;
-        S32(p, 0xce4) = 0;
-        VEC(p, 0x8) = *b;
-        VEC(p, 0xcd4) = VEC(p, 0x8);
-        VEC(p, 0xcbc) = VEC(p, 0xcd4);
-        F32(p, 0x10) = lbl_805405B4;
+        fn_80290070_warpTo(p, b);
         fn_8030BD3C((void*)S32(p, 0xbec), S32(p, 0x4));
         fn_80290E90_inline(p);
         fn_80290D58_inline(p);
@@ -490,15 +484,21 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
     state = -1;
     if (!(u8)fn_80240670(p)) {
         if (S32(p, 0xcf4) != 0xc && S32(p, 0xcf4) != 0xd && S32(p, 0xcf4) != 0x26 && S32(p, 0xcf4) != 0x22) {
-            s32 cur;
-            s32 other;
-            if ((S32(p, 0xcf4) == 4 || (u32)(S32(p, 0xcf4) - 7) <= 2 || S32(p, 0xcf4) == 0x20 || S32(p, 0xcf4) == 0x24) &&
-                (cur = S32(p, 0x3b4)) > 8 && S32(p, 0xce4) > 8 &&
-                U8((char*)fn_802D6A9C() + 0x10000, cur + 0x31df) != 0 &&
-                (other = S32(p, 0xce4), U8((char*)fn_802D6A9C() + 0x10000, other + 0x31df) != 0) &&
-                S32(p, 0xce4) != S32(p, 0x3b4)) {
-                state = 0;
-            } else if (S32(p, 0xcf4) == 0x1e) {
+            if (S32(p, 0xcf4) == 4 || (u32)(S32(p, 0xcf4) - 7) <= 2 || S32(p, 0xcf4) == 0x20 || S32(p, 0xcf4) == 0x24) {
+                s32 cur = S32(p, 0x3b4);
+                if (cur > 8 && S32(p, 0xce4) > 8) {
+                    u8* base = (u8*)fn_802D6A9C() + 0x10000;
+                    if (base[cur + 0x31df] != 0) {
+                        s32 other = S32(p, 0xce4);
+                        base = (u8*)fn_802D6A9C() + 0x10000;
+                        if (base[other + 0x31df] != 0 && S32(p, 0xce4) != S32(p, 0x3b4)) {
+                            state = 0;
+                            goto notify;
+                        }
+                    }
+                }
+            }
+            if (S32(p, 0xcf4) == 0x1e) {
                 state = 2;
             } else if (S32(p, 0xcf4) == 0xf) {
                 state = 2;
@@ -515,6 +515,7 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
             }
         }
     }
+notify:
     if (state >= 0) {
         fn_803020C8(S32(p, 0x4), S32(p, 0xce0), S32(p, 0xce4), (u8)state);
     }
@@ -538,7 +539,7 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
     fn_80248FF0(p);
     return true;
 }
-
+#pragma opt_common_subs reset
 void fn_80290D58(char* p) {
     if (!(u8)fn_80241E28(p, S32(p, 0xce0), &VEC(p, 0xcc8))) {
         VEC(p, 0xcbc) = VEC(p, 0x8);

@@ -268,9 +268,9 @@ extern "C" void fn_80229F1C(Actor* this_) {
     case 1: {
         JGeometry::setTVec3f(fn_8023E724(flags & 3), (f32*)(p + 0xc));
         *(s32*)(p + 0x234) = ((*(u32*)(p + 0x230) >> 1) & 7) + 0x7d;
-        s32 player = *(u32*)(p + 0x90) & 3;
-        s32 r = fn_80237774(player);
-        if (r == lbl_80529DEC[player + 0x36]) {
+        u32 idx = *(u32*)(p + 0x90) & 3;
+        s32 r = fn_80237774(idx);
+        if (r == lbl_80529DEC[idx + 0x36]) {
             *(u8*)(p + 0x11c) = 0;
         }
         break;

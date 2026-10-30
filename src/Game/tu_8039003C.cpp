@@ -135,43 +135,42 @@ struct MenuManager {
     void* handheld;
 };
 
-extern "C" void* fn_8039027C(void* this_) {
-    void* res;
-    TResMgr* mgr;
-    u8* self = (u8*)this_;
-    *(void**)self = lbl_804AF480;
+#pragma opt_propagation off
+extern "C" void* fn_8039027C(MenuManager* this_) {
+    MenuManager* self = this_;
+    self->vtable = lbl_804AF480;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
-    lbl_8053AD80 = self;
-    *(void**)(self + 0x4) = 0;
-    *(void**)(self + 0x8) = 0;
+    lbl_8053AD80 = (u8*)self;
+    self->standard = 0;
+    self->handheld = 0;
     fn_80158B3C(*(void**)(lbl_8053AB10 + 0x2c));
     if (lbl_80529DEC[0x242] == 0) {
         lbl_80529DEC[0x242] = 1;
         fn_802FF798(*(void**)(lbl_8053AB10 + 0x20));
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gb_ch_obj_base_sch.szs");
+        void* res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gb_ch_obj_base_sch.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0);
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gb_ch_obj_tr_schE.szs");
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gb_ch_obj_tr_schE.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0, 0);
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "player_sch.szs");
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "player_sch.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0);
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0, 0);
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gals_sch.szs");
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, "gals_sch.szs");
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0);
-        res = (mgr = (TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, "cu_cl_obj_base_scl.szs");
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0, 0);
         *((u8*)*(void**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
     }
     if (lbl_8053AAF8[0x7f] != 0) {
         void* p = __nw__FUl(0x66c);
         if (p != 0) fn_804122F4(p);
-        *(void**)(self + 4) = p;
+        self->standard = p;
     } else {
         void* p = __nw__FUl(0x154);
         if (p != 0) fn_8041787C(p);
-        *(void**)(self + 8) = p;
+        self->handheld = p;
     }
     if (*(u32*)(lbl_8053AF80 + 0x58) != 0x100001a) {
         fn_80458FF0(lbl_8053AF80, 0x100001a, 1, 0);
@@ -186,6 +185,6 @@ extern "C" void* fn_8039027C(void* this_) {
     }
     return this_;
 }
-
+#pragma opt_propagation reset
 void __sinit_tu_8039003C_cpp(void) {}
 

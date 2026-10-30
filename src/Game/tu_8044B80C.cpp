@@ -77,10 +77,11 @@ extern "C" void __ct__9J2DScreenFv(void* self);
 extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* pane, const char* name, unsigned long id, void* archive);
 extern "C" const char* getStringPtr__10J2DTextBoxCFv(void* self);
 extern "C" void fn_803832BC(const char*, u32, u32, u32, u32);
-#pragma opt_propagation off
+#pragma peephole on
+#pragma opt_strength_reduction off
 extern "C" void fn_8044B960(u8* p)
 {
-    MenuTextData* tbl = (MenuTextData*)&lbl_80490F48;
+    const MenuTextData& tbl = lbl_80490F48;
     void* oldHeap;
     void* screen;
     char acStack_34[36];
@@ -92,7 +93,7 @@ extern "C" void fn_8044B960(u8* p)
         oldHeap = sCurrentHeap__7JKRHeap;
         becomeCurrentHeap__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
         if (p[0x16] == 1) {
-            snprintf(acStack_34, 0x1f, tbl->archiveFormat, p[0x15] + 1);
+            snprintf(acStack_34, 0x1f, tbl.archiveFormat, p[0x15] + 1);
             *(void**)(p + 0xc) = fn_80401E10(acStack_34, 0, *(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
             p[0x16] = 2;
         }
@@ -103,7 +104,7 @@ extern "C" void fn_8044B960(u8* p)
                     __ct__9J2DScreenFv(screen);
                 }
                 *(void**)(p + 8) = screen;
-                snprintf(acStack_48, 0x11, tbl->screenFormat, p[0x15] + 1);
+                snprintf(acStack_48, 0x11, tbl.screenFormat, p[0x15] + 1);
                 setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p + 8), acStack_48, 0x1100000, *(void**)((u8*)*(void**)(p + 0xc) + 0x14));
                 font = *(JUTFont**)((u8*)lbl_8053AD78 + 0x154);
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663031ULL);
@@ -114,13 +115,13 @@ extern "C" void fn_8044B960(u8* p)
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663031ULL);
                 {
                     const char* text = getStringPtr__10J2DTextBoxCFv(pane);
-                    const u32* __restrict ids = tbl->ids;
+                    const u32* __restrict ids = tbl.ids;
                     fn_803832BC(text, ids[p[0x15]], 0, 0, 0);
                 }
                 pane = (*(J2DPane**)(p + 8))->search(0x0000547374663032ULL);
                 {
                     const char* text = getStringPtr__10J2DTextBoxCFv(pane);
-                    const u32* __restrict ids = tbl->ids;
+                    const u32* __restrict ids = tbl.ids;
                     fn_803832BC(text, ids[p[0x15]], 0, 0, 0);
                 }
                 if (p[0x15] == 5) {
@@ -144,7 +145,7 @@ extern "C" void fn_8044B960(u8* p)
         becomeCurrentHeap__7JKRHeapFv(oldHeap);
     }
 }
-#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void* fn_8044BCA4(u8* p, s16 param_2)
 {
     void* oldHeap;

@@ -723,11 +723,11 @@ static inline J3DErrType ensureTexMtxAnimator(J3DMaterialTable* table, J3DAnmTex
     return allocationResult;
 }
 
+#pragma opt_lifetimes off
 J3DErrType J3DMaterialTable::entryTexMtxAnimator(J3DAnmTextureSRTKey* anm)
 {
-	J3DErrType result;
 	u16 count = anm->getUpdateMaterialNum();
-	result = ensureTexMtxAnimator(this, anm);
+	J3DErrType result = ensureTexMtxAnimator(this, anm);
 	if (result != JET_Success) {
 		return result;
 	}
@@ -767,7 +767,7 @@ J3DErrType J3DMaterialTable::entryTexMtxAnimator(J3DAnmTextureSRTKey* anm)
 
 	return result;
 }
-
+#pragma opt_lifetimes reset
 /**
  * @note Address: 0x80084868
  * @note Size: 0x198

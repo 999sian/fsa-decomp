@@ -72,9 +72,7 @@ static inline s32 Swdl_isCleared() {
     return (*(u32*)(lbl_8050EC80 + 0x28 + 200**(s32*)(lbl_8050EC80+0x10)) & (1 << (room*4+layer))) != 0;
 }
 
-extern "C" void fn_802F0330(void* this_) {
-    u8* p=(u8*)this_;
-    const u8* data=lbl_8046F628;
+extern "C" void fn_802F0330(u8* p) {
     JGeometry::TVec3<f32> pos;
     s32 i;
     u8* q;
@@ -86,7 +84,7 @@ extern "C" void fn_802F0330(void* this_) {
     }
     switch(*(s32*)(p+0x244)) {
     case 0: {
-        s32 total=0;
+        int total=0;
         for(i=0;i<4;++i) if(Swdl_isPlayer(i)==1) total+=fn_80236228(i);
         if(total<2000) break;
         if((u8)fn_8023077C()!=1) break;
@@ -105,7 +103,7 @@ extern "C" void fn_802F0330(void* this_) {
         u32 command=0x50076;
         ((SwdlControl*)*(void**)(p+0x230))->command(&command);
         fn_8045873C(lbl_8053AF80,1);
-        if(lbl_8053AAF8[0x7e]==0 && (lbl_8053AAF8[0x83]&3)==2 && fn_8023DE58(0)>=8) {
+        if(lbl_8053AAF8[0x7e]==0 && (lbl_8053AAF8[0x83]&3U)==2 && fn_8023DE58(0)>=8) {
             *(s32*)(p+0x264)=1; *(s32*)(p+0x268)=1;
             *(s32*)(p+0x26c)=1; *(s32*)(p+0x270)=1;
         }
@@ -121,7 +119,7 @@ extern "C" void fn_802F0330(void* this_) {
         --*(s32*)(p+0x250);
         if(*(s32*)(p+0x250)==0) {
             ++*(s32*)(p+0x24c);
-            *(s32*)(p+0x250)=((s32*)data)[*(s32*)(p+0x24c)];
+            *(s32*)(p+0x250)=((s32*)lbl_8046F628)[*(s32*)(p+0x24c)];
             for(i=0;i<4;++i) {
                 pos=*fn_8023E724(i);
                 if(*(s32*)(p+0x24c)<6) { fn_80230498(i, &pos, *(s32*)(p+0x24c)+0x2e, 255, 2, -128, 1); }
@@ -215,12 +213,12 @@ extern "C" void fn_802F0330(void* this_) {
                         ring.y=lbl_8054143C*JMASinShort(*(s16*)(p+0x260))+ring.y;
                         fn_8013CB44(*(void**)(q+0x234),&ring,1,3,1);
                     }
-                    fn_80230498(i, &point, ((s32*)(data+0x24))[*(s32*)(p+0x24c)]+0xdb, 255, 2, -128, 1);
+                    fn_80230498(i, &point, Swdl_frames[*(s32*)(p+0x24c)]+0xdb, 255, 2, -128, 1);
                 } else {
                     if(fn_8023DE58(i)>=8) {
-                        if(*(s32*)(p+0x250)&*(s32*)(q+0x264)) { fn_80230498(i, &point, ((s32*)(data+0x24))[*(s32*)(p+0x24c)]+0x3b9, 255, 2, -128, 1); }
-                        else { fn_80230498(i, &point, ((s32*)(data+0x24))[*(s32*)(p+0x24c)]+0x3ba, 255, 2, -128, 1); }
-                    } else { fn_80230498(i, &point, ((s32*)(data+0x24))[*(s32*)(p+0x24c)]+0x3b9, 255, 2, -128, 1); }
+                        if(*(s32*)(p+0x250)&*(s32*)(q+0x264)) { fn_80230498(i, &point, Swdl_frames[*(s32*)(p+0x24c)]+0x3b9, 255, 2, -128, 1); }
+                        else { fn_80230498(i, &point, Swdl_frames[*(s32*)(p+0x24c)]+0x3ba, 255, 2, -128, 1); }
+                    } else { fn_80230498(i, &point, Swdl_frames[*(s32*)(p+0x24c)]+0x3b9, 255, 2, -128, 1); }
                     if(*(s32*)(p+0x24c)==11) {
                         if(*(void**)(q+0x234)) { fn_801EE434(*(void**)(q+0x234)); *(void**)(q+0x234)=0; }
                         fn_80230FD0(i,0x10001);
@@ -242,8 +240,9 @@ extern "C" void fn_802F0330(void* this_) {
             if(*(s32*)(p+0x25c)>=*(s32*)(p+0x258)) {
                 *(s32*)(p+0x25c)=*(s32*)(p+0x258);
                 if(fn_802DE7CC() && !Swdl_isCleared()) {
+                    s32 eventRoom=*(s32*)(p+4);
                     JGeometry::TVec3<f32> point=*(JGeometry::TVec3<f32>*)(p+0xc);
-                    fn_8038BD08(0,0x265,*(s32*)(p+4),&point,0x21);
+                    fn_8038BD08(0,0x265,eventRoom,&point,0x21);
                     *(s32*)(p+0x244)=15;
                 } else *(s32*)(p+0x244)=9;
                 fn_80134D14(lbl_8053AAF8,0);
@@ -271,8 +270,9 @@ extern "C" void fn_802F0330(void* this_) {
             if(*(s32*)(p+0x25c)>=*(s32*)(p+0x258)) {
                 *(s32*)(p+0x25c)=*(s32*)(p+0x258);
                 if(fn_802DE7CC() && !Swdl_isCleared()) {
+                    s32 eventRoom=*(s32*)(p+4);
                     JGeometry::TVec3<f32> point=*(JGeometry::TVec3<f32>*)(p+0xc);
-                    fn_8038BD08(0,0x265,*(s32*)(p+4),&point,0x21);
+                    fn_8038BD08(0,0x265,eventRoom,&point,0x21);
                     *(s32*)(p+0x244)=16;
                 } else *(s32*)(p+0x244)=11;
                 fn_80134D14(lbl_8053AAF8,0);
@@ -303,11 +303,11 @@ extern "C" void fn_802F0330(void* this_) {
         fn_80134D14(lbl_8053AAF8,0);
         s32 layer=*(s32*)(fn_802D6A9C()+8);
         s32 room=*(s32*)(fn_802D6A9C()+4);
-        s32 value=((s32*)(data+0xdc))[room*4+layer];
+        s32 value=*(s32*)((u8*)Swdl_layers+room*16+layer*4);
         s32 layer2=*(s32*)(fn_802D6A9C()+8);
         char* map=fn_802D6A9C();
         char* mgr=fn_802D6A9C();
-        fn_802D9FF4(mgr,((s32*)(data+0x5c))[*(s32*)(map+4)*4+layer2],value);
+        fn_802D9FF4(mgr,*(s32*)((u8*)Swdl_rooms+*(s32*)(map+4)*16+layer2*4),value);
         fn_80136798(lbl_8053AAF8,13,0);
         fn_802D6AAC(fn_802D6A9C(),3);
         fn_8045873C(lbl_8053AF80,0);

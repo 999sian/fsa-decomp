@@ -75,14 +75,14 @@ extern "C" void fn_801E801C(char* p) {
 }
 
 #pragma opt_propagation off
-extern "C" void fn_801E8080(char* p) {
- f32 lastX,lastY;
+extern "C" void fn_801E8080(FsobPath* self) {
+ char* p=(char*)self;
  JGeometry::TVec2<f32> pos;
- f32 length=0.0f;
- s32 count=(*(u8*)(p+0x2ad)-1)*32+2;
+ f32 length=0.0f,lastX,lastY;
+ const s32 count=(*(u8*)(p+0x2ad)-1)*32+2;
  u8 split=0;
- f32 normal=*(f32*)((char*)fn_801E9AFC()+0x178);
- f32 special=*(f32*)((char*)fn_801E9AFC()+0x17c);
+ const f32 normal=*(f32*)((char*)fn_801E9AFC()+0x178);
+ const f32 special=*(f32*)((char*)fn_801E9AFC()+0x17c);
  f32 tilt=normal;
  if(*(u8*)(p+0x3b0)==0 && *(f32*)(p+0x3b4)==0.0f) { fn_801EA344(fn_801E9AFC()); }
  else { fn_801EA304(fn_801E9AFC()); tilt=special; if(!(*(u32*)(p+0x230)&0x4000)) split=1; }

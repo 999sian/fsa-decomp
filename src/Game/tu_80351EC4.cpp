@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry.h"
 
 extern void* lbl_804ACB40[];
 
@@ -48,11 +49,14 @@ extern "C" void fn_80351F28(char* p) {
         } while (actor == NULL);
         bVar1 = 0;
         if (*(s32*)(p + 4) == *(s32*)(actor + 4) &&
-            (*(f32*)(actor + 0x14) < lbl_80542680 || *(s32*)(actor + 0xd8) > 0) && *(u8*)(actor + 0xc4) == 0 &&
-            *(f32*)(actor + 0xc) >= *(f32*)(p + 0x240) && *(f32*)(actor + 0x10) >= *(f32*)(p + 0x244) &&
-            *(f32*)(actor + 0xc) < *(f32*)(p + 0x248) && *(f32*)(actor + 0x10) < *(f32*)(p + 0x24c))
+            (*(f32*)(actor + 0x14) < lbl_80542680 || *(s32*)(actor + 0xd8) > 0) && *(u8*)(actor + 0xc4) == 0)
         {
-            bVar1 = 1;
+            bVar1 = 0;
+            if (*(f32*)(actor + 0xc) >= *(f32*)(p + 0x240) && *(f32*)(actor + 0x10) >= *(f32*)(p + 0x244)) {
+                if (*(f32*)(actor + 0xc) < *(f32*)(p + 0x248) && *(f32*)(actor + 0x10) < *(f32*)(p + 0x24c)) {
+                    bVar1 = 1;
+                }
+            }
         }
         if (bVar1 == 1 && !fn_802D800C(fn_802D6A9C(), *(s32*)(p + 0x23c))) {
             *(s16*)(actor + 0x94) = 1;
@@ -71,7 +75,10 @@ done:
     if (bVar1 == 1 && !((u8 (*)(char*))(*(void***)p)[13])(p)) {
         ((void (*)(char*, s32, s32))(*(void***)p)[12])(p, 0xff, 1);
     }
-    *(u8*)fn_80204638() = 1;
+    {
+        u8* flag = (u8*)fn_80204638();
+        *flag = 1;
+    }
     if (*(s32*)(p + 0x23c) > 0 && fn_802D800C(fn_802D6A9C(), *(s32*)(p + 0x23c))) {
         if (((u8 (*)(char*))(*(void***)p)[13])(p) == 1) {
             ((void (*)(char*, s32, s32))(*(void***)p)[12])(p, 0xff, 0);
@@ -79,30 +86,25 @@ done:
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_80352160(void* this_) {
     u8* p = (u8*)this_;
-    f32 zero = lbl_80542688;
-    f32 scale = lbl_80542684;
-    u32 w = *(u32*)(p + 0x90);
-    *(u32*)(p + 0x234) = w & 0xff;
-    *(u32*)(p + 0x23c) = (w >> 0x16) & 0x1f;
+    f32 x;
+    f32 y;
+    f32 zero;
+    *(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0xff;
+    *(u32*)(p + 0x23c) = (*(u32*)(p + 0x90) >> 22) & 31;
     *(u32*)(p + 0x238) = 0;
-    *(f32*)(p + 0xc) = scale * (f32)((s32)*(f32*)(p + 0xc) / 16);
-    *(f32*)(p + 0x10) = scale * (f32)((s32)*(f32*)(p + 0x10) / 16);
-    w = *(u32*)(p + 0x90);
-    *(f32*)(p + 0x68) = (f32)((w >> 5) & 0x1f8);
-    *(f32*)(p + 0x6c) = (f32)((w >> 13) & 0x1f8);
-    *(f32*)(p + 0x60) = zero;
-    *(f32*)(p + 0x64) = zero;
-    *(u32*)(p + 0x240) = *(u32*)(p + 0x60);
-    *(u32*)(p + 0x244) = *(u32*)(p + 0x64);
-    *(u32*)(p + 0x248) = *(u32*)(p + 0x68);
-    *(u32*)(p + 0x24c) = *(u32*)(p + 0x6c);
-    *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + *(f32*)(p + 0xc);
-    *(f32*)(p + 0x244) = *(f32*)(p + 0x244) + *(f32*)(p + 0x10);
-    *(f32*)(p + 0x248) = *(f32*)(p + 0x248) + *(f32*)(p + 0xc);
-    *(f32*)(p + 0x24c) = *(f32*)(p + 0x24c) + *(f32*)(p + 0x10);
+    *(f32*)(p + 0xc) = 16.0f * (f32)((int)*(f32*)(p + 0xc) / 16);
+    *(f32*)(p + 0x10) = 16.0f * (f32)((int)*(f32*)(p + 0x10) / 16);
+    zero = 0.0f;
+    u32 w = *(u32*)(p + 0x90);
+    y = (f32)((w >> 13) & 0x1f8);
+    x = (f32)((w >> 5) & 0x1f8);
+    ((JGeometry::TBox2f*)(p + 0x60))->set(zero, zero, x, y);
+    *(JGeometry::TBox2f*)(p + 0x240) = *(JGeometry::TBox2f*)(p + 0x60);
+    ((JGeometry::TBox2f*)(p + 0x240))->addPos(*(JGeometry::TVec2<f32>*)(p + 0xc));
 }
-
+#pragma opt_propagation reset
 
 

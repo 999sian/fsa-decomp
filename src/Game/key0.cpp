@@ -834,12 +834,12 @@ done:
 
 #pragma auto_inline off
 extern "C" void fn_802C2C30(char* p) {
+    JGeometry::TVec3<f32> delta;
     s32 room;
     s32 kind;
     u16 tile;
     u8 moving;
     JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x3c);
-    JGeometry::TVec3<f32> delta;
     fn_802C24A8((u8*)p);
     room = *(s32*)(p + 4);
     if (key0RoomFlag(room) != 0) {

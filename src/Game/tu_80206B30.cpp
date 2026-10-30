@@ -61,9 +61,9 @@ extern "C" u8 fn_80206C18(u8* p) {
 extern "C" u8 fn_80206CA8(u8* p) {
     u8 ret = 0;
     s32 i;
-    f32 out2[2];
     f32 rect[4];
     f32 v3[3];
+    f32 out2[2];
     f32 pos[2];
     f32 v8[2];
     f32 s60, s64, s68, s6c;

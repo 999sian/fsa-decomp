@@ -674,7 +674,7 @@ extern "C" void fn_80458880(u8* this_, u32 id, s8 mode) {
     }
     if(mode>=0){
         if(id!=14 && id!=31 && id!=54 && id!=84 && id!=85 && id!=79 && id!=80)
-            getAudioChannel(self,mode)->stopSound(JAISoundID(id),0);
+            (*(JAUSoundObject**)(self + (u32)(s32)mode * 4 + 0x18))->stopSound(JAISoundID(id),0);
         u8* channelBase=self+mode*4;
         stopAudioGroup(*(JAUSoundObject**)(channelBase+0x18));
         JAISoundHandle* h=(*(JAUSoundObject**)(channelBase+0x18))->startSound(JAISoundID(id));

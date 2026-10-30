@@ -50,9 +50,9 @@ extern "C" s16 fn_80217374(TurnTimer* t, s16 angle) {
         case 2:
             t->limit = fn_801CD664(1) + 0xb4;
             if (t->mode == 1) {
-                ret = angle += 0x4000;
+                ret = (s16)(angle + 0x4000);
             } else {
-                ret = angle -= 0x4000;
+                return angle - 0x4000;
             }
             t->mode = 0;
             t->tick = 0;

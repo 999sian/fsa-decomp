@@ -418,9 +418,10 @@ static inline void animateMenuPaneRow(u8* self) {
         fn_80402B10(*(void**)(cur + 0x14), 0x14, lbl_80543604, 0, lbl_80543614);
     }
 }
-extern "C" void fn_803DD970(u8* self)
+extern "C" void fn_803DD970(u8* arg)
 {
-    u64* tbl = lbl_804774C8;
+    u8* self = arg;
+    u64* tbl;
     s32 k;
     void** q;
     u8 r28 = 0;
@@ -439,7 +440,9 @@ extern "C" void fn_803DD970(u8* self)
     f32 phase;
     void* obj;
 
-    *(s16*)(self + 0x9c) += 1;
+    s16 frame = *(s16*)(self + 0x9c);
+    tbl = lbl_804774C8;
+    *(s16*)(self + 0x9c) = frame + 1;
     p = buf;
     for (v = 0; v < 2; v++) {
         if (self[0x9e] != v) *p++ = v;
@@ -1317,7 +1320,7 @@ extern "C" void* fn_803DFF40(u8* self) {
     f32 b;
     s32 i;
     u64* p;
-    char* names = (char*)lbl_804774C8;
+    char* names = (char*)&lbl_804774C8[0];
     *(void**)self = lbl_804B0688;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
     fn_80158B3C(*(void**)((u8*)lbl_8053AB10 + 0x2c));
@@ -1440,11 +1443,12 @@ extern "C" void* fn_803DFF40(u8* self) {
     *(s16*)(self + 0x98) = 0x3c;
     self[0xa0] = 0;
     self[0xa1] = 0;
+    p = (u64*)(names + 0x0);
     for (i = 0; i < 50; i++) {
         if (i == 0) {
-            self[0xa3 + i] = (*(J2DScreen**)(self + 0x8))->search(((FsaPaneKeys*)names)->keys[i])->getAlpha();
+            self[0xa3 + i] = (*(J2DScreen**)(self + 0x8))->search(p[i])->getAlpha();
         } else {
-            self[0xa3 + i] = (*(J2DScreen**)(self + 0x4))->search(((FsaPaneKeys*)names)->keys[i])->getAlpha();
+            self[0xa3 + i] = (*(J2DScreen**)(self + 0x4))->search(p[i])->getAlpha();
         }
     }
     p = (u64*)(names + 0x190);

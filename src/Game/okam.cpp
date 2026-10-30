@@ -217,8 +217,8 @@ extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
 #pragma opt_common_subs off
 extern "C" void fn_801AF1EC(char* this_) {
     s32 flag = -1;
-    s32 res = -1;
-    int i = 0;
+    register int res = -1;
+    s32 i = 0;
     f32 pos[2];
     s32 state;
 

@@ -544,9 +544,9 @@ findTarget:
     u8 (*manager)[0x10000] = (u8 (*)[0x10000])fn_802D6A9C();
     if (manager[1][id+0x31df] != 0) {
         f32 pos[2];
-        register f32 y = *(f32*)(this_ + 0x10);
+        f32 y = *(f32*)(this_ + 0x10);
         f32 z = *(f32*)(this_ + 0x14);
-        register f32 offset = lbl_8053ED58;
+        f32 offset = lbl_8053ED58;
         y -= z;
         s32 room = *(s32*)(this_ + 4);
         f32 x = *(f32*)(this_ + 0xc);

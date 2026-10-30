@@ -68,7 +68,7 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" void fn_802AB238(TileSwitchActor* actor) {
     char* self = (char*)actor;
     JGeometry::TBox2<f32> rect;
-    const f32 c = 4.0f;
+    f32 c = 4.0f;
     JGeometry::TVec2<f32> offset(c + actor->field_0C.x, c + actor->field_0C.y);
     rect.set(*(JGeometry::TBox2<f32>*)(self + 0x60));
     rect.addPos(offset);
@@ -90,7 +90,7 @@ extern "C" void fn_802AB238(TileSwitchActor* actor) {
         break;
     }
     case 1: {
-        unsigned int current = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), actor->field_04, actor->index) & 0x3ff;
+        const unsigned int& current = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), actor->field_04, actor->index) & 0x3ff;
         if ((unsigned int)actor->tile == current) break;
         switch (actor->kind) {
         case 5:

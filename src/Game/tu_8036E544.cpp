@@ -193,8 +193,11 @@ extern "C" void fn_8036E5E8(void* this_) {
             s32 n;
             s32 k;
             s32 j;
-            n = *(s32*)((char*)fn_801F856C() + 0x1008);
-            for (j = 0, k = j; j < n; k += 4, j++) {
+            void* mgr = fn_801F856C();
+            j = 0;
+            n = *(s32*)((char*)mgr + 0x1008);
+            k = j;
+            for (; j < n; k += 4, j++) {
                 char* a = *(char**)((char*)fn_801F856C() + k + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
                     s32 s = *(s32*)(a + 0x238);
@@ -272,7 +275,8 @@ extern "C" void fn_8036E5E8(void* this_) {
             BubbleArea area = ((BubbleArea*)lbl_8050C700)[r];
             do {
                 f32 y = (f32)fn_801CD664(0x1a2);
-                pt.set((f32)fn_801CD664(0x242), y, lbl_80542D60);
+                f32 x = (f32)fn_801CD664(0x242);
+                pt.set(x, y, lbl_80542D60);
             } while (!inArea(area, pt));
             s32 kind = fn_801CD664(8);
             bool ok;

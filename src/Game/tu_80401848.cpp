@@ -1,15 +1,57 @@
-// TU 0x80401848-0x804023d0.
-// Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-// Not yet decompiled: fn_80401FEC/fn_80402054 (loader thread) and the
-// __sinit; both need this TU's .bss (lbl_80528980 thread+stack, lbl_80529CA0
-// queue) defined here, since retail addresses them off one section base.
+// TU 0x80401848-0x804023d0 — DVD / JKRArchive Asynchronous Loader Queue & Thread.
 #include "types.h"
 #include "dolphin/os.h"
 #include "JSystem/JKernel/JKRThread.h"
 
-// ---- from src/Game/fn_80401848_dtor.cpp ----
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B0F90[];
+extern void* lbl_804B0FA0[];
+extern void* lbl_804B0FB0[];
+extern void* lbl_804B0FC0[];
+extern void* lbl_804B0FD0[];
+extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, s16 flag);
+
+enum T18AllocDir {
+    T18_ALLOC_FORWARD  = 1,
+    T18_ALLOC_BACKWARD = 2,
+};
+
+struct LoaderNode {
+    /* 0x00 */ LoaderNode* mNext;
+    /* 0x04 */ u8 mDone;
+    /* 0x08 */ virtual ~LoaderNode();
+    /* 0x0C */ virtual void execute();
+};
+
+// Node for raw DVD-to-RAM rip (vtable lbl_804B0FA0, size 0x20)
+struct DvdRipLoaderNode {
+    /* 0x00 */ DvdRipLoaderNode* mNext;
+    /* 0x04 */ u8 mDone;
+    /* 0x08 */ void* mVtable;
+    /* 0x0C */ u8 mAllocDir;
+    /* 0x10 */ s32 mEntryNum;
+    /* 0x14 */ void* mBuffer;
+    /* 0x18 */ s32 mBufferSize;
+    /* 0x1C */ void* mHeap;
+};
+
+// Node for archive/custom object mount (vtable lbl_804B0FB0 / lbl_804B0FC0, size 0x1C)
+struct ArchiveLoaderNode {
+    /* 0x00 */ ArchiveLoaderNode* mNext;
+    /* 0x04 */ u8 mDone;
+    /* 0x08 */ void* mVtable;
+    /* 0x0C */ u8 mAllocDir;
+    /* 0x10 */ s32 mEntryNum;
+    /* 0x14 */ void* mArchive;
+    /* 0x18 */ void* mHeap;
+};
+
+struct RawLoaderQueue {
+    /* 0x00 */ u8 mMsgQueueBytes[0x24];
+    /* 0x24 */ OSMutex mMutex;
+    /* 0x3C */ void* mHead;
+    /* 0x40 */ void* mTail;
+};
 
 extern "C" void* fn_80401848(void* this_, s16 freeFlag) {
     if (this_ != 0) {
@@ -21,23 +63,11 @@ extern "C" void* fn_80401848(void* this_, s16 freeFlag) {
     return this_;
 }
 
-// ---- from src/Game/fn_80401890.cpp ----
-extern void* lbl_804B0FA0[];
-extern void* lbl_804B0FD0[];
-
-extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, s16 flag);
-
-// fn_80401890 - destructor for lbl_804B0FA0, with the base destructor
-// INLINED: installs its OWN vtable, then unconditionally (the 2nd "if
-// (this)" guard is a leftover from the base destructor's own null
-// check, always true here since we already know this_ != 0) installs
-// the base's vtable (lbl_804B0FD0, same as fn_80401FA0/fn_80401CC0's
-// target) before running the shared cleanup step.
-extern "C" void* fn_80401890(void* this_, s16 arg) {
+extern "C" void* fn_80401890(DvdRipLoaderNode* this_, s16 arg) {
     if (this_ != 0) {
-        *(void**)((char*)this_ + 0x8) = lbl_804B0FA0;
+        this_->mVtable = lbl_804B0FA0;
         if (this_ != 0) {
-            *(void**)((char*)this_ + 0x8) = lbl_804B0FD0;
+            this_->mVtable = lbl_804B0FD0;
         }
         if (arg > 0) {
             free__7JKRHeapFPvP7JKRHeap(this_, 0);
@@ -46,182 +76,156 @@ extern "C" void* fn_80401890(void* this_, s16 arg) {
     return this_;
 }
 
-// ---- DVD load nodes: execute ----
-enum T18AllocDir { T18_ALLOC_FORWARD = 1, T18_ALLOC_BACKWARD = 2 };
 extern "C" void* loadToMainRAM__12JKRDvdRipperFlPUc15JKRExpandSwitchUlP7JKRHeapQ212JKRDvdRipper15EAllocDirectionUlPiPUl(
     s32 entryNum, u8* dst, s32 expand, u32 size, void* heap, T18AllocDir dir, u32 offset, int* comp, u32* outSize);
 extern "C" s32 getSize__7JKRHeapFPv(void* heap, void* ptr);
 extern void* lbl_8053ADF4;
 
-extern "C" BOOL fn_804018F0(char* this_) {
-    void* h = *(void**)(this_ + 0x1c);
+extern "C" BOOL fn_804018F0(DvdRipLoaderNode* this_) {
+    void* h = this_->mHeap;
     void* heap;
     if (h != NULL) {
         heap = h;
     } else {
         heap = lbl_8053ADF4;
     }
-    *(void**)(this_ + 0x14) = loadToMainRAM__12JKRDvdRipperFlPUc15JKRExpandSwitchUlP7JKRHeapQ212JKRDvdRipper15EAllocDirectionUlPiPUl(
-        *(s32*)(this_ + 0x10), NULL, 1, 0, heap, *(u8*)(this_ + 0xc) == 1 ? T18_ALLOC_FORWARD : T18_ALLOC_BACKWARD, 0, NULL, NULL);
-    if (*(void**)(this_ + 0x14) != NULL) {
-        *(s32*)(this_ + 0x18) = getSize__7JKRHeapFPv(heap, *(void**)(this_ + 0x14));
+    this_->mBuffer = loadToMainRAM__12JKRDvdRipperFlPUc15JKRExpandSwitchUlP7JKRHeapQ212JKRDvdRipper15EAllocDirectionUlPiPUl(
+        this_->mEntryNum, NULL, 1, 0, heap,
+        this_->mAllocDir == 1 ? T18_ALLOC_FORWARD : T18_ALLOC_BACKWARD, 0, NULL, NULL);
+    if (this_->mBuffer != NULL) {
+        this_->mBufferSize = getSize__7JKRHeapFPv(heap, this_->mBuffer);
     }
-    *(u8*)(this_ + 0x4) = 1;
-    return *(void**)(this_ + 0x14) != NULL;
+    this_->mDone = 1;
+    return this_->mBuffer != NULL;
 }
 
-
-
-// ---- from src/Game/EffectQueueEnqueueSmall_804019A8.cpp ----
 extern "C" s32 DVDConvertPathToEntrynum(void* arg1);
-extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
+extern "C" DvdRipLoaderNode* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
 
 extern void* lbl_8053ADF0;
-extern void* lbl_804B0FD0[];
-extern void* lbl_804B0FA0[];
 extern u8 lbl_8053A218;
-extern u8 lbl_80529CA0[];
+extern RawLoaderQueue lbl_80529CA0;
 
-extern "C" void* fn_804019A8(void* p1, u8 p2, void* p3) {
-    char* node;
-    s32 result = DVDConvertPathToEntrynum(p1);
-    if (result == -1) {
+extern "C" void* fn_804019A8(void* path, u8 allocDir, void* heap) {
+    DvdRipLoaderNode* node;
+    s32 entryNum = DVDConvertPathToEntrynum(path);
+    if (entryNum == -1) {
         node = 0;
     } else {
-        node = alloc__7JKRHeapFUliP7JKRHeap(0x20, -4, lbl_8053ADF0);
+        node = alloc__7JKRHeapFUliP7JKRHeap(sizeof(DvdRipLoaderNode), -4, lbl_8053ADF0);
         if (node != 0) {
-            *(void**)(node + 0x8) = lbl_804B0FD0;
-            *(u8*)(node + 0x4) = 0;
-            *(s32*)(node + 0x0) = 0;
-            *(void**)(node + 0x8) = lbl_804B0FA0;
-            *(u8*)(node + 0xc) = p2;
-            if (p2 == 0) {
-                *(u8*)(node + 0xc) = lbl_8053A218;
+            node->mVtable = lbl_804B0FD0;
+            node->mDone = 0;
+            node->mNext = 0;
+            node->mVtable = lbl_804B0FA0;
+            node->mAllocDir = allocDir;
+            if (allocDir == 0) {
+                node->mAllocDir = lbl_8053A218;
             }
         }
 
         if (node != 0) {
-            *(s32*)(node + 0x10) = result;
-            void* mutex = lbl_80529CA0 + 0x24;
-            *(void**)(node + 0x1c) = p3;
-            OSLockMutex((OSMutex*)mutex);
+            node->mEntryNum = entryNum;
+            OSMutex* mutex = &lbl_80529CA0.mMutex;
+            node->mHeap = heap;
+            OSLockMutex(mutex);
 
-            *(s32*)(node + 0x0) = 0;
-            void* tail = *(void**)(lbl_80529CA0 + 0x40);
+            node->mNext = 0;
+            void* tail = lbl_80529CA0.mTail;
             if (tail == 0) {
-                *(void**)(lbl_80529CA0 + 0x40) = node;
-                *(void**)(lbl_80529CA0 + 0x3c) = node;
+                lbl_80529CA0.mTail = node;
+                lbl_80529CA0.mHead = node;
             } else {
                 *(void**)tail = node;
-                *(void**)(lbl_80529CA0 + 0x40) = node;
+                lbl_80529CA0.mTail = node;
             }
 
-            OSUnlockMutex((OSMutex*)mutex);
-            OSSendMessage((OSMessageQueue*)lbl_80529CA0, 0, 0);
+            OSUnlockMutex(mutex);
+            OSSendMessage((OSMessageQueue*)&lbl_80529CA0, 0, 0);
         }
     }
     return node;
 }
 
-// ---- fn_80401AC8 ----
 extern "C" void* __nw__FUlP7JKRHeapi(u32 size, void* heap, s32 align);
 extern "C" void* fn_80079EFC(void* obj);
 extern "C" BOOL fn_8007A198(void* obj, s32 entryNum, T18AllocDir dir);
 
-extern "C" u8 fn_80401AC8(char* this_) {
-    void* heap = *(void**)(this_ + 0x18) != NULL ? *(void**)(this_ + 0x18) : lbl_8053ADF4;
+extern "C" u8 fn_80401AC8(ArchiveLoaderNode* this_) {
+    void* heap = this_->mHeap != NULL ? this_->mHeap : lbl_8053ADF4;
     u8 ok = 0;
-    if (*(void**)(this_ + 0x14) == NULL) {
-        if (*(u8*)(this_ + 0xc) == 1) {
+    if (this_->mArchive == NULL) {
+        if (this_->mAllocDir == 1) {
             void* o = __nw__FUlP7JKRHeapi(0x6c, heap, 0x20);
             if (o != NULL) {
                 o = fn_80079EFC(o);
             }
-            *(void**)(this_ + 0x14) = o;
+            this_->mArchive = o;
         } else {
             void* o = __nw__FUlP7JKRHeapi(0x6c, heap, -0x20);
             if (o != NULL) {
                 o = fn_80079EFC(o);
             }
-            *(void**)(this_ + 0x14) = o;
+            this_->mArchive = o;
         }
     }
-    if (*(void**)(this_ + 0x14) != NULL) {
-        ok = fn_8007A198(*(void**)(this_ + 0x14), *(s32*)(this_ + 0x10),
-                         *(u8*)(this_ + 0xc) == 1 ? T18_ALLOC_FORWARD : T18_ALLOC_BACKWARD);
+    if (this_->mArchive != NULL) {
+        ok = fn_8007A198(this_->mArchive, this_->mEntryNum,
+                         this_->mAllocDir == 1 ? T18_ALLOC_FORWARD : T18_ALLOC_BACKWARD);
     }
-    *(u8*)(this_ + 0x4) = 1;
+    this_->mDone = 1;
     return ok;
 }
 
-// ---- from src/Game/EffectQueueEnqueue_80401BA4.cpp ----
-extern "C" s32 DVDConvertPathToEntrynum(void* arg1);
-extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
-
-extern void* lbl_8053ADF0;
-extern void* lbl_804B0FD0[];
-extern void* lbl_804B0FB0[];
-extern u8 lbl_8053A218;
-extern u8 lbl_80529CA0[];
-
-extern "C" void* fn_80401BA4(void* p1, void* p2, u8 p3, void* p4) {
-    char* node;
-    s32 result = DVDConvertPathToEntrynum(p1);
-    if (result == -1) {
+extern "C" void* fn_80401BA4(void* path, void* archive, u8 allocDir, void* heap) {
+    ArchiveLoaderNode* node;
+    s32 entryNum = DVDConvertPathToEntrynum(path);
+    if (entryNum == -1) {
         node = 0;
     } else {
-        node = alloc__7JKRHeapFUliP7JKRHeap(0x1c, -4, lbl_8053ADF0);
+        node = (ArchiveLoaderNode*)alloc__7JKRHeapFUliP7JKRHeap(sizeof(ArchiveLoaderNode), -4, lbl_8053ADF0);
         if (node != 0) {
-            *(void**)(node + 0x8) = lbl_804B0FD0;
-            *(u8*)(node + 0x4) = 0;
-            *(s32*)(node + 0x0) = 0;
-            *(void**)(node + 0x8) = lbl_804B0FB0;
-            *(u8*)(node + 0xc) = p3;
-            *(s32*)(node + 0x10) = -1;
-            *(void**)(node + 0x14) = p2;
-            *(s32*)(node + 0x18) = 0;
-            if (p3 == 0) {
-                *(u8*)(node + 0xc) = lbl_8053A218;
+            node->mVtable = lbl_804B0FD0;
+            node->mDone = 0;
+            node->mNext = 0;
+            node->mVtable = lbl_804B0FB0;
+            node->mAllocDir = allocDir;
+            node->mEntryNum = -1;
+            node->mArchive = archive;
+            node->mHeap = 0;
+            if (allocDir == 0) {
+                node->mAllocDir = lbl_8053A218;
             }
         }
 
         if (node != 0) {
-            *(s32*)(node + 0x10) = result;
-            void* mutex = lbl_80529CA0 + 0x24;
-            *(void**)(node + 0x18) = p4;
-            OSLockMutex((OSMutex*)mutex);
+            node->mEntryNum = entryNum;
+            OSMutex* mutex = &lbl_80529CA0.mMutex;
+            node->mHeap = heap;
+            OSLockMutex(mutex);
 
-            *(s32*)(node + 0x0) = 0;
-            void* tail = *(void**)(lbl_80529CA0 + 0x40);
+            node->mNext = 0;
+            void* tail = lbl_80529CA0.mTail;
             if (tail == 0) {
-                *(void**)(lbl_80529CA0 + 0x40) = node;
-                *(void**)(lbl_80529CA0 + 0x3c) = node;
+                lbl_80529CA0.mTail = node;
+                lbl_80529CA0.mHead = node;
             } else {
                 *(void**)tail = node;
-                *(void**)(lbl_80529CA0 + 0x40) = node;
+                lbl_80529CA0.mTail = node;
             }
 
-            OSUnlockMutex((OSMutex*)mutex);
-            OSSendMessage((OSMessageQueue*)lbl_80529CA0, 0, 0);
+            OSUnlockMutex(mutex);
+            OSSendMessage((OSMessageQueue*)&lbl_80529CA0, 0, 0);
         }
     }
     return node;
 }
 
-// ---- from src/Game/fn_80401CC0.cpp ----
-extern void* lbl_804B0FB0[];
-extern void* lbl_804B0FD0[];
-
-extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, s16 flag);
-
-// fn_80401CC0 - destructor for lbl_804B0FB0, with the base destructor
-// INLINED (same shape as fn_80401890): installs its OWN vtable, then
-// the base's vtable (lbl_804B0FD0), then runs the shared cleanup step.
-extern "C" void* fn_80401CC0(void* this_, s16 arg) {
+extern "C" void* fn_80401CC0(ArchiveLoaderNode* this_, s16 arg) {
     if (this_ != 0) {
-        *(void**)((char*)this_ + 0x8) = lbl_804B0FB0;
+        this_->mVtable = lbl_804B0FB0;
         if (this_ != 0) {
-            *(void**)((char*)this_ + 0x8) = lbl_804B0FD0;
+            this_->mVtable = lbl_804B0FD0;
         }
         if (arg > 0) {
             free__7JKRHeapFPvP7JKRHeap(this_, 0);
@@ -230,7 +234,6 @@ extern "C" void* fn_80401CC0(void* this_, s16 arg) {
     return this_;
 }
 
-// ---- fn_80401D20 ----
 struct T18Archive {
     virtual ~T18Archive();
     u8 pad[0x2c];
@@ -238,100 +241,80 @@ struct T18Archive {
 };
 extern "C" T18Archive* __ct__13JKRMemArchiveFlQ210JKRArchive15EMountDirection(void* obj, s32 entryNum, s32 dir);
 
-extern "C" BOOL fn_80401D20(char* this_) {
-    void* heap = *(void**)(this_ + 0x18) != NULL ? *(void**)(this_ + 0x18) : lbl_8053ADF4;
+extern "C" BOOL fn_80401D20(ArchiveLoaderNode* this_) {
+    void* heap = this_->mHeap != NULL ? this_->mHeap : lbl_8053ADF4;
     T18Archive* arc;
-    if (*(u8*)(this_ + 0xc) == 1) {
+    if (this_->mAllocDir == 1) {
         void* o = __nw__FUlP7JKRHeapi(0x70, heap, 0);
         if (o != NULL) {
-            o = __ct__13JKRMemArchiveFlQ210JKRArchive15EMountDirection(o, *(s32*)(this_ + 0x10), 1);
+            o = __ct__13JKRMemArchiveFlQ210JKRArchive15EMountDirection(o, this_->mEntryNum, 1);
         }
         arc = (T18Archive*)o;
     } else {
         void* o = __nw__FUlP7JKRHeapi(0x70, heap, -4);
         if (o != NULL) {
-            o = __ct__13JKRMemArchiveFlQ210JKRArchive15EMountDirection(o, *(s32*)(this_ + 0x10), 2);
+            o = __ct__13JKRMemArchiveFlQ210JKRArchive15EMountDirection(o, this_->mEntryNum, 2);
         }
         arc = (T18Archive*)o;
     }
     if (arc != NULL && arc->mIsMounted) {
-        *(T18Archive**)(this_ + 0x14) = arc;
+        this_->mArchive = arc;
     } else if (arc != NULL) {
         delete arc;
     }
-    *(u8*)(this_ + 0x4) = 1;
-    return *(void**)(this_ + 0x14) != NULL;
+    this_->mDone = 1;
+    return this_->mArchive != NULL;
 }
 
-// ---- from src/Game/EffectQueueEnqueue2_80401E10.cpp ----
-extern "C" s32 DVDConvertPathToEntrynum(void* arg1);
-extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
-
-extern void* lbl_8053ADF0;
-extern void* lbl_804B0FD0[];
-extern void* lbl_804B0FC0[];
-extern u8 lbl_8053A218;
-extern u8 lbl_80529CA0[];
-
-extern "C" void* fn_80401E10(void* p1, u8 p2, void* p3) {
-    char* node;
-    s32 result = DVDConvertPathToEntrynum(p1);
-    if (result == -1) {
+extern "C" void* fn_80401E10(void* path, u8 allocDir, void* heap) {
+    ArchiveLoaderNode* node;
+    s32 entryNum = DVDConvertPathToEntrynum(path);
+    if (entryNum == -1) {
         node = 0;
     } else {
-        node = alloc__7JKRHeapFUliP7JKRHeap(0x1c, -4, lbl_8053ADF0);
+        node = (ArchiveLoaderNode*)alloc__7JKRHeapFUliP7JKRHeap(sizeof(ArchiveLoaderNode), -4, lbl_8053ADF0);
         if (node != 0) {
-            *(void**)(node + 0x8) = lbl_804B0FD0;
-            *(u8*)(node + 0x4) = 0;
-            *(s32*)(node + 0x0) = 0;
-            *(void**)(node + 0x8) = lbl_804B0FC0;
-            *(u8*)(node + 0xc) = p2;
-            *(s32*)(node + 0x10) = -1;
-            *(s32*)(node + 0x14) = 0;
-            *(s32*)(node + 0x18) = 0;
-            if (p2 == 0) {
-                *(u8*)(node + 0xc) = lbl_8053A218;
+            node->mVtable = lbl_804B0FD0;
+            node->mDone = 0;
+            node->mNext = 0;
+            node->mVtable = lbl_804B0FC0;
+            node->mAllocDir = allocDir;
+            node->mEntryNum = -1;
+            node->mArchive = 0;
+            node->mHeap = 0;
+            if (allocDir == 0) {
+                node->mAllocDir = lbl_8053A218;
             }
         }
 
         if (node != 0) {
-            *(s32*)(node + 0x10) = result;
-            void* mutex = lbl_80529CA0 + 0x24;
-            *(void**)(node + 0x18) = p3;
-            OSLockMutex((OSMutex*)mutex);
+            node->mEntryNum = entryNum;
+            OSMutex* mutex = &lbl_80529CA0.mMutex;
+            node->mHeap = heap;
+            OSLockMutex(mutex);
 
-            *(s32*)(node + 0x0) = 0;
-            void* tail = *(void**)(lbl_80529CA0 + 0x40);
+            node->mNext = 0;
+            void* tail = lbl_80529CA0.mTail;
             if (tail == 0) {
-                *(void**)(lbl_80529CA0 + 0x40) = node;
-                *(void**)(lbl_80529CA0 + 0x3c) = node;
+                lbl_80529CA0.mTail = node;
+                lbl_80529CA0.mHead = node;
             } else {
                 *(void**)tail = node;
-                *(void**)(lbl_80529CA0 + 0x40) = node;
+                lbl_80529CA0.mTail = node;
             }
 
-            OSUnlockMutex((OSMutex*)mutex);
-            OSSendMessage((OSMessageQueue*)lbl_80529CA0, 0, 0);
+            OSUnlockMutex(mutex);
+            OSSendMessage((OSMessageQueue*)&lbl_80529CA0, 0, 0);
         }
     }
     return node;
 }
 
-// ---- from src/Game/fn_80401F40.cpp ----
-extern void* lbl_804B0FC0[];
-extern void* lbl_804B0FD0[];
-
-extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, s16 flag);
-
-// fn_80401F40 - destructor for lbl_804B0FC0, with the base destructor
-// INLINED (same shape as fn_80401890/fn_80401CC0): installs its OWN
-// vtable, then the base's vtable (lbl_804B0FD0), then runs the shared
-// cleanup step.
-extern "C" void* fn_80401F40(void* this_, s16 arg) {
+extern "C" void* fn_80401F40(ArchiveLoaderNode* this_, s16 arg) {
     if (this_ != 0) {
-        *(void**)((char*)this_ + 0x8) = lbl_804B0FC0;
+        this_->mVtable = lbl_804B0FC0;
         if (this_ != 0) {
-            *(void**)((char*)this_ + 0x8) = lbl_804B0FD0;
+            this_->mVtable = lbl_804B0FD0;
         }
         if (arg > 0) {
             free__7JKRHeapFPvP7JKRHeap(this_, 0);
@@ -340,32 +323,15 @@ extern "C" void* fn_80401F40(void* this_, s16 arg) {
     return this_;
 }
 
-// ---- from src/Game/fn_80401FA0.cpp ----
-extern void* lbl_804B0FD0[];
-
-extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, s16 flag);
-
-// fn_80401FA0 - destructor for lbl_804B0FD0. Standard "if (this)"
-// guard; installs the vtable at this->0x8, then if the incoming s16
-// arg is > 0, calls free__7JKRHeapFPvP7JKRHeap(this, 0).
-extern "C" void* fn_80401FA0(void* this_, s16 arg) {
+extern "C" void* fn_80401FA0(ArchiveLoaderNode* this_, s16 arg) {
     if (this_ != 0) {
-        *(void**)((char*)this_ + 0x8) = lbl_804B0FD0;
+        this_->mVtable = lbl_804B0FD0;
         if (arg > 0) {
             free__7JKRHeapFPvP7JKRHeap(this_, 0);
         }
     }
     return this_;
 }
-
-// ---- loader thread ----
-struct LoaderNode {
-    LoaderNode* mNext;
-    u32 m4;
-    virtual ~LoaderNode();
-    virtual void execute();
-};
-
 
 struct LoaderQueue {
     LoaderQueue() {

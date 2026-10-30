@@ -1771,7 +1771,7 @@ static inline s32 HouseBoxMode(char* self, JGeometry::TBox2f* box) {
     }
     return -1;
 }
-#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_8029A974(char* self) {
     s32 room;
     void* handle;
@@ -1846,17 +1846,21 @@ extern "C" void fn_8029A974(char* self) {
         fn_80238E08(*(void**)(self + 0x198));
         *(f32*)(self + 0x40) = lbl_805406F4;
         *(u8*)(self + 0x2b8) = 1;
-        fn_801F0E34(self, 0x30004, 0);
     }
+    fn_801F0E34(self, 0x30004, 0);
     *(f32*)(self + 0x254) = lbl_805406E4;
     *(s32*)(self + 0x248) = i = 0;
     if (*(u8*)(self + 0x24c) == 0) {
         *(u8*)(self + 0x24c) = 1;
         gridBase = *(JGeometry::TVec3f*)(self + 0xc);
-        gridBase.x += *(f32*)(self + 0x60);
-        gridBase.y += *(f32*)(self + 0x64);
-        gridBase.x += lbl_80540678;
-        gridBase.y += lbl_80540678;
+        f32 y;
+        f32 x;
+        x = gridBase.x + *(f32*)(self + 0x60);
+        y = gridBase.y + *(f32*)(self + 0x64);
+        gridBase.x = x;
+        gridBase.y = y;
+        gridBase.x = x + lbl_80540678;
+        gridBase.y = y + lbl_80540678;
         gridBase.z = lbl_80540674;
         grid = gridBase;
         for (; i < 6; i++, self += 0xc) {
@@ -1870,7 +1874,7 @@ extern "C" void fn_8029A974(char* self) {
         }
     }
 }
-#pragma opt_common_subs reset
+#pragma opt_lifetimes reset
 extern "C" void fn_8029AE58(char* p) {
     const f32 center = lbl_80540678;
     JGeometry::TVec3f v;

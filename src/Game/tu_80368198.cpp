@@ -691,7 +691,7 @@ void Unk8036C300::state1() {
                 v.y += lbl_80542CA8;
                 fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
                 s32 room = *(s32*)(self + 4);
-                JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
+                JGeometry::TVec3f spawnPos(*(JGeometry::TVec3f*)&v);
                 fn_8038BD08(0, 0x848, room, &spawnPos, 0x62);
             } else if (*(s32*)(self + 0x258) == 0x31) {
                 fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
@@ -726,7 +726,7 @@ void Unk8036C300::state1() {
                     v.y += lbl_80542CA8;
                     fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
                     s32 room = *(s32*)(self + 4);
-                    JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
+                    JGeometry::TVec3f spawnPos(*(JGeometry::TVec3f*)&v);
                     fn_8038BD08(0, cutsceneTable32((s32*)(tbl + 0x30), *(s32*)(self + 0x268)), room, &spawnPos, 0x62);
                     *(s32*)(self + 0x268) += 1;
                 }
@@ -763,7 +763,7 @@ void Unk8036C300::state1() {
                     v.y += lbl_80542CA8;
                     fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
                     s32 room = *(s32*)(self + 4);
-                    JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
+                    JGeometry::TVec3f spawnPos(*(JGeometry::TVec3f*)&v);
                     fn_8038BD08(0, cutsceneTable32((s32*)(tbl + 0x30), *(s32*)(self + 0x268)), room, &spawnPos, 0x62);
                     *(s32*)(self + 0x268) += 1;
                 }
@@ -785,11 +785,7 @@ void Unk8036C300::state1() {
             for (s32 i = 0; i < 6; i++, objects += 4, vertices += 0xc, idA++, idB++, color += 3, timing++) {
                 if (*(s32*)(self + 0x258) == *timing) {
                     *(s32*)(objects + 0x2f8) = 1;
-                    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(vertices + 0x2a8);
-                    pos.z += lbl_80542C5C;
-                    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idA, 0, 0, 0, 0, 1);
-                    pos.z += lbl_80542C60;
-                    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idB, 0, 0, 0, 0, 1);
+                    cutsceneBurst(self, (JGeometry::TVec3f*)(vertices + 0x2a8), idA, idB);
                     fn_801F0E34(self, 0x400d9, 0);
                     *(f32*)(vertices + 0x2b0) = lbl_80542C80;
                 } else if (*(s32*)(self + 0x258) == *timing - 0x28) {

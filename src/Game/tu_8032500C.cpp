@@ -6,6 +6,7 @@
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Box.h"
 
 
 extern "C" char lbl_804AB464[];
@@ -275,28 +276,16 @@ extern "C" void fn_80325A30(Actor* a) {
     s32* w = (s32*)a;
     f32* f = (f32*)a;
     u8* b = (u8*)a;
-    f32 box[4];
-    f32 p2[2];
-    f32 out[3];
     s32 i;
-    s32 room;
-    s32 mask;
 
     if (w[0x8c] == 1) {
         if (fn_8022F9E4(w[0x9b], w[0x66], 0, 0) == 1) {
             w[0x8c] = 2;
         }
     } else {
-        box[0] = f[0x18];
-        box[1] = f[0x19];
-        box[2] = f[0x1a];
-        box[3] = f[0x1b];
-        p2[0] = f[3];
-        p2[1] = f[4];
-        box[0] += p2[0];
-        box[1] += p2[1];
-        box[2] += p2[0];
-        box[3] += p2[1];
+        JGeometry::TBox2<f32> box(*(JGeometry::TVec2<f32>*)(f + 0x18), *(JGeometry::TVec2<f32>*)(f + 0x1a));
+        JGeometry::TVec2<f32> p2(f[3], f[4]);
+        box.addPos(p2);
 
         if (b[0xc4] != 0) {
             f32* v;
@@ -322,15 +311,16 @@ extern "C" void fn_80325A30(Actor* a) {
             f[0x11] = 0.0f;
             f[5] = 0.0f;
             for (i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && fn_80239C00(i, box, w[1]) && fn_8022F9E4(i, w[0x66], 1, 0)) {
+                if (fn_8023F264(i) && fn_80239C00(i, (f32*)&box, w[1]) && fn_8022F9E4(i, w[0x66], 1, 0)) {
                     w[0x96] = 0;
                     w[0x8c] = 2;
                 }
             }
             break;
-        case 2:
-            room = w[1];
-            if (((u8*)fn_802D6A9C())[room + 0x131df] == 0) {
+        case 2: {
+            s32 room = w[1];
+            u8* base = (u8*)fn_802D6A9C() + 0x10000;
+            if (base[room + 0x31df] == 0) {
                 if (b[0xc4] == 0) {
                     if (w[0x98] == 0) {
                         w[0x92] = 30;
@@ -344,15 +334,17 @@ extern "C" void fn_80325A30(Actor* a) {
                     f[5] = 0.0f;
                 }
                 if (f[5] == 0.0f && w[0x92] <= 0) {
+                    s32 n;
+                    s32 mask;
                     if (((u8*)lbl_8053AAF8)[0x7f] == 0 || (w[0x24] & 0xf) == 4 || (w[0x24] & 0xf) == 3) {
                         mask = fn_801F2B7C(a, w[0x45], -1, 1);
                     } else {
                         mask = fn_801F2B7C(a, 0, -1, 1);
                     }
                     if (mask > 0) {
-                        for (i = 0; i < 4; i++) {
-                            if ((mask >> i) & 1) {
-                                fn_80236074(i, 100, 0);
+                        for (n = 0; n < 4; n++) {
+                            if ((mask >> n) & 1) {
+                                fn_80236074(n, 100, 0);
                             }
                         }
                     }
@@ -380,15 +372,17 @@ extern "C" void fn_80325A30(Actor* a) {
                     }
                 }
                 if (w[0x92] <= 0) {
+                    s32 j;
+                    s32 mask;
                     if (((u8*)lbl_8053AAF8)[0x7f] == 0 || (w[0x24] & 0xf) == 4 || (w[0x24] & 0xf) == 3) {
                         mask = fn_801F2B7C(a, w[0x45], -1, 1);
                     } else {
                         mask = fn_801F2B7C(a, 0, -1, 1);
                     }
                     if (mask > 0) {
-                        for (i = 0; i < 4; i++) {
-                            if ((mask >> i) & 1) {
-                                fn_80236074(i, 100, 0);
+                        for (j = 0; j < 4; j++) {
+                            if ((mask >> j) & 1) {
+                                fn_80236074(j, 100, 0);
                             }
                         }
                     }
@@ -396,7 +390,10 @@ extern "C" void fn_80325A30(Actor* a) {
                 fn_801F2B20(a, 5);
             }
             break;
-        case 3:
+        }
+        case 3: {
+            s32 j;
+            s32 mask;
             f[0xf] = 0.0f;
             f[0x10] = 0.0f;
             f[0x11] = 0.0f;
@@ -407,9 +404,9 @@ extern "C" void fn_80325A30(Actor* a) {
             }
             fn_801F2B20(a, 5);
             if (mask > 0) {
-                for (i = 0; i < 4; i++) {
-                    if ((mask >> i) & 1) {
-                        fn_80236074(i, 100, 0);
+                for (j = 0; j < 4; j++) {
+                    if ((mask >> j) & 1) {
+                        fn_80236074(j, 100, 0);
                     }
                 }
             }
@@ -422,18 +419,19 @@ extern "C" void fn_80325A30(Actor* a) {
             }
             break;
         }
+        }
 
         if (b[0xc4] == 0 && w[0x8c] != 3 && (w[0x8c] == 0 || w[0x8c] == 2)) {
             u8 hit = 0;
             f32 out2[3];
-            if (fn_801A4F5C(w[0x66], box, p2) != 0) {
+            if (fn_801A4F5C(w[0x66], (f32*)&box, (f32*)&p2) != 0) {
                 hit = 1;
             }
             if (w[0x92] <= 0 && fn_801F305C(a)) {
                 hit = 2;
             }
             if (hit != 0 || w[0x42] == 0) {
-                ((void (**)(Actor*))(*(void**)a))[21](a);
+                ((ItemBase*)a)->v19();
                 fn_8029EDB8(lbl_8053AC98, &a->field_0C, 0, w[1], out2);
                 w[0x8c] = 3;
             }
@@ -442,16 +440,17 @@ extern "C" void fn_80325A30(Actor* a) {
         {
             s32 seq[4] = {0, 3, 2, 1};
             if (w[0x8c] != 0 && b[0xc4] == 0 && w[0x8c] != 3 && w[0x8f] % 4 == 0) {
-                if (w[0x8f] <= 100) {
+                if (w[0x8f] > 100) {
+                    w[0x94] ^= 1;
+                } else {
                     w[0x96] = (w[0x96] + 1) % 4;
                     w[0x94] = seq[w[0x96]];
-                } else {
-                    w[0x94] ^= 1;
                 }
             }
         }
         if (w[0x8c] != 3 && w[0x8f] == 0) {
-            ((void (**)(Actor*))(*(void**)a))[21](a);
+            f32 out[3];
+            ((ItemBase*)a)->v19();
             fn_8029EDB8(lbl_8053AC98, &a->field_0C, 0, w[1], out);
             w[0x8c] = 3;
         }

@@ -137,33 +137,196 @@ extern "C" void fn_8015C8B0(char* this_) {
 extern "C" u16 fn_80226998(void* pos, s32 room);
 extern "C" char* fn_802D6A9C();
 extern "C" u8 fn_802DCD0C();
+extern "C" s32 fn_801F3D94(void*, s32);
+extern "C" u8 fn_801F2FAC(void*);
+extern "C" void* fn_801F856C();
+extern "C" void* Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
+extern "C" u16 fn_8022461C(void*, s32);
+extern "C" s32 fn_801F2718(void*, u32);
+extern "C" char* fn_801F666C(void*, s32);
+extern "C" u8 fn_801F2DB4(void*, u32, u32, s32);
+extern "C" void fn_801EEC98(void*, void*, u16*, s32*, f32*, s32*, s32, s32);
+extern "C" void fn_801F71A4(f32*, f32, f32, f32);
+extern "C" void fn_801F2B7C(void*, s32, s32, s32);
+extern "C" void fn_801F714C(u16*, u16, s32, s32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" void fn_801F0E34(void*, u32, s32);
+extern "C" double fabs(double);
+extern f32 sincosTable___5JMath[];
 extern "C" void fn_8015CCF8(char* this_) {
+    s32 room;
+    u8 changed;
     if (*(u32*)(this_ + 0x90) >> 27) {
-        if (!((KethVT*)this_)->isVisible()) {
-            return;
-        }
+        if (!((KethVT*)this_)->isVisible()) return;
+        *(u32*)(this_ + 0xb0) = 0x31201;
     }
-    *(u32*)(this_ + 0xb0) = 0x31201;
     if (*(s32*)(this_ + 0x264) == 1) {
         if (*(u16*)(this_ + 0x26a) == 0xffff) {
             fn_802D6A9C();
-            if (fn_802DCD0C() == 0) {
-                f32 pos[2];
-                pos[0] = *(f32*)(this_ + 0xc);
-                pos[1] = *(f32*)(this_ + 0x10);
-                *(u16*)(this_ + 0x26a) = fn_80226998(pos, *(s32*)(this_ + 0x4));
+            if (!fn_802DCD0C()) {
+                JGeometry::TVec2<f32> pos;
+                s32 room = *(s32*)(this_ + 4);
+                pos.set(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+                *(u16*)(this_ + 0x26a) = fn_80226998(&pos, room);
             }
             return;
         }
-        f32 pos[2];
-        pos[0] = *(f32*)(this_ + 0xc);
-        pos[1] = *(f32*)(this_ + 0x10);
-        u16 r = fn_80226998(pos, *(s32*)(this_ + 0x4));
-        if (*(u16*)(this_ + 0x26a) == r) {
-            return;
-        }
+        JGeometry::TVec2<f32> pos;
+        s32 room = *(s32*)(this_ + 4);
+                pos.set(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10));
+        if (*(u16*)(this_ + 0x26a) == fn_80226998(&pos, room)) return;
         *(s32*)(this_ + 0x264) = 0;
     }
+    if (fn_801F3D94(this_, 1)) return;
+    if (fn_801F2FAC(this_)) {
+        if (*(u8*)(this_ + 0x25e) == 1 && kethRandFrom(lbl_8053AAF8) < 0.5f)
+            Actor_CreateByID(fn_801F856C(), 'HART', *(s32*)(this_ + 4), this_ + 0xc, 0, -1, -1);
+        return;
+    }
+    if ((int)fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4)) == 0x3b) {
+        ((KethVT*)this_)->v7();
+        return;
+    }
+    room = fn_801F2718(this_, 'BMTY');
+    if (room >= 0) {
+        char* other = fn_801F666C(fn_801F856C(), room);
+        if (other && *(u32*)(other + 0x1a0) == 'BMTY' && (u8)(*(s32*)(other + 0x230) == 3) == 1)
+            room = -1;
+    }
+    if (room < 0 && fn_801F2DB4(this_, 'NULL', 'NULL', 0)) {
+        if (*(u8*)(this_ + 0x25e) == 1 && kethRandFrom(lbl_8053AAF8) < 0.5f)
+            Actor_CreateByID(fn_801F856C(), 'HART', *(s32*)(this_ + 4), this_ + 0xc, 0, -1, -1);
+        return;
+    }
+    f32 distance;
+    s32 index;
+    s32 player;
+    u16 angle;
+    angle = 0;
+    distance = 0.0f;
+    index = 0;
+    player = -1;
+    fn_801EEC98(this_, *(void**)(this_ + 0x198), &angle, &index, &distance, &player, 0, 0);
+    fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x274), 0.3f, 1.0f);
+    fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x278), 0.3f, 1.0f);
+    ((JGeometry::TVec3<f32>*)(this_ + 0xc))->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+    fn_801F2B7C(this_, -100, -1, 1);
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0: {
+        changed = 0;
+        if (*(s32*)(this_ + 0x264) == 3) {
+            if (*(s32*)(this_ + 0x24c) == 0)
+                *(f32*)(this_ + 0x274) = 1.2f * sincosTable___5JMath[((u16)*(s32*)(this_ + 0x250) >> 5) * 2];
+            else
+                *(f32*)(this_ + 0x278) = 1.2f * sincosTable___5JMath[((u16)*(s32*)(this_ + 0x250) >> 5) * 2 + 1];
+            *(s32*)(this_ + 0x250) += *(s32*)(this_ + 0x254);
+            if (*(s32*)(this_ + 0x234) <= 0) {
+                ++*(s32*)(this_ + 0x258);
+                if (*(s32*)(this_ + 0x258) > 2) *(s32*)(this_ + 0x258) = 0;
+                *(s32*)(this_ + 0x234) = 6;
+            }
+        }
+        room = *(s32*)(this_ + 4);
+        if (((u8*)(fn_802D6A9C() + 0x131df))[room] == 0 && *(u8*)(this_ + 0x25e) == 0) {
+            if (*(s32*)(this_ + 0x238) == 0 && index >= 0 && distance < 60.0f) {
+                *(u16*)(this_ + 0x268) = angle + 0x8000;
+                changed = 1;
+                *(s32*)(this_ + 0x238) = (s32)(50.0f * kethRandFrom(lbl_8053AAF8)) + 50;
+                *(s32*)(this_ + 0x230) = 1;
+            }
+        } else {
+            fn_801F714C((u16*)(this_ + 0x25c), 0x8000, 1, 0x3000);
+            if (*(s32*)(this_ + 0x238) == 0 && index >= 0 &&
+                (f32)fabs(*(f32*)(this_ + 0xc) - fn_8023E724(player)[0]) < 64.0f &&
+                *(f32*)(this_ + 0x10) < fn_8023E724(player)[1] &&
+                (f32)fabs(*(f32*)(this_ + 0x10) - fn_8023E724(player)[1]) < 128.0f) {
+                changed = 1;
+                *(s32*)(this_ + 0x238) = (s32)(10.0f * kethRandFrom(lbl_8053AAF8)) + 10;
+                if (*(f32*)(this_ + 0xc) > fn_8023E724(player)[0]) {
+                    *(s32*)(this_ + 0x244) = (s32)(4096.0f * kethRandFrom(lbl_8053AAF8)) + 0x1000;
+                    *(u16*)(this_ + 0x25c) = 0x8000;
+                } else {
+                    *(s32*)(this_ + 0x244) = 0xf000 - (s32)(4096.0f * kethRandFrom(lbl_8053AAF8));
+                    *(u16*)(this_ + 0x25c) = 0x8001;
+                }
+                *(f32*)(this_ + 0x26c) = fn_8023E724(player)[1] - 32.0f;
+                *(s32*)(this_ + 0x23c) = (s32)(50.0f * kethRandFrom(lbl_8053AAF8)) + 50;
+                *(s32*)(this_ + 0x230) = 2;
+            }
+        }
+        if (changed == 1) {
+            fn_801F0E34(this_, 0x4000f, 0);
+            fn_801F0E34(this_, 0x400a9, 0);
+        }
+        break;
+    }
+    case 1:
+        *(f32*)(this_ + 0x274) = 0.7f * sincosTable___5JMath[(((u32)*(u16*)(this_ + 0x268) >> 5) & 0x7ff)*2];
+        *(f32*)(this_ + 0x278) = 0.7f * sincosTable___5JMath[(((u32)*(u16*)(this_ + 0x268) >> 5) & 0x7ff)*2+1];
+        if (index != -1) fn_801F714C((u16*)(this_ + 0x268), angle, 1, 0x300);
+        if (*(s32*)(this_ + 0x234) <= 0) {
+            ++*(s32*)(this_ + 0x258);
+            if (*(s32*)(this_ + 0x258) > 2) *(s32*)(this_ + 0x258) = 0;
+            *(s32*)(this_ + 0x234) = 6;
+            if (*(s32*)(this_ + 0x238) == 0 && *(s32*)(this_ + 0x258) == 2 &&
+                !((KethVT*)this_)->canMove(*(s32*)(this_ + 4), this_ + 0xc)) {
+                *(s32*)(this_ + 0x238) = (s32)(20.0f * kethRandFrom(lbl_8053AAF8)) + 20;
+                *(f32*)(this_ + 0x274) = 0.0f;
+                *(f32*)(this_ + 0x278) = 0.0f;
+                *(f32*)(this_ + 0x27c) = 0.0f;
+                *(s32*)(this_ + 0x230) = 0;
+            }
+        }
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x238) == 0) {
+            u16 target = *(s32*)(this_ + 0x244);
+            if (*(s32*)(this_ + 0x248) == 0 && *(f32*)(this_ + 0x10) > *(f32*)(this_ + 0x26c))
+                *(s32*)(this_ + 0x248) = 1;
+            if (*(s32*)(this_ + 0x248)) {
+                fn_801F714C((u16*)(this_ + 0x25c), target, 1, 0x200);
+                *(f32*)(this_ + 0x274) = sincosTable___5JMath[((u16)(*(u16*)(this_ + 0x25c)-0x8000) >> 5)*2];
+                *(f32*)(this_ + 0x278) = sincosTable___5JMath[((u16)(*(u16*)(this_ + 0x25c)-0x8000) >> 5)*2+1];
+            } else {
+                *(f32*)(this_ + 0x274) = 1.5f * sincosTable___5JMath[((u16)(*(u16*)(this_ + 0x25c)-0x8000) >> 5)*2];
+                *(f32*)(this_ + 0x278) = 1.5f * sincosTable___5JMath[((u16)(*(u16*)(this_ + 0x25c)-0x8000) >> 5)*2+1];
+            }
+        }
+        if (*(s32*)(this_ + 0x238) == 0 && *(s32*)(this_ + 0x234) <= 0) {
+            ++*(s32*)(this_ + 0x258);
+            if (*(s32*)(this_ + 0x258) > 2) *(s32*)(this_ + 0x258) = 0;
+            *(s32*)(this_ + 0x234) = 6;
+        }
+        if (*(s32*)(this_ + 0x23c) == 0 && ((KethVT*)this_)->canMove(*(s32*)(this_ + 4), this_ + 0xc) == 1) {
+            *(s32*)(this_ + 0x238) = (s32)(20.0f * kethRandFrom(lbl_8053AAF8)) + 20;
+            *(f32*)(this_ + 0x274) = 0.0f;
+            *(f32*)(this_ + 0x278) = 0.0f;
+            *(f32*)(this_ + 0x27c) = 0.0f;
+            *(s32*)(this_ + 0x258) = 2;
+            *(s32*)(this_ + 0x248) = 0;
+            *(s32*)(this_ + 0x230) = 0;
+        }
+        break;
+    case 3: {
+        fn_801F71A4((f32*)(this_ + 0x26c), *(f32*)(this_ + 0x270), 0.3f, 0.5f);
+        u32 a = (u16)(*(u16*)(this_ + 0x268) + *(s32*)(this_ + 0x244));
+        const f32* table = sincosTable___5JMath;
+        f32 sx = *(f32*)(this_ + 0x26c) * table[(a>>5)*2];
+        f32 cy = *(f32*)(this_ + 0x26c) * table[(a>>5)*2+1];
+        *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x280) + sx;
+        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x284) + cy;
+        *(s32*)(this_ + 0x244) += 0x200;
+        if (*(s32*)(this_ + 0x234) <= 0) {
+            ++*(s32*)(this_ + 0x258);
+            if (*(s32*)(this_ + 0x258) > 2) *(s32*)(this_ + 0x258) = 0;
+            *(s32*)(this_ + 0x234) = 6;
+        }
+        break;
+    }
+    }
+    if (*(s32*)(this_ + 0x234) > 0) --*(s32*)(this_ + 0x234);
+    if (*(s32*)(this_ + 0x238) > 0) --*(s32*)(this_ + 0x238);
+    if (*(s32*)(this_ + 0x23c) > 0) --*(s32*)(this_ + 0x23c);
 }
 
 // KETH init (vtable slot 1)
@@ -241,3 +404,4 @@ extern "C" void fn_8015D844(char* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"

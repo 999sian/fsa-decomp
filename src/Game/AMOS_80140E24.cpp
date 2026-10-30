@@ -105,6 +105,7 @@ static inline void AMOSsetDirection(JGeometry::TVec3f* dst, const JGeometry::TVe
 }
 static inline void AMOSnormalize(JGeometry::TVec3f* v) { v->normalize(); }
 static inline f32 AMOSsquared(const JGeometry::TVec3f* v) { return v->squared(); }
+#pragma peephole off
 extern "C" void fn_80141064(u8* this_) {
     s32 room;
     s32 i;
@@ -334,13 +335,10 @@ b.set(*(JGeometry::TBox2f*)(this_+0x60));
                 }
             }
             if (dir >= 0 && dir < 4) {
-                const Vec& direction = lbl_80465A98[dir];
+                const JGeometry::TVec3f& direction = lbl_80465A98[dir];
                 (*(s32*)(this_+0x30c)) = 0;
                 (*(f32*)(this_+0x3c)) = lbl_80465A98[dir].x;
-                f32 dy=direction.y;
-                f32 dz=direction.z;
-                (*(f32*)(this_+0x40))=dy;
-                (*(f32*)(this_+0x44))=dz;
+                (*(JGeometry::TVec2f*)(this_+0x40)).set(direction.y, direction.z);
                 (*(JGeometry::TVec3f*)(this_+0x320)).set((*(JGeometry::TVec3f*)(this_+0xc)));
             }
         }
@@ -385,7 +383,7 @@ b.set(*(JGeometry::TBox2f*)(this_+0x60));
         break;
     }
 }
-
+#pragma peephole reset
 extern f32 lbl_8053CEB8;
 extern f32 lbl_8053CEF8;
 extern f32 lbl_8053CEFC;

@@ -1,5 +1,4 @@
-// TU 0x802205e0-0x80220f54 (actor ZNLJ).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802205e0-0x80220f54 — Actor 'ZNLJ' (Jumping Enemy derived from Base_802218C8).
 #include "types.h"
 
 extern "C" {
@@ -87,7 +86,6 @@ void* lbl_804A68D0[] = {
     (void*)fn_80221114,
 };
 
-// ---- fn_802205E0_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 #ifndef dtor_80084580
 #define dtor_80084580(p) (::operator delete(p))
@@ -97,17 +95,64 @@ extern void* lbl_804A6A00[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 
+#include "JSystem/JMath/JMath.h"
+
+struct ZnljRect { f32 x0, y0, x1, y1; };
+struct ZnljGame { u8 pad[0x7e]; u8 mFlag7E; };
+
+struct ZnljSub270 {
+    u8 _pad00[0x24];
+    void* mVtable; // +0x294 on ZnljActor
+    u8 _pad28[0x10];
+};
+
+struct ZnljActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPosX;
+    /* 0x010 */ f32 mPosY;
+    /* 0x014 */ f32 mPosZ;
+    /* 0x018 */ u8 _pad18[0x3C - 0x18];
+    /* 0x03C */ f32 mVelX;
+    /* 0x040 */ f32 mVelY;
+    /* 0x044 */ f32 mVelZ;
+    /* 0x048 */ u8 _pad48[0x60 - 0x48];
+    /* 0x060 */ ZnljRect mBounds60;
+    /* 0x070 */ ZnljRect mBounds70;
+    /* 0x080 */ ZnljRect mBounds80;
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[4];
+    /* 0x098 */ s32 mFacingDir;
+    /* 0x09C */ u8 _pad9C[0x230 - 0x9C];
+    /* 0x230 */ u32 mItemFlags;
+    /* 0x234 */ u8 _pad234[0x248 - 0x234];
+    /* 0x248 */ s32 mState;
+    /* 0x24C */ s32 mStateTimer;
+    /* 0x250 */ s32 mStateDuration;
+    /* 0x254 */ f32 mSpeedX;
+    /* 0x258 */ f32 mSpeedY;
+    /* 0x25C */ u8 _pad25C[0x270 - 0x25C];
+    /* 0x270 */ ZnljSub270 mAnimSub;
+    /* 0x2A8 */ u8 _pad2A8[8];
+    /* 0x2B0 */ f32 mTargetX;
+    /* 0x2B4 */ f32 mTargetY;
+    /* 0x2B8 */ s32 mJumpAxis;     // 0..1 = X jump, 2..3 = Y jump (from spawnParam & 3)
+    /* 0x2BC */ s32 mJumpCount;    // Completed jump hops
+    /* 0x2C0 */ s32 mMaxJumpCount; // Randomized hop limit (3..4)
+};
+
 extern "C" void* fn_802205E0(void* this_, s16 freeFlag) {
     if (this_ != 0) {
-        char* p = (char*)this_;
-        *(void**)p = lbl_804A68D0;
+        ZnljActor* p = (ZnljActor*)this_;
+        p->mVtable = lbl_804A68D0;
         if (this_ != 0) {
-            *(void**)p = lbl_804A6A00;
+            p->mVtable = lbl_804A6A00;
             if (this_ != 0) {
-                *(void**)p = lbl_804A4808;
-                if (p + 0x270 != 0) {
-                    if (p + 0x294 != 0) {
-                        *(void**)(p + 0x294) = lbl_8049CC34;
+                p->mVtable = lbl_804A4808;
+                if (&p->mAnimSub != 0) {
+                    if (&p->mAnimSub.mVtable != 0) {
+                        p->mAnimSub.mVtable = lbl_8049CC34;
                     }
                 }
                 __dt__5ActorFv(this_, 0);
@@ -120,47 +165,16 @@ extern "C" void* fn_802205E0(void* this_, s16 freeFlag) {
     return this_;
 }
 
-
-// ---- ZNLJ update / state change / init / ctor ----
-#include "JSystem/JMath/JMath.h"
-
 struct ZnljVt {
-    virtual void s00();
-    virtual void s01();
-    virtual void s02();
-    virtual void s03();
-    virtual void s04();
-    virtual void s05();
-    virtual void s06();
-    virtual void s07();
-    virtual void s08();
-    virtual void s09();
-    virtual void s10();
-    virtual void s11();
-    virtual void s12();
-    virtual void s13();
-    virtual void s14();
-    virtual void s15();
-    virtual void s16();
-    virtual void s17();
-    virtual void s18();
-    virtual void s19();
-    virtual void s20();
-    virtual void s21();
-    virtual void s22();
-    virtual void s23();
-    virtual void s24();
-    virtual void s25();
-    virtual void s26();
-    virtual void s27();
-    virtual void s28();
-    virtual void s29();
-    virtual void s30();
-    virtual void s31();
+    virtual void s00(); virtual void s01(); virtual void s02(); virtual void s03();
+    virtual void s04(); virtual void s05(); virtual void s06(); virtual void s07();
+    virtual void s08(); virtual void s09(); virtual void s10(); virtual void s11();
+    virtual void s12(); virtual void s13(); virtual void s14(); virtual void s15();
+    virtual void s16(); virtual void s17(); virtual void s18(); virtual void s19();
+    virtual void s20(); virtual void s21(); virtual void s22(); virtual void s23();
+    virtual void s24(); virtual void s25(); virtual void s26(); virtual void s27();
+    virtual void s28(); virtual void s29(); virtual void s30(); virtual void s31();
 };
-
-struct ZnljRect { f32 x0, y0, x1, y1; };
-struct ZnljGame { u8 pad[0x7e]; u8 mFlag7E; };
 
 extern "C" {
 extern f32 lbl_8053EFB8;
@@ -183,27 +197,29 @@ s32 fn_801CD664(s32 range);
 s32 ClassifyBamAngleToQuadrant(u16 angle);
 void fn_8022089C(void* this_, s32 state);
 
+// ZNLJ vtable slot 32: physics velocity update
 void fn_80220680(void* this_) {
-    char* p = (char*)this_;
-    switch (*(s32*)(p + 0x248)) {
+    ZnljActor* p = (ZnljActor*)this_;
+    switch (p->mState) {
     case 2:
         fn_80221250(this_);
         break;
     case 4:
     case 6:
-        *(f32*)(p + 0x44) += lbl_8053EFB8;
+        p->mVelZ += lbl_8053EFB8;
         break;
     default:
-        *(f32*)(p + 0x3c) = 0.0f;
-        *(f32*)(p + 0x40) = 0.0f;
+        p->mVelX = 0.0f;
+        p->mVelY = 0.0f;
         ((ZnljVt*)this_)->s31();
         break;
     }
 }
 
+// ZNLJ vtable slot 34: main state machine
 void fn_802206FC(void* this_) {
-    char* p = (char*)this_;
-    switch (*(u32*)(p + 0x248)) {
+    ZnljActor* p = (ZnljActor*)this_;
+    switch ((u32)p->mState) {
     case 0:
         fn_80221408(this_);
         break;
@@ -214,34 +230,34 @@ void fn_802206FC(void* this_) {
         fn_802212AC(this_);
         break;
     case 3:
-        if (*(u32*)(p + 0x230) & 0x4000) {
-            if (*(f32*)(p + 0x14) <= 0.0f) {
+        if (p->mItemFlags & 0x4000) {
+            if (p->mPosZ <= 0.0f) {
                 fn_8022089C(this_, 4);
             }
-        } else if (fn_801D05F8(this_, p + 0xc, 48.0f) >= 0) {
-            *(u32*)(p + 0x230) |= 0x4000;
-            ZnljRect* r = (ZnljRect*)(p + 0x60);
+        } else if (fn_801D05F8(this_, &p->mPosX, 48.0f) >= 0) {
+            p->mItemFlags |= 0x4000;
+            ZnljRect* r = &p->mBounds60;
             r->x0 = 1.0f;
             r->y0 = 1.0f;
             r->x1 = -1.0f;
             r->y1 = -1.0f;
-            *(ZnljRect*)(p + 0x70) = *r;
-            if (*(f32*)(p + 0x14) <= 0.0f) {
+            p->mBounds70 = *r;
+            if (p->mPosZ <= 0.0f) {
                 fn_8022089C(this_, 4);
             }
-        } else if (*(f32*)(p + 0x14) <= 0.0f) {
-            *(f32*)(p + 0x44) = lbl_8053FE70;
+        } else if (p->mPosZ <= 0.0f) {
+            p->mVelZ = lbl_8053FE70;
         }
         break;
     case 4:
-        if (*(f32*)(p + 0x14) <= 0.0f) {
-            (*(s32*)(p + 0x2bc))++;
+        if (p->mPosZ <= 0.0f) {
+            p->mJumpCount++;
             fn_8022089C(this_, 5);
         }
         break;
     case 5:
-        if (*(s32*)(p + 0x24c) >= *(s32*)(p + 0x250)) {
-            if (*(s32*)(p + 0x2bc) >= *(s32*)(p + 0x2c0)) {
+        if (p->mStateTimer >= p->mStateDuration) {
+            if (p->mJumpCount >= p->mMaxJumpCount) {
                 fn_8022149C(this_, 1);
             } else {
                 fn_8022089C(this_, 3);
@@ -249,23 +265,24 @@ void fn_802206FC(void* this_) {
         }
         break;
     case 6:
-        if (*(s32*)(p + 0x24c) >= 0x78) {
+        if (p->mStateTimer >= 0x78) {
             detach__5ActorFv(this_);
         }
         break;
     }
 }
 
+// ZNLJ state transition handler
 void fn_8022089C(void* this_, s32 state) {
-    char* p = (char*)this_;
+    ZnljActor* p = (ZnljActor*)this_;
     switch (state) {
     case 3: {
-        ZnljRect* r = (ZnljRect*)(p + 0x60);
+        ZnljRect* r = &p->mBounds60;
         r->x0 = -8.0f;
         r->y0 = -8.0f;
         r->x1 = 8.0f;
         r->y1 = 8.0f;
-        ZnljRect* r2 = (ZnljRect*)(p + 0x80);
+        ZnljRect* r2 = &p->mBounds80;
         r2->x0 = -8.0f;
         r2->y0 = -8.0f;
         r2->x1 = 8.0f;
@@ -273,129 +290,121 @@ void fn_8022089C(void* this_, s32 state) {
         break;
     }
     case 4: {
-        *(u32*)(p + 0x230) &= ~0x4000;
-        ZnljRect* r = (ZnljRect*)(p + 0x60);
+        p->mItemFlags &= ~0x4000;
+        ZnljRect* r = &p->mBounds60;
         r->x0 = 1.0f;
         r->y0 = 1.0f;
         r->x1 = -1.0f;
         r->y1 = -1.0f;
-        *(ZnljRect*)(p + 0x70) = *r;
-        ZnljRect* r2 = (ZnljRect*)(p + 0x80);
+        p->mBounds70 = *r;
+        ZnljRect* r2 = &p->mBounds80;
         r2->x0 = 1.0f;
         r2->y0 = 1.0f;
         r2->x1 = -1.0f;
         r2->y1 = -1.0f;
         static f32 sJumpVel = 0.5f * (45.0f * -lbl_8053EFB8);
-        *(f32*)(p + 0x44) = sJumpVel;
-        switch (*(s32*)(p + 0x2b8)) {
+        p->mVelZ = sJumpVel;
+        switch (p->mJumpAxis) {
         case 0:
         case 1:
-            *(f32*)(p + 0x3c) = 2.8444445f;
-            if (*(s32*)(p + 0x2b8) == 1) {
-                *(f32*)(p + 0x3c) = -*(f32*)(p + 0x3c);
+            p->mVelX = 2.8444445f;
+            if (p->mJumpAxis == 1) {
+                p->mVelX = -p->mVelX;
             }
-            if (*(s32*)(p + 0x2bc) & 1) {
-                *(f32*)(p + 0x3c) = -*(f32*)(p + 0x3c);
+            if (p->mJumpCount & 1) {
+                p->mVelX = -p->mVelX;
             }
-            *(f32*)(p + 0x40) = 0.0f;
+            p->mVelY = 0.0f;
             break;
         case 2:
         case 3:
-            *(f32*)(p + 0x40) = 2.8444445f;
-            if (*(s32*)(p + 0x2b8) == 3) {
-                *(f32*)(p + 0x40) = -*(f32*)(p + 0x40);
+            p->mVelY = 2.8444445f;
+            if (p->mJumpAxis == 3) {
+                p->mVelY = -p->mVelY;
             }
-            if (*(s32*)(p + 0x2bc) & 1) {
-                *(f32*)(p + 0x40) = -*(f32*)(p + 0x40);
+            if (p->mJumpCount & 1) {
+                p->mVelY = -p->mVelY;
             }
-            *(f32*)(p + 0x3c) = 0.0f;
+            p->mVelX = 0.0f;
             break;
         }
         fn_801F0E34(this_, 0x400c7, 0);
         break;
     }
     case 5: {
-        ZnljRect* r = (ZnljRect*)(p + 0x60);
+        ZnljRect* r = &p->mBounds60;
         r->x0 = -8.0f;
         r->y0 = -8.0f;
         r->x1 = 8.0f;
         r->y1 = 8.0f;
-        ZnljRect* r2 = (ZnljRect*)(p + 0x80);
+        ZnljRect* r2 = &p->mBounds80;
         r2->x0 = -8.0f;
         r2->y0 = -8.0f;
         r2->x1 = 8.0f;
         r2->y1 = 8.0f;
         if (lbl_8053AAF8->mFlag7E) {
-            *(s32*)(p + 0x250) = 6;
+            p->mStateDuration = 6;
         } else {
-            *(s32*)(p + 0x250) = 0xc;
+            p->mStateDuration = 0xc;
         }
         break;
     }
     case 6: {
         fn_801F3604(this_);
-        ZnljRect* r = (ZnljRect*)(p + 0x60);
+        ZnljRect* r = &p->mBounds60;
         r->x0 = 1.0f;
         r->y0 = 1.0f;
         r->x1 = -1.0f;
         r->y1 = -1.0f;
-        *(ZnljRect*)(p + 0x70) = *r;
-        ZnljRect* r2 = (ZnljRect*)(p + 0x80);
+        p->mBounds70 = *r;
+        ZnljRect* r2 = &p->mBounds80;
         r2->x0 = 1.0f;
         r2->y0 = 1.0f;
         r2->x1 = -1.0f;
         r2->y1 = -1.0f;
         static f32 sLandVel = 0.5f * (120.0f * -lbl_8053EFB8);
-        *(f32*)(p + 0x44) = sLandVel;
+        p->mVelZ = sLandVel;
         fn_80221670(this_);
-        *(f32*)(p + 0x3c) = (1.0f / 120.0f) * (*(f32*)(p + 0x2b0) - *(f32*)(p + 0xc));
-        *(f32*)(p + 0x40) = (1.0f / 120.0f) * (*(f32*)(p + 0x2b4) - *(f32*)(p + 0x10));
-        f32 ang = JMAAtan2Radian(*(f32*)(p + 0x3c), *(f32*)(p + 0x40));
+        p->mVelX = (1.0f / 120.0f) * (p->mTargetX - p->mPosX);
+        p->mVelY = (1.0f / 120.0f) * (p->mTargetY - p->mPosY);
+        f32 ang = JMAAtan2Radian(p->mVelX, p->mVelY);
         ang *= 10430.378f;
-        *(s32*)(p + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)ang);
-        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 8, 0, 0);
+        p->mFacingDir = ClassifyBamAngleToQuadrant((u16)(s32)ang);
+        fn_801D22DC(&p->mAnimSub, p->mFacingDir + 8, 0, 0);
         break;
     }
     }
-    *(s32*)(p + 0x24c) = 0;
-    *(s32*)(p + 0x248) = state;
+    p->mStateTimer = 0;
+    p->mState = state;
 }
 
+// ZNLJ init (vtable slot 1)
 void fn_80220BD0(void* this_) {
-    char* p = (char*)this_;
+    ZnljActor* p = (ZnljActor*)this_;
     fn_802217C8(this_);
-    *(u32*)(p + 0x2b8) = *(u32*)(p + 0x90) & 3;
-    *(s32*)(p + 0x98) = 2;
-    *(s32*)(p + 0x248) = 3;
-    *(s32*)(p + 0x24c) = 0;
-    *(s32*)(p + 0x250) = -1;
-    *(f32*)(p + 0x254) = 0.0f;
-    *(f32*)(p + 0x258) = 0.0f;
-    fn_801D22DC(p + 0x270, 2, 0, 0);
+    p->mJumpAxis = p->mSpawnParam & 3;
+    p->mFacingDir = 2;
+    p->mState = 3;
+    p->mStateTimer = 0;
+    p->mStateDuration = -1;
+    p->mSpeedX = 0.0f;
+    p->mSpeedY = 0.0f;
+    fn_801D22DC(&p->mAnimSub, 2, 0, 0);
 }
 
 }
-
-
-// Intermediate actor base shared by ZNLJ/ZSLA/tu_80221B44/tu_80222CC4/tu_802233A4
-// (vtable lbl_804A6A00, ctor fn_802218C8). Its destructor is emitted weak here.
-extern "C" void* fn_802218C8(void* this_);
-extern "C" void __dt__5ActorFv(void* this_, int flag);
-extern void* lbl_804A6A00[];
-extern void* lbl_804A4808[];
-extern void* lbl_8049CC34[];
 
 class Base_802218C8 {
 public:
     Base_802218C8() { fn_802218C8(this); }
     ~Base_802218C8() {
-        char* p = (char*)this;
-        *(void**)p = lbl_804A6A00;
+        ZnljActor* p = (ZnljActor*)this;
+        p->mVtable = lbl_804A6A00;
         if (this != 0) {
-            *(void**)p = lbl_804A4808;
-            if (p + 0x270 != 0) {
-                if (p + 0x294 != 0) {
-                    *(void**)(p + 0x294) = lbl_8049CC34;
+            p->mVtable = lbl_804A4808;
+            if (&p->mAnimSub != 0) {
+                if (&p->mAnimSub.mVtable != 0) {
+                    p->mAnimSub.mVtable = lbl_8049CC34;
                 }
             }
             __dt__5ActorFv(this, 0);

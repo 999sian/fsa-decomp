@@ -277,8 +277,8 @@ extern "C" void* fn_8045787C(char* param_1, s16 param_2)
 }
 
 #pragma optimization_level 3
-WaveController::WaveController(s32 pos, s32 heap, const s32 handles)
-    : mSound((JGeometry::TVec3f*)pos, static_cast<u8>(static_cast<u16>(handles)), (JKRHeap*)heap) {
+WaveController::WaveController(s32 pos, s32 heap, s32 handles)
+    : mSound((JGeometry::TVec3f*)pos, handles, (JKRHeap*)heap) {
     *(char**)((u8*)this + 8) = lbl_804B1E28;
     *(char**)((u8*)this + 0x18) = lbl_804B1E28 + 0x24;
     m31 = 1;

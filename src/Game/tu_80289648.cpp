@@ -232,7 +232,7 @@ extern "C" void fn_80289A88(Actor* this_) {
     f32 a = *(f32*)(self + 0x238);
     f32 b = *(f32*)(self + 0x23c);
     JGeometry::TVec3f newC;
-    tuGetCenter(self, newC);
+    { f32 cx = *(f32*)(self+0x68); f32 cy = *(f32*)(self+0x6c); f32 x, y; newC.z=0.0f; x = 0.5f * (*(f32*)(self+0x60)-cx)+cx; y = 0.5f * (*(f32*)(self+0x64)-cy)+cy; newC.x=x; newC.y=y; }
     *(f32*)(self + 0x230) = a / sw;
     *(f32*)(self + 0x234) = b / sh;
 

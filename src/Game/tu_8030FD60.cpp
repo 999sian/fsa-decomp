@@ -78,12 +78,14 @@ extern "C" u8 fn_8038BD08(s32, s32, s32, JGeometry::TVec3<f32>, s32);
 extern "C" s32 lbl_804713C0[][3];
 extern "C" f32 lbl_80541788;
 extern "C" f32 lbl_80541778;
-extern "C" void fn_8030FEB8(Actor* this_) {
-    u8* self = (u8*)this_;
+#pragma opt_propagation off
+extern "C" void fn_8030FEB8(u8* self) {
     Tu8030FEB8Rect rect;
     f32 ang[3];
     f32 len;
-    s32 idx;
+    s32 slot;
+    s32 room;
+    s32 player;
     u16 u;
 
     rect = *(Tu8030FEB8Rect*)(self + 0x60);
@@ -101,14 +103,15 @@ extern "C" void fn_8030FEB8(Actor* this_) {
     } else {
         if (*(s32*)(self + 0x23c) <= 0) {
             *(s32*)(self + 0x23c) = 0x14;
-            idx = *(s32*)(self + 0x248);
-            if (idx >= 0) {
-                idx = fn_8022EA0C(idx);
+            s32 cur = *(s32*)(self + 0x248);
+            player = cur;
+            if (cur >= 0) {
+                player = fn_8022EA0C(cur);
             }
-            if (idx < 0 || *(s32*)(self + 4) != fn_8023DE58(idx)) {
+            if (player < 0 || (room = *(s32*)(self + 4), room != fn_8023DE58(player))) {
                 fn_801EE558(self, ang, &len, 0);
             } else {
-                fn_801EE558(self, ang, &len, idx + 1);
+                fn_801EE558(self, ang, &len, player + 1);
             }
             if (len >= lbl_80541780) {
                 *(s32*)(self + 0x238) = 2;
@@ -139,10 +142,10 @@ extern "C" void fn_8030FEB8(Actor* this_) {
     case 0: {
         s32 id;
         fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
-        idx = fn_8022FD8C(*(s32*)(self + 0x198));
-        if (idx < 0) break;
-        if (!fn_802300EC(idx)) break;
-        if (*(u32*)(self + fn_8022F340(idx) * 4 + 0x278) < *(u32*)(self + 0x268)) {
+        slot = fn_8022FD8C(*(s32*)(self + 0x198));
+        if (slot < 0) break;
+        if (!fn_802300EC(slot)) break;
+        if (((Tu8030FEB8Counts*)self)->cnt[fn_8022F340(slot)] < *(u32*)(self + 0x268)) {
             if (self[0x288] != 0) {
                 id = 0x583;
             } else if (*(u32*)(self + 0x264) != 0) {
@@ -151,9 +154,9 @@ extern "C" void fn_8030FEB8(Actor* this_) {
                 id = 0x6ff;
             }
             s32 h = *(s32*)(self + 0x198);
-            s32 room = *(s32*)(self + 4);
-            if (fn_8038AD24(idx, id, h, room, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x28)) {
-                *(s32*)(self + 0x248) = idx;
+            s32 rm = *(s32*)(self + 4);
+            if (fn_8038AD24(slot, id, h, rm, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x28)) {
+                *(s32*)(self + 0x248) = slot;
                 *(s32*)(self + 0x230) = 1;
             }
         } else {
@@ -162,9 +165,9 @@ extern "C" void fn_8030FEB8(Actor* this_) {
                 id = 0x5af;
             }
             s32 h = *(s32*)(self + 0x198);
-            s32 room = *(s32*)(self + 4);
-            if (fn_8038AD24(idx, id, h, room, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x28)) {
-                *(s32*)(self + 0x248) = idx;
+            s32 rm = *(s32*)(self + 4);
+            if (fn_8038AD24(slot, id, h, rm, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x28)) {
+                *(s32*)(self + 0x248) = slot;
                 *(s32*)(self + 0x230) = 8;
             }
         }
@@ -204,8 +207,8 @@ extern "C" void fn_8030FEB8(Actor* this_) {
         }
         break;
     case 3: {
-        s32 id;
         u8* q;
+        s32 id;
         s32* tb;
         s32 k;
         s32 sel;
@@ -217,10 +220,12 @@ extern "C" void fn_8030FEB8(Actor* this_) {
             char* g = lbl_8053AAF8;
             f32 scale = lbl_80541788;
             u32 bits;
+            f32 x;
             u32 r;
             *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660du + 0x3c6ef35fu;
             bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000u;
-            r = (s32)(scale * (*(f32*)&bits - one));
+            x = *(f32*)&bits;
+            r = (s32)(scale * (x - one));
             if (r <= *(u32*)(self + 0x26c)) {
                 sel = 0;
             } else if (r <= *(u32*)(self + 0x270)) {
@@ -240,19 +245,18 @@ extern "C" void fn_8030FEB8(Actor* this_) {
                 fn_80310F50(a, *(s32*)(self + 0x248), *tb, *(s32*)(self + 0x198));
             }
         }
-        (*(u32*)(self + *(s32*)(self + 0x248) * 4 + 0x278))++;
+        ((Tu8030FEB8Counts*)self)->cnt[*(s32*)(self + 0x248)]++;
         *(s32*)(self + 0x230) = 4;
         break;
     }
     case 4: {
         s32 n;
-        s32 room;
         u8* q;
         s32 k;
         s32 id;
-        idx = fn_8022EA0C(*(s32*)(self + 0x248));
+        player = fn_8022EA0C(*(s32*)(self + 0x248));
         room = *(s32*)(self + 4);
-        if (room != fn_8023DE58(idx)) {
+        if (room != fn_8023DE58(player)) {
             q = self;
             for (k = 0; k < *(s32*)(self + 0x24c); q += 4, k++) {
                 n = *(s32*)(q + 0x250);
@@ -265,17 +269,17 @@ extern "C" void fn_8030FEB8(Actor* this_) {
             *(s32*)(self + 0x230) = 0;
             break;
         }
-        fn_8022FF8C(idx, &rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
-        if (idx != fn_8022FD8C(*(s32*)(self + 0x198))) break;
-        if (!fn_802300EC(idx)) break;
+        fn_8022FF8C(player, &rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        if (player != fn_8022FD8C(*(s32*)(self + 0x198))) break;
+        if (!fn_802300EC(player)) break;
         id = 0x700;
         if (self[0x288] != 0) {
             id = 0x5ac;
         }
         s32 h = *(s32*)(self + 0x198);
         s32 rm = *(s32*)(self + 4);
-        if (fn_8038AD24(idx, id, h, rm, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x28)) {
-            *(s32*)(self + 0x248) = idx;
+        if (fn_8038AD24(player, id, h, rm, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x28)) {
+            *(s32*)(self + 0x248) = player;
             *(s32*)(self + 0x230) = 5;
         }
         break;
@@ -314,9 +318,9 @@ extern "C" void fn_8030FEB8(Actor* this_) {
             default: id = 0x703; break;
             }
         }
-        idx = fn_8022EA0C(*(s32*)(self + 0x248));
+        slot = fn_8022EA0C(*(s32*)(self + 0x248));
         s32 rm = *(s32*)(self + 4);
-        if (!fn_8038BD08(idx, id, rm, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x21)) break;
+        if (!fn_8038BD08(slot, id, rm, *(JGeometry::TVec3<f32>*)(self + 0xc), 0x21)) break;
         q = self;
         for (k = 0; k < *(s32*)(self + 0x24c); q += 4, k++) {
             n = *(s32*)(q + 0x250);
@@ -325,7 +329,7 @@ extern "C" void fn_8030FEB8(Actor* this_) {
                 fn_80310E98(a);
             }
         }
-        *(s32*)(self + 0x248) = idx;
+        *(s32*)(self + 0x248) = slot;
         *(s32*)(self + 0x234) = 0x3c;
         *(s32*)(self + 0x230) = 7;
         break;
@@ -353,10 +357,12 @@ extern "C" void fn_8030FEB8(Actor* this_) {
             char* g = lbl_8053AAF8;
             f32 scale = lbl_80541778;
             u32 bits;
+            f32 x;
             s32 sel;
             *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660du + 0x3c6ef35fu;
             bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000u;
-            sel = (s32)(scale * (*(f32*)&bits - one));
+            x = *(f32*)&bits;
+            sel = (s32)(scale * (x - one));
             switch (sel) {
             case 0: {
                 s32 t = *(s32*)(self + 0x250);
@@ -389,7 +395,7 @@ extern "C" void fn_8030FEB8(Actor* this_) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80310904(char* p) {
     s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
     s32 off = 0;

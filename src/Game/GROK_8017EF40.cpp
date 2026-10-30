@@ -70,7 +70,7 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
 #pragma peephole off
 #pragma opt_propagation off
 #pragma opt_strength_reduction off
-extern "C" void fn_8017EF98(u8* p) {
+extern "C" void fn_8017EF98(u8* const p) {
     GrokDrawTable* t=&lbl_804A13E0;
     DrawRec rec;
     f32 m[3][4];
@@ -137,13 +137,13 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        s32 byteIndex=index*4;
+        int byteIndex=index*4;
         const char* const* names=t->normal;
         texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));
         const f32* offsets=t->normalY;
         offset=*(const f32*)((u32)offsets+byteIndex);
     } else {
-        s32 byteIndex=index*4;
+        int byteIndex=index*4;
         const char* const* names=t->special;
         texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));
         const f32* offsets=t->specialY;
@@ -166,11 +166,11 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        s32 byteIndex=index*4;
+        int byteIndex=index*4;
         const char* const* names=t->normal;
         texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));const f32* offsets=t->normalY;
         offset=*(const f32*)((u32)offsets+byteIndex);
-    } else { s32 byteIndex=index*4;
+    } else { int byteIndex=index*4;
         const char* const* names=t->special;
         texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));const f32* offsets=t->specialY;
         offset=*(const f32*)((u32)offsets+byteIndex); }

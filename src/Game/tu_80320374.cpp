@@ -201,7 +201,7 @@ extern "C" void fn_80320374(char* p) {
     case 5:
         id=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),(f32*)(p+0xc),1,-1,-1);
         kind=*(s32*)(p+4);
-        if (dropRoomFlag320374(kind)) {
+        if (*((u8*)fn_802D6A9C()+kind+0x131df)) {
             if (id>=0) {
                 item=(char*)fn_801F666C(fn_801F856C(),id);
                 if (item!=0) {

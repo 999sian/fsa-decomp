@@ -5,7 +5,10 @@ extern "C" void fn_800085E0(void) {
   return;
 }
 
-void fn_800085E4(void) {
+extern "C" void fn_800085E4(void) {
   return;
 }
 
+extern "C" void fn_800085E8(void) {
+  return;
+}

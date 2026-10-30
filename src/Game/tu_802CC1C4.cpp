@@ -60,8 +60,9 @@ extern "C" void fn_802CC21C(Actor* this_) {
     char* p = (char*)this_;
     const Actor* actor = (const Actor*)this_;
     JGeometry::TBox2<f32> box;
-    JGeometry::TVec2<f32> pos;
-    pos.set(lbl_80540DD4 + actor->field_0C.x, lbl_80540DD4 + actor->field_0C.y);
+    const f32 y = 8.0f + actor->field_0C.y;
+    const f32 x = 8.0f + actor->field_0C.x;
+    JGeometry::TVec2<f32> pos(x, y);
     box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
     box.addPos(pos);
     int player = fn_8023BA68((f32*)&box, *(unsigned long*)(p + 4), (f32*)&pos, 1);

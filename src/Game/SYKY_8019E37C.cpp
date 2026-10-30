@@ -448,7 +448,7 @@ extern const f32 lbl_8053E4D4;
 extern const f32 lbl_8053E4D8;
 extern const f32 lbl_8053E4DC;
 #pragma opt_common_subs off
-extern "C" void fn_8019F3AC(u8* const p) {
+extern "C" void fn_8019F3AC(u8* p) {
  JGeometry::TVec3<f32> marker,spawn,saved;
  JGeometry::TBox2<f32> box,camera;
  JGeometry::TVec3<f32> copy0,copy1,copy4,copy6;

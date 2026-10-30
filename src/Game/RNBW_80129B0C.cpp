@@ -251,7 +251,7 @@ extern "C" void fn_8012A008(void* this_) {
     *(f32*)((char*)this_ + 0x88) = *(f32*)((char*)this_ + 0x68);
     *(f32*)((char*)this_ + 0x8c) = *(f32*)((char*)this_ + 0x6c);
 }
-#pragma opt_propagation reset
+#pragma optimization_level 3
 extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
     s32 i;
     void* self = this_;
@@ -259,18 +259,17 @@ extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
     if (self != 0) {
         *(void**)self = lbl_8049E610;
         i = 0;
-        void** p = (void**)((char*)self + i);
-        void* zero = (void*)(i & 0);
+        void** p = (void**)self;
+        s32 zero = i;
         do {
-            fn_801EE434(p[0x8f]);
+            releaseHandle(p[0x8f]);
             i++;
-            p[0x8f] = zero;
             p++;
-        } while(i < 5);
+        } while (i < 5);
         __dt__5ActorFv(self, 0);
     }
     if (flag > 0) __dl__FPv(self);
     return self;
 }
-
+#pragma optimization_level 4
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

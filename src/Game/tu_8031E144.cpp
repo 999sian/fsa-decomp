@@ -78,12 +78,12 @@ extern "C" void fn_8031E144(Actor* p) {
     f32 a82;
     f32 cc2;
     f32 sx2;
-    f32 sy2;
+    f32 s2;
     f32 sz2;
     f32 cx2;
     f32 cy2;
     f32 ay2;
-    f32 s2;
+    f32 sy2;
     const char* name = lbl_80471718;
     s32 id = 0x89;
     if (*(s32*)(c + 0x248) == 1) {

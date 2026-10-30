@@ -122,18 +122,18 @@ static inline f32 limtRandom() {
 }
 
 extern "C" void fn_801B29EC(u8* p) {
-    s32 out;
-    s32 rm;
-    f32 hitf;
-    s32 hit;
-    JGeometry::TVec3<f32> tmp;
-    JGeometry::TVec3<f32> pos2;
-    JGeometry::TVec3<f32> pos;
-    JGeometry::TVec3<f32> v2;
     LimtState s;
+    JGeometry::TVec3<f32> v2;
+    JGeometry::TVec3<f32> pos;
+    JGeometry::TVec3<f32> pos2;
+    JGeometry::TVec3<f32> tmp;
     Vec q;
-    LimtTable* tbl = &lbl_804A3660;
+    s32 hit;
+    f32 hitf;
+    s32 rm;
+    s32 h;
     s32 room = *(s32*)(p + 0x4);
+    LimtTable* tbl = &lbl_804A3660;
     u8* m = fn_802D6A9C();
     u32* b = room < 8 ? (u32*)(m + 0xcc) : (u32*)(m + 0xdc);
     u32 b0 = b[0];
@@ -144,10 +144,11 @@ extern "C" void fn_801B29EC(u8* p) {
     s.v.x = lbl_8053E934;
     s.v.y = lbl_8053E934;
     s.v.z = lbl_8053E934;
+    s32 me = *(s32*)(p + 0x4);
     s.box[1] = b1;
     s.box[2] = b2;
     s.box[3] = b3;
-    rm = *(s32*)(p + 0x4);
+    rm = me;
     u8* mg = fn_802D6A9C();
     fn_802D79E8(mg, *(s32*)(p + 0x4), 0, lbl_8053E930, lbl_8053E934);
     for (s32 i = 0; i < 4; i++) {
@@ -157,6 +158,7 @@ extern "C" void fn_801B29EC(u8* p) {
         }
     }
     if (*(s32*)(p + 0x2f8) != 0) {
+        s32 out;
         pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
         fn_800FDEA0(p + 0x230, &pos, &s, &rm, &out, 0x200, lbl_8053E93C);
     }
@@ -344,11 +346,11 @@ extern "C" void fn_801B29EC(u8* p) {
         *(s32*)(p + 0x304) = 0;
         *(s32*)(p + 0x2f8) = 4;
     case 4: {
-        s32 id = *(s32*)(p + 0x310);
-        if (id < 0) {
+        h = *(s32*)(p + 0x310);
+        if (h < 0) {
             break;
         }
-        u8* a = fn_801F666C(fn_801F856C(), id);
+        u8* a = fn_801F666C(fn_801F856C(), h);
         if (a != 0) {
             q.x = *(f32*)(a + 0xc);
             q.y = *(f32*)(a + 0x10);
@@ -407,9 +409,9 @@ extern "C" void fn_801B29EC(u8* p) {
             }
             break;
         }
-        s32 id = *(s32*)(p + 0x310);
-        if (id >= 0) {
-            u8* a = fn_801F666C(fn_801F856C(), id);
+        h = *(s32*)(p + 0x310);
+        if (h >= 0) {
+            u8* a = fn_801F666C(fn_801F856C(), h);
             if (a == 0 || *(u16*)(a + 0x94) != 0) {
                 *(s32*)(p + 0x2f8) = 1;
             }
@@ -424,9 +426,9 @@ extern "C" void fn_801B29EC(u8* p) {
         if (*(s32*)(p + 0x304) != 0 || *(u8*)(p + 0x32c) == 1) {
             break;
         }
-        s32 id = *(s32*)(p + 0x310);
-        if (id >= 0) {
-            u8* a = fn_801F666C(fn_801F856C(), id);
+        h = *(s32*)(p + 0x310);
+        if (h >= 0) {
+            u8* a = fn_801F666C(fn_801F856C(), h);
             if (a != 0) {
                 *(u8*)(a + 0x11c) = 0;
             }
@@ -451,8 +453,8 @@ extern "C" void fn_801B29EC(u8* p) {
         s32 cnt = 0;
         for (i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
-                s32 me = *(s32*)(p + 0x4);
-                if (me == fn_8023DE58(i) && i == fn_8022EA0C(i) && !fn_80230188(i) && !fn_8022DCD8(i) && !fn_80236B50(i) &&
+                s32 who = *(s32*)(p + 0x4);
+                if (who == fn_8023DE58(i) && i == fn_8022EA0C(i) && !fn_80230188(i) && !fn_8022DCD8(i) && !fn_80236B50(i) &&
                     !fn_8022D534(i)) {
                     f32 dx = fn_8023E724(i)->x - *(f32*)(p + 0xc);
                     f32 dy = fn_8023E724(i)->y - *(f32*)(p + 0x10);
@@ -474,11 +476,11 @@ extern "C" void fn_801B29EC(u8* p) {
         *(s32*)(p + 0x2f8) = 9;
     }
     case 9: {
-        s32 id = *(s32*)(p + 0x310);
-        if (id < 0) {
+        h = *(s32*)(p + 0x310);
+        if (h < 0) {
             break;
         }
-        u8* a = fn_801F666C(fn_801F856C(), id);
+        u8* a = fn_801F666C(fn_801F856C(), h);
         if (a == 0) {
             break;
         }
@@ -540,9 +542,9 @@ extern "C" void fn_801B29EC(u8* p) {
         *(s32*)(p + 0x328) = *(s32*)(p + 0x328) - 1;
         if (*(s32*)(p + 0x328) > 0) {
             *(s32*)(p + 0x308) = 300;
-            s32 id = *(s32*)(p + 0x310);
-            if (id >= 0) {
-                u8* a = fn_801F666C(fn_801F856C(), id);
+            h = *(s32*)(p + 0x310);
+            if (h >= 0) {
+                u8* a = fn_801F666C(fn_801F856C(), h);
                 if (a != 0 && *(s32*)(a + 0x250) == 2) {
                     *(u8*)(p + 0x32c) = 1;
                     *(s32*)(p + 0x2f8) = 7;

@@ -100,23 +100,23 @@ extern "C" void fn_80112654(u8* this_, s32 n) {
     extern void fn_801D1F14(void* p, f32 f);
     extern const f32 lbl_8053C648;
 
-    switch (n) {
+    switch ((u32)n) {
     case 3:
         *(s32*)(this_ + 0x298) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(0, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
         *(s32*)(this_ + 0x29c) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(1, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
         fn_801D22DC(this_ + 0x260, 0xa, 0, 0);
         fn_801D1F14(this_ + 0x260, lbl_8053C628);
-        goto set_flag;
+        break;
     case 4:
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(2, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(3, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(4, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
         *(s32*)(this_ + 0x2a0) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(5, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
-        goto set_flag;
+        break;
     case 5:
         fn_801D22DC(this_ + 0x260, 0x8, 0x2, 0);
         fn_801D1F14(this_ + 0x260, lbl_8053C628);
-        goto set_flag;
+        break;
     case 6: {
         u8* e;
         e = *(u8**)(this_ + 0x298);
@@ -139,13 +139,13 @@ extern "C" void fn_80112654(u8* this_, s32 n) {
         }
         fn_801D22DC(this_ + 0x260, 0xb, 0, 0);
         fn_801D1F14(this_ + 0x260, lbl_8053C628);
-        goto set_flag;
+        break;
     }
     case 7: {
         JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
         v.y += lbl_8053C648;
         fn_8013CC50(*(s32*)(this_ + 0x4), &v, lbl_8053C644, 0x33b, 0, 0, 0, 0, 1);
-        goto set_flag;
+        break;
     }
     case 8:
         switch (*(s32*)(this_ + 0x234)) {
@@ -169,11 +169,11 @@ extern "C" void fn_80112654(u8* this_, s32 n) {
             break;
         }
         fn_801D1F14(this_ + 0x260, lbl_8053C628);
-        goto set_flag;
+        break;
     case 9:
         fn_801D22DC(this_ + 0x260, 3, 2, 0);
         fn_801D1F14(this_ + 0x260, lbl_8053C628);
-        goto set_flag;
+        break;
     case 10:
         fn_801D22DC(this_ + 0x260, 6, 0, 0);
         fn_801D1F14(this_ + 0x260, lbl_8053C628);
@@ -181,11 +181,8 @@ extern "C" void fn_80112654(u8* this_, s32 n) {
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc2, 0, 0, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc3, 0, 0, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc4, 0, 0, 0, 0, 1);
-        goto set_flag;
+        break;
     case 11:
-    default:
-set_flag:
-        this_[0x230] = 1;
         break;
     case 0:
     case 1:
@@ -196,6 +193,7 @@ set_flag:
     case 15:
         goto set_state;
     }
+    this_[0x230] = 1;
 set_state:
     *(s32*)(this_ + 0x238) = n;
 }

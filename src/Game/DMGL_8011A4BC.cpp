@@ -156,7 +156,7 @@ extern "C" void fn_8011AD50(void* param_1) {
     *(u8*)((u8*)fn_801902C0() + 0x7a8) = 1;
     switch (*(s32*)(p + 0x234)) {
     case 2:
-        if (((u8 (*)(void*))(*(void***)param_1)[0x34 / 4])(param_1) != 0) {
+        if (((u8 (*)(void*))((void**)*(void**)param_1)[0x34 / 4])(param_1) != 0) {
             if (*(void**)(p + 0x254) == 0) {
                 *(void**)(p + 0x254) = fn_8013CC50(*(void**)(p + 4), p + 0xc, lbl_8053C7B8, 0x111, 0, 0, 0, 0, 1);
             }

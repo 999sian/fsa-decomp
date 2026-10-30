@@ -1089,7 +1089,8 @@ extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
     img=(u8*)texture.mTexInfo;
     w=(f32)(s32)*(u16*)(img+2);
     h=(f32)(s32)*(u16*)(img+4);
-    if(ent && ent[0x24] && this_[0xe450])useTex=1;
+    u8 requested=0;if(ent&&ent[0x24])requested=1;
+    if(requested&&this_[0xe450])useTex=1;
     fn_8013B1E8(lbl_8053AB10);
     texture.load((GXTexMapID)0);
     fn_802F5040(pos,ent,origin);
@@ -1132,7 +1133,7 @@ origin[0]-=f30;origin[1]-=f31;
     GXSetTevSwapMode((GXTevStageID)1,(GXTevSwapSel)0,(GXTevSwapSel)0);
     GXSetTevDirect((GXTevStageID)1);
     GXSetNumTevStages(2);
-if(useTex){GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
+if(useTex!=0){GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
 u8* mgr=(u8*)lbl_8053AAF8;bool flag;
 if(mgr[0x7f]) {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11;flag=v!=0;}
 else {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11||*(s32*)(mgr+0x4c)==12;flag=v!=0;}
@@ -1176,7 +1177,7 @@ GXSetVtxDesc((GXAttr)14,(GXAttrType)1);
 GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)9,(GXCompCnt)1,(GXCompType)4,0);
 GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)13,(GXCompCnt)1,(GXCompType)4,0);
 GXSetVtxAttrFmt((GXVtxFmt)0,(GXAttr)14,(GXCompCnt)1,(GXCompType)4,0);
-if(useTex){GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
+if(useTex!=0){GXSetTexCoordGen2((GXTexCoordID)1,(GXTexGenType)1,(GXTexGenSrc)5,(GXTexMtx)0x3c,(GXBool)0,(GXPTTexMtx)0x7d);GXSetNumTexGens(2);
 u8* mgr=(u8*)lbl_8053AAF8;bool flag;
 if(mgr[0x7f]) {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11;flag=v!=0;}
 else {u8 v=*(s32*)(mgr+0x4c)==7||*(s32*)(mgr+0x4c)==8||*(s32*)(mgr+0x4c)==9||*(s32*)(mgr+0x4c)==22||*(s32*)(mgr+0x4c)==10||*(s32*)(mgr+0x4c)==11||*(s32*)(mgr+0x4c)==12;flag=v!=0;}
@@ -1221,7 +1222,7 @@ GXWGFifo.f32=corners[3].x;GXWGFifo.f32=corners[3].y;GXWGFifo.f32=corners[3].z;GX
 }else{
 origin[0]-=f30;origin[2]-=f31;
 GXSetClipMode((GXClipMode)0);
-if(useTex){GXClearVtxDesc();
+if(useTex!=0){GXClearVtxDesc();
 GXSetVtxDesc((GXAttr)9,(GXAttrType)1);
 GXSetVtxDesc((GXAttr)13,(GXAttrType)1);
 GXSetVtxDesc((GXAttr)14,(GXAttrType)1);

@@ -135,3 +135,5 @@ extern "C" void fn_8029B95C(void* this_) {
     v[11] = v[3];
 }
 
+void fn_8029BAF4(void) {}
+

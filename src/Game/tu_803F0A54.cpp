@@ -1060,7 +1060,7 @@ extern "C" void fn_803F4120(void* param_1) {
                 if(p[0x25b]&(1<<i)) {
                     s16 t=*(s16*)(p+0x248);
                     if(t<50) {s32 n=t;alpha=((f32)(n*n)/lbl_8054379C)*lbl_80543798+lbl_80543758;}
-                    else {s32 n=50-(t-50);alpha=((f32)(n*n)/lbl_8054379C)*lbl_80543798+lbl_80543758;}
+                    else {s32 n=50-(t-50);f32 scale=lbl_80543798;f32 value=(f32)(n*n)/lbl_8054379C;alpha=scale*value+lbl_80543758;}
                 } else alpha=150;
             }
             ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*a))->v9(alpha);
@@ -1072,7 +1072,7 @@ extern "C" void fn_803F4120(void* param_1) {
                 if(p[0x25b]&mask) {
                     s16 t=*(s16*)(p+0x24a);
                     if(t<50) {s32 n=t;x=(f32)(n*n)/lbl_8054379C;}
-                    else {s32 n=50-(t-50);x=(f32)(n*n)/lbl_8054379C;}
+                    else {s32 n=50-(t-50);f32 value=(f32)(n*n)/lbl_8054379C;x=value;}
                     ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*b))->v9((f32)p[0x253]*x);
                     ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*c))->v9((f32)p[0x254]*x);
                     ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*d))->v9((f32)p[0x255]*x);
@@ -1085,11 +1085,11 @@ extern "C" void fn_803F4120(void* param_1) {
     if(*(s32*)(p+0x1c4)!=3) {
         if(*(s32*)(p+0x220)==0&&*(s32*)(p+0x224)==0&&*(s32*)(p+0x228)==0&&*(s32*)(p+0x22c)==0) {
             *(s16*)(p+0x24e)=MenuNext803F(*(s16*)(p+0x24e),*(s32*)(p+0x1ac)+1);
-            if(*(s16*)(p+0x24e)!=-1) ((MenuFrame803F*)(p+*(s16*)(p+0x24e)*4))->frame220[0].frame++;
+            if(*(s16*)(p+0x24e)!=-1) ((MenuCounters803F*)(p+*(s16*)(p+0x24e)*4))->frame220++;
         }
         if(*(s32*)(p+0x230)==0&&*(s32*)(p+0x234)==0&&*(s32*)(p+0x238)==0&&*(s32*)(p+0x23c)==0) {
             *(s16*)(p+0x250)=MenuNext803F(*(s16*)(p+0x250),*(s32*)(p+0x1ac)+1);
-            if(*(s16*)(p+0x250)!=-1) ((MenuFrame803F*)(p+*(s16*)(p+0x250)*4))->frame230[0].frame++;
+            if(*(s16*)(p+0x250)!=-1) ((MenuCounters803F*)(p+*(s16*)(p+0x250)*4))->frame230++;
         }
     }
     {
@@ -1111,7 +1111,7 @@ extern "C" void fn_803F4120(void* param_1) {
                 if(next!=-1 && old!=next) {
                     *(s16*)(p+0x24e)=next;
                     u8* r=p+next*4;
-                    ((MenuFrame803F*)r)->frame220[0].frame++;
+                    ((MenuCounters803F*)r)->frame220++;
                     *(f32*)(*(u8**)(q+0x38)+8)=(f32)*(s32*)(r+0x220);
                     (*(J2DPane**)(r+0x18))->search(0x4e554c4c5f303031ULL)->animationTransform();
                 }
@@ -1129,7 +1129,7 @@ extern "C" void fn_803F4120(void* param_1) {
                 if(next!=-1 && old!=next) {
                     *(s16*)(p+0x250)=next;
                     u8* r=p+next*4;
-                    ((MenuFrame803F*)r)->frame230[0].frame++;
+                    ((MenuCounters803F*)r)->frame230++;
                     *(f32*)(*(u8**)(q+0x48)+8)=(f32)*(s32*)(r+0x230);
                     (*(J2DPane**)(r+0x28))->search(0x4e64617461793030ULL)->animationTransform();
                 }

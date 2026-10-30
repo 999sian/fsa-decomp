@@ -339,6 +339,7 @@ extern "C" void fn_8021917C(u8* self) {
 
 
 
+#pragma float_expressions on
 #pragma opt_propagation off
 extern "C" void fn_8021923C(u8* self) {
     void fn_80219AFC(u8* self, s32 state);
@@ -389,8 +390,8 @@ extern "C" void fn_8021923C(u8* self) {
     f32 v6[3];
     f32 v8[3];
     s32 n;
-    bool found;
     s32 i;
+    bool found;
 
     if (*(s32*)(self + 0x248) == 3) {
         f32 k;
@@ -568,9 +569,9 @@ extern "C" void fn_8021923C(u8* self) {
         if (!fn_80384C58(*(s32*)(self + 0x2b8), *(s32*)(self + 0x198))) break;
         if (*(u32*)(self + 0x230) & 0x10000) {
             n = fn_80138A30(lbl_8053AAF8);
-            for(i=0;i<n;i++) {
-                fn_80230BF4(i,1);
-                fn_80230498(i,fn_8023E724(i),0x3d,0xff,-0x80,-0x80,1);
+            for(s32 player=0;player<n;player++) {
+                fn_80230BF4(player,1);
+                fn_80230498(player,fn_8023E724(player),0x3d,0xff,-0x80,-0x80,1);
             }
         }
         fn_80230534(0);
@@ -621,6 +622,7 @@ extern "C" void fn_8021923C(u8* self) {
     }
 }
 #pragma opt_propagation reset
+#pragma float_expressions reset
 extern "C" void fn_8021B5A0(void* self);
 extern "C" void fn_8021B5C4(void* self);
 extern "C" void fn_8021ABC0(void* p);

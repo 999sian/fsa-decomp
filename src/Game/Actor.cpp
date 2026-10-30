@@ -372,7 +372,7 @@ extern u32 lbl_80469F9C[];
 extern f32 lbl_8053F7A8;
 extern f32 lbl_8053F7AC;
 
-#pragma opt_propagation on
+#pragma opt_propagation off
 extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c)
 {
     JGeometry::TVec3<f32> v;
@@ -386,7 +386,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     f32 q2[2];
     f32 q3[2];
     f32 q4[2];
-    s32 moved = 0;
+    BOOL moved = FALSE;
     s32 i;
     f32 r0 = ((f32*)lim)[0];
     f32 dL;
@@ -394,7 +394,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     f32 dB;
     f32 dT;
 
-    f32 r1, r2, r3;
+    f32 r3, r2, r1;
     {
     dL = 0.0f;
     v.x = p->x + r0;
@@ -407,8 +407,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     cL[1] = lbl_80469F78[1];
     cL[2] = lbl_80469F78[2];
     i = 0;
-    f32 step = 8.0f;
-    for (v.y = p->y + r1; v.y < p->y + r3; v.y += step) {
+    for (v.y = p->y + r1; v.y < p->y + r3; v.y += 8.0f) {
         if ((u8)a->v18((s32)id, (f32*)&v)) {
             cL[i != 0]++;
             dL = (f32)((s32)(0.125f * v.x + 1.0f) << 3) - v.x;
@@ -431,8 +430,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     cR[1] = lbl_80469F84[1];
     cR[2] = lbl_80469F84[2];
     i = 0;
-    f32 step = 8.0f;
-    for (v.y = p->y + r1; v.y < p->y + r3; v.y += step) {
+    for (v.y = p->y + r1; v.y < p->y + r3; v.y += 8.0f) {
         if ((u8)a->v18((s32)id, (f32*)&v)) {
             cR[i != 0]++;
             dR = (p->x + ((f32*)lim)[2]) - (f32)((s32)(0.125f * v.x) << 3);
@@ -456,8 +454,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     cB[1] = lbl_80469F90[1];
     cB[2] = lbl_80469F90[2];
     i = 0;
-    f32 step = 8.0f;
-    for (v.x = p->x + r0; v.x < p->x + r2; v.x += step) {
+    for (v.x = p->x + r0; v.x < p->x + r2; v.x += 8.0f) {
         if ((u8)a->v18((s32)id, (f32*)&v)) {
             cB[i != 0]++;
             dB = (f32)((s32)(0.125f * v.y + 1.0f) << 3) - v.y;
@@ -480,8 +477,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
     cT[1] = lbl_80469F9C[1];
     cT[2] = lbl_80469F9C[2];
     i = 0;
-    f32 step = 8.0f;
-    for (v.x = p->x + r0; v.x < p->x + r2; v.x += step) {
+    for (v.x = p->x + r0; v.x < p->x + r2; v.x += 8.0f) {
         if ((u8)a->v18((s32)id, (f32*)&v)) {
             cT[i != 0]++;
             dT = (p->y + ((f32*)lim)[3]) - (f32)((s32)(0.125f * v.y) << 3);
@@ -534,10 +530,11 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
 
     if ((u8)moved && out2 != NULL) {
         if ((u8)c) {
-            f32 yb = v.y + ((f32*)lim)[1];
-            f32 yt = v.y + ((f32*)lim)[3];
-            f32 xl = v.x + ((f32*)lim)[0];
-            f32 xr = v.x + ((f32*)lim)[2];
+            f32 xl, yb, xr, yt;
+            yb = v.y + ((f32*)lim)[1];
+            yt = v.y + ((f32*)lim)[3];
+            xl = v.x + ((f32*)lim)[0];
+            xr = v.x + ((f32*)lim)[2];
             acc.x = 0.0f;
             acc.y = 0.0f;
             acc.z = 0.0f;
@@ -577,7 +574,7 @@ extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c
                 n.set(acc);
             }
         }
-        n.normalize();
+        actorNormalizeCollision(&n);
         ((Vec*)out2)->x = n.x;
         ((Vec*)out2)->y = n.y;
         ((Vec*)out2)->z = n.z;

@@ -345,7 +345,6 @@ extern "C" void fn_803D75B0(u8* self) {
  const u64* row;
  s32 i,j;
  f32 f30, f31, f29;
- f32 ratio;
  register const char* base=lbl_80476F80;
  if(self[0x80]==1) {
   fn_80431174(lbl_8053AEC0,self[0x78]);
@@ -395,14 +394,14 @@ extern "C" void fn_803D75B0(u8* self) {
      (*(J2DPane**)(self+8))->search(0x50737461726c69ULL)->setAlpha((f32)(u32)self[0x7d]*f30);
     }
    } else if(*(s32*)(self+0x64)<=40) {
-    ratio=(f32)(*(s32*)(self+0x64)-20)/20.0f;
+    f30=(f32)(*(s32*)(self+0x64)-20)/20.0f;
     row=(const u64*)(base+0x200);
     for(i=0;i<4;i++) {tag=row; for(j=0;j<16;j++) {
      if(((*(J2DPane**)(self+4))->search(*tag))->isVisible())
-      (*(J2DPane**)(self+4))->search(*tag)->setAlpha((f32)(u32)self[0x7c]*ratio);
+      (*(J2DPane**)(self+4))->search(*tag)->setAlpha((f32)(u32)self[0x7c]*f30);
      ++tag;
     } row+=16;}
-    if(*(s16*)(self+0x6a)>=0) (*(J2DPane**)(self+8))->search(0x50306b616b3030ULL)->setAlpha((f32)(u32)self[0x7c]*ratio);
+    if(*(s16*)(self+0x6a)>=0) (*(J2DPane**)(self+8))->search(0x50306b616b3030ULL)->setAlpha((f32)(u32)self[0x7c]*f30);
    } else self[0x7e]=1;
   }
   if(*(s16*)(self+0x6a)>=0) {

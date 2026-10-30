@@ -303,6 +303,7 @@ void fn_80214578(u8* this_) {
     fn_8013CC50(lbl_8053FBA4, *(u32*)(*(u8**)(this_ + 0x34) + 4), &pos, 0xcc, 0, 1, 0, 0, 1);
 }
 
+#pragma push
 #pragma opt_propagation off
 void fn_802146A4(const u8* this_) {
     const u8* self = this_;
@@ -312,12 +313,12 @@ void fn_802146A4(const u8* this_) {
         f = 1;
     }
     ((u8* (*)(u32, void*, s32, s32, s32, s32, s32, s32, f32))fn_8013CC50)(*(u32*)(o + 4), o + 0xc, 0x416, 0, f - 1, 0, 0, 1, lbl_8053FBA4);
-    o = *(u8* const*)(self + 0x34);
-    void* pos = o + 0xc;
-    s32 owner = *(s32*)(o + 4);
-    ((u8* (*)(u32, void*, s32, s32, s32, s32, s32, s32, f32))fn_8013CC50)(owner, pos, 0x417, 0, f, 0, 0, 1, lbl_8053FBA4);
+    const Actor* actor = *(const Actor* const*)(self + 0x34);
+    const Vec* pos = &actor->field_0C;
+    u32 owner = actor->field_04;
+    ((u8* (*)(u32, void*, s32, s32, s32, s32, s32, s32, f32))fn_8013CC50)(owner, (void*)pos, 0x417, 0, f, 0, 0, 1, lbl_8053FBA4);
 }
-#pragma opt_propagation reset
+#pragma pop
 extern "C" u8* fn_801C0D70(void* o);
 extern "C" void fn_801CDCD0(u8* o, u32 owner, void* pos, s32 id);
 extern const u16 lbl_8053FB90[3];

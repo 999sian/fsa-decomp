@@ -1,4 +1,4 @@
-// RBPN_8012DAC0: .text 0x8012DAC0-0x8012DF70 (actor RBPN, periodic effect spawner)
+// RBPN_8012DAC0: .text 0x8012DAC0-0x8012DF70 — Actor 'RBPN' (Periodic Colored Effect Spawner).
 #include "types.h"
 
 extern "C" void v01__5ActorFv(void* this_);
@@ -15,20 +15,26 @@ extern const s32 lbl_804650F8[];
 
 class RBPN_Actor {
 public:
-    virtual void vf08();
-    virtual void vf0C();
-    virtual void vf10();
-    virtual void vf14();
-    virtual void vf18();
-    virtual void vf1C();
-    virtual void vf20();
-    virtual void vf24();
-    virtual void vf28();
-    virtual void vf2C();
+    virtual void vf08(); virtual void vf0C(); virtual void vf10(); virtual void vf14();
+    virtual void vf18(); virtual void vf1C(); virtual void vf20(); virtual void vf24();
+    virtual void vf28(); virtual void vf2C();
     virtual void vf30(s32, s32);
     virtual u8 vf34();
     virtual void vf38();
     virtual s32 vf3C();
+
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPos[3];
+    /* 0x018 */ u8 _pad18[0x90 - 0x18];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x230 - 0x94];
+    /* 0x230 */ s32 mState;          // 0 = active, 1 = paused by room switch
+    /* 0x234 */ s32 mInitialIndex;   // Unpacked from (spawnParam >> 7) & 0x1F
+    /* 0x238 */ s32 mTimer;          // Frame counter toward mPeriod
+    /* 0x23C */ s32 mPeriod;         // 10 * (spawnParam & 0x7F), default 120
+    /* 0x240 */ s32 mCycleIndex;     // 0..3 index into lbl_8053CC30
+    /* 0x244 */ s32 mTriggerSwitch;  // Unpacked from (spawnParam >> 22) & 0x1F
 };
 
 extern "C" void* fn_8012DAC0(void* this_, s16 freeFlag) {
@@ -42,51 +48,52 @@ extern "C" void* fn_8012DAC0(void* this_, s16 freeFlag) {
     return this_;
 }
 
-static inline void spawnEffect(u16 id, u8* this_) {
-    fn_802A381C(lbl_8053AC98, this_ + 0xC, *(u32*)(this_ + 4), id);
+static inline void spawnEffect(u16 id, RBPN_Actor* this_) {
+    fn_802A381C(lbl_8053AC98, this_->mPos, this_->mRoomId, id);
 }
 
-extern "C" void fn_8012DB20(u8* this_) {
-    switch (*(s32*)(this_ + 0x230)) {
+// RBPN update (vtable slot 3)
+extern "C" void fn_8012DB20(RBPN_Actor* this_) {
+    switch (this_->mState) {
     case 0: {
-        if (((RBPN_Actor*)this_)->vf3C() != 0 && !((RBPN_Actor*)this_)->vf34()) {
-            *(s32*)(this_ + 0x230) = 1;
+        if (this_->vf3C() != 0 && !this_->vf34()) {
+            this_->mState = 1;
             break;
         }
-        s32 flag = *(s32*)(this_ + 0x244);
+        s32 flag = this_->mTriggerSwitch;
         if (flag != 0 && fn_802D800C(fn_802D6A9C(), flag)) {
-            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x23C);
+            this_->mTimer = this_->mPeriod;
         }
-        (*(s32*)(this_ + 0x238))++;
-        if (*(s32*)(this_ + 0x238) >= *(s32*)(this_ + 0x23C)) {
+        this_->mTimer++;
+        if (this_->mTimer >= this_->mPeriod) {
             s32 idx;
             if (lbl_8053AAF8[0x7F] != 0) {
-                (*(s32*)(this_ + 0x240))--;
-                if (*(s32*)(this_ + 0x240) < 0) {
-                    *(s32*)(this_ + 0x240) = 3;
+                this_->mCycleIndex--;
+                if (this_->mCycleIndex < 0) {
+                    this_->mCycleIndex = 3;
                 }
                 if (lbl_8053AAF8[0x7E] != 0) {
-                    idx = lbl_804650F8[*(s32*)(this_ + 0x240)];
+                    idx = lbl_804650F8[this_->mCycleIndex];
                 } else {
-                    idx = *(s32*)(this_ + 0x240);
+                    idx = this_->mCycleIndex;
                 }
             } else {
-                (*(s32*)(this_ + 0x240))++;
-                if (*(s32*)(this_ + 0x240) >= 4) {
-                    *(s32*)(this_ + 0x240) = 0;
+                this_->mCycleIndex++;
+                if (this_->mCycleIndex >= 4) {
+                    this_->mCycleIndex = 0;
                 }
-                idx = *(s32*)(this_ + 0x240);
+                idx = this_->mCycleIndex;
             }
             spawnEffect(lbl_8053CC30[idx], this_);
-            *(s32*)(this_ + 0x238) = 0;
+            this_->mTimer = 0;
         }
         break;
     }
     case 1:
-        if (((RBPN_Actor*)this_)->vf3C() == 0) {
-            *(s32*)(this_ + 0x230) = 0;
-        } else if (((RBPN_Actor*)this_)->vf34()) {
-            *(s32*)(this_ + 0x230) = 0;
+        if (this_->vf3C() == 0) {
+            this_->mState = 0;
+        } else if (this_->vf34()) {
+            this_->mState = 0;
         }
         break;
     case 2:
@@ -95,18 +102,19 @@ extern "C" void fn_8012DB20(u8* this_) {
     }
 }
 
-extern "C" void fn_8012DCE8(u8* this_) {
-    *(s32*)(this_ + 0x23C) = *(u32*)(this_ + 0x90) & 0x7F;
-    *(s32*)(this_ + 0x23C) = *(s32*)(this_ + 0x23C) * 10;
-    if (*(s32*)(this_ + 0x23C) <= 0) {
-        *(s32*)(this_ + 0x23C) = 120;
+// RBPN init (vtable slot 1)
+extern "C" void fn_8012DCE8(RBPN_Actor* this_) {
+    this_->mPeriod = this_->mSpawnParam & 0x7F;
+    this_->mPeriod = this_->mPeriod * 10;
+    if (this_->mPeriod <= 0) {
+        this_->mPeriod = 120;
     }
-    *(s32*)(this_ + 0x234) = (*(u32*)(this_ + 0x90) >> 7) & 0x1F;
-    if (*(s32*)(this_ + 0x234) >= 4) {
-        *(s32*)(this_ + 0x234) = 0;
+    this_->mInitialIndex = (this_->mSpawnParam >> 7) & 0x1F;
+    if (this_->mInitialIndex >= 4) {
+        this_->mInitialIndex = 0;
     }
-    *(s32*)(this_ + 0x240) = *(s32*)(this_ + 0x234);
-    *(s32*)(this_ + 0x244) = (*(u32*)(this_ + 0x90) >> 22) & 0x1F;
+    this_->mCycleIndex = this_->mInitialIndex;
+    this_->mTriggerSwitch = (this_->mSpawnParam >> 22) & 0x1F;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -108,8 +108,10 @@ extern "C" void fn_80345744(Actor* this_) {
     switch (*(s32*)(self + 0x230)) {
     case 0: {
         *(f32*)(self + 0x260) = lbl_805423BC;
-        *(u16*)(self + 0x250) += (s32)(lbl_805423C0 - lbl_805423C4 * tuRandUnit());
-        f32 speed = lbl_805423C8 * tuRandUnit() + lbl_805423C8;
+        f32 spread = lbl_805423C4;
+        *(u16*)(self + 0x250) += (s32)(lbl_805423C0 - spread * tuRandUnit());
+        f32 base = lbl_805423C8;
+        f32 speed = base * tuRandUnit() + base;
         *(f32*)(self + 0x3c) = speed * JMASinShort(*(u16*)(self + 0x250));
         *(f32*)(self + 0x40) = speed * JMACosShort(*(u16*)(self + 0x250));
         *(s32*)(self + 0x238) = (s32)(lbl_805423CC * tuRandUnit()) + 0x41;
@@ -201,13 +203,15 @@ extern "C" void fn_80345744(Actor* this_) {
                         if (*(u16*)(self + 0x250) >= 0x4000 && *(u16*)(self + 0x250) <= 0xc000) {
                             *(u16*)(self + 0x250) = (s32)(lbl_805423EC - lbl_805423C0 * tuRandUnit());
                         } else {
-                            *(u16*)(self + 0x250) = (s32)(lbl_805423C0 * tuRandUnit() + lbl_805423A8);
+                            f32 range = lbl_805423C0;
+                            *(u16*)(self + 0x250) = (s32)(range * tuRandUnit() + lbl_805423A8);
                         }
                     } else {
                         if (*(u16*)(self + 0x250) >= 0x4000 && *(u16*)(self + 0x250) <= 0xc000) {
                             *(u16*)(self + 0x250) = (s32)(lbl_805423C0 * tuRandUnit() + lbl_805423EC);
                         } else {
-                            *(u16*)(self + 0x250) = (s32)(lbl_805423A8 - lbl_805423C0 * tuRandUnit());
+                            f32 range = lbl_805423C0;
+                            *(u16*)(self + 0x250) = (s32)(lbl_805423A8 - range * tuRandUnit());
                         }
                     }
                 } else {

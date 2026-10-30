@@ -266,14 +266,15 @@ extern "C" const f32 lbl_80540940;
 extern "C" const f32 lbl_80540944;
 extern "C" void fn_802ADC18(Actor* a) {
     u8* p = (u8*)a;
+    JGeometry::TBox2f b;
     JGeometry::TVec2<f32> pt;
     JGeometry::TBox2f box;
     JGeometry::TVec3<f32> pos(a->field_0C);
+    s32 count;
+    s32 sbal;
+    s32 hit;
     s32 i;
     s32 j;
-    s32 hit;
-    s32 sbal;
-    s32 count;
 
     switch (*(s32*)(p + 0x234)) {
     case 6:
@@ -312,7 +313,7 @@ extern "C" void fn_802ADC18(Actor* a) {
 
     hit = -1;
     pt = JGeometry::TVec2<f32>(a->field_0C.x, a->field_0C.y);
-    box = *(JGeometry::TBox2f*)&a->field_60;
+    box.set(*(JGeometry::TBox2f*)&a->field_60);
     box.addPos(pt);
     for (i = 0; i < 4; i++) {
         JGeometry::TVec3<f32> v(*fn_8023E724(i));
@@ -332,14 +333,17 @@ extern "C" void fn_802ADC18(Actor* a) {
         if (fn_8023A97C(i, &box, a->field_04, &pt)) count++;
     }
     *(JGeometry::TVec3<f32>*)&a->field_0C = pos;
+    JGeometry::TVec3<f32> v4;
 
     switch (*(s32*)(p + 0x230)) {
     case 0: {
         f32 px = a->field_0C.x;
         f32 py = a->field_0C.y;
-        Box4 b = platformRoomBox(a->field_04);
-        s32 x = clampTileCoordinate((s32)(px - b.a));
-        s32 y = clampTileCoordinate((s32)(py - b.b));
+        b = platformRoomTBox(a->field_04);
+        s32 xi = (s32)(px - b.i.x);
+        s32 yi = (s32)(py - b.i.y);
+        s32 x = clampTileCoordinate(xi);
+        s32 y = clampTileCoordinate(yi);
         *(u16*)(p + 0x250) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
             ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf));
         *(s32*)(p + 0x230) = 1;
@@ -387,10 +391,10 @@ extern "C" void fn_802ADC18(Actor* a) {
             }
             {
                 f32 px = a->field_0C.x;
-                Box4 b = platformRoomBox(a->field_04);
-                f32 by = b.b;
+                b = platformRoomTBox(a->field_04);
+                f32 by = b.i.y;
                 f32 one = lbl_8054090C;
-                f32 bx = b.a;
+                f32 bx = b.i.x;
                 for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                     s32 xi = (s32)(px - bx);
                     f32 py = a->field_0C.y;
@@ -415,10 +419,10 @@ extern "C" void fn_802ADC18(Actor* a) {
                 a->v10(0xff, 1);
                 fn_801F0E34(a, 0x30009, 0);
                 f32 px = a->field_0C.x;
-                Box4 b = platformRoomBox(a->field_04);
-                f32 by = b.b;
+                b = platformRoomTBox(a->field_04);
+                f32 by = b.i.y;
                 f32 one = lbl_8054090C;
-                f32 bx = b.a;
+                f32 bx = b.i.x;
                 for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                     s32 xi = (s32)(px - bx);
                     f32 py = a->field_0C.y;
@@ -444,10 +448,10 @@ extern "C" void fn_802ADC18(Actor* a) {
         if (*(f32*)(p + 0x248) >= lbl_80540918) {
             *(f32*)(p + 0x248) = lbl_8054091C;
             f32 px = a->field_0C.x;
-            Box4 b = platformRoomBox(a->field_04);
-            f32 by = b.b;
+            b = platformRoomTBox(a->field_04);
+            f32 by = b.i.y;
             f32 one = lbl_8054090C;
-            f32 bx = b.a;
+            f32 bx = b.i.x;
             for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                 s32 xi = (s32)(px - bx);
                 f32 py = a->field_0C.y;
@@ -485,11 +489,11 @@ extern "C" void fn_802ADC18(Actor* a) {
         if (*(f32*)(p + 0x248) < lbl_805408C8) {
             *(f32*)(p + 0x248) = lbl_805408C8;
             f32 px = a->field_0C.x;
-            Box4 b = platformRoomBox(a->field_04);
+            b = platformRoomTBox(a->field_04);
             const u16* tiles = platformTiles;
-            f32 by = b.b;
+            f32 by = b.i.y;
             f32 one = lbl_8054090C;
-            f32 bx = b.a;
+            f32 bx = b.i.x;
             for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                 s32 xi = (s32)(px - bx);
                 f32 py = a->field_0C.y;
@@ -541,7 +545,6 @@ extern "C" void fn_802ADC18(Actor* a) {
                 *(f32*)(p + 0x248) = lbl_80540940;
                 *(s32*)(p + 0x230) = 8;
                 fn_802D79E8(fn_802D6A9C(), a->field_04, 1, lbl_80540944, lbl_805408C8);
-                JGeometry::TVec3<f32> v4;
                 v4.x = lbl_805408EC + (lbl_805408F0 + a->field_0C.x);
                 v4.y = lbl_805408EC + a->field_0C.y;
                 v4.z = lbl_805408C8;
@@ -559,10 +562,10 @@ extern "C" void fn_802ADC18(Actor* a) {
                     fn_801F0E34(a, 0x30001, 0);
                 } else {
                     f32 px = lbl_805408F0 + a->field_0C.x;
-                    Box4 b = platformRoomBox(a->field_04);
-                    f32 by = b.b;
+                    b = platformRoomTBox(a->field_04);
+                    f32 by = b.i.y;
                     f32 one = lbl_8054090C;
-                    f32 bx = b.a;
+                    f32 bx = b.i.x;
                     for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                         s32 xi = (s32)(px - bx);
                         f32 py = a->field_0C.y;

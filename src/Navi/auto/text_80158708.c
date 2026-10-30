@@ -3,7 +3,5 @@
 
 void fn_801CF6FC(void);
 void fn_80158708(void) {
-  int local = 0;
   fn_801CF6FC();
-  (void)local;
 }

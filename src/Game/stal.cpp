@@ -280,8 +280,9 @@ handle=Actor_CreateByID(fn_801F856C(),'OKTM',*(u32*)(this_ + 0x4),this_+0xc,2,-1
 char* actor=fn_801F666C(fn_801F856C(),handle);
 if(actor!=0) {
 JGeometry::TVec3<f32> velocity;
-velocity.x=1.8f*((const f32*)JMath::sincosTable_.mTable)[(ang / 32U)*2];
-velocity.y=1.8f*((const f32*)JMath::sincosTable_.mTable)[(ang / 32U)*2+1];
+u16 impactIndex=(u32)ang >> 5;
+velocity.x=1.8f*((const f32*)JMath::sincosTable_.mTable)[impactIndex*2];
+velocity.y=1.8f*((const f32*)JMath::sincosTable_.mTable)[impactIndex*2+1];
 *(JGeometry::TVec3<f32>*)(actor+0x3c)=velocity;
 }}
 *(f32*)(this_ + 0x14)=0.0f;

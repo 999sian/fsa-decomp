@@ -60,41 +60,38 @@ struct Vwmd {
 
 // NONMATCHING (96.5%): retail keeps this in r31 and found/i in r30/r29.
 void Vwmd::update() {
-    s32 i;
-    bool found;
-    Vwmd* self = this;
-
-    if (self->params & 2) {
-        found = false;
-        for (i = 0; i < 4; i++) {
-            if (self->room == fn_8023DE58(i) && fn_802373EC(i) == 2) {
+    if (params & 2) {
+        s32 i;
+        bool found = false;
+        for (i = 0; (short)i < 4; i++) {
+            if (room == fn_8023DE58(i) && fn_802373EC(i) == 2) {
                 found = true;
                 break;
             }
         }
-        if (fn_802D800C(fn_802D6A9C(), self->switchId) || found) {
-            fn_802D7790(fn_802D6A9C(), self->room, 2);
+        if (fn_802D800C(fn_802D6A9C(), switchId) || found) {
+            fn_802D7790(fn_802D6A9C(), room, 2);
         } else {
-            fn_802D77BC(fn_802D6A9C(), self->room, 2);
+            fn_802D77BC(fn_802D6A9C(), room, 2);
         }
     }
-    if (self->params & 0xC) {
-        s32 id = self->switchId;
-        if (id != 0) {
+    if (params & 0xC) {
+        s32 id = switchId;
+        if ((s32)id != 0) {
             if (fn_802D800C(fn_802D6A9C(), id)) {
-                fn_802D77BC(fn_802D6A9C(), self->room, self->params & 0xC);
+                fn_802D77BC(fn_802D6A9C(), room, params & 0xC);
             } else {
-                fn_802D7790(fn_802D6A9C(), self->room, 0xC);
+                fn_802D7790(fn_802D6A9C(), room, 0xC);
             }
         }
     }
-    if (self->params & 0x3000) {
-        s32 id = self->switchId;
+    if (params & 0x3000) {
+        s32 id = switchId;
         if (id != 0) {
             if (fn_802D800C(fn_802D6A9C(), id)) {
-                fn_802D77BC(fn_802D6A9C(), self->room, self->params & 0x3000);
+                fn_802D77BC(fn_802D6A9C(), room, params & 0x3000);
             } else {
-                fn_802D7790(fn_802D6A9C(), self->room, 0x3000);
+                fn_802D7790(fn_802D6A9C(), room, 0x3000);
             }
         }
     }

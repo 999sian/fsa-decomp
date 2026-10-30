@@ -102,8 +102,7 @@ extern "C" s32 fn_80238A68(s32 handle);
 extern "C" void fn_80239914(f32* box, s32 room, s32 handle);
 extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 arg);
 extern "C" f32 lbl_80474F98[];
-#pragma peephole on
-#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_803734B4(Actor* this_) {
     u8* p = (u8*)this_;
     f32 box[4];
@@ -115,8 +114,7 @@ extern "C" void fn_803734B4(Actor* this_) {
     *(f32*)(p + 0x44) = 0.0f;
     if (*(s32*)(p + 0x248) > 0) {
         *(s32*)(p + 0x248) -= 1;
-        fn_80373198(this_);
-    } else {
+        fn_80373198((Actor*)p);
     }
     cnt = 0;
     box[0] = -32.0f;
@@ -210,8 +208,7 @@ extern "C" void fn_803734B4(Actor* this_) {
         *(s32*)(p + 0x23c) = 4;
     }
 }
-#pragma opt_common_subs reset
-#pragma peephole reset
+#pragma opt_lifetimes reset
 extern "C" const f32 lbl_80542E50;
 extern "C" const f32 lbl_80542E58;
 extern "C" const f32 lbl_80542E5C;

@@ -444,7 +444,7 @@ if(!*(u8*)(self + 0x278)) {
 int best=0xfff;
 s32 count=*(s32*)((u8*)fn_801F856C()+0x1008);
 for(s32 i=0;i<count;i++) {
-u8* obj=(u8*)*((Actor**)fn_801F856C()+i+2);
+u8* obj=*((u8**)fn_801F856C()+i+2);
 if(obj && *(u32*)(obj+0x1a0)==0x464c594f && obj) {
 int value; if(*(s32*)(obj+0x230)==0||*(s32*)(obj+0x230)==4) value=*(s32*)(obj+0x248); else value=0xfff; if(value<=best) {if(*(s32*)(obj+0x230)==0||*(s32*)(obj+0x230)==4) value=*(s32*)(obj+0x248); else value=0xfff; best=value;}
 }}

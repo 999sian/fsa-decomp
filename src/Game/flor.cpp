@@ -235,6 +235,7 @@ extern "C" void fn_8020E2D8(char* this_) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8020E438(char* this_) {
     fn_8020EB08(this_);
     switch (*(s32*)(this_ + 0x248)) {
@@ -260,14 +261,14 @@ extern "C" void fn_8020E438(char* this_) {
             break;
         }
         {
+            f32 cur;
             f32 t = (f32)(0x3c - *(s32*)(this_ + 0x24c));
             if (t < FLT_EPSILON_FLOR) {
                 *(f32*)(this_ + 0x2b4) = lbl_8053FA28;
             } else {
-                f32 cur = *(f32*)(this_ + 0x2b4);
-                f32 d = lbl_8053FA28 - cur;
-                f32 k = lbl_8053FA28 / t;
-                *(f32*)(this_ + 0x2b4) = k * d + cur;
+                cur = *(f32*)(this_ + 0x2b4);
+                f32 inv = lbl_8053FA28 / t;
+                *(f32*)(this_ + 0x2b4) = inv * (lbl_8053FA28 - cur) + cur;
             }
         }
         if (*(void**)(this_ + 0x2b0) != 0) {
@@ -277,9 +278,12 @@ extern "C" void fn_8020E438(char* this_) {
             em[0xb9] = g;
             em[0xba] = g;
             f32 cur = *(f32*)(this_ + 0x2b4);
-            u8 r = (u8)(cur * lbl_8053FA64 + lbl_8053FA5C);
-            u8 gg = (u8)(cur * lbl_8053FA60 + lbl_8053FA5C);
-            u8 b = (u8)(cur * lbl_8053FA2C + lbl_8053FA5C);
+            u8 b;
+            u8 r;
+            u8 gg;
+            b = (u8)(cur * lbl_8053FA2C + lbl_8053FA5C);
+            r = (u8)(cur * lbl_8053FA64 + lbl_8053FA5C);
+            gg = (u8)(cur * lbl_8053FA60 + lbl_8053FA5C);
             char* em2 = *(char**)(this_ + 0x2b0);
             em2[0xbc] = r;
             em2[0xbd] = gg;
@@ -300,10 +304,7 @@ extern "C" void fn_8020E438(char* this_) {
         if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
             u8 r30;
             fn_801F0E34(this_, 0x50088, 0);
-            if (*(s32*)(this_ + 0x2b8) < 0) {
-                fn_8020ED5C(this_, 8);
-                break;
-            }
+            if (*(s32*)(this_ + 0x2b8) >= 0) {
             r30 = 0;
             if (*(s32*)(this_ + 0x248) == 3 && *(s32*)(this_ + 0x2b8) >= 0 && !fn_80230188(*(s32*)(this_ + 0x2b8)) && fn_802300EC(*(s32*)(this_ + 0x2b8)) && !fn_8022DCD8(*(s32*)(this_ + 0x2b8)) && !fn_801CD1D0(*(s32*)(this_ + 0x2b8))) {
                 *(f32*)(this_ + 0x60) = lbl_8053FA68;
@@ -325,12 +326,13 @@ extern "C" void fn_8020E438(char* this_) {
             if (r30 != 0) {
                 if (fn_80230AD4(*(s32*)(this_ + 0x2b8))) {
                     fn_8020ED5C(this_, 5);
-                } else {
-                    fn_8020ED5C(this_, 8);
+                    break;
                 }
-            } else {
                 fn_8020ED5C(this_, 8);
+                break;
             }
+            }
+            fn_8020ED5C(this_, 8);
         }
         break;
     }
@@ -362,14 +364,17 @@ extern "C" void fn_8020E438(char* this_) {
         break;
     case 7:
         if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
-            f32 tmp[2];
+            JGeometry::TVec3f v2;
+            JGeometry::TVec3f v1;
+            f32 tmp[3];
             if (!(*(u32*)(this_ + 0x230) & 0x2000)) {
                 fn_801CD150(this_ + 0xc, tmp);
+                f32 y = tmp[1];
                 *(f32*)(this_ + 0x2a8) = tmp[0];
-                *(f32*)(this_ + 0x2ac) = tmp[1];
+                *(f32*)(this_ + 0x2ac) = y;
             }
-            JGeometry::TVec3f v1(*(f32*)(this_ + 0x2a8), *(f32*)(this_ + 0x2ac), lbl_8053FA2C);
-            JGeometry::TVec3f v2 = v1;
+            v1.set(*(f32*)(this_ + 0x2a8), *(f32*)(this_ + 0x2ac), lbl_8053FA2C);
+            v2 = v1;
             fn_802316C8(*(s32*)(this_ + 0x2b8), 8, &v2);
             if (fn_8022DD74(*(s32*)(this_ + 0x2b8))) {
                 *(u32*)(this_ + 0x230) &= ~0x4000;
@@ -396,21 +401,23 @@ extern "C" void fn_8020E438(char* this_) {
     case 10:
         if (*(s32*)(this_ + 0x24c) >= 0x3c) {
             if (*(void**)(this_ + 0x2b0) != 0) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(this_ + 0x2b0));
+                void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(this_ + 0x2b0));
                 *(s32*)(this_ + 0x2b0) = 0;
             }
             fn_8020ED5C(this_, 0);
             break;
         }
         {
+            f32 cur;
             f32 t = (f32)(0x3c - *(s32*)(this_ + 0x24c));
             if (t < FLT_EPSILON_FLOR) {
                 *(f32*)(this_ + 0x2b4) = lbl_8053FA2C;
             } else {
-                f32 cur = *(f32*)(this_ + 0x2b4);
-                f32 d = lbl_8053FA2C - cur;
-                f32 k = lbl_8053FA28 / t;
-                *(f32*)(this_ + 0x2b4) = k * d + cur;
+                f32 inv = lbl_8053FA28 / t;
+                f32 delta = lbl_8053FA2C - *(f32*)(this_ + 0x2b4);
+                cur = *(f32*)(this_ + 0x2b4);
+                *(f32*)(this_ + 0x2b4) = inv * delta + cur;
             }
         }
         if (*(void**)(this_ + 0x2b0) != 0) {
@@ -420,9 +427,12 @@ extern "C" void fn_8020E438(char* this_) {
             em[0xb9] = g;
             em[0xba] = g;
             f32 cur = *(f32*)(this_ + 0x2b4);
-            u8 r = (u8)(cur * lbl_8053FA64 + lbl_8053FA5C);
-            u8 gg = (u8)(cur * lbl_8053FA60 + lbl_8053FA5C);
-            u8 b = (u8)(cur * lbl_8053FA2C + lbl_8053FA5C);
+            u8 b;
+            u8 r;
+            u8 gg;
+            b = (u8)(cur * lbl_8053FA2C + lbl_8053FA5C);
+            r = (u8)(cur * lbl_8053FA64 + lbl_8053FA5C);
+            gg = (u8)(cur * lbl_8053FA60 + lbl_8053FA5C);
             char* em2 = *(char**)(this_ + 0x2b0);
             em2[0xbc] = r;
             em2[0xbd] = gg;
@@ -431,7 +441,7 @@ extern "C" void fn_8020E438(char* this_) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_8013CB44(void* a, char* b, s32 c, s32 d, s32 e);
 extern "C" s32 fn_801D05F8(char* this_, char* pos, f32 f);
 extern "C" void fn_801CD8E4(f32* out, f32 v, f32 lo, f32 hi);

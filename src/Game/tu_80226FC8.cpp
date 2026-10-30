@@ -430,11 +430,11 @@ extern "C" void fn_801F349C(void*,s32,void*);
 struct GateWarpTarget {
     void warp(const u32 param, void* pos) { fn_801F349C(this, gateRoom(param), pos); }
 };
-#pragma opt_propagation off
-extern "C" void fn_80227F50(Actor* this_) {
+#pragma peephole off
+extern "C" void fn_80227F50(void* this_) {
     u8* p=(u8*)this_;
     s32 i;
-    u8* cursor=p;
+    u8* cursor=(u8*)this_;
     JGeometry::TVec3f delta;
     JGeometry::TVec3f dest;
     GateBox boxA;
@@ -537,7 +537,8 @@ extern "C" void fn_80227F50(Actor* this_) {
     if((kind==0 || kind==3 || kind==0x15 || kind==0x23) && (*(f32*)(actor+0x40))>=0.0f) return;
     if((kind==1 || kind==2) && (*(f32*)(actor+0x40))<=0.0f) return;
     if(kind==0x17 && (*(f32*)(actor+0x3c))<=0.0f) return;
-    if(kind==0x18) { if(!((*(f32*)(actor+0x3c))>=0.0f)) {} else return; }
+    if(kind==0x18) { if((*(f32*)(actor+0x3c))>=0.0f) goto done; }
+
     if((*(u32*)(actor+0x1a0))==0x424f4d45) {
         fn_8023DE58((*(u32*)(actor+0x90))&15);
         u8 same;
@@ -585,8 +586,10 @@ extern "C" void fn_80227F50(Actor* this_) {
         if((*(u32*)(actor+0x1a0))==0x46495245 && (((*(u32*)(actor+0x90))>>6)&3)==1) return;
         if(actor[0xc4]==0) fn_801F349C(actor,gateRoom((*(u32*)(p+0x90))),p+0x238);
     }
+done:
+    return;
 }
-#pragma opt_propagation reset
+#pragma peephole reset
 extern "C" void* fn_80228AEC(void* this_, s16 freeFlag) {
     if (this_) {
         *(void**)this_ = lbl_804A6DC8;

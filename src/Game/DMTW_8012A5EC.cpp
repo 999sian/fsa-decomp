@@ -480,7 +480,7 @@ static inline void* dmtwSpawn(u32 room, const JGeometry::TVec3<f32>& pos, s32 id
 static inline u8 dmtwDialog(u32 owner, s32 message, JGeometry::TVec3<f32> pos) {
     return fn_8038BD08(0, message, owner, (JGeometry::TVec3<f32>*)&pos, 0x22);
 }
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void fn_8012B218(char* p) {
     s32 i;
     if (!lbl_8053AAB1) {
@@ -548,9 +548,9 @@ extern "C" void fn_8012B218(char* p) {
                 {s32 id1; char* records; char* positions; s32 id0; s32 player; s32 id2;
                 positions=p;records=p;player=0;id0=0x3B4;id1=0x3B5;id2=0x3B6;
                 for (;player<4;player++,id0+=3,positions+=12,records+=4,id1+=3,id2+=3) {
-                    *(void**)(records+0x358)=fn_8013CC50(*(u32*)(p+4),&((DmtwParts*)positions)->pos[0],1.0f,(u16)id0,0,0,0,0,1);
-                    *(void**)(records+0x368)=fn_8013CC50(*(u32*)(p+4),&((DmtwParts*)positions)->pos[0],1.0f,(u16)id1,0,0,0,0,1);
-                    *(void**)(records+0x378)=fn_8013CC50(*(u32*)(p+4),&((DmtwParts*)positions)->pos[0],1.0f,(u16)id2,0,0,0,0,1);
+                    *(void**)(records+0x358)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id0,0,0,0,0,1);
+                    *(void**)(records+0x368)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id1,0,0,0,0,1);
+                    *(void**)(records+0x378)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id2,0,0,0,0,1);
                                 }}
             }
         }
@@ -561,7 +561,7 @@ extern "C" void fn_8012B218(char* p) {
         } else if (*(s32*)(p+0x250)==210) {
             i=0;
                 char* q=p;
-                for (;i<4;++i,q+=4) {
+                for (;i<4;q+=4,++i) {
                 {u8* e=*(u8**)(q+0x358); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x358)=0;}}
                 {u8* e=*(u8**)(q+0x368); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x368)=0;}}
                 {u8* e=*(u8**)(q+0x378); if (e) {*(u32*)(e+0xF4)|=0x100;*(u8**)(q+0x378)=0;}}
@@ -596,11 +596,11 @@ extern "C" void fn_8012B218(char* p) {
     char* positions=p;
     for (s32 player=0;player<4;player++,records+=4,positions+=12) {
         if (*(void**)(records+0x328))
-            fn_8013CB44(*(void**)(records+0x328),&((DmtwParts*)positions)->pos[0],0,0,1);
+            fn_8013CB44(*(void**)(records+0x328),positions+0x2C8,0,0,1);
         if (*(void**)(records+0x338))
-            fn_8013CB44(*(void**)(records+0x338),&((DmtwParts*)positions)->pos[0],0,0,1);
+            fn_8013CB44(*(void**)(records+0x338),positions+0x2C8,0,0,1);
         if (*(void**)(records+0x348))
-            fn_8013CB44(*(void**)(records+0x348),&((DmtwParts*)positions)->pos[0],0,0,1);
+            fn_8013CB44(*(void**)(records+0x348),positions+0x2C8,0,0,1);
     }
 }
 #pragma opt_common_subs reset

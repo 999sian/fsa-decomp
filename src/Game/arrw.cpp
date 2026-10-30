@@ -317,7 +317,7 @@ extern "C" void fn_80165730(char* p) {
      }
      if(fn_801F2618(p,0,0)) {
        if((*(u16*)(p+0x94))==2 || (*(u16*)(p+0x94))==4) Actor_CreateByID(fn_801F856C(),'BLZE',(*(s32*)(p+0x4)),p+0xc,(*(s32*)(p+0x90))&3,-1,-1);
-       int one=1; int zero=0;
+       s32 one=1; s32 zero=0;
        (*(s32*)(p+0x26c))=one;(*(s32*)(p+0x108))=zero;
        if((*(void**)(p+0x27c))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;}
        (*(f32*)(p+0x44))=(*(f32*)(p+0x40))=(*(f32*)(p+0x3c))=lbl_8053D7C8; (*(s32*)(p+0x258))=0;(*(s32*)(p+0x244))=0;(*(s32*)(p+0x230))=2;
@@ -329,7 +329,7 @@ extern "C" void fn_80165730(char* p) {
    break;
  case 1: {
    if(!((*(s32*)(p+0x248))&1)){(*(s32*)(p+0x258))++;const s32* directions=table->directions;(*(s32*)(p+0x258))&=3;(*(s32*)(p+0x98))=directions[(*(s32*)(p+0x258))];}
-   int one=1; int zero=0;
+   s32 one=1; s32 zero=0;
    if((*(void**)(p+0x278))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x278)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x278))=(void*)zero;} if((*(void**)(p+0x27c))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;}
    fn_801F71A4(&(*(f32*)(p+0x234)),lbl_8053D7C8,lbl_8053D7D4,lbl_8053D7E4);
    (*(f32*)(p+0x44))-=lbl_8053D7E8;
@@ -344,7 +344,7 @@ extern "C" void fn_80165730(char* p) {
    if((*(s32*)(p+0x258))==6 && (*(s32*)(p+0x244))<3)(*(s32*)(p+0x26c))=2;
    break;
  case 4:
-   if((*(s32*)(p+0x244))==0){int one=1; int zero=0; if((*(void**)(p+0x278))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x278)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x278))=(void*)zero;} if((*(void**)(p+0x27c))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;} (*(u8*)(p+0x11c))=0;}
+   if((*(s32*)(p+0x244))==0){s32 one=1; s32 zero=0; if((*(void**)(p+0x278))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x278)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x278))=(void*)zero;} if((*(void**)(p+0x27c))){JPABaseEmitter* emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;} (*(u8*)(p+0x11c))=0;}
    break;
  }
  if((*(s32*)(p+0x244))>0) (*(s32*)(p+0x244))--; if((*(s32*)(p+0x248))>0) (*(s32*)(p+0x248))--; if((*(s32*)(p+0x24c))>0) (*(s32*)(p+0x24c))--; if((*(s32*)(p+0x250))>0) (*(s32*)(p+0x250))--; if((*(s32*)(p+0x254))>0) (*(s32*)(p+0x254))--;

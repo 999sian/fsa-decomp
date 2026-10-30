@@ -211,26 +211,178 @@ extern "C" void fn_80238548(s32,s32,void*,s32);
 extern "C" u8 fn_801F2B20(Actor*,s32);
 extern "C" void fn_801F0D20(Actor*,s32);
 
+#pragma fp_contract on
 extern "C" void fn_8034CEB0(Actor* a) {
-    u8* p = (u8*)a;
-    f32 box[4];
-    f32 tmp[4];
-    s32 i;
-    s32 state;
-    for (i = 0; i < 4; i++) {
-        box[i] = 0.0f;
+    s32 count;
+    Rck2State* p = static_cast<Rck2State*>(a);
+    JGeometry::TBox2<f32> box;
+    JGeometry::TBox2<f32> bounds(lbl_8054257C,lbl_8054257C,lbl_80542580,lbl_80542580);
+    box.set(*(JGeometry::TBox2<f32>*)((u8*)a+0x80));
+    box.addPos(*(JGeometry::TVec2<f32>*)&a->field_0C);
+    bounds.addPos(*(JGeometry::TVec2<f32>*)&a->field_0C);
+    switch(p->state) {
+    case 0: {
+        fn_80239914((f32*)&box,a->field_04,a->field_198);
+        s32 handle=a->field_198;
+        s32 room=a->field_04;
+        u8* mgr=(u8*)fn_8020D58C();
+        fn_8020D8C0(mgr+mgr[0]*0x784+4,(f32*)&box,room,handle);
+        p->directions[0]=-1;p->directions[1]=-1;p->directions[2]=-1;p->directions[3]=-1;
+        p->counts[0]=0;p->counts[1]=0;p->counts[2]=0;p->counts[3]=0;
+        p->direction=-1;
+        for(s32 i=0;i<4;i++) {
+            if(fn_8023F264(i)) {
+                JGeometry::TVec3<f32>* pos=(JGeometry::TVec3<f32>*)fn_8023E724(i);
+                f32 x=pos->x;
+                f32 y=pos->y;
+                s32 dir=fn_80230CFC(i);
+                x+=lbl_80472190[dir][0]; y+=lbl_80472190[dir][1];
+                p->active[i]=fn_8022C004(i);
+                if(p->active[i]==1 && fn_8023E8F0(i)==1 && fn_8023188C(i)==1
+                    && fn_802319B4(i,0x11)==1 && !fn_80234D94(i)
+                    && (u8)(x>=bounds.i.x && y>=bounds.i.y && x<bounds.f.x && y<bounds.f.y)==1) {
+                        p->directions[i]=dir;
+                        p->counts[p->directions[i]]++;
+                } else p->active[i]=0;
+                if(p->active[i]==1 && p->direction==-1 && p->counts[p->directions[i]]>=2)
+                    p->direction=p->directions[i];
+            }
+        }
+        if(p->direction==-1) break;
+        count=0;
+        if(p->counts[p->direction]>=2) {
+            f32 distance[4];
+            for(s32 i=0;i<4;i++) {
+                if(p->directions[i]==p->direction) {
+                    if(fn_8023E8F0(i)==1)
+                        distance[i]=PSVECDistance((RckSdkVec*)&a->field_0C,(RckSdkVec*)fn_8023E724(i));
+                    else {
+                        p->directions[i]=-1; distance[i]=0.0f;
+                        p->counts[p->direction]--;
+                    }
+                } else {p->directions[i]=-1;distance[i]=0.0f;}
+            }
+            for(s32 j=0;j<p->counts[p->direction]-2;j++) {
+                f32 farthest=0.0f;
+                s32 index;
+                for(s32 i=0;i<4;i++) {
+                    if(farthest<distance[i]) {farthest=distance[i];index=i;}
+                }
+                if(farthest>0.0f) {
+                    p->directions[index]=-1;distance[index]=0.0f;
+                    p->counts[p->direction]--;
+                }
+            }
+        }
+        if(p->counts[p->direction]>=2) {
+            u8* chosen=(u8*)p;
+            for(s32 i=0;i<4;i++) {
+                p->playerStates[i].position=*(JGeometry::TVec3<f32>*)fn_8023E724(i);
+                p->playerStates[i].mode=fn_8022CAF8(i);
+                if(p->directions[i]==p->direction && count<2) {
+                    if(fn_8022F9E4(i,a->field_198,1,0)) {
+                        *(s32*)(chosen+0x254)=i;chosen+=4; count++;
+                        if(count>=2) {
+                            if(a->v13()>0) a->v10(0xff,1);
+                            p->state=1;
+                            if(p->field_385==1) fn_801F3604(a);
+                            a->field_B8=0;
+                            p->timer=3;
+                        }
+                    }
+                } else p->directions[i]=-1;
+            }
+        }
+        if(p->state==1) {
+            for(s32 i=0;i<4;i++) {
+                if(fn_8022E438(p->players[0],i)==1 || fn_8022E438(p->players[1],i)==1)
+                    p->playerStates[i].field_00=0;
+            }
+        }
+        break;
     }
-    box[0] = *(f32*)(p + 0x80) + *(f32*)(p + 0xc);
-    box[1] = *(f32*)(p + 0x84) + *(f32*)(p + 0x10);
-    box[2] = *(f32*)(p + 0x88) + *(f32*)(p + 0xc);
-    box[3] = *(f32*)(p + 0x8c) + *(f32*)(p + 0x10);
-    state = *(s32*)(p + 0x230);
-    if (state == 1) {
-    } else if (state >= 2) {
-    } else if (state == 0) {
+    case 1:
+        if(a->field_C4) {
+            JGeometry::TVec3<f32> positions[2];
+            JGeometry::TVec3<f32>* out=positions;
+            for(s32 i=0;i<4;i++) {
+                if(p->directions[i]==p->direction && p->playerStates[i].field_00==0) {
+                    if(p->playerStates[i].mode!=fn_8022CAF8(i)
+                        || (fn_8022CAF8(i)==4 && fn_8022F478(i)==1)) {
+                        fn_80230C6C(i);return;
+                    }
+                    if(fn_802373EC(i)==7 && fn_8022C310(i)==1) {
+                        fn_80230C6C(i);return;
+                    }
+                }
+                JGeometry::TVec3<f32> current(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
+                JGeometry::TVec3<f32> previous(p->playerStates[i].position);
+                if(p->playerStates[i].field_00==0) {
+                    f32 dx=current.x-previous.x;
+                    f32 dy=current.y-previous.y;
+                    f32 xx=dx*dx;
+                    f32 yy=dy*dy;
+                    if(JGeometry::TUtil<f32>::sqrt(xx+yy)>2.0f)
+                        fn_8023DFF4(i, &(previous-current));
+                }
+                if(p->directions[i]==p->direction) *out++=*fn_8023E7B0(i);
+            }
+            positions[0]+=positions[1];
+            positions[0].scale(0.5f);
+            if(positions[0].z>0.0f) {
+                a->field_0C.x=positions[0].x;a->field_0C.y=positions[0].y;a->field_0C.z=positions[0].z;
+                a->field_04=fn_8023DE58(a->field_C8);
+            }
+            if(a->field_0C.z<=0.0f) {
+                s32 handle=a->field_198;
+                u8* mgr=(u8*)fn_8020D58C();
+                fn_8020D7D0(mgr+mgr[0]*0x784+4,handle);
+            } else if(p->field_382==0) {
+                fn_801F0E34(a,0x3008c,0);p->field_382=1;
+            }
+        } else {
+            a->field_3C.z+=-0.15f;
+            *(JGeometry::TVec3<f32>*)&a->field_0C+=*(JGeometry::TVec3<f32>*)&a->field_3C;
+            if(a->field_0C.z<0.0f || fn_801F2618(a,0,0)) {
+                if(a->field_0C.z<0.0f) {
+                    if(fn_80226850(&a->field_0C,a->field_04)==0x90)
+                        fn_802A381C(lbl_8053AC98,&a->field_0C,a->field_04,0x91);
+                    else if(fn_80226850(&a->field_0C,a->field_04)==0x91)
+                        fn_802A381C(lbl_8053AC98,&a->field_0C,a->field_04,0x92);
+                }
+                p->state=2;p->timer=0;
+            } else {
+                s32 hits=fn_801F2740(a,-1);
+                u8 pushed=0;
+                if(hits>0) {
+                    for(s32 i=0;i<4;i++) {
+                        if(p->directions[i]!=p->direction && (hits&(1<<i))>0
+                            && !fn_8022E438(p->players[0],i) && !fn_8022E438(p->players[1],i)) {
+                            fn_80238548(i,0,&a->field_0C,5);pushed=1;
+                        }
+                    }
+                }
+                if(pushed==1 || fn_801F2B20(a,0)) {p->state=2;p->timer=0;}
+            }
+        }
+        break;
+    case 2: a->v07();break;
+    }
+    if((p->state==1 && a->field_0C.z>0.0f) || p->state==2) {
+        p->timer--;
+        if(p->timer<=0 && p->field_384==1 && p->field_370==1) {
+            for(s32 i=0;i<p->storedCount;i++) {
+                Actor_CreateByID(fn_801F856C(),p->stored[i].id,a->field_04,(f32*)&p->stored[i].position,
+                    p->stored[i].param,p->stored[i].slot,-1);
+            }
+            p->field_384=0;
+        }
+        if(p->field_380==1) {
+            if(p->field_381!=1) fn_801F0D20(a,3);
+            p->field_380=0;
+        }
     }
 }
-
 extern "C" void* fn_801F856C(void);
 extern "C" u16 fn_80226850(void* p, s32 q);
 extern "C" void fn_8034D99C(Actor* a) {

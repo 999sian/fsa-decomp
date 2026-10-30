@@ -829,32 +829,31 @@ static inline void dataSelectFont(J2DScreen* screen, u64 key, JUTFont* font) {
 extern "C" void* fn_8041787C(void* this_) {
     f32 y; f32 x;
     u8* p = (u8*)this_;
-    const T80416BD0_Tags* t;
+    const T80416BD0_Tags& t=lbl_8048CD50;
     const u64* a;
     const u64* b;
     u8* slot;
     int i;
     *(void**)p = lbl_804B1378;
-    t = &lbl_8048CD50;
     lbl_8053AE00 = (s32)p;
     p[0xe4] = 0;
     *(J2DScreen**)(p + 0x24) = new J2DScreen();
-    (*(J2DScreen**)(p + 0x24))->setPriority(t->layout,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x34));
+    (*(J2DScreen**)(p + 0x24))->setPriority(t.layout,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x34));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x546f6d3031ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x546f6d3032ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x54736e3031ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x54736e3032ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     fn_803832BC(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x546f6d3031ULL)),0x100,0,0,0);
     fn_803832BC(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x546f6d3032ULL)),0x100,0,0,0);
-    for(a=t->first,b=t->second,i=0;i<11;i++,a++,b++){
+    for(a=t.first,b=t.second,i=0;i<11;i++,a++,b++){
         u8 alpha=((u8*)(*(J2DScreen**)(p+0x24))->search(*a))[0xb2];
         slot=p+i;
         slot[0x123]=alpha;
         slot[0x12e]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
     }
-    for(i=0,b=t->third;i<9;i++,b++) p[313+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
-    for(i=0,b=t->fourth;i<6;i++,b++) p[322+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
-    for(i=0,b=t->grid[0];i<10;i++,b++) p[328+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=t.third;i<9;i++,b++) p[313+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=t.fourth;i<6;i++,b++) p[322+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=t.grid[0];i<10;i++,b++) p[328+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
     dataSelectChild(p,40,0x506273626b3032ULL);
     dataSelectChild(p,44,0x506273626b3031ULL);
     dataSelectChild(p,48,0x506273623039ULL);
@@ -881,7 +880,7 @@ extern "C" void* fn_8041787C(void* this_) {
     dataSelectChild(p,96,0x4e646174613135ULL);
     dataSelectChild(p,144,0x50627371623130ULL);
     dataSelectChild(p,0x9c,0x4e646174613035ULL);
-    for(i=0,a=t->wrappers;i<15;i++,a++){
+    for(i=0,a=t.wrappers;i<15;i++,a++){
         slot=p+i*4;
         void* child = __nw__FUl(0x2c);
         if(child) *(void**)child = lbl_804AF86C;
@@ -890,12 +889,12 @@ extern "C" void* fn_8041787C(void* this_) {
         ((T80416BD0_Child*)*(void**)((u8*)*(void**)(slot+0xa4)+4))->slot9(0);
     }
     *(void**)(p+0xa0)=*(void**)((u8*)lbl_8053AED8+8);
-    fn_80440D78(lbl_8053AED8,fn_804030C4(0x54494d47,t->confirm));
-    fn_80440CE4(lbl_8053AED8,fn_804030C4(0x54494d47,t->back));
+    fn_80440D78(lbl_8053AED8,fn_804030C4(0x54494d47,t.confirm));
+    fn_80440CE4(lbl_8053AED8,fn_804030C4(0x54494d47,t.back));
     *(u16*)(p+0x106)=3;
-    { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(*t->locked); pane[0xb0]=0; }
-    { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(t->locked[1]); pane[0xb0]=0; }
-    for(i=0,b=(const u64*)(t+0x498);i<8;i++,b++){
+    { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(*t.locked); pane[0xb0]=0; }
+    { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(t.locked[1]); pane[0xb0]=0; }
+    for(i=0,b=t.locked;i<8;i++,b++){
         if(fn_803B9120(i)){
             { u8* pane=(u8*)(*(J2DScreen**)(p+0x24))->search(b[2]); pane[0xb0]=0; }
             *(u16*)(p+0x106)|=(u16)(1<<(i+2));
@@ -903,7 +902,7 @@ extern "C" void* fn_8041787C(void* this_) {
     }
     *(s16*)(p+0x104)=0;
     for(s32 j=0;j<10;j++){
-        (p+j)[0x10b]=0;(p+j)[0x117]=0;
+        u8* item=p+j;item[0x10b]=0;item[0x117]=0;
         if(*(u16*)(p+0x106)&(u16)(1<<j)){
             p[0x117+*(s16*)(p+0x104)]=j;
             p[0x10b+*(s16*)(p+0x104)]=j;
@@ -926,12 +925,14 @@ strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e30
 
 }else{
 if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
-if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,t->message[selected],0,0,0);else p[0xe4]=0;
+const s32* messages=t.message;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,messages[selected],0,0,0);else p[0xe4]=0;
 strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
 strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
 
 
-const u64* tag = &t->selected[selected];
+const u64* tag = t.selected;
+tag+=selected;
 x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
 y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
 (*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);

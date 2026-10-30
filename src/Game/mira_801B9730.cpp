@@ -180,6 +180,7 @@ static inline s32 mira_rndPick(s32 a, s32 b) {
     return b;
 }
 
+#pragma opt_dead_code off
 extern "C" void fn_801B9DD4(char* p, s32 state) {
     *(u32*)(p + 0x230) &= ~0x8000;
     switch (state) {
@@ -219,11 +220,10 @@ extern "C" void fn_801B9DD4(char* p, s32 state) {
         switch (dir) {
         case 0:
             switch (cur) {
-            case 2:
-                anim = 8;
-                break;
             case 3:
                 anim = 9;
+                break;
+            case 2:
                 break;
             default:
                 anim = mira_rndPick(8, 9);
@@ -315,6 +315,7 @@ extern "C" void fn_801B9DD4(char* p, s32 state) {
     *(s32*)(p + 0x24c) = 0;
     *(s32*)(p + 0x248) = state;
 }
+#pragma opt_dead_code reset
 static inline bool mira_chk(char* p, u32 f) { return *(s32*)(p + 0x230) & f; }
 static inline void mira_off(char* p, u32 f) { ((volatile ItemBase*)p)->m230 &= ~f; }
 

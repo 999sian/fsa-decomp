@@ -127,6 +127,7 @@ inline bool psw2Ready(Actor* p) {
     return true;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8036CF1C(Actor* this_) {
     u8* p = (u8*)this_;
     JGeometry::TBox2f box = *(JGeometry::TBox2f*)(p + 0x60);
@@ -164,11 +165,9 @@ extern "C" void fn_8036CF1C(Actor* this_) {
                         *(s32*)(p + 0x258)=50;
                         *(s32*)(p + 0x25c)=4;
                         *(s32*)(p + 0x260)=0;
-                        for (s32 once=0; once<1; once++) {
                         for (s32 i=0;i<4;i++) {
                             pos=*(JGeometry::TVec3f*)fn_8023E724(i);
                             fn_80230498(i,pos+JGeometry::TVec3f(0.0f,7.0f,0.0f),0x2e2,0xff,-0x80,-0x80,1);
-                        }
                         }
                     } else *(s32*)(p + 0x25c)=0;
                 }
@@ -204,7 +203,7 @@ extern "C" void fn_8036CF1C(Actor* this_) {
     else if (*(f32*)(p + 0x254)<8.0f) *(s32*)(p + 0x24c)=2;
     else *(s32*)(p + 0x24c)=4;
 }
-
+#pragma opt_propagation reset
 extern "C" f32 lbl_80542CD8;
 extern "C" f32 lbl_80542CE0;
 extern "C" f32 lbl_80542CF4;

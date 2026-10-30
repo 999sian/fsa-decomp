@@ -281,8 +281,11 @@ void fn_80223664(void* this_, u8 flag) {
 
 extern "C" const f32 lbl_8053FF1C;
 void fn_802238CC(void* this_) {
+    f32 y1;
+    f32 x1;
+    f32 y0;
+    f32 x0;
     char* p = (char*)this_;
-    f32 y1, x0, y0, x1;
     y0 = x0 = 1.0f;
     y1 = x1 = -1.0f;
     if (*(s32*)(p + 0x248) == 5) {

@@ -404,17 +404,7 @@ extern "C" void fn_8018F2DC(void* this_) {
             u32 bits = (*seed >> 9) | 0x3f800000u;
             *(s32*)(p + 0x23c) = (s32)(lbl_8053E1E8 * (*(f32*)&bits - lbl_8053E1E0)) + 0x1e;
             fn_801EEC98(p, *(void**)(p + 0x198), &v, 0, 0, 0, 0, 0);
-
-            s32 n = 0;
-            f32 x = (f32)v;
-            while (n < 15) {
-                x -= lbl_8053E1C8;
-                if (x < lbl_8053E1D8) {
-                    break;
-                }
-                n++;
-            }
-            *(s32*)(p + 0x25c) = n;
+            *(s32*)(p + 0x25c) = dgt2AngleSlot(v);
         }
 
         if (*(s32*)(p + 0x25c) != *(s32*)(p + 0x98) && (*(s32*)(p + 0x23c) & 3) == 0) {

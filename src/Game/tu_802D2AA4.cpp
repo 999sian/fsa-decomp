@@ -133,5 +133,8 @@ extern "C" void fn_802D2F18(char* p) {
     *(s32*)(p + 0x234) = 0;
 }
 
+void fn_802D2F60(void) {
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 

@@ -61,15 +61,17 @@ static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
 *(volatile u8*)0xCC008000 = b;
 *(volatile u8*)0xCC008000 = a;
 }
+#pragma opt_propagation off
 extern "C" void fn_80158624(char* p, const f32* pos1, f32 size, const f32* pos2, u8* col) {
     f32 dst1[3], dst2[3], src1[3], src2[3];
     Mtx m1, m2;
+    f32 c;
+    f32 ang;
+    f32 s;
+    s32 i;
     if (*(u8*)(p + 0xc) < 0xff) {
         u32 tevColor;
-        f32 c;
-        f32 ang;
-        f32 s;
-        s32 i;
+
 
         fn_8013B438(lbl_8053AB10);
         GXClearVtxDesc();
@@ -102,7 +104,7 @@ extern "C" void fn_80158624(char* p, const f32* pos1, f32 size, const f32* pos2,
         *(volatile f32*)0xCC008000 = pos1[2];
         GXColor4u8(0, 0, 0, 0);
         for (i = 0; i < 0x21; i++) {
-            ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
+            ang = 2.0f * ((f32)i * 3.14159265f) / 32.0f;
             s = sin(ang);
             c = cos(ang);
             m1[1][0] = s;
@@ -130,10 +132,7 @@ extern "C" void fn_80158624(char* p, const f32* pos1, f32 size, const f32* pos2,
         }
     
     {
-        f32 c;
-        f32 ang;
-        f32 s;
-        s32 i;
+
 
         GXBegin(0xa0, 0, 0x22);
         *(volatile f32*)0xCC008000 = pos2[0];
@@ -141,7 +140,7 @@ extern "C" void fn_80158624(char* p, const f32* pos1, f32 size, const f32* pos2,
         *(volatile f32*)0xCC008000 = pos2[2];
         GXColor4u8(col[3], col[3], col[3], col[3]);
         for (i = 0; i < 0x21; i++) {
-            ang = 2.0f * ((f32)i * 3.14159265f) * 0.03125f;
+            ang = 2.0f * ((f32)i * 3.14159265f) / 32.0f;
             s = sin(ang);
             c = cos(ang);
             m2[1][0] = s;
@@ -170,7 +169,7 @@ extern "C" void fn_80158624(char* p, const f32* pos1, f32 size, const f32* pos2,
     }
 }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80158B3C(char* p) {
     *(u8*)(p + 0x4) = 0xff;
     *(u8*)(p + 0x5) = 0xff;

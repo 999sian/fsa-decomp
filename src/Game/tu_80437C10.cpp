@@ -32,23 +32,18 @@ extern "C" void fn_802F745C(void*, void*, void*, TlwpDrawParam*);
 #pragma opt_lifetimes off
 #pragma opt_lifetimes on
 extern "C" void fn_80437C10(u8* self) {
-    const char** tex0;
     u8* cfg;
-    const char** tex1;
     u8* globals = lbl_80529DEC;
-    tex0 = (const char**)lbl_804B16C0;
-    tex1 = (const char**)lbl_804B16D0;
     cfg = globals;
     u8* settings = lbl_8050DB0C;
     int i;
-    for (i = 0; i < 4; i++, cfg += 12, tex1++, tex0++) {
+    for (i = 0; i < 4; i++, cfg += 12) {
         u8 mask = (u8)(1 << i);
         u32 active = (bool)(globals[0x236] & mask);
         if (active != 0U) {
             f32 ss;
             f32 cz;
             f32 cs, a0, a1, a2, a3, a4, a5, a6, a7, a8;
-            f32 cc;
             f32 sx;
             f32 cx;
             f32 sz;
@@ -67,7 +62,7 @@ extern "C" void fn_80437C10(u8* self) {
             cx = cos(lbl_80543C08);
             cy = cos(lbl_80543C08);
             cz = cos(lbl_80543C08);
-            cc = cx * cz;
+            f32 cc = cx * cz;
             ss = sx * sy;
             cs = cx * sz;
             a0 = cy * cz;
@@ -93,10 +88,10 @@ extern "C" void fn_80437C10(u8* self) {
             mtx[2][3] = lbl_80543C08;
             rec.c = mtx;
             if (self[0x240 + i] == 0) {
-                void* res = fn_804030C4('TIMG', *tex0);
+                void* res = fn_804030C4('TIMG', lbl_804B16C0[i]);
                 if (*(s32*)(self + 4) < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), cfg + 0x1c4, res, &rec);
             } else if (self[0x240 + i] == 1) {
-                void* res = fn_804030C4('TIMG', *tex1);
+                void* res = fn_804030C4('TIMG', lbl_804B16D0[i]);
                 if (*(s32*)(self + 4) < 8) fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), cfg + 0x1c4, res, &rec);
             }
             globals[0x236] &= ~mask;

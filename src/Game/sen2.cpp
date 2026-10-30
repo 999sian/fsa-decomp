@@ -1,14 +1,25 @@
-// TU 0x802e7634-0x802e794c (actor SEN2).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802e7634-0x802e794c — Actor 'SEN2' (Delayed Event/Sound Trigger).
 #include "Game/esd/types.h"
+#include "Game/esd/Actor.h"
 
-// ---- Pnp2_dtor_802E7634.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern void* lbl_804A9F00[];
 
-extern "C" void* fn_802E7634(void* this_, short how) {
+struct Sen2Actor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u8 _pad04[0x90 - 0x04];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x11C - 0x94];
+    /* 0x11C */ u8 mActiveFlag;
+    /* 0x11D */ u8 _pad11D[0x230 - 0x11D];
+    /* 0x230 */ s32 mSilentFlag; // Unpacked from (spawnParam >> 26) & 1
+    /* 0x234 */ s32 mTableIndex; // Unpacked from spawnParam & 0xFF
+    /* 0x238 */ s32 mDelayTimer; // Unpacked from (spawnParam >> 8) & 0xFFF
+};
+
+extern "C" void* fn_802E7634(Sen2Actor* this_, short how) {
     if (this_) {
-        *(void**)this_ = lbl_804A9F00;
+        this_->mVtable = lbl_804A9F00;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
             operator delete(this_);
@@ -17,50 +28,38 @@ extern "C" void* fn_802E7634(void* this_, short how) {
     return this_;
 }
 
-// ---- Pnp2_EmptyHook.cpp ----
-// Pnp2_EmptyHook - PNP2: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
-
 void Pnp2_EmptyHook(void) {}
-
 }
 
-// fn_802E7698 - SEN2: update(). Counts down this->0x238; when it is zero,
-// optionally (this->0x230 == 0) calls fn_801F0D20 with a table id, then
-// clears the flag byte this->0x11c.
 extern "C" void fn_801F0D20(void* this_, u32 id);
 extern const u32 lbl_80541250[2];
 
-extern "C" void fn_802E7698(void* this_) {
-    s32 t = *(s32*)((char*)this_ + 0x238);
+// SEN2 update (vtable slot 3)
+extern "C" void fn_802E7698(Sen2Actor* this_) {
+    s32 t = this_->mDelayTimer;
     if (t == 0) {
-        if (*(s32*)((char*)this_ + 0x230) == 0) {
-            fn_801F0D20(this_, lbl_80541250[*(s32*)((char*)this_ + 0x234)]);
+        if (this_->mSilentFlag == 0) {
+            fn_801F0D20(this_, lbl_80541250[this_->mTableIndex]);
         }
-        *(u8*)((char*)this_ + 0x11c) = 0;
+        this_->mActiveFlag = 0;
     } else {
-        *(s32*)((char*)this_ + 0x238) = t - 1;
+        this_->mDelayTimer = t - 1;
     }
 }
 
-// ---- Pnp2_SetParams.cpp ----
-#include "Game/esd/Actor.h"
-
-// PNP2: setParams. Extracts 3 bitfields from this->0x90, re-reading the field independently for each extraction (matching retail's own redundant reloads).
+// SEN2 init (vtable slot 1)
 extern "C" {
-void Pnp2_SetParams(void* thisPtr) {
-	char* p = (char*)thisPtr;
-	u32 v1 = ((Actor*)thisPtr)->spawnParam;
-	*(u32*)(p + 0x230) = (v1 >> 26) & 0x1;
-	u32 v2 = ((Actor*)thisPtr)->spawnParam;
-	*(u32*)(p + 0x234) = v2 & 0xFF;
-	u32 v3 = ((Actor*)thisPtr)->spawnParam;
-	*(u32*)(p + 0x238) = (v3 >> 8) & 0xFFF;
+void Pnp2_SetParams(Sen2Actor* thisPtr) {
+    u32 v1 = thisPtr->mSpawnParam;
+    thisPtr->mSilentFlag = (v1 >> 26) & 0x1;
+    u32 v2 = thisPtr->mSpawnParam;
+    thisPtr->mTableIndex = v2 & 0xFF;
+    u32 v3 = thisPtr->mSpawnParam;
+    thisPtr->mDelayTimer = (v3 >> 8) & 0xFFF;
 }
 }
 
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE

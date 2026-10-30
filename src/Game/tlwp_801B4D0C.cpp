@@ -516,9 +516,9 @@ else if (isnan(dist)) { dist=NAN; }
         int i;
         s32 count;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
-        i=0;
-        count=i;
         q=p;
+        count=0;
+        i=count;
         for(;i<4;i++,q+=0xc) {
             if(fn_8023F264(i)) {
                 if(i!=0) target.y-=lbl_8053EA6C;
@@ -542,7 +542,7 @@ else if (isnan(dist)) { dist=NAN; }
                     count++;
                     fn_80230498(i,(TlwpVec*)(q+0x264),0x3f,0xff,-0x80,-0x80,1);
                 } else {
-                    u16 angle=(s32)(lbl_8053EA70 * JMath::atanTable_.atan2_(-dx,-dy));
+                    u16 angle=tlwpAngle(dx,dy);
                     fn_80230BF4(i,ClassifyBamAngleToQuadrant(angle));
                     fn_802303FC(i,q+0x264,0xff);
                 }
@@ -576,7 +576,7 @@ g=0.5*g*(3.0-g*g*dist);
 dist=dist*g;
 } else if (dist<0.0) { dist=NAN; }
 else if (isnan(dist)) { dist=NAN; }
-                    s32 arrived=dist<lbl_8053EA60;
+                    s32 arrived=!(dist>=lbl_8053EA60);
                     if(arrived) { }
                     if(*(s32*)(p+0x240)==0) fn_80230498(i,(TlwpVec*)(q+0x264),0x3c,0xff,-0x80,-0x80,1);
                     else fn_80230498(i,(TlwpVec*)(q+0x264),0x3e,0xff,-0x80,-0x80,1);

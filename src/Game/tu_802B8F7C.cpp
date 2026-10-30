@@ -66,6 +66,7 @@ extern "C" void fn_802B8FDC(void)
     return;
 }
 
+#pragma opt_strength_reduction off
 extern "C" void fn_802B8FE0(Actor* self) {
     char* p = (char*)self;
     JGeometry::TBox2f bounds;
@@ -132,15 +133,15 @@ extern "C" void fn_802B8FE0(Actor* self) {
                                     Actor* item=fn_801F666C(fn_801F856C(),id);
                                     if (item!=0) {
                                         if (item->field_1A0=='KEY0') {
-                                            interactionVelocity(keyVelocity,0.35f-0.7f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),0.35f-0.7f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),2.0f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            interactionVelocity(keyVelocity,0.35f-0.7f*interactionRand(),0.35f-0.7f*interactionRand(),2.0f*interactionRand()+5.0f);
                                             *(JGeometry::TVec3f*)((char*)item+0x3c)=keyVelocity;
                                         } else if (item->field_1A0=='BHRT') {
-                                            s16 angle=65536.0f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-                                            f32 speed=0.35f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+0.15f;
-                                            interactionVelocity(heartVelocity,speed*JMath::sincosTable_.sinShort(angle),speed*JMath::sincosTable_.cosShort(angle),2.0f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            s16 angle=65536.0f*interactionRand();
+                                            f32 speed=0.35f*interactionRand()+0.15f;
+                                            interactionVelocity(heartVelocity,speed*JMASinShort(angle),speed*JMACosShort(angle),2.0f*interactionRand()+5.0f);
                                             *(JGeometry::TVec3f*)((char*)item+0x3c)=heartVelocity;
                                         } else {
-                                            interactionVelocity(otherVelocity,0.5f-((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),0.5f-((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),2.0f*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            interactionVelocity(otherVelocity,0.5f-interactionRand(),0.5f-interactionRand(),2.0f*interactionRand()+5.0f);
                                             *(JGeometry::TVec3f*)((char*)item+0x3c)=otherVelocity;
                                         }
                                         fn_8013CC50(*(s32*)(p+4),p+0xc,0x291,0,0,0,0,1,0.4f);
@@ -202,7 +203,7 @@ extern "C" void fn_802B8FE0(Actor* self) {
     default: break;
     }
 }
-
+#pragma opt_strength_reduction reset
 #pragma opt_propagation off
 extern "C" void fn_802B9974(Unk802B9974Src* this_) {
     char* p = (char*)this_;

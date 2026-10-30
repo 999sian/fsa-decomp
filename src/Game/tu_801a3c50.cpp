@@ -612,10 +612,10 @@ extern "C" s32 fn_801A4FB4(u8* this_) {
 #pragma opt_common_subs off
 #pragma dont_inline reset
 extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
- register u8* other;
- register int result;
- register int kind;
- register int id=(int)a4;
+ int kind;
+ int id=(int)a4;
+ int result;
+ u8* other;
  u8* self=(u8*)this_;
  if((*(u32*)(self+0xb0)&255)==0) return 0;
  result=0;

@@ -234,6 +234,5 @@ extern "C" void* fn_80443760(void* this_) {
     return this_;
 }
 
-extern "C" void __sinit_tu_804432DC_cpp(void) {
-}
+void __sinit_tu_804432DC_cpp(void) {}
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

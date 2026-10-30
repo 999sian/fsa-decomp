@@ -380,8 +380,9 @@ bool JASAramStream::load() {
         return false;
     }
 
+    int i;
     u32 uvar2 = _148 + mAramBlock * sBlockSize;
-    for (int i = 0; i < mChannelNum; i++) {
+    for (i = 0; i < mChannelNum; i++) {
         if (!JKRMainRamToAram(sReadBuffer + bhead->_4 * i + sizeof(BlockHeader),
                                     uvar2 + sBlockSize * mBlockCount * i,
                                     bhead->_4, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL)) {
@@ -408,7 +409,7 @@ bool JASAramStream::load() {
         } else {
             mAramBlockCount = mBlockCount - 1;
         }
-        for (int i = 0; i < mChannelNum; i++) {
+        for (i = 0; i < mChannelNum; i++) {
             _130[i] = bhead->_8[i]._0;
             _13c[i] = bhead->_8[i]._2;
         }

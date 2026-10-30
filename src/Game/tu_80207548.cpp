@@ -56,45 +56,41 @@ extern "C" s32 fn_801CB434(s32 a, f32* b, s32 c);
 extern "C" s32 fn_8023DE58(s32 i);
 extern "C" f32* fn_8023E724(s32 i);
 extern "C" void fn_802075D8(void* this_, u16 idx) {
+    struct V3c { f32 x, y, z; };
     char* p = (char*)this_;
-    s32 off = idx * 0x24;
+    s32 i = idx;
+    s32 off = i * 0x24;
     u8 ok = 1;
-    f32 pos[3];
 
     *(u8*)(p + off + 0x2d0) = 1;
-    if (idx != 0 && *(u8*)(p + 0x2d0) == 0) {
+    if (0 != i && *(u8*)(p + 0x2d0) == 0) {
         ok = 0;
     }
-    if (idx != 1 && *(u8*)(p + 0x2f4) == 0) {
+    if (1 != i && *(u8*)(p + 0x2f4) == 0) {
         ok = 0;
     }
-    if (idx != 2 && *(u8*)(p + 0x318) == 0) {
+    if (2 != i && *(u8*)(p + 0x318) == 0) {
         ok = 0;
     }
-    if (idx != 3 && *(u8*)(p + 0x33c) == 0) {
+    if (3 != i && *(u8*)(p + 0x33c) == 0) {
         ok = 0;
     }
-    if (*(u8*)(p + 0x2a8) != 0 && (*(u8*)(p + 0x2a9) & (1 << idx))) {
-        f32* src = (f32*)(p + 0xc);
-        pos[0] = src[0];
-        pos[1] = src[1];
-        pos[2] = src[2];
-        char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + off + 0x2b0));
+    if (*(u8*)(p + 0x2a8) != 0 && (*(u8*)(p + 0x2a9) & (1 << i))) {
+        V3c v = *(V3c*)(p + 0xc);
+        Actor* obj = (Actor*)fn_801F666C(fn_801F856C(), *(s32*)(p + off + 0x2b0));
         if (obj != 0) {
-            f32* o = (f32*)(obj + 0xc);
-            pos[0] = o[0];
-            pos[1] = o[1];
-            pos[2] = o[2];
+            v.x = obj->field_0C.x;
+            v.y = obj->field_0C.y;
+            v.z = obj->field_0C.z;
         }
-        s32 id = fn_801CB434(*(s32*)(p + 4), pos, 1);
+        s32 id = fn_801CB434(*(s32*)(p + 4), (f32*)&v, 1);
         s32 kind = *(s32*)(p + off + 0x2b8);
         if (kind >= 0 && kind < 4 && *(s32*)(p + 4) == fn_8023DE58(kind)) {
-            if (((ActorV19*)this_)->v19(*(s32*)(p + 4), pos)) {
-                char* b = (char*)fn_801F666C(fn_801F856C(), id);
-                if (b != 0) {
-                    f32* t = fn_8023E724(kind);
-                    f32 dy = t[1] - pos[1];
-                    f32 dx = t[0] - pos[0];
+            if (((ActorV19*)this_)->v19(*(s32*)(p + 4), (f32*)&v)) {
+                Actor* a = (Actor*)fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    f32 dy = fn_8023E724(kind)[1] - v.y;
+                    f32 dx = fn_8023E724(kind)[0] - v.x;
                     f32 len2 = dx * dx + dy * dy;
                     if (len2 > 32.0f * *(f32*)__float_epsilon) {
                         f32 inv = blkInvSqrt(len2);
@@ -103,9 +99,11 @@ extern "C" void fn_802075D8(void* this_, u16 idx) {
                     }
                     dx = dx * 2.0f;
                     dy = dy * 2.0f;
-                    f32* d = (f32*)(b + 0x3c);
-                    d[0] = dx;
-                    d[1] = dy;
+                    Vec n;
+                    n.x = dx;
+                    n.y = dy;
+                    n.z = a->field_3C.z;
+                    a->field_3C = n;
                 }
             }
         }
@@ -195,11 +193,21 @@ struct Layout_80207548 {
 };
 
 extern "C" void fn_80207830(char* p, u16 idx, s32 a, s32 b, f32* pos, s32 c) {
-    Layout_80207548* o = (Layout_80207548*)p;
-    if (o->entries[idx].m04 != 0) {
+    Layout_80207548* lo = (Layout_80207548*)(p + idx * 0x24);
+    if (lo->entries[0].m04 != 0) {
         return;
     }
-    o->entries[idx].set(a, b, pos, c);
+    lo->entries[0].m04 = 1;
+    lo->entries[0].m08 = a;
+    f32 x = pos[0];
+    f32 y = pos[1];
+    lo->entries[0].m0C = b;
+    f32 z = pos[2];
+    lo->entries[0].m10[0] = x;
+    lo->entries[0].m10[1] = y;
+    lo->entries[0].m10[2] = z;
+    lo->entries[0].m1C = c;
+    Layout_80207548* o = (Layout_80207548*)p;
     bool noneSet = true;
     bool allSet = true;
     for (int i = 0; i < 4; i++) {
@@ -211,9 +219,9 @@ extern "C" void fn_80207830(char* p, u16 idx, s32 a, s32 b, f32* pos, s32 c) {
             }
         }
     }
-    if (allSet) {
+    if (noneSet) {
         *(u8*)(p + 0x2aa) = lbl_8053F8C8[fn_80138A30(lbl_8053AAF8) - 1];
-    } else if (noneSet && *(u8*)(p + 0x2aa) != 0) {
+    } else if (allSet && *(u8*)(p + 0x2aa) != 0) {
         s32 n = 1;
         *(u8*)(p + 0x2a8) = 1;
         switch (fn_80138A30(lbl_8053AAF8)) {

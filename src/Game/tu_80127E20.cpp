@@ -1,11 +1,26 @@
-// tu_80127E20: .text 0x80127E20-0x801286C0 (FZRA group registry)
+// tu_80127E20: .text 0x80127E20-0x801286C0 — 'FZRA' Group Registry.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
+struct FzraActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ JGeometry::TVec3<f32> mPos;
+    /* 0x018 */ u8 _pad18[0x198 - 0x18];
+    /* 0x198 */ s32 mActorHandle;
+    /* 0x19C */ u32 mField19C;
+    /* 0x1A0 */ u32 mActorFourCC; // 'FZRA'
+    /* 0x1A4 */ u8 _pad1A4[0x230 - 0x1A4];
+    /* 0x230 */ s32 mState;
+    /* 0x234 */ u8 _pad234[0x258 - 0x234];
+    /* 0x258 */ u8 mGroupSide;
+};
+
 extern "C" void* fn_801F856C(void);
-extern "C" u8* fn_801F666C(void* mgr, s32 handle);
-extern "C" void fn_80126A4C(u8* fzra, s32 mode);
-extern "C" u8 fn_80126EF8(u8* fzra);
+extern "C" FzraActor* fn_801F666C(void* mgr, s32 handle);
+extern "C" void fn_80126A4C(FzraActor* fzra, s32 mode);
+extern "C" u8 fn_80126EF8(FzraActor* fzra);
 extern "C" void fn_80230534(s32 a);
 extern "C" void fn_8023077C(void);
 
@@ -30,26 +45,24 @@ public:
     s32 mIds[8];
 };
 
-static inline u8* getActor(s32 id) {
+static inline FzraActor* getActor(s32 id) {
     return fn_801F666C(fn_801F856C(), id);
 }
 
-#define ACTOR_TYPE(a) (*(u32*)((a) + 0x1A0))
-
 extern "C" void fn_80127E20(FzraRegistry* reg, const JGeometry::TVec3<f32>& pos) {
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
-        if (a != 0 && ACTOR_TYPE(a) == 'FZRA' && *(u8*)(a + 0x258) == 0) {
-            *(JGeometry::TVec3<f32>*)(a + 0xC) = pos;
+        FzraActor* a = getActor(reg->mIds[i]);
+        if (a != 0 && a->mActorFourCC == 'FZRA' && a->mGroupSide == 0) {
+            a->mPos = pos;
         }
     }
 }
 
 extern "C" void fn_80127ED8(FzraRegistry* reg, const JGeometry::TVec3<f32>& pos) {
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
-        if (a != 0 && ACTOR_TYPE(a) == 'FZRA' && *(u8*)(a + 0x258) != 0) {
-            *(JGeometry::TVec3<f32>*)(a + 0xC) = pos;
+        FzraActor* a = getActor(reg->mIds[i]);
+        if (a != 0 && a->mActorFourCC == 'FZRA' && a->mGroupSide != 0) {
+            a->mPos = pos;
         }
     }
 }
@@ -65,9 +78,9 @@ extern "C" JGeometry::TVec3<f32>* fn_80127F90(FzraRegistry* reg) {
         return &zero;
     }
     for (int i = 0; i < 2; i++) {
-        u8* a = getActor(reg->mIds[i]);
-        if (a != 0 && ACTOR_TYPE(a) == 'FZRA') {
-            p[i] = *(JGeometry::TVec3<f32>*)(a + 0xC);
+        FzraActor* a = getActor(reg->mIds[i]);
+        if (a != 0 && a->mActorFourCC == 'FZRA') {
+            p[i] = a->mPos;
         }
     }
     mid.x = (p[0].x + p[1].x) / 2.0f;
@@ -78,8 +91,8 @@ extern "C" JGeometry::TVec3<f32>* fn_80127F90(FzraRegistry* reg) {
 
 extern "C" void fn_80128074(FzraRegistry* reg) {
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
-        if (a != 0 && ACTOR_TYPE(a) == 'FZRA') {
+        FzraActor* a = getActor(reg->mIds[i]);
+        if (a != 0 && a->mActorFourCC == 'FZRA') {
             fn_80126A4C(a, 0x10);
         }
     }
@@ -87,9 +100,9 @@ extern "C" void fn_80128074(FzraRegistry* reg) {
 
 extern "C" BOOL fn_801280F8(FzraRegistry* reg) {
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
-        if (a != 0 && ACTOR_TYPE(a) == 'FZRA') {
-            switch (*(s32*)(a + 0x230)) {
+        FzraActor* a = getActor(reg->mIds[i]);
+        if (a != 0 && a->mActorFourCC == 'FZRA') {
+            switch (a->mState) {
             case 2:
             case 3:
             case 9:
@@ -102,8 +115,8 @@ extern "C" BOOL fn_801280F8(FzraRegistry* reg) {
 
 extern "C" void fn_801281A4(FzraRegistry* reg) {
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
-        if (a != 0 && ACTOR_TYPE(a) == 'FZRA') {
+        FzraActor* a = getActor(reg->mIds[i]);
+        if (a != 0 && a->mActorFourCC == 'FZRA') {
             fn_80126A4C(a, 0xA);
         }
     }
@@ -116,9 +129,9 @@ extern "C" void fn_80128228(void) {
 extern "C" BOOL fn_8012824C(FzraRegistry* reg) {
     fn_8023077C();
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
+        FzraActor* a = getActor(reg->mIds[i]);
         if (a != 0) {
-            if (ACTOR_TYPE(a) != 'FZRA') {
+            if (a->mActorFourCC != 'FZRA') {
                 return FALSE;
             }
             fn_80126A4C(a, 5);
@@ -132,11 +145,11 @@ extern "C" BOOL fn_801282E0(FzraRegistry* reg) {
         return FALSE;
     }
     for (int i = 0; i < reg->mCount; i++) {
-        u8* a = getActor(reg->mIds[i]);
+        FzraActor* a = getActor(reg->mIds[i]);
         if (a == 0) {
             return FALSE;
         }
-        if (ACTOR_TYPE(a) != 'FZRA') {
+        if (a->mActorFourCC != 'FZRA') {
             return FALSE;
         }
         if (!fn_80126EF8(a)) {
@@ -146,8 +159,8 @@ extern "C" BOOL fn_801282E0(FzraRegistry* reg) {
     return TRUE;
 }
 
-extern "C" void fn_80128398(FzraRegistry* reg, u8* actor) {
-    reg->mIds[reg->mCount] = *(s32*)(actor + 0x198);
+extern "C" void fn_80128398(FzraRegistry* reg, FzraActor* actor) {
+    reg->mIds[reg->mCount] = actor->mActorHandle;
     reg->mCount++;
 }
 

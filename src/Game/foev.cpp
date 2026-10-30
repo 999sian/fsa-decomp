@@ -1,61 +1,5 @@
-// TU 0x802ef76c-0x802f032c (actor FOEV).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802ef76c-0x802f032c — Actor 'LTEV' (Light / Fog Color Transition Controller, misdecoded as FOEV).
 #include "Game/esd/types.h"
-
-// ---- Ltev_SetupLightTransition.cpp ----
-// Ltev_SetupLightTransition - LTEV: light-transition setup, vtable extension slot (0x9C).
-// Two modes selected by whether the final param is 0: mode A (mode!=0)
-// stores 5 incoming params as the "target" endpoint fields and computes
-// per-component step counts; mode B (mode==0) stores the params as the
-// "start" endpoint fields instead.
-//
-// Ltev_EmptyHook - LTEV: empty no-op override.
-extern "C" {
-
-void Ltev_SetupLightTransition(void* thisPtr, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5, s32 mode) {
-	char* p = (char*)thisPtr;
-	*(s32*)(p + 0x230) = mode;
-	if (mode == 0) {
-		*(s32*)(p + 0x25c) = p1;
-		*(s32*)(p + 0x260) = p2;
-		*(s32*)(p + 0x264) = p3;
-		*(s32*)(p + 0x258) = p4;
-		*(s32*)(p + 0x26c) = p5;
-		*(s32*)(p + 0x270) = (*(s32*)(p + 0x25c) - *(s32*)(p + 0x24c)) / 4;
-		*(s32*)(p + 0x274) = (*(s32*)(p + 0x260) - *(s32*)(p + 0x250)) / 4;
-		*(s32*)(p + 0x278) = (*(s32*)(p + 0x264) - *(s32*)(p + 0x254)) / 4;
-		if (*(s32*)(p + 0x268) < *(s32*)(p + 0x26c)) {
-			*(s32*)(p + 0x230) = 1;
-		}
-		return;
-	}
-	*(s32*)(p + 0x24c) = p1;
-	*(s32*)(p + 0x250) = p2;
-	*(s32*)(p + 0x254) = p3;
-	*(s32*)(p + 0x258) = p4;
-	*(s32*)(p + 0x268) = p5;
-}
-
-void Ltev_EmptyHook(void) {}
-
-}
-
-// ---- Ltev_dtor_802EFB9C.cpp ----
-extern "C" void __dt__5ActorFv(void* this_, int how);
-extern "C" void __dl__FPv(void* this_);
-extern void* lbl_804AA4F0[];
-
-extern "C" void* fn_802EFB9C(void* this_, short how) {
-    if (this_) {
-        *(void**)this_ = lbl_804AA4F0;
-        __dt__5ActorFv(this_, 0);
-        if (how > 0) {
-            __dl__FPv(this_);
-        }
-    }
-    return this_;
-}
-
 
 extern "C" void fn_80128C58(u8 a);
 extern "C" void fn_8013A884(u32* color);
@@ -66,39 +10,37 @@ extern void* lbl_8053AF80;
 
 class FoevVis {
 public:
-    virtual void v00();
-    virtual void v01();
-    virtual void v02();
-    virtual void v03();
-    virtual void v04();
-    virtual void v05();
-    virtual void v06();
-    virtual void v07();
-    virtual void v08();
-    virtual void v09();
-    virtual void v10();
+    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
+    virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
+    virtual void v08(); virtual void v09(); virtual void v10();
     virtual u8 isVisible();
 };
 
 struct FoevRGBA { u8 r, g, b, a; };
 
 struct Foev {
-    u8 pad0[0x90];
-    u32 m90;
-    u8 pad94[0x230 - 0x94];
-    s32 state;
-    f32 m234;
-    f32 m238;
-    f32 m23c;
-    s32 m240;
-    s32 m244;
-    FoevRGBA col;
-    s32 r, g, b, a;
-    s32 tr, tg, tb;
-    s32 level;
-    s32 target;
-    s32 dr, dg, db;
-    s32 m27c;
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPos[3];
+    /* 0x018 */ u8 _pad18[0x90 - 0x18];
+    /* 0x090 */ u32 m90;
+    /* 0x094 */ u8 _pad94[0x11F - 0x94];
+    /* 0x11F */ u8 mFlag11F;
+    /* 0x120 */ u8 _pad120[0x230 - 0x120];
+    /* 0x230 */ s32 state;
+    /* 0x234 */ f32 m234;
+    /* 0x238 */ f32 m238;
+    /* 0x23C */ f32 m23c;
+    /* 0x240 */ s32 m240;
+    /* 0x244 */ s32 m244;
+    /* 0x248 */ FoevRGBA col;
+    /* 0x24C */ s32 r, g, b, a;
+    /* 0x25C */ s32 tr, tg, tb;
+    /* 0x268 */ s32 level;
+    /* 0x26C */ s32 target;
+    /* 0x270 */ s32 dr, dg, db;
+    /* 0x27C */ s32 m27c;
 
     void apply() {
         fn_80128C58(level);
@@ -131,6 +73,51 @@ struct Foev {
     }
 };
 
+extern "C" {
+
+void Ltev_SetupLightTransition(Foev* p, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5, s32 mode) {
+    p->state = mode;
+    if (mode == 0) {
+        p->tr = p1;
+        p->tg = p2;
+        p->tb = p3;
+        p->a = p4;
+        p->target = p5;
+        p->dr = (p->tr - p->r) / 4;
+        p->dg = (p->tg - p->g) / 4;
+        p->db = (p->tb - p->b) / 4;
+        if (p->level < p->target) {
+            p->state = 1;
+        }
+        return;
+    }
+    p->r = p1;
+    p->g = p2;
+    p->b = p3;
+    p->a = p4;
+    p->level = p5;
+}
+
+void Ltev_EmptyHook(void) {}
+
+}
+
+extern "C" void __dt__5ActorFv(void* this_, int how);
+extern "C" void __dl__FPv(void* this_);
+extern void* lbl_804AA4F0[];
+
+extern "C" void* fn_802EFB9C(Foev* this_, short how) {
+    if (this_) {
+        this_->mVtable = lbl_804AA4F0;
+        __dt__5ActorFv(this_, 0);
+        if (how > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+// LTEV update (vtable slot 3)
 extern "C" void fn_802EF80C(Foev* f) {
     switch (f->state) {
     case 0:
@@ -173,9 +160,6 @@ extern "C" void fn_802EF80C(Foev* f) {
     }
 }
 
-
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE
@@ -194,29 +178,13 @@ extern "C" void fn_802EF80C(Foev* f) {
 
 class FoevV {
 public:
-    virtual void v00();
-    virtual void v01();
-    virtual void v02();
-    virtual void v03();
-    virtual void v04();
-    virtual void v05();
-    virtual void v06();
-    virtual void v07();
-    virtual void v08();
-    virtual void v09();
-    virtual void v10();
-    virtual void v11();
-    virtual void v12();
-    virtual void v13();
-    virtual void v14();
-    virtual void v15();
-    virtual void v16();
-    virtual void v17();
-    virtual void v18();
+    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
+    virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07();
+    virtual void v08(); virtual void v09(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18();
     virtual void setup(s32 r, s32 g, s32 b, s32 a, s32 lv, s32 mode);
 };
-
-struct FoevPos { f32 x, y, z; };
 
 extern "C" u8 fn_802DEBA0(void* p);
 extern "C" void fn_8018330C(FoevRGBA* out);
@@ -224,6 +192,7 @@ extern "C" u8 fn_801B7550(void);
 extern char* lbl_8053AB10;
 extern const f32 lbl_80541430;
 
+// LTEV init (vtable slot 1)
 extern "C" void fn_802EFBFC(Foev* f) {
     if (!fn_802DEBA0(f)) {
         f->m244 = f->m90 & 0xff;
@@ -307,9 +276,8 @@ extern "C" void fn_802EFBFC(Foev* f) {
         break;
     }
     f->apply();
-    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)((char*)f + 0xc));
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)f->mPos);
     ((FoevVis*)f)->v03();
-    *(JGeometry::TVec3<f32>*)((char*)f + 0xc) = pos;
-    *((u8*)f + 0x11f) = 1;
+    *(JGeometry::TVec3<f32>*)f->mPos = pos;
+    f->mFlag11F = 1;
 }
-

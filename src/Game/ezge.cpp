@@ -1,8 +1,6 @@
-// TU 0x8021d26c-0x8021d734 (actor EZGE).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x8021d26c-0x8021d734 — Actor 'FBGE' (Fireball Generator, misdecoded as EZGE in early CSV).
 #include "types.h"
 
-// ---- Fbge_ctor_8021D4CC.cpp ----
 extern "C" {
 void __dt__5ActorFv(void* this_, int flag);
 void detach__5ActorFv(void* this_);
@@ -32,15 +30,49 @@ struct EzgeVtbl {
 };
 #define EZGE_V11(p) (((EzgeVtbl*)(p))->v11())
 
-extern "C" void* fn_8021D26C(void* this_, s16 freeFlag) {
+struct FbgeSub270 {
+    u8 _pad00[0x24];
+    void* mVtable; // +0x294 on FbgeActor
+    u8 _pad28[0x10];
+};
+
+struct FbgeActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u8 _pad04[0x60 - 0x04];
+    /* 0x060 */ f32 mBounds60[4];
+    /* 0x070 */ f32 mBounds70[4];
+    /* 0x080 */ f32 mBounds80[4];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[4];
+    /* 0x098 */ s32 mField98;
+    /* 0x09C */ u8 _pad9C[0xB0 - 0x9C];
+    /* 0x0B0 */ s32 mCollisionMask;
+    /* 0x0B4 */ u8 _padB4[0x108 - 0xB4];
+    /* 0x108 */ s32 mSortPriority;
+    /* 0x10C */ u8 _pad10C[0x11C - 0x10C];
+    /* 0x11C */ u8 mActiveFlag;
+    /* 0x11D */ u8 _pad11D[0x230 - 0x11D];
+    /* 0x230 */ u32 mItemFlags;
+    /* 0x234 */ u8 _pad234[0x244 - 0x234];
+    /* 0x244 */ s32 mCopiedPriority;
+    /* 0x248 */ s32 mState;
+    /* 0x24C */ s32 mTimer;
+    /* 0x250 */ s32 mTargetId;
+    /* 0x254 */ f32 mSpeedX;
+    /* 0x258 */ f32 mSpeedY;
+    /* 0x25C */ u8 _pad25C[0x270 - 0x25C];
+    /* 0x270 */ FbgeSub270 mAnimSub;
+    /* 0x2A8 */ u16 mFireCooldown;
+};
+
+extern "C" void* fn_8021D26C(FbgeActor* this_, s16 freeFlag) {
     if (this_ != 0) {
-        char* p = (char*)this_;
-        *(void**)p = lbl_804A6660;
+        this_->mVtable = lbl_804A6660;
         if (this_ != 0) {
-            *(void**)p = lbl_804A4808;
-            if (p + 0x270 != 0) {
-                if (p + 0x294 != 0) {
-                    *(void**)(p + 0x294) = lbl_8049CC34;
+            this_->mVtable = lbl_804A4808;
+            if (&this_->mAnimSub != 0) {
+                if (&this_->mAnimSub.mVtable != 0) {
+                    this_->mAnimSub.mVtable = lbl_8049CC34;
                 }
             }
             __dt__5ActorFv(this_, 0);
@@ -52,71 +84,69 @@ extern "C" void* fn_8021D26C(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8021D2FC(void* this_) {
-    char* p = (char*)this_;
-    if (EZGE_V11(p)) {
-        detach__5ActorFv(p);
+// FBGE update (vtable slot 3): fires 'FBAL' projectile every 120 frames when player in range
+extern "C" void fn_8021D2FC(FbgeActor* this_) {
+    if (EZGE_V11(this_)) {
+        detach__5ActorFv(this_);
     } else {
-        switch (*(s32*)(p + 0x248)) {
+        switch (this_->mState) {
         case 0:
-            if (*(u16*)(p + 0x2a8) > 1) {
-                (*(u16*)(p + 0x2a8))--;
-            } else if (fn_801CECF4(p, 'FBAL', 1.5f, 112.0f)) {
-                fn_801F0E34(p, 0x50030, 0);
-                *(u16*)(p + 0x2a8) = 120;
+            if (this_->mFireCooldown > 1) {
+                this_->mFireCooldown--;
+            } else if (fn_801CECF4(this_, 'FBAL', 1.5f, 112.0f)) {
+                fn_801F0E34(this_, 0x50030, 0);
+                this_->mFireCooldown = 120;
             }
             break;
         }
     }
 }
 
-extern "C" void fn_8021D3AC(void* this_) {
-    char* p = (char*)this_;
-    fn_801D0ED0(p);
+// FBGE init (vtable slot 1)
+extern "C" void fn_8021D3AC(FbgeActor* this_) {
+    fn_801D0ED0(this_);
     if (lbl_8053AAF8[0x7e] != 0) {
-        if ((*(u32*)(p + 0x90) >> 1) & 1) {
-            *(u8*)(p + 0x11c) = 0;
+        if ((this_->mSpawnParam >> 1) & 1) {
+            this_->mActiveFlag = 0;
             return;
         }
-    } else if (*(u32*)(p + 0x90) & 1) {
-        *(u8*)(p + 0x11c) = 0;
+    } else if (this_->mSpawnParam & 1) {
+        this_->mActiveFlag = 0;
         return;
     }
-    *(f32*)(p + 0x60) = 1.0f;
-    *(f32*)(p + 0x64) = 1.0f;
-    *(f32*)(p + 0x68) = -1.0f;
-    *(f32*)(p + 0x6c) = -1.0f;
-    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
-    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
-    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
-    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
-    *(f32*)(p + 0x80) = 1.0f;
-    *(f32*)(p + 0x84) = 1.0f;
-    *(f32*)(p + 0x88) = -1.0f;
-    *(f32*)(p + 0x8c) = -1.0f;
-    *(s32*)(p + 0xb0) = 0;
-    *(s32*)(p + 0x98) = 2;
-    *(u32*)(p + 0x230) |= 0x380;
-    *(s32*)(p + 0x108) = 1000;
-    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
-    *(s32*)(p + 0x248) = 0;
-    *(s32*)(p + 0x250) = -1;
-    *(s32*)(p + 0x24c) = 0;
-    *(f32*)(p + 0x254) = 0.0f;
-    *(f32*)(p + 0x258) = 0.0f;
-    if (EZGE_V11(p)) {
-        detach__5ActorFv(p);
+    this_->mBounds60[0] = 1.0f;
+    this_->mBounds60[1] = 1.0f;
+    this_->mBounds60[2] = -1.0f;
+    this_->mBounds60[3] = -1.0f;
+    this_->mBounds70[0] = this_->mBounds60[0];
+    this_->mBounds70[1] = this_->mBounds60[1];
+    this_->mBounds70[2] = this_->mBounds60[2];
+    this_->mBounds70[3] = this_->mBounds60[3];
+    this_->mBounds80[0] = 1.0f;
+    this_->mBounds80[1] = 1.0f;
+    this_->mBounds80[2] = -1.0f;
+    this_->mBounds80[3] = -1.0f;
+    this_->mCollisionMask = 0;
+    this_->mField98 = 2;
+    this_->mItemFlags |= 0x380;
+    this_->mSortPriority = 1000;
+    this_->mCopiedPriority = this_->mSortPriority;
+    this_->mState = 0;
+    this_->mTargetId = -1;
+    this_->mTimer = 0;
+    this_->mSpeedX = 0.0f;
+    this_->mSpeedY = 0.0f;
+    if (EZGE_V11(this_)) {
+        detach__5ActorFv(this_);
     }
 }
 
-extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_801D0F40(void* this_);
-extern void* lbl_804A6660[];
 
-extern "C" void* fn_8021D4CC(void* this_) {
+extern "C" void* fn_8021D4CC(FbgeActor* this_) {
     fn_801D0F40(this_);
-    *(void**)this_ = lbl_804A6660;
-    *(s16*)((char*)this_ + 0x2a8) = 120;
+    this_->mVtable = lbl_804A6660;
+    this_->mFireCooldown = 120;
     return this_;
 }
 

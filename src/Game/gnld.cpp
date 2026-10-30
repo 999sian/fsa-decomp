@@ -239,8 +239,7 @@ extern "C" void fn_80329640(u8* this_) {
    heading=fn_801F6874((void*)(*(s32*)(p+0x98)));
    motion.setAll(lbl_80541D10);
    s32 remaining;
-   const int maximum=100;
-   for(n=0;n<maximum && (remaining=*(s32*)(p+0x238))>0;n++){
+   for(n=0;n<100 && (remaining=*(s32*)(p+0x238))>0;n++){
      s32 count=(*(s32*)(p+0x240));
      while(count>0){
        if(remaining>=lbl_804AB630[count])break;

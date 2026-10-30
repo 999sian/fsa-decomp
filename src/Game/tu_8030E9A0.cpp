@@ -207,19 +207,19 @@ static inline void SmriPlayerBox(SmriActor* p, JGeometry::TBox2f& box) {
 }
 
 extern "C" void fn_8030EDBC(SmriActor* p) {
- s32 playerIndex;
+ s32 i,n;
  JGeometry::TBox2f pb;
  pb.set(*(JGeometry::TBox2f*)&p->field_60); pb.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
  if(p->state<=6 && p->field_C4==0 && p->field_0C.z<=lbl_8054173C){
- s32 n=*(s32*)(fn_801F856C()+0x1008);
- for(s32 i=0;i<n;i++){
+ n=*(s32*)(fn_801F856C()+0x1008);
+ for(i=0;i<n;i++){
  Actor* other=*(Actor**)(fn_801F856C()+8+i*4);
  if(other && other->field_11C && (s32)other->field_04==(s32)p->field_04 && other->field_1A0=='OBLF'){
  JGeometry::TBox2f box;
  fn_801F31C4(other,(f32*)&box);
  u8* object=(u8*)other;
  if(*(s32*)(object+0x258)==11){
- JGeometry::TBox2f overlap; overlap.set(pb);
+ JGeometry::TBox2f overlap(pb);
  if(overlap.intersect(box)){
  s32 index=-1;
  for(;;){
@@ -240,12 +240,7 @@ extern "C" void fn_8030EDBC(SmriActor* p) {
  case 2:{
  JGeometry::TVec3f delta,saved;
  if(SmriCheckGround(p)){
- JGeometry::TBox2f support;support.set(*(JGeometry::TBox2f*)&p->field_60);support.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);for(playerIndex=0;playerIndex<4;playerIndex++){
- if(p->players[playerIndex]==1){
- if(fn_8022DB04(playerIndex)){s32 handle=p->field_198; if(fn_80238CB4(playerIndex)!=handle)continue;}
- fn_80239878(playerIndex,&support,p->field_04,p->field_198);
- } else if(!fn_8023B0F4(playerIndex,&support,p->field_04,0,lbl_80541740))p->players[playerIndex]=1;
- }
+ JGeometry::TBox2f support;support.set(*(JGeometry::TBox2f*)&p->field_60);support.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);SmriPlayerBox(p,support);
  s32 player=fn_80238BC4(p->field_198);
  if(player>=0 && player<4){
  saved=*(JGeometry::TVec3f*)&p->field_0C;
@@ -265,12 +260,7 @@ extern "C" void fn_8030EDBC(SmriActor* p) {
  case 3:{
  *(JGeometry::TVec3f*)&p->field_0C+=*(JGeometry::TVec3f*)&p->field_3C;
  pb.set(*(JGeometry::TBox2f*)&p->field_60);pb.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
- JGeometry::TBox2f moving;moving.set(*(JGeometry::TBox2f*)&p->field_60);moving.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);for(playerIndex=0;playerIndex<4;playerIndex++){
- if(p->players[playerIndex]==1){
- if(fn_8022DB04(playerIndex)){s32 handle=p->field_198; if(fn_80238CB4(playerIndex)!=handle)continue;}
- fn_80239878(playerIndex,&moving,p->field_04,p->field_198);
- } else if(!fn_8023B0F4(playerIndex,&moving,p->field_04,0,lbl_80541740))p->players[playerIndex]=1;
- }
+ JGeometry::TBox2f moving;moving.set(*(JGeometry::TBox2f*)&p->field_60);moving.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);SmriPlayerBox(p,moving);
  if((p->tick&31)==0)fn_801F0E34(p,0x30004,0);
  p->tick++;
  if(SmriCheckGround(p)){

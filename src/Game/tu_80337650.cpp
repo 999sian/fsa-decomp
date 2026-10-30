@@ -327,8 +327,8 @@ extern "C" void fn_80337C88(char* this_) {
 extern "C" void fn_80337DEC(u8* this_) {
     typedef JGeometry::TVec3<f32> V3;
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(this_ + 0x60);
-    box.i.x -= lbl_80542074;
-    box.f.x += lbl_80542074;
+    box.i.x = box.i.x - lbl_80542074;
+    box.f.x = lbl_80542074 + box.f.x;
     if (*(s32*)(this_ + 0x254) == 1 &&
         (*(s32*)(this_ + 0x230) == 0 || *(s32*)(this_ + 0x230) == 4 || *(s32*)(this_ + 0x230) == 1)) {
         box.addPos(*(JGeometry::TVec2<f32>*)(this_ + 0x26c));
@@ -343,9 +343,7 @@ extern "C" void fn_80337DEC(u8* this_) {
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
         if (*(u8*)(this_ + 0x268) == 0 && fn_8023A30C()) {
-            f32 t = lbl_80542068;
-            *(V3*)(this_ + 0x3c) = V3((*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / t,
-                                      (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / t, lbl_8054206C);
+            *(V3*)(this_ + 0x3c) = JumpVel((f32*)(this_ + 0x278), (f32*)(this_ + 0xc), lbl_80542068, lbl_8054206C);
             *(f32*)(this_ + 0x260) = lbl_80542070;
             *(s32*)(this_ + 0x230) = 3;
         } else {
@@ -439,9 +437,7 @@ extern "C" void fn_80337DEC(u8* this_) {
         break;
     case 5:
         if (*(u8*)(this_ + 0x268) == 0 && fn_8023A30C()) {
-            f32 t = lbl_80542068;
-            *(V3*)(this_ + 0x3c) = V3((*(f32*)(this_ + 0x278) - *(f32*)(this_ + 0xc)) / t,
-                                      (*(f32*)(this_ + 0x27c) - *(f32*)(this_ + 0x10)) / t, lbl_8054206C);
+            *(V3*)(this_ + 0x3c) = JumpVel((f32*)(this_ + 0x278), (f32*)(this_ + 0xc), lbl_80542068, lbl_8054206C);
             *(f32*)(this_ + 0x260) = lbl_80542070;
             *(s32*)(this_ + 0x240) = 0;
             *(s32*)(this_ + 0x230) = 3;

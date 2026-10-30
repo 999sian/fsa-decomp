@@ -7,33 +7,29 @@ void operator delete(void* p);
 extern "C" void* __vt__4CRNV[];
 extern void* lbl_8049CC34[];
 extern f32 lbl_8053CD30;
-#pragma opt_propagation off
+#pragma opt_strength_reduction on
 extern "C" void* fn_8013394C(u8* this_, s16 freeFlag) {
-    if (this_ != 0) {
-        u32 zero;
+    u8* self = this_;
+    s16 flag = freeFlag;
+    if (self != 0) {
         s32 i;
-        u8* p;
-        *(void**)this_ = __vt__4CRNV;
-        zero = 0;
-        i = zero;
-        p = this_;
-        do {
+        u8* p = self;
+        *(void**)self = __vt__4CRNV;
+        for (i = 0; i < 2; ++i, p += 4) {
             fn_801EE434(*(void**)(p + 0x278));
-            i++;
-            *(void**)(p + 0x278) = (void*)zero;
-            p += 4;
-        } while (i < 2);
-        if (this_ + 0x240 != 0) {
-            if (this_ + 0x264 != 0) {
-                *(void**)(this_ + 0x264) = lbl_8049CC34;
+            *(void**)(p + 0x278) = 0;
+        }
+        if (self + 0x240 != 0) {
+            if (self + 0x264 != 0) {
+                *(void**)(self + 0x264) = lbl_8049CC34;
             }
         }
-        __dt__5ActorFv(this_, 0);
-        if (freeFlag > 0) operator delete(this_);
+        __dt__5ActorFv(self, 0);
+        if (flag > 0) operator delete(self);
     }
-    return this_;
+    return self;
 }
-#pragma opt_propagation reset
+#pragma opt_strength_reduction on
 extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801339EC(u8* this_) {
     struct Col {

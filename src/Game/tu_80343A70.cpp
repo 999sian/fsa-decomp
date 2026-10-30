@@ -200,10 +200,8 @@ states:
             for(s32 i=0;i<4;i++) {
                 if(fn_8023A51C(i)) {
                     delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
-                    f32 playerY=F7(fn_8023E724(i),4);
-                    delta.y=playerY-F7(p,0x10);
-                    f32 dx=delta.x,dy=delta.y;
-                    f32 xx=dx*dx,yy=dy*dy;
+                    delta.y=F7(fn_8023E724(i),4)-F7(p,0x10);
+                    f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
                     if(!(xx+yy>lbl_8054236C)) {
                         I7(p,0x238)=60;
                         {
@@ -224,10 +222,8 @@ states:
         case 1:
             for(s32 i=0;i<4;i++) {
                 delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
-                f32 playerY=F7(fn_8023E724(i),4);
-                    delta.y=playerY-F7(p,0x10);
-                f32 dx=delta.x,dy=delta.y;
-                    f32 xx=dx*dx,yy=dy*dy;
+                delta.y=F7(fn_8023E724(i),4)-F7(p,0x10);
+                f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
                 if(!(xx+yy>lbl_80542374)) {
                     I7(p,0x238)=120;
                     {

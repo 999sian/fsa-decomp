@@ -202,9 +202,11 @@ extern f32 lbl_8053F938;
 extern f32 lbl_8053F93C;
 extern f32 lbl_8053F940;
 extern f32 lbl_8053F944;
+#pragma opt_lifetimes off
 extern "C" void fn_80209280(char* this_) {
     JGeometry::TVec3f pos;
-    s32 flag;
+    u32 actorType;
+    bool direction;
     s32 i;
     char* e;
     f32 dx;
@@ -218,14 +220,11 @@ extern "C" void fn_80209280(char* this_) {
     if (*(s32*)(this_ + 0x340) >= 2 || *(s32*)(this_ + 0x340) < 0) {
         *(s32*)(this_ + 0x340) = fn_801CD664(2);
     }
-    f32 lo = lbl_8053F928;
-    f32 hi = lbl_8053F92C;
+    f32 lo=1.0f;
+    f32 hi=-1.0f;
     *(s32*)(this_ + 0x344) = (*(u32*)(this_ + 0x90) >> 8) & 1;
     *(s32*)(this_ + 0x348) = *(u32*)(this_ + 0x90) >> 27;
-    *(f32*)(this_ + 0x60) = lo;
-    *(f32*)(this_ + 0x64) = lo;
-    *(f32*)(this_ + 0x68) = hi;
-    *(f32*)(this_ + 0x6c) = hi;
+    ((JGeometry::TBox2f*)(this_+0x60))->set(lo,lo,hi,hi);
     *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
     *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
     *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
@@ -246,13 +245,12 @@ extern "C" void fn_80209280(char* this_) {
     *(f32*)(this_ + 0x254) = lbl_8053F918;
     *(f32*)(this_ + 0x258) = lbl_8053F918;
 
-    flag = *(s32*)(this_ + 0x340) != 0;
+    direction = *(s32*)(this_ + 0x340) != 0;
     char* g = (char*)fn_802D6A9C();
     JGeometry::TVec2f center;
-    center.y=lbl_8053F930 * (*(f32*)(g + 0xd0) + *(f32*)(g + 0xd8));
-    center.x=lbl_8053F930 * (*(f32*)(g + 0xcc) + *(f32*)(g + 0xd4));
+    center.set(0.5f * (*(f32*)(g + 0xcc) + *(f32*)(g + 0xd4)), 0.5f * (*(f32*)(g + 0xd0) + *(f32*)(g + 0xd8)));
     *(s32*)(this_ + 0x34c) = 0;
-    switch (flag) {
+    switch (direction) {
     case 0:
         *(f32*)(this_ + 0x350) = *(f32*)(g + 0xcc) - lbl_8053F934;
         break;
@@ -261,23 +259,24 @@ extern "C" void fn_80209280(char* this_) {
         break;
     }
     *(f32*)(this_ + 0x354) = center.y - lbl_8053F938;
-    *(s32*)(this_ + 0x358) = flag;
+    *(s32*)(this_ + 0x358) = direction;
     *(s16*)(this_ + 0x35c) = -0x8000;
     *(s16*)(this_ + 0x35e) = 0x64;
-    if (!flag) {
+    if ((int)direction == 0) {
         *(s16*)(this_ + 0x35e) = -*(s16*)(this_ + 0x35e);
     }
-    *(f32*)(this_ + 0x360) = center.x - lbl_8053F93C;
+    *(f32*)(this_ + 0x360) = center.x - 100.0f;
     *(f32*)(this_ + 0x364) = center.y;
-    *(f32*)(this_ + 0x368) = center.x + lbl_8053F93C;
+    *(f32*)(this_ + 0x368) = center.x + 100.0f;
     *(f32*)(this_ + 0x36c) = center.y;
 
-    JGeometry::TVec2f vec(*(f32*)(this_+0x350),*(f32*)(this_+0x354));
+    JGeometry::TVec2f vec;
+    if(new (&vec) JGeometry::TVec2f) vec.set(*(JGeometry::TVec2f*)(this_+0x350));
     *(f32*)(this_ + 0x24) = vec.x;
     if (*(s32*)(this_ + 0x344) == 0) {
         *(f32*)(this_ + 0x28) = vec.y;
     }
-    f32 height=lbl_8053F940;
+    const f32 height=24.0f;
     *(f32*)(this_ + 0x2c) = height;
     pos = *(JGeometry::TVec3f*)(this_ + 0x24);
     dx = lbl_8053F918;
@@ -293,9 +292,10 @@ extern "C" void fn_80209280(char* this_) {
         break;
     }
 
+    actorType=0x464f4252;
     e = this_;
     for (i = 0; i < 4; i++) {
-        *(s32*)(e + 0x2b0) = Actor_CreateByID(fn_801F856C(), 0x464f4252, *(u32*)(this_ + 4), &pos, *(u32*)(this_ + 0x198), -1, -1);
+        *(s32*)(e + 0x2b0) = Actor_CreateByID(fn_801F856C(), actorType, *(u32*)(this_ + 4), &pos, *(u32*)(this_ + 0x198), -1, -1);
         void* a = fn_801F666C(fn_801F856C(), *(s32*)(e + 0x2b0));
         if (a != 0) {
             *(s16*)((char*)a + 0x94) = i;
@@ -305,7 +305,7 @@ extern "C" void fn_80209280(char* this_) {
         e += 0x24;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void* fn_802095C4(char* this_) {
     fn_80207AC0(this_);
     *(void**)this_ = lbl_804A5C88;
@@ -326,11 +326,13 @@ extern "C" void* fn_802095C4(char* this_) {
 }
 
 extern f32 sincosTable___5JMath[];
+#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_80209640(void* this_, f32* out) {
     char* p = (char*)this_;
     s32 state = *(s32*)p;
-    f32 oldX = *(f32*)(p + 0x4);
-    f32 oldY = *(f32*)(p + 0x8);
+    f32 oldX = *(volatile f32*)(p + 0x4);
+    f32 oldY = *(volatile f32*)(p + 0x8);
     f32 x;
     f32 y;
     switch (state) {
@@ -339,13 +341,17 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         bool zero = *(s32*)(p + 0xc) == 0;
         if (zero) {
             *(f32*)(p + 0x4) += lbl_8053F91C;
-            if (*(f32*)(p + 0x4) >= *(f32*)(p + 0x1c)) {
+            f32 current=*(f32*)(p+4);
+            f32 limit=*(f32*)(p+0x1c);
+            if(current >= limit) {
                 *(f32*)(p + 0x4) = *(f32*)(p + 0x1c);
                 hit = true;
             }
         } else {
             *(f32*)(p + 0x4) -= lbl_8053F91C;
-            if (*(f32*)(p + 0x4) <= *(f32*)(p + 0x14)) {
+            f32 current=*(f32*)(p+4);
+            f32 limit=*(f32*)(p+0x14);
+            if(current <= limit) {
                 *(f32*)(p + 0x4) = *(f32*)(p + 0x14);
                 hit = true;
             }
@@ -355,29 +361,34 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         }
     } break;
     case 1: {
-        bool hit = false;
+        f32 y,x;
+        u32 hit=0;
         bool zero = *(s32*)(p + 0xc) == 0;
         *(s16*)(p + 0x10) += *(s16*)(p + 0x12);
         if (zero) {
             if (*(s16*)(p + 0x10) <= 0) {
-                if (*(s16*)(p + 0x12) <= 0) {
-                    *(s16*)(p + 0x10) = 0;
-                } else {
+                if (*(s16*)(p + 0x12) > 0) {
                     *(s16*)(p + 0x10) = (s16)0x8000;
+                } else {
+                    *(s16*)(p + 0x10) = hit;
                 }
                 hit = true;
             }
         } else if (*(s16*)(p + 0x10) >= 0) {
-            if (*(s16*)(p + 0x12) <= 0) {
-                *(s16*)(p + 0x10) = 0;
+            if (*(s16*)(p + 0x12) > 0) {
+                *(s16*)(p + 0x10) = hit;
             } else {
                 *(s16*)(p + 0x10) = (s16)0x8000;
             }
             hit = true;
         }
-        s32 idx = (*(s16*)(p + 0x10) >> 2) & 0x3ff8;
-        x = *(f32*)((char*)sincosTable___5JMath + idx) * lbl_8053F938;
-        y = *(f32*)((char*)sincosTable___5JMath + idx + 4) * lbl_8053F938;
+        s16 angle=*(s16*)(p+0x10);
+        f32* table=sincosTable___5JMath;
+        u32 idx=((u16)angle>>5)*2;
+        f32 factor=lbl_8053F938;
+        y=table[idx+1];
+        x=table[idx];
+        x=x*factor; y=y*factor;
         if (zero) {
             *(f32*)(p + 0x4) = *(f32*)(p + 0x1c);
             *(f32*)(p + 0x8) = *(f32*)(p + 0x20);
@@ -387,7 +398,7 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         }
         *(f32*)(p + 0x4) += x;
         *(f32*)(p + 0x8) += y;
-        if (hit) {
+        if ((u8)hit) {
             *(s32*)p = 2;
         }
     } break;
@@ -396,13 +407,17 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         bool nonZero = *(s32*)(p + 0xc) != 0;
         if (nonZero) {
             *(f32*)(p + 0x4) += lbl_8053F91C;
-            if (*(f32*)(p + 0x4) >= *(f32*)(p + 0x1c)) {
+            f32 current=*(f32*)(p+4);
+            f32 limit=*(f32*)(p+0x1c);
+            if(current >= limit) {
                 *(f32*)(p + 0x4) = *(f32*)(p + 0x1c);
                 hit = true;
             }
         } else {
             *(f32*)(p + 0x4) -= lbl_8053F91C;
-            if (*(f32*)(p + 0x4) <= *(f32*)(p + 0x14)) {
+            f32 current=*(f32*)(p+4);
+            f32 limit=*(f32*)(p+0x14);
+            if(current <= limit) {
                 *(f32*)(p + 0x4) = *(f32*)(p + 0x14);
                 hit = true;
             }
@@ -412,39 +427,36 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         }
     } break;
     case 3: {
-        bool hit = false;
-        bool zero = *(s32*)(p + 0xc) == 0;
-        *(s16*)(p + 0x10) += *(s16*)(p + 0x12);
-        if (zero) {
-            if (*(s16*)(p + 0x10) >= 0) {
-                if (*(s16*)(p + 0x12) <= 0) {
-                    *(s16*)(p + 0x10) = (s16)0x8000;
-                } else {
-                    *(s16*)(p + 0x10) = 0;
-                }
-                hit = true;
+        f32 y,x;
+        u32 hit=0;
+        bool nonZero=*(s32*)(p+0xc)!=0;
+        *(s16*)(p+0x10)+=*(s16*)(p+0x12);
+        if(nonZero){
+            if(*(s16*)(p+0x10)<=0){
+                if(*(s16*)(p+0x12)>0) *(s16*)(p+0x10)=(s16)0x8000;
+                else *(s16*)(p+0x10)=hit;
+                hit=true;
             }
-        } else if (*(s16*)(p + 0x10) <= 0) {
-            if (*(s16*)(p + 0x12) <= 0) {
-                *(s16*)(p + 0x10) = 0;
-            } else {
-                *(s16*)(p + 0x10) = (s16)0x8000;
-            }
-            hit = true;
+        }else if(*(s16*)(p+0x10)>=0){
+            if(*(s16*)(p+0x12)>0) *(s16*)(p+0x10)=hit;
+            else *(s16*)(p+0x10)=(s16)0x8000;
+            hit=true;
         }
         s32 idx = (*(s16*)(p + 0x10) >> 2) & 0x3ff8;
-        x = *(f32*)((char*)sincosTable___5JMath + idx) * lbl_8053F938;
-        y = *(f32*)((char*)sincosTable___5JMath + idx + 4) * lbl_8053F938;
-        if (zero) {
-            *(f32*)(p + 0x4) = *(f32*)(p + 0x14);
-            *(f32*)(p + 0x8) = *(f32*)(p + 0x18);
-        } else {
+        f32 factor=lbl_8053F938;
+        y=*(f32*)((char*)sincosTable___5JMath+idx+4);
+        x=*(f32*)((char*)sincosTable___5JMath+idx);
+        x=x*factor; y=y*factor;
+        if (nonZero) {
             *(f32*)(p + 0x4) = *(f32*)(p + 0x1c);
             *(f32*)(p + 0x8) = *(f32*)(p + 0x20);
+        } else {
+            *(f32*)(p + 0x4) = *(f32*)(p + 0x14);
+            *(f32*)(p + 0x8) = *(f32*)(p + 0x18);
         }
         *(f32*)(p + 0x4) += x;
         *(f32*)(p + 0x8) += y;
-        if (hit) {
+        if ((u8)hit) {
             *(s32*)p = 4;
         }
     } break;
@@ -463,6 +475,7 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         out[1] -= oldY;
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 void fn_802099F0(void) {}
 

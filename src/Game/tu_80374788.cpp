@@ -178,9 +178,7 @@ extern "C" void fn_80374BAC(Actor* this_) {
     (*(JGeometry::TVec3f*)(p + 0xc)) = savedPos;
     if (direction >= 0 && direction < 4) {
     fn_80238E08(*(s32*)(p + 0x198));
-    this_->field_3C.x = lbl_804750C0[direction].x;
-    this_->field_3C.y = lbl_804750C0[direction].y;
-    this_->field_3C.z = lbl_804750C0[direction].z;
+    (*(JGeometry::TVec3f*)(p + 0x3c)).set(lbl_804750C0[direction]);
     probe = (*(JGeometry::TVec3f*)(p + 0x3c));
     probe.normalize();
     probe.scale(lbl_80542EFC);

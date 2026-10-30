@@ -1757,9 +1757,12 @@ void J2DTevBlock16::initialize()
         mKColorSels[i] = -1;
         mKAlphaSels[i] = -1;
     }
-    for (int i = 0; i < 4; i++) {
-        mSwapModeTables[i].setTevSwapModeTableInfo(j2dDefaultTevSwapModeTable);
+    for (int i = 0; i < 3; i++) {
+        const J2DTevSwapModeTableInfo& info = j2dDefaultTevSwapModeTable;
+        u8 green = info.mG;
+        mSwapModeTables[i]._00 = (info.mR << 6) + (green * 16) + (info.mB * 4) + info.mA;
     }
+    mSwapModeTables[3].setTevSwapModeTableInfo(j2dDefaultTevSwapModeTable);
     for (int i = 0; i < 16; i++) {
         mIndStages[i].setIndTevStageInfo(j2dDefaultIndTevStageInfo);
     }

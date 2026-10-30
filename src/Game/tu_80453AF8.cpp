@@ -170,7 +170,6 @@ static inline void MenuLayout8045(T80454DEC* self, f32 off) {
 }
 extern "C" s32 fn_80453B14(u8* this_) {
     T80454DEC* self = (T80454DEC*)this_;
-    s32 i;
     s32 v;
     f32 off;
     *(s32*)(this_ + 0x58) = 9;
@@ -224,15 +223,7 @@ extern "C" s32 fn_80453B14(u8* this_) {
             v = t >= 5 ? 10 - t : t;
         }
         off = lbl_80543E48 * (f32)(v * v) / lbl_80543E4C;
-        self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected] + off);
-        self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected] + off);
-        for (i = 0; i < 3; i++) {
-            if (i == *(s16*)(this_ + 0x1c)) {
-                fn_80402E08(self->entries[i], lbl_80543E44, off);
-            } else {
-                fn_80402E08(self->entries[i], lbl_80543E44, lbl_80543E44);
-            }
-        }
+        MenuLayout8045(self, off);
         break;
     case 0xa:
         (*(s16*)(this_ + 0x20))++;
@@ -247,15 +238,7 @@ extern "C" s32 fn_80453B14(u8* this_) {
             }
         }
         off = lbl_80543E48 * (f32)(v * v) / lbl_80543E4C;
-        self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected] + off);
-        self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected] + off);
-        for (i = 0; i < 3; i++) {
-            if (i == *(s16*)(this_ + 0x1c)) {
-                fn_80402E08(self->entries[i], lbl_80543E44, off);
-            } else {
-                fn_80402E08(self->entries[i], lbl_80543E44, lbl_80543E44);
-            }
-        }
+        MenuLayout8045(self, off);
         if (*(s16*)(this_ + 0x20) >= 0xf) {
             if (*(s16*)(this_ + 0x1c) == 0) {
                 *(s16*)(this_ + 0x1e) = 0xb;

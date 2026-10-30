@@ -24,6 +24,9 @@ extern "C" void fn_801B0A00(u8* this_) {
     }
 }
 
+extern "C" void fn_801B0A68(u8* this_) {
+}
+
 struct ZLD3_Vec {
     f32 x, y, z;
 };

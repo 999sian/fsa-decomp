@@ -1,15 +1,23 @@
-// TU 0x802ef448-0x802ef76c (actor ELSK).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802ef448-0x802ef76c — Actor 'EMSK' (500-Frame Countdown Warp Trigger, misdecoded as ELSK).
 #include "Game/esd/types.h"
+#include "Game/esd/Actor.h"
 
-// ---- Emsk_dtor_802EF448.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
 void operator delete(void* p);
 extern void* lbl_804AA498[];
 
-extern "C" void* fn_802EF448(void* this_, short how) {
+struct EmskActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u8 _pad04[0x90 - 0x04];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x230 - 0x94];
+    /* 0x230 */ s32 mTableIndex; // Unpacked from spawnParam & 0x7F
+    /* 0x234 */ s32 mCountdown;  // Initialized to 500 (0x1F4)
+};
+
+extern "C" void* fn_802EF448(EmskActor* this_, short how) {
     if (this_) {
-        *(void**)this_ = lbl_804AA498;
+        this_->mVtable = lbl_804AA498;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
             operator delete(this_);
@@ -18,17 +26,10 @@ extern "C" void* fn_802EF448(void* this_, short how) {
     return this_;
 }
 
-// ---- Emsk_EmptyHook.cpp ----
-// Emsk_EmptyHook - EMSK: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
-
 void Emsk_EmptyHook(void) {}
-
 }
 
-// fn_802EF4AC - update(): counts down this->0x234; on expiry notifies the
-// room config (fn_802D9FF4) with the pair selected by this->0x230 and plays
-// sound 0xf through the global sound object.
 struct ElskPair { u32 a; u32 b; };
 extern const ElskPair lbl_8046F610[3];
 extern "C" void* fn_802D6A9C(void);
@@ -40,30 +41,25 @@ static inline void elskNotify(u32 a, s32 i) {
     fn_802D9FF4(fn_802D6A9C(), a, lbl_8046F610[i].b);
 }
 
-extern "C" void fn_802EF4AC(void* this_) {
-    *(s32*)((char*)this_ + 0x234) = *(s32*)((char*)this_ + 0x234) - 1;
-    if (*(s32*)((char*)this_ + 0x234) == 0) {
-        s32 i = *(s32*)((char*)this_ + 0x230);
+// EMSK update (vtable slot 3)
+extern "C" void fn_802EF4AC(EmskActor* this_) {
+    this_->mCountdown = this_->mCountdown - 1;
+    if (this_->mCountdown == 0) {
+        s32 i = this_->mTableIndex;
         elskNotify(lbl_8046F610[i].a, i);
         fn_80136798(lbl_8053AAF8[0], 0xf, 0);
     }
 }
 
-// ---- Emsk_SetParams.cpp ----
-#include "Game/esd/Actor.h"
-
-// EMSK: setParams.
+// EMSK init (vtable slot 1)
 extern "C" {
-void Emsk_SetParams(void* thisPtr) {
-	char* p = (char*)thisPtr;
-	u32 v = ((Actor*)thisPtr)->spawnParam;
-	*(u32*)(p + 0x230) = v & 0x7F;
-	*(s32*)(p + 0x234) = 0x1f4;
+void Emsk_SetParams(EmskActor* thisPtr) {
+    u32 v = thisPtr->mSpawnParam;
+    thisPtr->mTableIndex = v & 0x7F;
+    thisPtr->mCountdown = 0x1f4;
 }
 }
 
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE

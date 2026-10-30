@@ -134,6 +134,25 @@ extern "C" void fn_8028DDD8(u8* param_1, s32* param_2) {
 extern "C" void fn_8028E1E8(void) {
 }
 
+extern "C" void fn_8028E1EC(u8* this_) {
+    s32 state = *(s32*)(this_ + 0x230);
+    switch (state) {
+    case 0:
+        if (((Actor*)this_)->v13() == 0) {
+            break;
+        }
+        *(s32*)(this_ + 0x230) = 2;
+        break;
+    case 2:
+        *(s32*)(this_ + 0x230) = 0;
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+}
+
 extern "C" void fn_8028F890(u8* param_1) {
     s32 kind = *(s32*)(param_1 + 0x90) & 0xf;
     switch (kind) {

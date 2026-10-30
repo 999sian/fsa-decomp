@@ -182,57 +182,58 @@ extern "C" void* fn_8002F34C(const void* data, JKRHeap* heap) {
                 unsigned long percCount = *p++;
                 for (unsigned long j = 0; j < percCount; j++) {
                     unsigned long percOff = *p++;
-                    if (percOff != 0) {
-                        JASDrumSet::TPerc* perc = new (heap, 0) JASDrumSet::TPerc;
-                        char* rec = base + percOff + 4;
-                        perc->setVolume(*(f32*)rec);
-                        perc->setPitch(*(f32*)(rec + 4));
-                        perc->setPan((f32)*(unsigned char*)(rec + 8) / 127.0f);
-                        perc->setRelease(*(unsigned short*)(rec + 0xa));
-
-                        unsigned long effCount = *(unsigned long*)(rec + 0xc);
-                        unsigned long* effp = (unsigned long*)(rec + 0xc);
-                        unsigned long effCountFromPointer = *effp++;
-                        effCount = effCountFromPointer;
-                        for (unsigned long k = 0; k < effCount; k++) {
-                            char* erec = base + *effp++;
-                            long effectTag = *(int*)erec;
-                            char* fx = erec + 4;
-                            JASInstEffect* effect;
-                            switch (effectTag) {
-                            case 0x52616e64: {
-                                JASInstRand* rnd = new (heap, 0) JASInstRand;
-                                rnd->setType((unsigned char)fx[0]);
-                                rnd->setFloor(*(f32*)(fx + 4));
-                                rnd->setCeiling(*(f32*)(fx + 8));
-                                effect = rnd;
-                                break;
-                            }
-                            case 0x53656e73: {
-                                JASInstSense* sense = new (heap, 0) JASInstSense;
-                                sense->setType((unsigned char)fx[0]);
-                                sense->setParams((unsigned char)fx[1], (unsigned char)fx[2], *(f32*)(fx + 4), *(f32*)(fx + 8));
-                                effect = sense;
-                                break;
-                            }
-                            default: effect = 0; break;
-                            }
-                            JASInstEffectLink* link = new (heap, 0) JASInstEffectLink(effect);
-                            perc->appendEffect(link);
-                        }
-
-                        unsigned long veloCount = *effp++;
-                        perc->setVeloRegionCount(veloCount, heap);
-                        for (unsigned long k = 0; k < veloCount; k++) {
-                            JASVelo* v = perc->getVeloRegion(k);
-                            v->_0 = *(unsigned char*)effp;
-                            v->_4 = effp[1] & 0xffff;
-                            v->_8 = *(f32*)(effp + 2);
-                            v->_c = *(f32*)(effp + 3);
-                            effp += 4;
-                        }
-                        drum->setPerc(j, perc);
+                    if (percOff == 0) {
+                        continue;
                     }
+                    JASDrumSet::TPerc* perc = new (heap, 0) JASDrumSet::TPerc;
+                    char* rec = base + percOff + 4;
+                    perc->setVolume(*(f32*)rec);
+                    perc->setPitch(*(f32*)(rec + 4));
+                    perc->setPan((f32)*(unsigned char*)(rec + 8) / 127.0f);
+                    perc->setRelease(*(unsigned short*)(rec + 0xa));
+
+                    unsigned long effCount = *(unsigned long*)(rec + 0xc);
+                    unsigned long* effp = (unsigned long*)(rec + 0xc);
+                    unsigned long effCountFromPointer = *effp++;
+                    effCount = effCountFromPointer;
+                    for (unsigned long k = 0; k < effCount; k++) {
+                        char* erec = base + *effp++;
+                        long effectTag = *(int*)erec;
+                        char* fx = erec + 4;
+                        JASInstEffect* effect;
+                        switch (effectTag) {
+                        case 0x52616e64: {
+                            JASInstRand* rnd = new (heap, 0) JASInstRand;
+                            rnd->setType((unsigned char)fx[0]);
+                            rnd->setFloor(*(f32*)(fx + 4));
+                            rnd->setCeiling(*(f32*)(fx + 8));
+                            effect = rnd;
+                            break;
+                        }
+                        case 0x53656e73: {
+                            JASInstSense* sense = new (heap, 0) JASInstSense;
+                            sense->setType((unsigned char)fx[0]);
+                            sense->setParams((unsigned char)fx[1], (unsigned char)fx[2], *(f32*)(fx + 4), *(f32*)(fx + 8));
+                            effect = sense;
+                            break;
+                        }
+                        default: effect = 0; break;
+                        }
+                        JASInstEffectLink* link = new (heap, 0) JASInstEffectLink(effect);
+                        perc->appendEffect(link);
+                    }
+
+                    unsigned long veloCount = *effp++;
+                    perc->setVeloRegionCount(veloCount, heap);
+                    for (unsigned long k = 0; k < veloCount; k++) {
+                        JASVelo* v = perc->getVeloRegion(k);
+                        v->_0 = *(unsigned char*)effp;
+                        v->_4 = effp[1] & 0xffff;
+                        v->_8 = *(f32*)(effp + 2);
+                        v->_c = *(f32*)(effp + 3);
+                        effp += 4;
+                    }
+                    drum->setPerc(j, perc);
                 }
                 bank->setInst(i, drum);
                 break;

@@ -124,7 +124,8 @@ J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32
 	texGenFlag = texGenNum > 4 ? 0 : flags & 0x0c000000;
 	u32 indFlag = (flags >> 24) & 1;
 	if (material == NULL) {
-		material = new J3DMaterial;
+		material = (J3DMaterial*)operator new(sizeof(J3DMaterial));
+		new (material) J3DMaterial;
 	}
 	material->mColorBlock = J3DMaterial::createColorBlock(colorFlag);
 	material->mTexGenBlock = J3DMaterial::createTexGenBlock(texGenFlag);
@@ -250,11 +251,11 @@ extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, 
 extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DTexMtx* texMtx = NULL;
-	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
-	if (initData->mTexMatrixIndex[no] != 0xffff) {
+	J3DMaterialInitData_v21& initData = self->mInitData[self->mMatRemapTable[idx]];
+	if (initData.mTexMatrixIndex[no] != 0xffff) {
 		J3DTexMtx* newMtx = (J3DTexMtx*)operator new(sizeof(J3DTexMtx));
 		if (newMtx != NULL) {
-			newMtx->mTexMtxInfo = self->mTexMtxInfo[initData->mTexMatrixIndex[no]];
+			newMtx->mTexMtxInfo = self->mTexMtxInfo[initData.mTexMatrixIndex[no]];
 		}
 		texMtx = newMtx;
 	}

@@ -1468,16 +1468,22 @@ extern "C" void fn_8030801C(s32 param_1, s32 i);
 extern "C" void fn_80306A94(void* ctx, int player);
 #pragma opt_common_subs off
 extern "C" void fn_80304FB0(s32 param_1) {
+MsgEntry_80301CD0* entries;
+u32* buffer;
+u16* data;
+u8* p;
+u8* received;
+s32 owner;
 lbl_8053AD08=0;
 for(s32 k=0;k<4;k++)if(lbl_804DB798[k][0xd8]||lbl_804DB798[k][0xd9])lbl_8053AD08++;
 if(lbl_8053AD08)lbl_8053AD08=(lbl_8053AD08-1)&3;
 for(s32 i=0;i<4;i++){
-s32 owner=fn_8022EA0C(i);
-u8* received=lbl_804DB798[i];
-u8* p=lbl_80506DE8+i*0x68;
-u32* buffer=(u32*)(lbl_804DBC18+i*0x8000);
-u16* data=(u16*)(lbl_805071E8+i*0x100);
-MsgEntry_80301CD0* entries=(MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380);
+owner=fn_8022EA0C(i);
+received=lbl_804DB798[i];
+p=lbl_80506DE8+i*0x68;
+buffer=(u32*)(lbl_804DBC18+i*0x8000);
+data=(u16*)(lbl_805071E8+i*0x100);
+entries=(MsgEntry_80301CD0*)(lbl_804FBC18+i*0x2380);
 MsgEntry_80301CD0* entry;
 if((u8)AnimTable_IsField0xe0LessThan3(lbl_8053AD30,fn_8030AAF4(i))){
 if(lbl_8053ACD0&&tu80301_isPlayerOn(i)){
@@ -1597,7 +1603,7 @@ entry->f104=0;entry->f119=1;
 if(lbl_8053AD20[i]==0)lbl_8053AD04[i]=fn_80309A38(lbl_8053AD30,fn_8030AAF4(i));
 next:;
 }
-fn_80304D64();
+fn_80304D64(param_1);
 }
 #pragma opt_common_subs reset
 

@@ -74,15 +74,15 @@ extern "C" void fn_8044A828(void* self_) {
     int rem;
     int a;
     void* obj;
-    void** p;
+    u8* p;
     int i;
-    const ResTIMG* handle;
+    void* handle;
     u8* self = (u8*)self_;
-    p = (void**)self;
+    p = self;
 
     for (i = 0; i < 2; i++) {
-        fn_80402E08(p[2], lbl_80543DB8, fn_8043D514(lbl_8053AED0));
-        p++;
+        fn_80402E08(*(void**)(p + 8), lbl_80543DB8, fn_8043D514(lbl_8053AED0));
+        p += 4;
     }
     if (self[0x14] & 1) {
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 16));
@@ -106,17 +106,17 @@ extern "C" void fn_8044A828(void* self_) {
         }
         v = *(u16*)(self + 0x10);
         tens = (v % 100) / 10;
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[v / 100]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v / 100]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 4));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 6));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 8));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 10));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 12));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490DB8 + 14));
@@ -152,22 +152,22 @@ extern "C" void fn_8044A828(void* self_) {
         v = self[0x13];
         rem=a%10;
         tens=v/10;
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[a / 10]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[a / 10]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 8));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 10));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[rem]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[rem]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 12));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 14));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[tens]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 16));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 18));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
-        handle = (const ResTIMG*)fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
+        handle = fn_804030C4(0x54494D47, lbl_804B1CD8[v % 10]);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 20));
         ((J2DPicture*)obj)->changeTexture((const ResTIMG*)handle, 0);
         obj = ((J2DPane*)*(void**)(self + 4))->search(*(u64*)(lbl_80490E00 + 22));

@@ -176,9 +176,10 @@ extern "C" void* fn_800CECCC(unsigned char* data, register u32 flags) {
 #pragma opt_lifetimes reset
 #pragma peephole off
 extern "C" void** fn_800CF2B0(void** p) {
-    register void* vt = lbl_8049AE38;
-    *p = vt;
-    *p = lbl_8049AE24;
+    struct VBase { void* vt; };
+    struct VDerived { void* vt; };
+    ((VBase*)p)->vt = lbl_8049AE38;
+    ((VDerived*)p)->vt = lbl_8049AE24;
     return p;
 }
 #pragma peephole reset
@@ -207,10 +208,9 @@ extern "C" void** fn_800CF314(void** p, short del) {
 
 #pragma peephole off
 extern "C" void fn_800CF370(void** p) {
-    void* base = static_cast<void*>(&lbl_8049AE38);
-    void* derived = static_cast<void*>(&lbl_8049AE10);
-    *p = base;
-    *p = derived;
+    void** q = p;
+    *q = lbl_8049AE38;
+    *p = lbl_8049AE10;
 }
 #pragma peephole reset
 extern "C" void** fn_800CF38C(void** p, short del) {
@@ -338,7 +338,7 @@ extern "C" void fn_800CF800(void** self, void* data)
 #pragma opt_propagation off
 extern "C" void fn_800CF828(void*, void* anm_, void* data_) {
     f32 zero = lbl_8053BC80;
-    register int attr = ((const J3DAnmTexPatternFullData*)data_)->mAttribute;
+    int attr = *(volatile u8*)((u8*)data_+8);
     const J3DAnmTexPatternFullData* data = (const J3DAnmTexPatternFullData*)data_;
     J3DAnmTexPattern* anm = (J3DAnmTexPattern*)anm_;
     int frame = data->mTotalFrameCount;

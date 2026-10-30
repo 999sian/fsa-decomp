@@ -158,6 +158,7 @@ extern "C" u8 fn_8015F8FC(char* p, s32 room, f32* pos, s32 flag) {
  return ret;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_8015F9C0(u8* p) {
     JGeometry::TVec3f out0, out1, outA, outB;
     JGeometry::TBox2f box0, uv0, boxCase1, uvCase1;
@@ -178,65 +179,69 @@ extern "C" void fn_8015F9C0(u8* p) {
                 s32 type = *(s32*)(p + i * 4 + 4);
                 switch (type) {
                 case 0: {
-                    f32 a = lbl_8053D640 * (f32)timer;
-                    f32 sq = a * a;
-                    f32 c = lbl_8053D644 * sq;
-                    if (c > lbl_8053D63C) {
-                        c = lbl_8053D644 - c;
+                    f32 two, time, rate, one;
+                    time = (f32)timer;
+                    rate = (1.0f / 30.0f);
+                    two = 2.0f;
+                    one = 1.0f;
+                    f32 sq = rate * time;
+                    sq *= sq;
+                    f32 c = two * sq;
+                    if (c > one) {
+                        c = two - c;
                     }
-                    c *= lbl_8053D648;
+                    c *= 159.0f;
                     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), (f32*)(posBase + 0x84), 0, 0, (f32*)&out0);
-                    f32 inv = lbl_8053D63C - sq;
-                    uv0.set(sq * (out0.x - lbl_8053D64C), sq * (out0.y - lbl_8053D650), sq * (lbl_8053D64C + out0.x) + inv * w, sq * (lbl_8053D650 + out0.y) + inv * h);
                     JUtility::TColor col(0xff, 0xff, 0xff, (u8)c);
                     GXColor colorCopy = col;
+                    f32 inv = 1.0f - sq;
+                    uv0.set(sq * (out0.x - 20.0f), sq * (out0.y - 15.0f), sq * (20.0f + out0.x) + inv * w, sq * (15.0f + out0.y) + inv * h);
                     box0.set(0.0f, 0.0f, w, h);
                     fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), box0, uv0, &colorCopy, 0, 0, 0, 0);
                     break;
                 }
                 case 1: {
-                    f32 a = lbl_8053D63C - lbl_8053D640 * (f32)timer;
-                    f32 sq = a * a;
-                    f32 c = lbl_8053D644 * sq;
-                    if (c > lbl_8053D63C) {
-                        c = lbl_8053D644 - c;
+                    f32 one, time, rate, two;
+                    time = (f32)timer;
+                    rate = (1.0f / 30.0f);
+                    one = 1.0f;
+                    two = 2.0f;
+                    f32 sq = one - rate * time;
+                    sq *= sq;
+                    f32 c = two * sq;
+                    if (c > one) {
+                        c = two - c;
                     }
-                    c *= lbl_8053D648;
+                    c *= 159.0f;
                     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), (f32*)(posBase + 0x84), 0, 0, (f32*)&out1);
-                    f32 inv = lbl_8053D63C - sq;
-                    uvCase1.set(sq * (out1.x - lbl_8053D64C), sq * (out1.y - lbl_8053D650), sq * (lbl_8053D64C + out1.x) + inv * w, sq * (lbl_8053D650 + out1.y) + inv * h);
                     JUtility::TColor col(0xff, 0xff, 0xff, (u8)c);
                     GXColor colorCopy = col;
+                    f32 inv = 1.0f - sq;
+                    uvCase1.set(sq * (out1.x - 20.0f), sq * (out1.y - 15.0f), sq * (20.0f + out1.x) + inv * w, sq * (15.0f + out1.y) + inv * h);
                     boxCase1.set(0.0f, 0.0f, w, h);
                     fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), boxCase1, uvCase1, &colorCopy, 0, 0, 0, 0);
                     break;
                 }
                 case 5: {
-                    vecA.set(*(f32*)(posBase + 0x84), *(f32*)(posBase + 0x88), *(f32*)(posBase + 0x8c) + lbl_8053D654);
+                    vecA.set(*(f32*)(posBase + 0x84), *(f32*)(posBase + 0x88), 6.0f + *(f32*)(posBase + 0x8c));
                     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), (f32*)&vecA, 1, 0, (f32*)&outA);
-                    vecB.set(*(f32*)(posBase + 0x84) + lbl_8053D64C, *(f32*)(posBase + 0x88) + lbl_8053D64C, *(f32*)(posBase + 0x8c) + lbl_8053D654);
+                    vecB.set(20.0f + *(f32*)(posBase + 0x84), 20.0f + *(f32*)(posBase + 0x88), 6.0f + *(f32*)(posBase + 0x8c));
                     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), (f32*)&vecB, 1, 0, (f32*)&outB);
+                    u32 white1 = 0xffffffff;
+                    GXColor copy1 = *(GXColor*)&white1;
+                    f32 x0 = outA.x - 80.0f;
+                    f32 y0 = outA.y - 80.0f;
+                    f32 x1 = 80.0f + outA.x;
+                    f32 y1 = 80.0f + outA.y;
                     outB.sub(outA);
-                    f32 dx = outB.x;
-                    f32 dy = outB.y;
-                    JUtility::TColor white1(0xffffffff);
-                    GXColor copy1 = white1;
-                    box1.i.x = outA.x - lbl_8053D660 - lbl_8053D664;
-                    box1.i.y = outA.y - lbl_8053D660 - lbl_8053D664;
-                    box1.f.x = outA.x + lbl_8053D660 + lbl_8053D664;
-                    box1.f.y = outA.y + lbl_8053D660 + lbl_8053D664;
-                    uv1.i.x=lbl_8053D658; uv1.i.y=lbl_8053D658; uv1.f.x=lbl_8053D65C; uv1.f.y=lbl_8053D65C;
+                    x0 -= 4.0f; y0 -= 4.0f; x1 += 4.0f; y1 += 4.0f;
+                    uv1.set(-256.0f, -256.0f, 256.0f, 256.0f);
+                    box1.set(x0, y0, x1, y1);
                     fn_8015F454(*(u8**)(p + 0x294), box1, uv1, &copy1, 0, 0, 0, 0);
-                    JUtility::TColor white2(0xffffffff);
-                    GXColor copy2 = white2;
-                    box2.i.x = outA.x - lbl_8053D660;
-                    box2.i.y = outA.y - lbl_8053D660;
-                    box2.f.x = lbl_8053D660 + outA.x;
-                    box2.f.y = lbl_8053D660 + outA.y;
-                    uv2.i.x = outA.x - dx;
-                    uv2.i.y = outA.y - dy;
-                    uv2.f.x = outA.x + dx;
-                    uv2.f.y = outA.y + dy;
+                    u32 white2 = 0xffffffff;
+                    GXColor copy2 = *(GXColor*)&white2;
+                    uv2.set(outA.x - outB.x, outA.y - outB.y, outA.x + outB.x, outA.y + outB.y);
+                    box2.set(outA.x - 80.0f, outA.y - 80.0f, 80.0f + outA.x, 80.0f + outA.y);
                     fn_8015F454(*(u8**)((u8*)lbl_8053AB10 + 0x34), box2, uv2, &copy2, 0, *(u8**)(p + 0x294), 1, 0);
                     break;
                 }
@@ -245,18 +250,18 @@ extern "C" void fn_8015F9C0(u8* p) {
         }
     }
     f32 old = *(f32*)(p + 0x288);
-    if (old > lbl_8053D628) {
+    if (old > 0.0f) {
         f32 sq = old * old;
-        u8 alpha = (u8)(lbl_8053D668 * sq);
+        u8 alpha = (u8)(255.0f * sq);
         JUtility::TColor col(0, 0, 0, alpha);
         fn_8013B460(lbl_8053AB10);
-        f32 bh = lbl_8053D66C * sq;
-        J2DFillBox(lbl_8053D628, lbl_8053D628, (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4), bh, col);
-        J2DFillBox(lbl_8053D628, (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6) - bh,
+        f32 bh = 48.0f * sq;
+        J2DFillBox(0.0f, 0.0f, (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4), bh, col);
+        J2DFillBox(0.0f, (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6) - bh,
             (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4), (f32)(int)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6), col);
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_8016005C(u8* p) {
     u8* q = p;
     for (int i = 0; i < 4; i++) {

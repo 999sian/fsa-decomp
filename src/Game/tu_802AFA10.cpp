@@ -1,6 +1,7 @@
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804A8470[];
@@ -357,4 +358,6 @@ extern "C" void fn_802B0194(u8* this_) {
 		break;
 	}
 }
+
+void fn_802B0338(void) {}
 

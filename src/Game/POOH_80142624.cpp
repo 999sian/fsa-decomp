@@ -120,6 +120,176 @@ extern "C" void fn_80142684(Actor* this_) {
         }
     }
 }
+
+extern "C" void fn_801F71A4(f32*, f32, f32, f32);
+extern "C" u8 fn_801F37AC(Actor*,s32,void*,s32,s32,s32);
+extern "C" s32 fn_801F3D94(Actor*,s32);
+extern "C" void fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void* fn_801F856C();
+extern "C" void* Actor_CreateByID(void*,u32,u32,void*,s32,s32,s32);
+extern "C" u8 fn_801F305C(Actor*);
+extern "C" s32 fn_801F2718(Actor*,u32);
+extern "C" s32 fn_801F285C(Actor*,s32,s32,s32,s32);
+extern "C" void fn_801EEC98(Actor*,s32,s16*,s32*,s32,s32,s32,s32);
+extern "C" void fn_801EE8F4(Actor*,void*,void*,s32);
+extern "C" void fn_8030C210(void*,void*);
+extern "C" void fn_801F2B7C(Actor*,s32,s32,s32);
+extern "C" void fn_80458FF0(void*,s32,s32,s32);
+extern "C" void* lbl_8053AF80;
+extern "C" s32 lbl_8049F2F8[];
+extern const f32 lbl_8053CF3C;
+extern const f32 lbl_8053CF44;
+extern const f32 lbl_8053CF48;
+extern const f32 lbl_8053CF4C;
+extern const f32 lbl_8053CF50;
+extern const f32 lbl_8053CF54;
+extern const f32 lbl_8053CF5C;
+extern const f32 lbl_8053CF80;
+extern const f32 lbl_8053CF84;
+extern const f32 lbl_8053CF88;
+extern const f32 lbl_8053CF8C;
+extern const f32 lbl_8053CF90;
+#pragma opt_lifetimes off
+extern "C" void fn_8014292C(Actor* p) {
+    s16 hit = 0;
+    s32 result = 0;
+    if(POOH_S32(p,0x254)==0 && p->field_94>=4 && p->field_94<=7) {
+        if(!(u8)p->v11()) return;
+        POOH_S32(p,0x254)=1;
+        p->field_B0=0x201;
+        if(p->field_94==7) p->field_B0=0x4000000;
+    }
+    if(p->field_94==8) {
+        if(!(u8)p->v11() && POOH_S32(p,0x248)==0) return;
+        POOH_S32(p,0x248)++;
+        if(POOH_S32(p,0x248)>30) {
+            fn_80458FF0(lbl_8053AF80,0x1000004,0,0);
+            p->field_11C=0;
+        }
+        return;
+    }
+    if(POOH_S32(p,0x234)!=0) {
+        fn_801F37AC(p,0x80,&p->field_0C,3,0,-1);
+        POOH_S32(p,0x234)=0;
+    }
+    if(fn_801F3D94(p,1)!=0) {
+        if((s32)p->field_E0==0x1d) {
+            fn_8013CC50(p->field_04,&p->field_0C,0x1ff,1,1,0,0,1,lbl_8053CF30);
+            if(p->field_94==9) {
+                if(poohRand01()<lbl_8053CF3C) Actor_CreateByID(fn_801F856C(),0x4d54424f,p->field_04,&p->field_0C,1,-1,-1);
+                else Actor_CreateByID(fn_801F856C(),0x48415254,p->field_04,&p->field_0C,0,-1,-1);
+            }
+        }
+        return;
+    }
+    switch(POOH_S32(p,0x230)) {
+    case 0:
+        fn_801F71A4(&POOH_F32(p,0x270),lbl_8053CF40,lbl_8053CF44,lbl_8053CF48);
+        *(JGeometry::TVec3<f32>*)&p->field_0C += *(JGeometry::TVec3<f32>*)&p->field_3C;
+        if(POOH_S32(p,0x238)!=0) break;
+        p->field_3C.z=0.0f;
+        p->field_3C.y=0.0f;
+        p->field_3C.x=0.0f;
+        POOH_S32(p,0x230)=1;
+    case 1:
+        fn_801F71A4(&p->field_0C.z,lbl_8053CF50*((const PoohSinCos*)sincosTable___5JMath)[(u16)POOH_S32(p,0x24c)>>5].s+lbl_8053CF4C,lbl_8053CF44,lbl_8053CF30);
+        POOH_S32(p,0x24c) += (s32)(lbl_8053CF54*poohRand01())+0x200;
+        if((p->field_94==2 || p->field_94==6) && POOH_S32(p,0x238)==0) {
+            POOH_S32(p,0x238)=(s32)(lbl_8053CF58*poohRand01())+150;
+            POOH_S32(p,0x248)++;
+            POOH_S32(p,0x248)&=1;
+            if(POOH_S32(p,0x248)==0) fn_801F0E34(p,0x4001d,0);
+        }
+        if(POOH_S32(p,0x248)==0) {
+            fn_801F71A4(&POOH_F32(p,0x270),lbl_8053CF40,lbl_8053CF44,lbl_8053CF48);
+        } else {
+            fn_801F71A4(&POOH_F32(p,0x270),0.0f,lbl_8053CF44,lbl_8053CF48);
+            if((p->field_94==3 || p->field_94==7) && POOH_S32(p,0x238)==0) {
+                POOH_S32(p,0x248)=0;
+                fn_801F0E34(p,0x4001d,0);
+            }
+        }
+        if(POOH_S32(p,0x248)==0 && POOH_F32(p,0x270)>lbl_8053CF5C) {
+            if(p->field_94!=3 && p->field_94!=7 && p->field_B0==0) p->field_B0=0x201;
+            if(p->field_94!=3 && p->field_94!=7) {
+                if(fn_801F305C(p)) {
+                    POOH_F32(p,0x270)=lbl_8053CF40;
+                    fn_801F0E34(p,0x40025,0);
+                    return;
+                }
+            } else {
+                if(fn_801F2718(p,0x53504f54)>=0) {
+                    fn_801F0E34(p,0x40025,0);
+                    fn_801F37AC(p,0x80,&p->field_0C,3,0,-1);
+                    return;
+                }
+                for(s32 i=0;i<4;i++) {
+                    if(fn_801F285C(p,0,0,1,i)>=0) {
+                        fn_801F0E34(p,0x40024,0);
+                        POOH_S32(p,0x248)=1;
+                        POOH_S32(p,0x238)=20;
+                        break;
+                    }
+                }
+            }
+        } else p->field_B0=0;
+        if(POOH_S32(p,0x23c)==0) {
+            POOH_S32(p,0x23c)=(s32)(lbl_8053CF60*poohRand01())+60;
+            POOH_S32(p,0x250)^=1;
+        }
+        fn_801EEC98(p,p->field_198,&hit,&result,0,0,0,0);
+        if(result<0 || p->field_94==3 || p->field_94==7) {
+            p->field_3C.y=0.0f;
+            f32 distance = p->field_0C.x - POOH_F32(p,0x260);
+            if(std::sqrtf(distance*distance)>lbl_8053CF80) {
+                if(p->field_0C.x>POOH_F32(p,0x260)) POOH_S32(p,0x250)=1;
+                else POOH_S32(p,0x250)=0;
+            }
+        } else {
+            Vec direction;
+            fn_801EE8F4(p,&direction,0,0);
+            if(direction.x<0.0f) p->field_3C.x-=lbl_8053CF84;
+            else p->field_3C.x+=lbl_8053CF84;
+            if(p->field_94!=2 && p->field_94!=6) {
+                if(direction.y<0.0f) p->field_3C.y-=lbl_8053CF84;
+                else p->field_3C.y+=lbl_8053CF84;
+            }
+            POOH_F32(p,0x260)=p->field_0C.x;
+            POOH_F32(p,0x264)=p->field_0C.y;
+            POOH_F32(p,0x268)=p->field_0C.z;
+        }
+        if(POOH_S32(p,0x250)!=0) p->field_3C.x-=lbl_8053CF88;
+        else p->field_3C.x+=lbl_8053CF88;
+        ((JGeometry::TVec3<f32>*)&p->field_3C)->scale(lbl_8053CF8C);
+        *(JGeometry::TVec3<f32>*)&p->field_0C += *(JGeometry::TVec3<f32>*)&p->field_3C;
+        if(p->field_94>=4 && p->field_94<=7) fn_8030C210(*(void**)((u8*)lbl_8053AB10+0x24),&p->field_0C);
+        fn_801F2B7C(p,-100,-1,1);
+        break;
+    case 2: {
+        f32 distance;
+        fn_801EE8F4(p,0,&distance,0);
+        if(distance<lbl_8053CF90) {
+            POOH_F32(p,0x270)=lbl_8053CF5C;
+            fn_8013CC50(p->field_04,&p->field_0C,0x1fd,1,1,0,0,1,lbl_8053CF30);
+            fn_801F0E34(p,0x4001d,0);
+            POOH_S32(p,0x230)=1;
+        }
+        break;
+    }
+    }
+    if(POOH_S32(p,0x244)==0) {
+        result=0;
+        if(p->field_3C.x<0.0f) result=1;
+        POOH_S32(p,0x244)=lbl_8049F2F8[POOH_S32(p,0x258)];
+        POOH_S32(p,0x25c)=lbl_8049F2B8[result*8+POOH_S32(p,0x258)];
+        POOH_S32(p,0x258)++;
+        POOH_S32(p,0x258)&=7;
+    }
+    if(POOH_S32(p,0x238)>0) POOH_S32(p,0x238)--;
+    if(POOH_S32(p,0x23c)>0) POOH_S32(p,0x23c)--;
+    if(POOH_S32(p,0x240)>0) POOH_S32(p,0x240)--;
+    if(POOH_S32(p,0x244)>0) POOH_S32(p,0x244)--;
+}
 #pragma opt_lifetimes reset
 
 

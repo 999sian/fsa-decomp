@@ -12,6 +12,7 @@ extern "C" u8* fn_801F666C(void* mgr, s32 handle);
 extern "C" bool fn_801E1D9C(void* this_);
 
 // NonMatching: retail schedules "lwz r31, 0x2bc(r3)" before the r30 save.
+#pragma opt_propagation off
 extern "C" void fn_8021FDB8(u8* this_) {
     s32 handle = *(s32*)(this_ + 0x2bc);
     u8* child;
@@ -28,10 +29,11 @@ extern "C" void fn_8021FDB8(u8* this_) {
         dz = -1.0f;
         break;
     }
+    f32 z = *(f32*)(this_ + 0x14) + dz;
     Vec3f pos;
-    pos.z = *(f32*)(this_ + 0x14) + dz;
     pos.y = *(f32*)(this_ + 0x10);
     pos.x = *(f32*)(this_ + 0xc);
+    pos.z = z;
     switch ((s32)(*(u32*)(child + 0x90) & 0xff)) {
     case 0:
     case 1:
@@ -81,7 +83,7 @@ extern "C" void fn_8021FDB8(u8* this_) {
     *(Vec3f*)(child + 0xc) = pos;
     }
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 static u8 lbl_804CE8CC[0x94];

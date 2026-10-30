@@ -1,6 +1,6 @@
-// TU 0x8020fe50-0x80210630 (actor IBBM).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x8020fe50-0x80210630 — Actor 'IBBM' (Expanding Ice/Energy Beam Obstacle).
 #include "types.h"
+#include "JSystem/JGeometry.h"
 
 extern "C" {
 void fn_801CDD58();
@@ -88,10 +88,64 @@ void* lbl_804A6100[] = {
     0,
 };
 
-// ---- IBBM draw / hit / update / init ----
-#include "JSystem/JGeometry.h"
-
 struct IbbmRect { f32 x0, y0, x1, y1; };
+
+struct IbbmSub270 {
+    u8 _pad00[0x24];
+    void* mVtable; // +0x294 on IbbmActor
+    u8 _pad28[0x10];
+};
+
+struct IbbmOtherActor {
+    u8 _pad00[0x0C];
+    f32 mPos[3];         // +0x00C
+    u8 _pad18[0x164 - 0x18];
+    u8 mHitFlag164;      // +0x164
+    u8 _pad165[0x1A0 - 0x165];
+    u32 mActorFourCC;    // +0x1A0
+};
+
+struct IbbmActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPosX;
+    /* 0x010 */ f32 mPosY;
+    /* 0x014 */ f32 mPosZ;
+    /* 0x018 */ u8 _pad18[0x54 - 0x18];
+    /* 0x054 */ JGeometry::TVec3<f32> mScale;
+    /* 0x060 */ IbbmRect mBounds60;
+    /* 0x070 */ IbbmRect mBounds70;
+    /* 0x080 */ IbbmRect mBounds80;
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[4];
+    /* 0x098 */ s32 mDirection;      // Unpacked from spawnParam & 3
+    /* 0x09C */ u8 _pad9C[0xB0 - 0x9C];
+    /* 0x0B0 */ s32 mCollisionMask;
+    /* 0x0B4 */ u8 _padB4[0x108 - 0xB4];
+    /* 0x108 */ s32 mSortPriority;
+    /* 0x10C */ u8 _pad10C[0x11C - 0x10C];
+    /* 0x11C */ u8 mActiveFlag;
+    /* 0x11D */ u8 _pad11D[0x195 - 0x11D];
+    /* 0x195 */ u8 mLayerFlag;
+    /* 0x196 */ u8 _pad196[2];
+    /* 0x198 */ s32 mActorHandle;
+    /* 0x19C */ u8 _pad19C[0x230 - 0x19C];
+    /* 0x230 */ u32 mItemFlags;
+    /* 0x234 */ u8 _pad234[0x244 - 0x234];
+    /* 0x244 */ s32 mCopiedPriority;
+    /* 0x248 */ s32 mState;          // 0 = warmup, 1 = expanding to 3.0x, 2 = active/fading
+    /* 0x24C */ s32 mStateTimer;
+    /* 0x250 */ s32 mTargetId;
+    /* 0x254 */ f32 mSpeedX;
+    /* 0x258 */ f32 mSpeedY;
+    /* 0x25C */ u8 _pad25C[0x270 - 0x25C];
+    /* 0x270 */ IbbmSub270 mAnimSub;
+    /* 0x2A8 */ f32 mAnimProgress;
+    /* 0x2AC */ s32 mSwitchFlagId;   // Unpacked from (spawnParam >> 2) & 0x1F
+    /* 0x2B0 */ s32 mSoundEffectId;  // 0x1A8 or 0x1C1
+    /* 0x2B4 */ void* mEmitterHandle;
+};
 
 extern "C" {
 extern void* lbl_8053AB10;
@@ -118,70 +172,72 @@ void fn_8043D67C(void* mgr, s32 id, s32 a, s32 b);
 void fn_801F0E34(void* this_, s32 p1, s32 p2);
 s32 fn_8013CC50(u32 id, void* pos, s32 kind, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e);
 
+// IBBM draw (vtable slot 6)
 void fn_8020FE50(void* this_) {
-    char* p = (char*)this_;
-    if (((JGeometry::TVec3<f32>*)(p + 0x54))->isZero() == false) {
+    IbbmActor* p = (IbbmActor*)this_;
+    if (p->mScale.isZero() == false) {
         s32 frame = 0;
-        if (*(s32*)(p + 0x248) == 2) {
-            frame = (s32)*(f32*)(p + 0x2a8);
+        if (p->mState == 2) {
+            frame = (s32)p->mAnimProgress;
         }
         fn_80210630(this_, 0, 0, 0, frame);
     }
 }
 
 void fn_8020FED4(void* this_) {
-    char* p = (char*)this_;
+    IbbmActor* p = (IbbmActor*)this_;
     IbbmRect r;
     fn_80210A30(this_, &r);
-    r.x0 = r.x0 + *(f32*)(p + 0xc);
-    r.y0 = r.y0 + *(f32*)(p + 0x10);
-    r.x1 = r.x1 + *(f32*)(p + 0xc);
-    r.y1 = r.y1 + *(f32*)(p + 0x10);
+    r.x0 = r.x0 + p->mPosX;
+    r.y0 = r.y0 + p->mPosY;
+    r.x1 = r.x1 + p->mPosX;
+    r.y1 = r.y1 + p->mPosY;
     fn_8030C058(*(void**)((char*)lbl_8053AB10 + 0x24), &r);
 }
 
 s32 fn_8020FF4C(void* this_) {
-    char* p = (char*)this_;
-    if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > 0.0f && *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > 0.0f) {
-        s32 id = fn_801F82CC(fn_801F856C(), this_, *(u8*)(p + 0x195), 32.0f);
-        if (id >= 0 && id != *(s32*)(p + 0x198)) {
-            char* other = (char*)fn_801F666C(fn_801F856C(), id);
+    IbbmActor* p = (IbbmActor*)this_;
+    if (p->mBounds60.x1 - p->mBounds60.x0 > 0.0f && p->mBounds60.y1 - p->mBounds60.y0 > 0.0f) {
+        s32 id = fn_801F82CC(fn_801F856C(), this_, p->mLayerFlag, 32.0f);
+        if (id >= 0 && id != p->mActorHandle) {
+            IbbmOtherActor* other = (IbbmOtherActor*)fn_801F666C(fn_801F856C(), id);
             if (other != 0) {
-                if (*(u32*)(other + 0x1a0) == 'SWBM') {
-                    fn_801CB538(*(u32*)(p + 0x4), other + 0xc, 0, 0);
+                if (other->mActorFourCC == 'SWBM') {
+                    fn_801CB538(p->mRoomId, other->mPos, 0, 0);
                 }
-                *(u8*)(other + 0x164) = 1;
+                other->mHitFlag164 = 1;
             }
         }
     }
     return 0;
 }
 
+// IBBM state update
 void fn_80210014(void* this_) {
-    char* p = (char*)this_;
-    switch (*(s32*)(p + 0x248)) {
+    IbbmActor* p = (IbbmActor*)this_;
+    switch (p->mState) {
     case 0:
-        if (*(s32*)(p + 0x24c) >= 0x3c) {
-            *(s32*)(p + 0x24c) = 0;
-            *(s32*)(p + 0x248) = 1;
+        if (p->mStateTimer >= 0x3c) {
+            p->mStateTimer = 0;
+            p->mState = 1;
         }
         break;
     case 1:
-        if (3.0f != *(f32*)(p + 0x54)) {
-            fn_801CD950((f32*)(p + 0x54), 3.0f, 0.004f);
-            *(f32*)(p + 0x58) = *(f32*)(p + 0x54);
-            *(f32*)(p + 0x5c) = *(f32*)(p + 0x54);
-            fn_80210990(this_, *(s32*)(p + 0x98), (IbbmRect*)(p + 0x60));
-            *(IbbmRect*)(p + 0x70) = *(IbbmRect*)(p + 0x60);
+        if (3.0f != p->mScale.x) {
+            fn_801CD950(&p->mScale.x, 3.0f, 0.004f);
+            p->mScale.y = p->mScale.x;
+            p->mScale.z = p->mScale.x;
+            fn_80210990(this_, p->mDirection, &p->mBounds60);
+            p->mBounds70 = p->mBounds60;
         } else {
-            *(s32*)(p + 0x24c) = 0;
-            *(s32*)(p + 0x248) = 2;
+            p->mStateTimer = 0;
+            p->mState = 2;
         }
         break;
     case 2:
         if (fn_80210A6C(this_)) {
-            fn_80341CB0(*(u32*)(p + 0x4), p + 0xc);
-            s32 flag = *(s32*)(p + 0x2ac);
+            fn_80341CB0(p->mRoomId, &p->mPosX);
+            s32 flag = p->mSwitchFlagId;
             if (flag != 0) {
                 fn_802D8050(fn_802D6A9C(), flag, 1, 0xff);
             }
@@ -189,48 +245,48 @@ void fn_80210014(void* this_) {
         }
         break;
     }
-    if (*(u8*)(p + 0x11c)) {
-        f32 y = *(f32*)(p + 0x58) * fn_80210AF8(*(s32*)(p + 0x98)) + *(f32*)(p + 0x10);
-        f32 x = *(f32*)(p + 0x54) * fn_80210B34(*(s32*)(p + 0x98)) + *(f32*)(p + 0xc);
+    if (p->mActiveFlag) {
+        f32 y = p->mScale.y * fn_80210AF8(p->mDirection) + p->mPosY;
+        f32 x = p->mScale.x * fn_80210B34(p->mDirection) + p->mPosX;
         JGeometry::TVec3<f32> pos(x, y, 0.0f);
-        fn_8013CB44(*(void**)(p + 0x2b4), &pos, 0, 2, 1);
+        fn_8013CB44(p->mEmitterHandle, &pos, 0, 2, 1);
         fn_801F0E34(this_, 0x50026, 0);
     }
 }
 
+// IBBM init (vtable slot 1)
 void fn_802101C0(void* this_) {
-    char* p = (char*)this_;
+    IbbmActor* p = (IbbmActor*)this_;
     fn_801D0ED0(this_);
-    *(u32*)(p + 0x98) = *(u32*)(p + 0x90) & 3;
-    *(u32*)(p + 0x2ac) = (*(u32*)(p + 0x90) >> 2) & 0x1f;
+    p->mDirection = p->mSpawnParam & 3;
+    p->mSwitchFlagId = (p->mSpawnParam >> 2) & 0x1f;
     s32 se = 0x1a8;
-    if ((*(u32*)(p + 0x90) >> 7) & 1) {
+    if ((p->mSpawnParam >> 7) & 1) {
         se = 0x1c1;
     }
-    *(s32*)(p + 0x2b0) = se;
-    fn_80210990(this_, *(s32*)(p + 0x98), (IbbmRect*)(p + 0x60));
-    *(f32*)(p + 0x80) = 1.0f;
-    *(f32*)(p + 0x84) = 1.0f;
-    *(f32*)(p + 0x88) = -1.0f;
-    *(f32*)(p + 0x8c) = -1.0f;
-    *(s32*)(p + 0xb0) = 0x40004;
-    *(u32*)(p + 0x230) |= 0x380;
-    *(s32*)(p + 0x108) = 1000;
-    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
-    *(s32*)(p + 0x248) = 0;
-    *(s32*)(p + 0x24c) = 0;
-    *(s32*)(p + 0x250) = -1;
-    *(f32*)(p + 0x254) = 0.0f;
-    *(f32*)(p + 0x258) = 0.0f;
-    fn_8043D67C(lbl_8053AED0, *(s32*)(p + 0x2b0), 0, 0);
-    f32 y = *(f32*)(p + 0x58) * fn_80210AF8(*(s32*)(p + 0x98)) + *(f32*)(p + 0x10);
-    f32 x = *(f32*)(p + 0x54) * fn_80210B34(*(s32*)(p + 0x98)) + *(f32*)(p + 0xc);
+    p->mSoundEffectId = se;
+    fn_80210990(this_, p->mDirection, &p->mBounds60);
+    p->mBounds80.x0 = 1.0f;
+    p->mBounds80.y0 = 1.0f;
+    p->mBounds80.x1 = -1.0f;
+    p->mBounds80.y1 = -1.0f;
+    p->mCollisionMask = 0x40004;
+    p->mItemFlags |= 0x380;
+    p->mSortPriority = 1000;
+    p->mCopiedPriority = p->mSortPriority;
+    p->mState = 0;
+    p->mStateTimer = 0;
+    p->mTargetId = -1;
+    p->mSpeedX = 0.0f;
+    p->mSpeedY = 0.0f;
+    fn_8043D67C(lbl_8053AED0, p->mSoundEffectId, 0, 0);
+    f32 y = p->mScale.y * fn_80210AF8(p->mDirection) + p->mPosY;
+    f32 x = p->mScale.x * fn_80210B34(p->mDirection) + p->mPosX;
     JGeometry::TVec3<f32> pos(x, y, 0.0f);
-    *(s32*)(p + 0x2b4) = fn_8013CC50(*(u32*)(p + 0x4), &pos, 0x260, 1.0f, 0, 2, 0, 0, 1);
+    p->mEmitterHandle = (void*)fn_8013CC50(p->mRoomId, &pos, 0x260, 1.0f, 0, 2, 0, 0, 1);
 }
 }
 
-// ---- fn_80210314_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 #ifndef dtor_80084580
@@ -243,16 +299,16 @@ extern void* lbl_8049CC34[];
 
 extern "C" void* fn_80210314(void* this_, s16 freeFlag) {
     if (this_ != 0) {
-        char* p = (char*)this_;
-        *(void**)p = lbl_804A6100;
-        fn_801EE434(*(void**)(p + 0x2b4));
+        IbbmActor* p = (IbbmActor*)this_;
+        p->mVtable = lbl_804A6100;
+        fn_801EE434(p->mEmitterHandle);
         if (this_ != 0) {
-            *(void**)p = lbl_804A61C8;
+            p->mVtable = lbl_804A61C8;
             if (this_ != 0) {
-                *(void**)p = lbl_804A4808;
-                if (p + 0x270 != 0) {
-                    if (p + 0x294 != 0) {
-                        *(void**)(p + 0x294) = lbl_8049CC34;
+                p->mVtable = lbl_804A4808;
+                if (&p->mAnimSub != 0) {
+                    if (&p->mAnimSub.mVtable != 0) {
+                        p->mAnimSub.mVtable = lbl_8049CC34;
                     }
                 }
                 __dt__5ActorFv(this_, 0);
@@ -265,17 +321,14 @@ extern "C" void* fn_80210314(void* this_, s16 freeFlag) {
     return this_;
 }
 
-// ---- Ibbm_ctor_802103C0.cpp ----
-extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_80210AB4(void* this_);
-extern void* lbl_804A6100[];
 
-extern "C" void* fn_802103C0(void* this_) {
+extern "C" void* fn_802103C0(IbbmActor* this_) {
     fn_80210AB4(this_);
-    *(void**)this_ = lbl_804A6100;
-    *(s32*)((char*)this_ + 0x2ac) = 0;
-    *(s32*)((char*)this_ + 0x2b0) = 0;
-    *(s32*)((char*)this_ + 0x2b4) = 0;
+    this_->mVtable = lbl_804A6100;
+    this_->mSwitchFlagId = 0;
+    this_->mSoundEffectId = 0;
+    this_->mEmitterHandle = 0;
     return this_;
 }
 

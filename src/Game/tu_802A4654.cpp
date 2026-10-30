@@ -80,8 +80,8 @@ extern "C" void fn_802A4780(Unk802A4780* this_) {
     s32 id;
     if (a->m230 >= 2 && a->m230 < 9) {
         DrawRec rec;
-        const s32 (*yt)[4] = data + 7;
-        const s32 (*xt)[4] = (const s32 (*)[4])((const char*)data + 0);
+        const s32 (*xt)[4] = lbl_8046C658;
+        const s32 (*yt)[4] = lbl_8046C6C8;
         for (i = 0; i < 4; i++) {
             rec.b1d = -1;
             id = a->m250 + 0x10d;

@@ -378,11 +378,11 @@ extern "C" void fn_802E9B6C(char* p) {
             oldA=*(u32*)(p+0x280); oldB=*(u32*)(p+0x284);
             rec=(char*)fn_802D6A9C();
             *(u32*)(rec+4)=oldB; *(u32*)(rec+8)=oldA;
-            s32 i;
             s32 offset;
+            s32 i;
             s32 count;
             count=*(s32*)(fn_801F856C()+0x1008);
-            for (i=0,offset=0;i<count;++i,offset+=4) {
+            for (i=0,offset=0;i<count;offset+=4,++i) {
                 *(char**)(p+0x240)=*(char**)(fn_801F856C()+8+offset);
                 char* actor=*(char**)(p+0x240);
                 if (!actor || *(u32*)(actor+0x1a0)!=0x454f574c || *(u8*)(actor+0x11c)!=1 || (*(u32*)(actor+0x90)&0x100)) continue;
@@ -392,8 +392,9 @@ extern "C" void fn_802E9B6C(char* p) {
                 const f32* point=(f32*)lbl_804D5730 + *(u8*)(p+0x230)*2;
                 *(f32*)(p+0x250)=point[0];
                 *(f32*)(p+0x254)=point[1];
-                JGeometry::TVec2<f32> pos(*(f32*)(p+0x250), -30.0f+*(f32*)(p+0x254));
-                fn_8030C7C4(*(void**)(lbl_8053AB10+0x24), &pos.x, (f32)(s32)*(f32*)(p+0x270));
+                f32 zoom = (f32)(s32)*(f32*)(p+0x270);
+                JGeometry::TVec2<f32> pos(*(f32*)(p+0x250), *(f32*)(p+0x254)+-30.0f);
+                fn_8030C7C4(*(void**)(lbl_8053AB10+0x24), &pos.x, zoom);
                 *(u8**)(p+0x290)=lbl_804AA0B8[*(u8*)(p+0x230)];
                 *(f32*)(p+0x260)=lbl_80541320*(s32)(*(f32*)(p+0x250)*lbl_80541324);
                 *(f32*)(p+0x264)=lbl_80541328*(s32)(*(f32*)(p+0x254)/lbl_80541328);
@@ -424,8 +425,9 @@ extern "C" void fn_802E9B6C(char* p) {
         }
         *(u8*)(p+0x28d)=**(u8**)(p+0x290);
         if (*(u8*)(p+0x28d)==0xff) { *(s32*)(p+0x23c)=7; break; }
-        u32 a=Endm_paths[*(u8*)(p+0x28c)];
-        u32 b=Endm_paths[*(u8*)(p+0x28c)+1];
+        u32 b;
+        u16 a=Endm_paths[*(u8*)(p+0x28c)];
+        b=Endm_paths[*(u8*)(p+0x28c)+1];
         char* rec=(char*)fn_802D6A9C();
         *(u32*)(rec+4)=a; *(u32*)(rec+8)=b;
         if (*(u8*)(p+0x28d)==0) { s32 v[2]; v[0]=0; v[1]=-1; fn_802DCD1C(fn_802D6A9C(),v); }
@@ -495,7 +497,8 @@ extern "C" void fn_802E9B6C(char* p) {
             u8 inside=0;
             if(pos.x>=box.i.x && pos.y>=box.i.y && pos.x<box.f.x && pos.y<box.f.y) inside=1;
             if(!inside) goto finish;
-            if(!*(u8*)(*(char**)(p+0x240)+0x11c)) goto finish;
+            if(*(u8*)(*(char**)(p+0x240)+0x11c)) break;
+            goto finish;
         }
         break;
     case 8:

@@ -53,7 +53,8 @@ extern "C" void* lbl_8053AD30;
 extern "C" u8 lbl_8053ACD4[4];
 extern "C" u32 fn_8030AAF4(s32);
 extern "C" u8 fn_8030A308(void*, u32);
-extern "C" void fn_802B1610(void* param_1, s32 param_2) {
+#pragma opt_lifetimes off
+extern "C" void fn_802B1610(u8* param_1, s32 param_2) {
     if (lbl_80529DEC[0x21f] == 0) {
         __PADDisableRecalibration(0);
         if (param_2 == -1) {
@@ -86,7 +87,7 @@ extern "C" void fn_802B1610(void* param_1, s32 param_2) {
             fn_802B1558();
             u8* base = lbl_80529DEC;
             base[0x21b] = 0xa5;
-            for (s32 i = 0; i < 32; i += 8) {
+            for (s32 i = 0; i != 32; i += 8) {
                 ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
                 ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
                 ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
@@ -104,7 +105,7 @@ extern "C" void fn_802B1610(void* param_1, s32 param_2) {
         u8* base = lbl_80529DEC;
         if (base[0x238] != 0xff) {
             base[0x223] = 1;
-            for (s32 i = 0; i < 32; i += 8) {
+            for (s32 i = 0; i != 32; i += 8) {
                 ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
                 ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
                 ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
@@ -116,8 +117,9 @@ extern "C" void fn_802B1610(void* param_1, s32 param_2) {
             }
             __PADDisableRecalibration(0);
             fn_802B1558();
+            base = lbl_80529DEC;
             base[0x21b] = 0xa5;
-            for (s32 i = 0; i < 32; i += 8) {
+            for (s32 i = 0; i != 32; i += 8) {
                 ((u8*)(i - 0x7f900000))[0] = base[i + 0x216];
                 ((u8*)(i - 0x7f900000))[1] = base[i + 0x217];
                 ((u8*)(i - 0x7f900000))[2] = base[i + 0x218];
@@ -138,8 +140,8 @@ extern "C" void fn_802B1610(void* param_1, s32 param_2) {
         lbl_80529DEC[0x21f] = 1;
         ((u8*)lbl_8053ACA8)[4] = 1;
         if (((u8*)lbl_8053AAF0)[0x79] != 0) {
-            s32 r28 = 0;
-            s32 r29 = 0;
+            int r29 = 0;
+            int r28 = 0;
             u8* tbl = lbl_8053ACD4;
             for (s32 i = 0; i < 4; i++, tbl++) {
                 if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(i)) == 1) {
@@ -151,11 +153,11 @@ extern "C" void fn_802B1610(void* param_1, s32 param_2) {
             }
             if (r29 == r28) {
                 lbl_80529DEC[0x220] = 1;
-                ((u8*)param_1)[5] = 1;
+                param_1[5] = 1;
             }
         }
         u8* base2 = lbl_80529DEC;
-        for (s32 i = 0; i < 32; i += 8) {
+        for (s32 i = 0; i != 32; i += 8) {
             ((u8*)(i - 0x7f900000))[0] = base2[i + 0x216];
             ((u8*)(i - 0x7f900000))[1] = base2[i + 0x217];
             ((u8*)(i - 0x7f900000))[2] = base2[i + 0x218];
@@ -167,7 +169,7 @@ extern "C" void fn_802B1610(void* param_1, s32 param_2) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_802B1BE0(s32 param_1, int reset, u32 code, u8 forceMenu) {
     __PADDisableRecalibration(0);
     JUTXfb::getManager()->clearIndex();

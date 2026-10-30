@@ -82,7 +82,7 @@ extern "C" void fn_80348B40(u8* p) {
         }
     }
     if (B(p,0x265)==1) {
-        JGeometry::TVec3<f32>* pos=fn_8023E724(I(p,0x24c));
+        const JGeometry::TVec3<f32>* pos=static_cast<const JGeometry::TVec3<f32>*>(fn_8023E724(I(p,0x24c)));
         fn_801F37AC(p,fn_8023B6CC(I(p,0x24c)),pos,0,1,-1);
         s32 idx=I(p,0x250);
         if (idx>=0) {

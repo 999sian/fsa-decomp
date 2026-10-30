@@ -62,20 +62,35 @@ extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8022EA0C(s32);
 extern void* lbl_8053AAF8;
 extern "C" void fn_802E5CA8(char* p) {
-    f32 minX = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
-    f32 minY = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
-    f32 maxX = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
-    f32 maxY = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
-    s32 i;
-    s32 j;
     s32 n;
+    s32 j;
+    u32 mode;
+    s32 i;
+    s32 k;
+    f32 minX;
+    f32 minY;
+    f32 maxX;
+    f32 maxY;
+    f32 x;
+    f32 y;
+    y = *(f32*)(p + 0x10);
+    minY = *(f32*)(p + 0x64);
+    maxY = *(f32*)(p + 0x6c);
+    x = *(f32*)(p + 0xc);
+    minY += y;
+    minX = *(f32*)(p + 0x60);
+    maxY += y;
+    maxX = *(f32*)(p + 0x68);
+    minX += x;
+    maxX += x;
     *(s32*)(p + 0x258) = -1;
     *(s32*)(p + 0x25c) = -1;
     *(u16*)(p + 0x94) = 0xffff;
     if (*(s32*)(p + 0x240) != 2) {
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
             for (i = 0; i < 4; i++) {
-                if (((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) != 0) == 1 && *(s32*)(p + 4) == fn_8023DE58(i)) {
+                u8 on = bgmnPlayerOn(i);
+                if (on == 1 && *(s32*)(p + 4) == fn_8023DE58(i)) {
                     JGeometry::TVec3<f32> pt(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
                     if (bgmnInArea(pt, minX, minY, maxX, maxY)) {
                         *(s32*)(p + 0x258) = i;
@@ -132,32 +147,36 @@ extern "C" void fn_802E5CA8(char* p) {
             if (*(s32*)(p + 0x25c) >= 0 && fn_80230188(*(s32*)(p + 0x25c))) {
                 *(s32*)(p + 0x258) = *(s32*)(p + 0x24c);
             } else {
-                n = *(s32*)((char*)fn_801F856C() + 0x1008);
-                for (j = 0; j < n; j++) {
-                    char* o = ((char**)((char*)fn_801F856C() + 8))[j];
-                    if (o != 0 && *(u32*)(o + 0x1a0) == 'BGMN' && (*(u32*)(o + 0x90) & 0x7f) == *(u32*)(p + 0x234)) {
+                char* mgr = (char*)fn_801F856C();
+                j = 0;
+                n = *(s32*)(mgr + 0x1008);
+                for (; j < n; j++) {
+                    char* o = *(char**)((char*)fn_801F856C() + j * 4 + 8);
+                    if (o != 0 && *(u32*)(o + 0x1a0) == 'BGMN') {
                         u32 v = *(u32*)(o + 0x90);
                         s32 room = *(s32*)(o + 4);
-                        u32 mode = (v >> 12) & 0x1f;
-                        f32 w = lbl_80541228 * (f32)(s32)(((v >> 22) & 0x1f) + 1);
-                        f32 h = lbl_80541228 * (f32)(s32)(((v >> 17) & 0x1f) + 1);
-                        JGeometry::TVec3<f32> opos(*(JGeometry::TVec3<f32>*)(o + 0xc));
-                        *(f32*)(p + 0x60) = -w;
-                        *(f32*)(p + 0x64) = -h;
-                        *(f32*)(p + 0x68) = w;
-                        *(f32*)(p + 0x6c) = h;
-                        f32 x0 = *(f32*)(p + 0x60) + opos.x;
-                        f32 y0 = *(f32*)(p + 0x64) + opos.y;
-                        f32 x1 = *(f32*)(p + 0x68) + opos.x;
-                        f32 y1 = *(f32*)(p + 0x6c) + opos.y;
-                        for (i = 0; i < 4; i++) {
-                            if (room == fn_8023DE58(i)) {
-                                if (mode == 2) {
-                                    return;
-                                }
-                                JGeometry::TVec3<f32> pt(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
-                                if (bgmnInArea(pt, x0, y0, x1, y1)) {
-                                    return;
+                        if ((v & 0x7f) == *(u32*)(p + 0x234)) {
+                            mode = (v >> 12) & 0x1f;
+                            f32 w = lbl_80541228 * (f32)(s32)(((v >> 22) & 0x1f) + 1);
+                            f32 h = lbl_80541228 * (f32)(s32)(((v >> 17) & 0x1f) + 1);
+                            JGeometry::TVec3<f32> opos(*(JGeometry::TVec3<f32>*)(o + 0xc));
+                            *(f32*)(p + 0x60) = -w;
+                            *(f32*)(p + 0x64) = -h;
+                            *(f32*)(p + 0x68) = w;
+                            *(f32*)(p + 0x6c) = h;
+                            f32 x0 = *(f32*)(p + 0x60) + opos.x;
+                            f32 y0 = *(f32*)(p + 0x64) + opos.y;
+                            f32 x1 = *(f32*)(p + 0x68) + opos.x;
+                            f32 y1 = *(f32*)(p + 0x6c) + opos.y;
+                            for (k = 0; k < 4; k++) {
+                                if (room == fn_8023DE58(k)) {
+                                    if (mode == 2) {
+                                        return;
+                                    }
+                                    JGeometry::TVec3<f32> pt(*(JGeometry::TVec3<f32>*)fn_8023E724(k));
+                                    if (bgmnInArea(pt, x0, y0, x1, y1)) {
+                                        return;
+                                    }
                                 }
                             }
                         }
@@ -172,10 +191,10 @@ extern "C" void fn_802E5CA8(char* p) {
             *(s32*)(p + 0x258) = -1;
         }
     } else if (*(s32*)(p + 0x254) != *(s32*)(p + 4)) {
-        u8 free = 1;
+        s32 free = 1;
         n = *(s32*)((char*)fn_801F856C() + 0x1008);
         for (j = 0; j < n; j++) {
-            char* o = ((char**)((char*)fn_801F856C() + 8))[j];
+            char* o = *(char**)((char*)fn_801F856C() + j * 4 + 8);
             if (o != 0 && j != *(s32*)(p + 0x198) && *(u32*)(o + 0x1a0) == 'BGMN' && *(s32*)(p + 0x254) == *(s32*)(o + 4)) {
                 if (*(u16*)(o + 0x94) != 0xffff) {
                     free = 0;
@@ -194,7 +213,7 @@ extern "C" void fn_802E5CA8(char* p) {
             JGeometry::TVec3<f32> pt(*(JGeometry::TVec3<f32>*)fn_8023E724(*(s32*)(p + 0x25c)));
             n = *(s32*)((char*)fn_801F856C() + 0x1008);
             for (j = 0; j < n; j++) {
-                char* o = ((char**)((char*)fn_801F856C() + 8))[j];
+                char* o = *(char**)((char*)fn_801F856C() + j * 4 + 8);
                 if (o != 0 && *(u32*)(o + 0x1a0) == 'BGMN' && *(s32*)(p + 0x254) == *(s32*)(o + 4)) {
                     u32 v = *(u32*)(o + 0x90);
                     if (((v >> 12) & 0x1f) == 2) {
@@ -233,9 +252,7 @@ extern "C" void fn_802E5CA8(char* p) {
             }
             if (*(s32*)(p + 0x240) == 4 || (cur != 0x1000021 && cur != 0x1000019)) {
                 s32 s = *(s32*)(p + 0x234);
-                if (s == 0x11) {
-                    fn_80458F9C(lbl_8053AF80, 0x3c);
-                } else {
+                if (s != 0x11) {
                     if (s == 0x14 || s == 0x1e) {
                         fn_80458F04(lbl_8053AF80, lbl_8046F1C8[s]);
                     } else {
@@ -245,6 +262,8 @@ extern "C" void fn_802E5CA8(char* p) {
                     if (s < 0x11 || s == 0x26) {
                         fn_802D7970(fn_802D6A9C(), s);
                     }
+                } else {
+                    fn_80458F9C(lbl_8053AF80, 0x3c);
                 }
                 if (*(s32*)(p + 0x240) == 3 || *(s32*)(p + 0x240) == 4) {
                     *(u8*)(p + 0x11c) = 0;

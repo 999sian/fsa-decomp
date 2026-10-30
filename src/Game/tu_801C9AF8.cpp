@@ -272,7 +272,15 @@ static inline JGeometry::TVec2<f32> tuProject(const JGeometry::TVec2<f32>& pos) 
 }
 
 // near-match (~96%): stack slot order and loop register allocation differ
-extern "C" u8 fn_801CA274(char* p) {
+#pragma opt_propagation on
+#pragma opt_common_subs off
+extern "C" u8 fn_801CA274(char* this_) {
+    char* p = this_;
+    JGeometry::TVec3f v;
+    JGeometry::TVec3f t;
+    JGeometry::TVec2<f32> out;
+    JGeometry::TVec2<f32> pos;
+    u8 res;
     s32 bit;
     u8 mask;
     u8 r = 0;
@@ -284,7 +292,7 @@ extern "C" u8 fn_801CA274(char* p) {
         mask = m;
         if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
             && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
-            u8 hit = fn_8021693C(p + 0x528, m);
+            u8 hit = fn_8021693C(p + 0x528, (u8)m);
             if (hit) {
                 u8 done = 0;
                 for (s32 i = 0; i < 4; i++) {
@@ -315,23 +323,26 @@ extern "C" u8 fn_801CA274(char* p) {
             *(f32*)(p + 0x64) = *(f32*)(p + 0x530);
             *(f32*)(p + 0x68) = *(f32*)(p + 0x534);
             *(f32*)(p + 0x6c) = *(f32*)(p + 0x538);
-            u8 res;
-            if (mask == 0) {
+            if ((mask &= 0xff) == 0) {
                 res = 0;
             } else {
                 res = fn_801F2740(p, -1);
                 if (res) {
-                    JGeometry::TVec2<f32> pos;
                     fn_801F3128(p, &pos);
                     for (s32 i = 0; i < 4; i++) {
                         s32 bit2 = 1 << i;
                         if (res & bit2) {
                             if (mask & bit2) {
-                                JGeometry::TVec2<f32> out;
                                 if (fn_801F329C(p, i)) {
-                                    out = tuProject(pos);
+                                    v.x = pos.x;
+                                    v.y = pos.y;
+                                    v.z = lbl_8053EF20;
+                                    fn_801CD0D0(&v, &t);
+                                    out.x = t.x;
+                                    out.y = t.y;
                                 } else {
-                                    out.set(pos);
+                                    out.x = pos.x;
+                                    out.y = pos.y;
                                 }
                                 fn_80238548(i, *(s32*)(p + 0x114), &out, 2);
                             } else {
@@ -350,7 +361,9 @@ extern "C" u8 fn_801CA274(char* p) {
     }
     return r;
 }
-
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 extern const f32 lbl_8053EF24;
 extern const f32 lbl_8053EF38;
 extern const f32 lbl_8053EF3C;

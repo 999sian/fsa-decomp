@@ -204,4 +204,8 @@ extern "C" void* fn_8037B0B8(void** self)
     }
     return self;
 }
+
+extern "C" void fn_8037B150(void) {
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

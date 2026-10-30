@@ -2188,10 +2188,12 @@ static inline u8* HudNewPaneState8041() {
 }
 
 extern u8 lbl_804B1390[];
+#pragma opt_loop_invariants off
 extern "C" u8* fn_80420574(u8* self) {
     const u8* base = (const u8*)lbl_8048D320;
+    const u8* ids = lbl_804B1390;
     const HudPaneNames8041* names = HudNames8041();
-    *(u8**)self = lbl_804B1390 + 0x44;
+    *(const u8**)self = ids + 0x44;
     *(s32*)(self+0x244) = -1;
     *(s32*)(self+0x248) = -1;
     if (*(s32*)(lbl_80529DEC+0x118) != 0 || *(s32*)(lbl_80529DEC+0x11c) != 0)
@@ -2231,8 +2233,8 @@ extern "C" u8* fn_80420574(u8* self) {
     HudHidePane8041(self, 0x005070326c693031ULL);
     HudHidePane8041(self, 0x005070336c693031ULL);
     HudHidePane8041(self, 0x005070346c693031ULL);
-    self[0x24c] = (*(J2DScreen**)(self+0x4))->search(names->a388[0])->getAlpha();
-    self[0x24d] = (*(J2DScreen**)(self+0x4))->search(names->a388[1])->getAlpha();
+    self[0x24c] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a388, 0))->getAlpha();
+    self[0x24d] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a388, 1))->getAlpha();
     self[0x24e] = (*(J2DScreen**)(self+0x4))->search(names->a338[0])->getAlpha();
     self[0x24f] = (*(J2DScreen**)(self+0x4))->search(names->a360[0])->getAlpha();
     self[0x25e] = (*(J2DScreen**)(self+0x4))->search(names->a248[0])->getAlpha();
@@ -2243,12 +2245,12 @@ extern "C" u8* fn_80420574(u8* self) {
         self[0x258+i] = (*(J2DScreen**)(self+4))->search(a[0])->getAlpha();
         self[0x25b+i] = (*(J2DScreen**)(self+4))->search(b[0])->getAlpha();
     }
-    self[0x260] = (*(J2DScreen**)(self+0x4))->search(names->a8f8[0][0])->getAlpha();
-    self[0x261] = (*(J2DScreen**)(self+0x4))->search(names->a8f8[0][1])->getAlpha();
-    self[0x262] = (*(J2DScreen**)(self+0x4))->search(names->a8f8[0][2])->getAlpha();
-    self[0x263] = (*(J2DScreen**)(self+0x4))->search(names->a8f8[0][3])->getAlpha();
-    self[0x264] = (*(J2DScreen**)(self+0x4))->search(names->a8f8[0][4])->getAlpha();
-    self[0x265] = (*(J2DScreen**)(self+0x4))->search(names->a8f8[0][5])->getAlpha();
+    self[0x260] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a8f8[0], 0))->getAlpha();
+    self[0x261] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a8f8[0], 1))->getAlpha();
+    self[0x262] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a8f8[0], 2))->getAlpha();
+    self[0x263] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a8f8[0], 3))->getAlpha();
+    self[0x264] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a8f8[0], 4))->getAlpha();
+    self[0x265] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a8f8[0], 5))->getAlpha();
     self[0x266] = (*(J2DScreen**)(self+0x4))->search(names->b40[0])->getAlpha();
     self[0x267] = (*(J2DScreen**)(self+0x18))->search(names->b20[0])->getAlpha();
     self[0x250] = (*(J2DScreen**)(self+0x4))->search(names->a148[0])->getAlpha();
@@ -2257,10 +2259,10 @@ extern "C" u8* fn_80420574(u8* self) {
     self[0x253] = (*(J2DScreen**)(self+0x4))->search(names->a208[0])->getAlpha();
     self[0x26a] = (*(J2DScreen**)(self+4))->search(0x506870316e693032ULL)->getAlpha();
     self[0x26b] = (*(J2DScreen**)(self+4))->search(0x506870316e693031ULL)->getAlpha();
-    self[0x26c] = (*(J2DScreen**)(self+0x4))->search(names->a398[0])->getAlpha();
-    self[0x26d] = (*(J2DScreen**)(self+0x4))->search(names->a398[1])->getAlpha();
-    self[0x26e] = (*(J2DScreen**)(self+0x4))->search(names->a398[2])->getAlpha();
-    self[0x26f] = (*(J2DScreen**)(self+0x4))->search(names->a398[3])->getAlpha();
+    self[0x26c] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a398, 0))->getAlpha();
+    self[0x26d] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a398, 1))->getAlpha();
+    self[0x26e] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a398, 2))->getAlpha();
+    self[0x26f] = (*(J2DScreen**)(self+0x4))->search(HudPaneName8041(names->a398, 3))->getAlpha();
     self[0x268] = (*(J2DScreen**)(self+0x18))->search(names->ae0[0])->getAlpha();
     self[0x269] = (*(J2DScreen**)(self+0x18))->search(names->b00[0])->getAlpha();
     a=names->ab0;
@@ -2278,7 +2280,8 @@ extern "C" u8* fn_80420574(u8* self) {
     fn_80402F04(*(u8**)(self+0x6c), (*(J2DScreen**)(self+4))->search(0x004e646174613136ULL));
     *(u8**)(self+0x70) = HudNewPaneState8041();
     fn_80402F04(*(u8**)(self+0x70), (*(J2DScreen**)(self+4))->search(0x004e646174613032ULL));
-    const u64* q0=names->ae0;
+    const u64* playerNames=names->ae0;
+    const u64* q0=playerNames;
     const u64* q1=names->b20;
     const u64* q2=names->b40;
     const u64* q3=names->padb60;
@@ -2307,7 +2310,7 @@ extern "C" u8* fn_80420574(u8* self) {
     if (!lbl_8053AAF8[0x7e]) {
         a=names->a148; b=names->a188;
         for(s32 i=0;i<8;i++,a++,b++) {
-          const u32* resource=(const u32*)lbl_804B1390;
+          const u32* resource=(const u32*)ids;
           for(s32 j=0;j<3;j++,resource++) {
             const ResTIMG* img=(const ResTIMG*)fn_804030C4(0x54494d47, *resource);
             ((J2DPicture*)(*(J2DScreen**)(self+4))->search(a[0]))->append(img,lbl_80543A0C);
@@ -2315,9 +2318,9 @@ extern "C" u8* fn_80420574(u8* self) {
         }
         }
     } else {
-        a=names->ae0; b=names->b00;
+        a=playerNames; b=names->b00;
         for(s32 i=0;i<4;i++,a++,b++) {
-          const u32* resource=(const u32*)(lbl_804B1390+0x34);
+          const u32* resource=(const u32*)(ids+0x34);
           resource++;
           for(s32 j=1;j<4;j++,resource++) {
             const ResTIMG* img=(const ResTIMG*)fn_804030C4(0x54494d47, *resource);
@@ -2330,7 +2333,7 @@ extern "C" u8* fn_80420574(u8* self) {
         for(s32 i=0;i<4;i++) {
           a=names->c20; b=names->ca0;
           for(s32 j=0;j<8;j++,a++,b++) {
-            const u32* resource=(const u32*)lbl_804B1390;
+            const u32* resource=(const u32*)ids;
             for(s32 k=0;k<3;k++,resource++) {
             const ResTIMG* img=(const ResTIMG*)fn_804030C4(0x54494d47, *resource);
             ((J2DPicture*)(*(J2DScreen**)(self+8+i*4))->search(a[0]))->append(img,lbl_80543A0C);
@@ -2341,6 +2344,6 @@ extern "C" u8* fn_80420574(u8* self) {
       }
     return self;
 }
-
+#pragma opt_loop_invariants reset
 void __sinit_tu_80418B64_cpp() {}
 

@@ -377,9 +377,18 @@ extern "C" void fn_803187F4(Actor* this_)
     rect.x1 += *(f32*)(self + 0xc);
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
-    const Tu80317WordPair* __restrict box = (Tu80317WordPair*)(self + 0x248);
-    ((Tu80317WordPair*)&rect)->setFrom(box[0]);
-    ((Tu80317WordPair*)&rect + 1)->setFrom(box[1]);
+    {
+        u32 a = *(u32*)(self + 0x248);
+        u32 b = *(u32*)(self + 0x24c);
+        *(u32*)&rect.x0 = a;
+        *(u32*)&rect.y0 = b;
+    }
+    {
+        u32 a = *(u32*)(self + 0x250);
+        u32 b = *(u32*)(self + 0x254);
+        *(u32*)&rect.x1 = a;
+        *(u32*)&rect.y1 = b;
+    }
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);

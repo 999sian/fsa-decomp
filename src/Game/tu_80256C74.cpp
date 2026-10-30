@@ -2804,13 +2804,11 @@ extern "C" void fn_802A20F0(void*,void*,s32,s32,s32,s32);
 extern "C" u8 fn_8022E438(s32,s32);
 extern "C" u8 fn_802350A0(s32);
 #pragma opt_common_subs off
-extern "C" void fn_8025DACC(void* self) {
-u8* p=(u8*)self;
+extern "C" void fn_8025DACC(u8* p) {
+f32 maxX;
 f32 maxY;
 f32 minX;
-f32 inv;
 f32 minY;
-f32 maxX;
 JGeometry::TVec3<f32> check;
 JGeometry::TVec3<f32> scan;
 JGeometry::TBox2<f32> bounds;
@@ -2818,11 +2816,11 @@ JGeometry::TVec3<f32> ahead;
 JGeometry::TVec3<f32> direction;
 JGeometry::TVec3<f32> offset;
 JGeometry::TVec3<f32> attached;
-const u8* table=(const u8*)lbl_8046AF00;
+const Tu80256Tables* table=(const Tu80256Tables*)lbl_8046AF00;
 u16 tile;
 fn_80276E5C(p);fn_802709C8(p);
-s32 room=S32(p,0x3b4);
-if(*((u8*)fn_802D6A9C()+room+0x131df)){
+s32 room0=S32(p,0x3b4);
+if(((Tu80256RoomState*)fn_802D6A9C())->flags[room0]){
 fn_8024B298(p,2,&check);check.y+=lbl_805400C8;tile=fn_8022461C(&check,S32(p,0x3b4));
 }else{tile=fn_8022461C(p+8,S32(p,0x3b4));}
 if(tile==0x39){if(PTR(p,0x1368)==0){PTR(p,0x1368)=fn_8013CC50(S32(p,0x3b4),p+8,0x3d4,0,-1,(s32)(p+0x13a8),0,1,lbl_805400D4);}else{fn_8013CB44(PTR(p,0x1368),p+8,0,-1,1);}{u8* effect=PTR(p,0x1360);if(effect){U32(effect,0xf4)|=1;S32(effect,0x24)=1;PTR(p,0x1360)=0;}}{u8* effect=PTR(p,0x1364);if(effect){U32(effect,0xf4)|=1;S32(effect,0x24)=1;PTR(p,0x1364)=0;}}
@@ -2831,8 +2829,8 @@ if(tile==0x39){if(PTR(p,0x1368)==0){PTR(p,0x1368)=fn_8013CC50(S32(p,0x3b4),p+8,0
 if(fn_8026FC20(p)==2){{u8* effect=PTR(p,0x1364);if(effect){U32(effect,0xf4)|=1;S32(effect,0x24)=1;PTR(p,0x1364)=0;}}}else{if(PTR(p,0x1364)==0){PTR(p,0x1364)=fn_8013CC50(S32(p,0x3b4),p+8,0x115,0,-1,0,0,1,lbl_805400D4);}else{fn_8013CB44(PTR(p,0x1364),p+8,0,-1,1);}}
 {u8* effect=PTR(p,0x1368);if(effect){U32(effect,0xf4)|=1;S32(effect,0x24)=1;PTR(p,0x1368)=0;}}}
 if(fn_802415CC(p)>=2){
-room=S32(p,0x3b4);
-if(*((u8*)fn_802D6A9C()+room+0x131df)==0){
+s32 room1=S32(p,0x3b4);
+if(((Tu80256RoomState*)fn_802D6A9C())->flags[room1]==0){
 if(Player_IsLinked(p)){
 s32 value=fn_8023A1A4(Player_GetLinkTargetIndex(p));
 if(value>0){
@@ -2897,16 +2895,11 @@ else{S32(p,0xba8)=timer-1;if(S32(p,0xba8)==0)fn_80251AEC(p,0);}
 u16 terrain=fn_8022461C(p+8,S32(p,0x3b4));
 if(terrain==0x39||terrain==0xd){fn_8024F0E8(p,0x20052);}else if(fn_80224B88(p+8,S32(p,0x3b4))){fn_8024F0E8(p,0x20058);}else if(fn_80224E88(p+8,S32(p,0x3b4))){fn_8024F0E8(p,0x2005d);}else{fn_8024F0E8(p,0x20051);}
 U8(p,0x3fb)=1;U8(p,0x3f8)++;if(U8(p,0x3f8)>=16)U8(p,0x3f8)=0;
-U8(p,0x3f9)=table[0x30+S32(p,0x3dc)*8+(U8(p,0x3f8)>>1)];
+U8(p,0x3f9)=table->frames[S32(p,0x3dc)][(u32)U8(p,0x3f8)>>1];
 fn_8025D0B0(p);
 direction=V3(p,8)-V3(p,0x14);
-f32 sq=direction.squared();
-if(!(sq<=lbl_805400D8**(f32*)__float_epsilon)){
-if(sq<=lbl_805400C4)inv=sq;
-else{f32 y=__frsqrte(sq);inv=lbl_805400C0*y*(lbl_805400FC-sq*(y*y));}
-direction.scale(inv);
-}
-const JGeometry::TVec3<f32>* it=(const JGeometry::TVec3<f32>*)(table+0x50);
+direction.normalize();
+const JGeometry::TVec3<f32>* it=table->ring;
 for(s32 i=0;i<8;i++,it++){
 offset.set(*it);
 const JGeometry::TVec3<f32>& pos=V3(p,8)+offset;
@@ -2915,8 +2908,8 @@ fn_802A20F0(lbl_8053AC98,(void*)&pos,S32(p,4),S32(p,0x3b4),0,1);
 }
 fn_80268B3C(p);
 if(U8(p,0x3fa)>=10){
-room=S32(p,0x3b4);
-if(*((u8*)fn_802D6A9C()+room+0x131df)||U8(PTR(p,0xbf0),0xb8)==0){
+s32 room2=S32(p,0x3b4);
+if(((Tu80256RoomState*)fn_802D6A9C())->flags[room2]||U8(PTR(p,0xbf0),0xb8)==0){
 if(S32(p,0x3dc)==0){if(U8(PTR(p,0xbf0),0x48))fn_80251AEC(p,0x41);}
 else if(S32(p,0x3dc)==1){if(U8(PTR(p,0xbf0),0x49))fn_80251AEC(p,0x41);}
 else if(S32(p,0x3dc)==2){if(U8(PTR(p,0xbf0),0x4a))fn_80251AEC(p,0x41);}
@@ -2926,7 +2919,7 @@ else if(S32(p,0x3dc)==3){if(U8(PTR(p,0xbf0),0x4b))fn_80251AEC(p,0x41);}
 for(s32 i=0;i<4;i++){if(fn_8022E438(S32(p,4),i)&&fn_802350A0(i))fn_80251AEC(p,0x41);}
 if(Player_IsLinked(p)&&fn_802350A0(Player_GetLinkTargetIndex(p)))fn_80251AEC(p,0x41);
 u8* actor=fn_801F666C(fn_801F856C(),S32(p,0xbb4));
-if(actor){attached.set(((const JGeometry::TVec3<f32>*)(table+0xb0))[S32(p,0x3dc)]);attached.add(V3(p,8));V3(actor,0xc)=attached;}
+if(actor){attached.set(table->attached[S32(p,0x3dc)]);attached.add(V3(p,8));V3(actor,0xc)=attached;}
 }
 #pragma opt_common_subs reset
 extern "C" void fn_8027221C(void*, s32);

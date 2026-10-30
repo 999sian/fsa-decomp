@@ -256,7 +256,7 @@ extern "C" void fn_801D5390(u8* this_) {
         break;
     case 5: {
         s32 cur = *(s32*)(this_ + 0x5b0);
-        if (cur != -1 && (this_[cur * 0x18 + 0x2a8] != 0 || !fn_801D0B44(this_, cur))) {
+        if (cur != -1 && ((*(u8(*)[4][0x18])(this_ + 0x2a8))[cur][0] != 0 || !fn_801D0B44(this_, cur))) {
             *(s32*)(this_ + 0x5b0) = fn_801D5390_pick(this_);
             fn_801D5D84(this_, 5);
         } else if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {

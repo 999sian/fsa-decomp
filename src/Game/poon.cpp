@@ -173,6 +173,8 @@ static inline JGeometry::TVec2f poonCenter(const JGeometry::TVec3f& pos, const f
     f32 y1 = bounds[3] + pos.y;
     return JGeometry::TVec2f((x0 - x1) * 0.5f + x1, (y0 - y1) * 0.5f + y1);
 }
+#pragma opt_strength_reduction reset
+#pragma peephole off
 extern "C" void fn_80167C94(char* this_) {
     s32 i;
     s32 r29;
@@ -249,7 +251,8 @@ extern "C" void fn_80167C94(char* this_) {
         void* o;
         if (r29 >= 0 && (o = fn_801F666C(fn_801F856C(), r29)) != 0) {
             f32 angle = JMath::atanTable_.atan2_(*(f32*)((char*)o + 0xc) - *(f32*)(this_ + 0xc), *(f32*)((char*)o + 0x10) - *(f32*)(this_ + 0x10));
-            ang = angle * 10430.4f;
+            angle *= 10430.4f;
+            ang = angle;
             *(f32*)(this_ + 0x3c) = -2.0f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
             *(f32*)(this_ + 0x40) = -2.0f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
             *(f32*)(this_ + 0x274) = 0.0f;
@@ -266,23 +269,29 @@ extern "C" void fn_80167C94(char* this_) {
                 r29 = fn_801F285C(this_, 0, 0, 1, i);
                 if (r29 >= 0) {
                     JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
-                    f32 x0 = *(f32*)(this_ + 0x60) + pos.x;
-                    f32 x1 = *(f32*)(this_ + 0x68) + pos.x;
-                    f32 y0 = *(f32*)(this_ + 0x64) + pos.y;
-                    f32 y1 = *(f32*)(this_ + 0x6c) + pos.y;
+                    f32 x0, x1, y0, y1;
+                    const f32 half = 0.5f;
+                    x0 = *(f32*)(this_ + 0x60);
+                    x1 = *(f32*)(this_ + 0x68);
+                    y0 = *(f32*)(this_ + 0x64);
+                    y1 = *(f32*)(this_ + 0x6c);
+                    x0 += pos.x;
+                    x1 += pos.x;
+                    y0 += pos.y;
+                    y1 += pos.y;
                     JGeometry::TVec2f center;
-                    center.set((x0 - x1) * 0.5f + x1, (y0 - y1) * 0.5f + y1);
+                    x0 -= x1;
+                    y0 -= y1;
+                    x0 = half * x0 + x1;
+                    y0 = half * y0 + y1;
+                    center.set(x0, y0);
                     if (fn_80237948(r29, &center) && *(s32*)(this_ + 0x240) == 0) {
                         ((void (*)(s32,void*,s32,s32,s32,s32,s32,s32,f32))fn_8013CC50)(*(s32*)(this_ + 4), this_ + 0xc, 0x117, 0, 1, 0, 0, 1, 1.0f);
                         ((void (*)(s32,void*,s32,s32,s32,s32,s32,s32,f32))fn_8013CC50)(*(s32*)(this_ + 4), this_ + 0xc, 0x118, 0, 1, 0, 0, 1, 1.0f);
                         fn_801F0E34(this_, 0x400d4, 0);
                         *(s32*)(this_ + 0x240) = 8;
                     }
-                    char* rng = lbl_8053AAF8;
-                    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-                    union { u32 u; f32 f; } rnd;
-                    rnd.u = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-                    ang += (s32)(4096.0f - 8192.0f * (rnd.f - 1.0f));
+                    ang += (s32)(4096.0f - 8192.0f * ((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1());
                     *(f32*)(this_ + 0x3c) = -6.0f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8));
                     *(f32*)(this_ + 0x40) = -6.0f * *(f32*)(sincosTable___5JMath + (((u16)ang >> 2) & 0x3ff8) + 4);
                     *(f32*)(this_ + 0x26c) = 0.0f;
@@ -311,7 +320,17 @@ extern "C" void fn_80167C94(char* this_) {
             f32 dy = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x264);
             if (*(s32*)(this_ + 0x238) == 0) {
             f32 d2 = dx * dx + dy * dy;
-            d2 = std::sqrtf(d2);
+            if (d2 > 0.0f) {
+                f64 g = __frsqrte(d2);
+                g = 0.5 * g * (3.0 - g * g * d2);
+                g = 0.5 * g * (3.0 - g * g * d2);
+                g = 0.5 * g * (3.0 - g * g * d2);
+                d2 = d2 * g;
+            } else if (d2 < 0.0) {
+                d2 = NAN;
+            } else if (isnan(d2)) {
+                d2 = NAN;
+            }
             if (d2 < 2.0f) {
                 if (*(s32*)(this_ + 0x250) != 3) {
                     fn_801F0E34(this_, 0x4001a, 0);
@@ -349,7 +368,8 @@ extern "C" void fn_80167C94(char* this_) {
         }
     }
 }
-
+#pragma opt_strength_reduction reset
+#pragma peephole reset
 struct PoonVec { f32 x, y, z; };
 
 // Poon init (vtable slot 1)

@@ -118,7 +118,7 @@ extern "C" void fn_8011DA20(u8* this_) {
     DrawRec b;
     f32 m[12];
     JGeometry::TVec3<f32> pos;
-    const JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
+    JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(this_ + 0x54);
     if (!(v.squared() <= lbl_8053C8C4 * (*(f32*)__float_epsilon))) {
         icwlScaleMatrix(m, v);
         a.w18 = m;

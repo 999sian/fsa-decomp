@@ -96,6 +96,7 @@ extern "C" void fn_80311C58(void* p) {
     fn_803075AC(*(void**)((u8*)p + 0x198), *(s32*)((u8*)p + 4), (u8*)p + 0xc, 0x386, 0, 2, -1, 0, 0, 0);
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_80311CD0(Actor* actor) {
     JGeometry::TBox2<f32> bounds;
     JGeometry::TVec3<f32> dialog58, dialog4c, dialog40, dialog34, copy28, pos, saved10;
@@ -135,8 +136,7 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy=*(f32*)(((u8*)actor)+0x234);
         fx1=*(f32*)(((u8*)actor)+0x238);
         fy1=*(f32*)(((u8*)actor)+0x23c);
-        f32 offsetY, offsetX, rangeY, one, rangeX;
-        one=1.0f;
+        f32 offsetY, offsetX, rangeY, rangeX;
         offsetX=64.0f;
         offsetY=32.0f;
         rangeX=416.0f;
@@ -147,10 +147,8 @@ extern "C" void fn_80311CD0(Actor* actor) {
         fy1-=offsetY;
         zero=lbl_805417CC;
         step=lbl_805417D0;
-        f32 rx=((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1();
-        f32 ry=((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1();
-        fx2=rangeX*rx+fx;
-        fy2=rangeY*ry+fy;
+        fx2=rangeX*((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()+fx;
+        fy2=rangeY*((JMARandFast*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()+fy;
         for (r30 = 0; r30 < 0x14; r30++) {
             for (r28 = 0; r28 < 0x1a; r28++) {
                 pos.x = fx2;
@@ -257,7 +255,7 @@ searchDone:
         break;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" Actor* fn_803122F8(Actor* p, s16 n) {
     if (p) {
         *(void**)p = lbl_804AAB40;

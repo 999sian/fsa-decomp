@@ -5168,13 +5168,9 @@ struct PlayerSlots {
 void fn_80254660(char* p) { initItemState(p); }
 
 void fn_80254744(char* p) {
-    if (S32(p, 0xd00) >= 2) {
-        s32 row = S32(fn_802D6A9C(), 4);
-        s32 col = S32(fn_802D6A9C(), 8);
-        if (stageCleared(row, col)) {
-            S32(p, 0xd00) = 0;
-            U8(p, 0xcfe) = 0;
-        }
+    if (S32(p, 0xd00) >= 2 && curStageCleared()) {
+        S32(p, 0xd00) = 0;
+        U8(p, 0xcfe) = 0;
     }
     if (U8(lbl_8053AAF8, 0x7f) == 0 && (U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) == 0) {
         U8(p, 0xcac) = 0;
@@ -5335,14 +5331,14 @@ void fn_80254744(char* p) {
         case 0x1c1:
             U16(p, 0x3c4) = 0x3d;
             break;
-        case 3:
-            U16(p, 0x3c4) = 0x3f;
-            break;
         case 1:
             U16(p, 0x3c4) = 0x3e;
             break;
         default:
             U16(p, 0x3c4) = 0x3e;
+            break;
+        case 3:
+            U16(p, 0x3c4) = 0x3f;
             break;
         }
     }

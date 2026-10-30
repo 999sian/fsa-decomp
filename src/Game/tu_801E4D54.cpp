@@ -42,8 +42,7 @@ static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
 }
 
 #pragma opt_lifetimes off
-extern "C" void fn_801E4D88(u8* actor) {
-    u8* this_ = actor;
+extern "C" void fn_801E4D88(u8* this_) {
     int cleanupIndex;
     u8* e;
     u8** actors;

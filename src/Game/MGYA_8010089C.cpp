@@ -284,7 +284,7 @@ extern const s32 lbl_8049C8D8[];
 extern void* lbl_8053AED0;
 extern u8* lbl_8053AF80;
 extern "C" u8* sManager__8JUTVideo;
-#pragma opt_lifetimes off
+#pragma opt_lifetimes on
 extern "C" void fn_80100D28(MGYA* this_) {
     JGeometry::TVec3f pos(this_->mPos);
     pos.y -= lbl_8053C160;
@@ -417,8 +417,8 @@ extern "C" void fn_80100D28(MGYA* this_) {
         break;
     case 4:
         fn_8043CB24(lbl_8053AED0, 3 - this_->m234 / 60, 0xff, 0, 1, 1,
-                    lbl_8053C170 * (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4),
-                    lbl_8053C170 * (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6), lbl_8053C174);
+                    lbl_8053C170 * (f32)(s32)JUTVideo::getManager()->getFbWidth(),
+                    lbl_8053C170 * (f32)(s32)JUTVideo::getManager()->getEfbHeight(), lbl_8053C174);
         if (this_->m234 % 60 == 0) {
             fn_801F0D20(this_, 0x3f);
         }
@@ -443,7 +443,7 @@ extern "C" void fn_80100D28(MGYA* this_) {
         }
         this_->m234++;
         if (this_->m234 >= lbl_8049C8D8[this_->m244] && this_->m23C >= 120) {
-            int n = lbl_8053C178 * lbl_8053AAF8->rnd.get();
+            s32 n = lbl_8053C178 * lbl_8053AAF8->rnd.get();
             spawn[0] = lbl_8053C17C + this_->m24C.x + lbl_8053C180 * (n % 3) + (lbl_8053C184 * lbl_8053AAF8->rnd.get() - lbl_8053C188);
             spawn[1] = this_->m24C.y - lbl_8053C18C + lbl_8053C180 * (n / 3) + (lbl_8053C184 * lbl_8053AAF8->rnd.get() - lbl_8053C188);
             spawn[2] = lbl_8053C190;
@@ -576,7 +576,7 @@ extern "C" void fn_80100D28(MGYA* this_) {
         break;
     }
 }
-#pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_80101B48(MGYA* this_) {
     s32 i;
     MGYA* p;

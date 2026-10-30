@@ -2,6 +2,7 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Box.h"
 
 
 extern void* lbl_804AE948[];
@@ -95,9 +96,10 @@ struct Quad {
 };
 extern "C" const Quad lbl_804752C0[4];
 extern "C" const Quad lbl_80475300[4];
+#pragma opt_propagation off
 extern "C" void fn_80379A90(Actor* this_) {
     u8 ok;
-    f32 rect[4];
+    JGeometry::TBox2<f32> rect;
     if (*(s32*)((u8*)this_ + 0x234) == 0 || (u8)this_->v11()) {
         switch (*(s32*)((u8*)this_ + 0x230)) {
         case 0:
@@ -106,12 +108,13 @@ extern "C" void fn_80379A90(Actor* this_) {
             }
             break;
         case 1: {
-            Vec saved = this_->field_0C;
+            Vec saved;
+            JGeometry::setTVec3f((f32*)&this_->field_0C, (f32*)&saved);
             ok = 0;
             if (fn_801F2618(this_, 0, 0)) {
                 ok = 1;
             }
-            this_->field_0C = saved;
+            JGeometry::setTVec3f((f32*)&saved, (f32*)&this_->field_0C);
             if (!ok) {
                 return;
             }
@@ -119,20 +122,19 @@ extern "C" void fn_80379A90(Actor* this_) {
         }
         }
         {
-            f32* t = (f32*)((u8*)lbl_80475340 + ((((this_->field_90 & 3) + *(s32*)((u8*)this_ + 0x230) * 4) * 16) & 0xff0));
-            rect[0] = t[0];
-            rect[1] = t[1];
-            rect[2] = t[2];
-            rect[3] = t[3];
-            rect[0] += this_->field_0C.x;
-            rect[2] += this_->field_0C.x;
-            rect[1] += this_->field_0C.y;
-            rect[3] += this_->field_0C.y;
-            fn_80239914(rect, *(s32*)((u8*)this_ + 0x4), *(void**)((u8*)this_ + 0x198));
+            u8 idx = (this_->field_90 & 3) + *(s32*)((u8*)this_ + 0x230) * 4;
+            const JGeometry::TBox2<f32>* table = (const JGeometry::TBox2<f32>*)lbl_80475340;
+            rect.set(table[idx]);
+            rect.i.x += this_->field_0C.x;
+            f32 y = this_->field_0C.y;
+            rect.f.x += this_->field_0C.x;
+            rect.i.y += y;
+            rect.f.y += y;
+            fn_80239914((f32*)&rect, *(s32*)((u8*)this_ + 0x4), *(void**)((u8*)this_ + 0x198));
         }
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80379BD8(Actor* this_) {
     u8* self = (u8*)this_;
     u32 w = *(u32*)(self + 0x90);

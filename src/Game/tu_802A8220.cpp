@@ -78,10 +78,8 @@ extern "C" void fn_802A8284(ActorExt* a) {
     case 0: {
         if(a->m244==3||a->m244==12){fn_801F0D20(a,3);a->m230=1;break;}
         if(!(u8)a->v11())break;
-        s32 angle;
         u32 param=0;
         u32 id;
-        s32 i;
         if((s32)a->m248>0)--a->m248;
         if(a->m24C>0)--a->m24C;
         if(a->m24C!=0) {
@@ -102,9 +100,7 @@ extern "C" void fn_802A8284(ActorExt* a) {
         case 13:param=0;id=0x524f5045;break;
         }
         if(a->m244==2||a->m244==4||(u32)(a->m244-8)<=3||a->m244==13) {
-            i=0;
-            angle=i;
-            for(;i<a->m240;i++) {
+            for(s32 i=0;i<a->m240;i++) {
                 if(a->m244==8) {
                     if(i==0) {
 f32 y=lbl_80540840*sincosTable___5JMath[0x401]+a->field_0C.y;
@@ -118,13 +114,12 @@ pos.y=y;pos.x=x;pos.z=lbl_80540844;
                 } else if(a->m244==10) {pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;pos.z=lbl_80540848;}
                 else if(a->m244==11||a->m244==13) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
 if(SpawnRadiusZero(radius))radius=lbl_80540850;
-f32 spread=lbl_8054085C*radius;
 f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
-f32 y=a->field_0C.y+(radius-spread*SpawnRandom());
-f32 x=a->field_0C.x+(radius-spread*SpawnRandom());
+f32 y=a->field_0C.y+(radius-lbl_8054085C*radius*SpawnRandom());
+f32 x=a->field_0C.x+(radius-lbl_8054085C*radius*SpawnRandom());
 pos.y=y;pos.z=z;pos.x=x;}
                 else {
-                    s32 idx=((u16)angle>>5);
+                    s32 idx=((u16)(i*0x2000)>>5);
                     f32 y=lbl_80540868*sincosTable___5JMath[idx*2+1]+a->field_0C.y;
                     f32 x=lbl_80540868*sincosTable___5JMath[idx*2]+a->field_0C.x;
                     pos.z=lbl_80540844;pos.x=x;pos.y=y;
@@ -137,7 +132,6 @@ if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540
                     if(spawned){Vec velocity;velocity.x=lbl_80540854;velocity.y=lbl_80540854;velocity.z=lbl_8054086C;
                     JGeometry::setTVec3f((f32*)&velocity,(f32*)&spawned->field_3C);}
                 }
-                angle+=0x2000;
             }
             a->m248=40;a->m230=4;
         }
@@ -173,10 +167,9 @@ if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540
                 pos.z=lbl_80540854;
             } else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
 if(SpawnRadiusZero(radius))radius=lbl_80540850;
-f32 spread=lbl_8054085C*radius;
 f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
-f32 y=a->field_0C.y+(radius-spread*SpawnRandom());
-f32 x=a->field_0C.x+(radius-spread*SpawnRandom());
+f32 y=a->field_0C.y+(radius-lbl_8054085C*radius*SpawnRandom());
+f32 x=a->field_0C.x+(radius-lbl_8054085C*radius*SpawnRandom());
 pos.y=y;pos.z=z;pos.x=x;}
             else {f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
 f32 y=box[1]+(box[3]-box[1])*SpawnRandom();
@@ -196,10 +189,9 @@ pos.y=y;pos.z=z;pos.x=x;}
                 if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
                 else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
 if(SpawnRadiusZero(radius))radius=lbl_80540850;
-f32 spread=lbl_8054085C*radius;
 f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
-f32 y=a->field_0C.y+(radius-spread*SpawnRandom());
-f32 x=a->field_0C.x+(radius-spread*SpawnRandom());
+f32 y=a->field_0C.y+(radius-lbl_8054085C*radius*SpawnRandom());
+f32 x=a->field_0C.x+(radius-lbl_8054085C*radius*SpawnRandom());
 pos.y=y;pos.z=z;pos.x=x;}
                 else {f32 z=lbl_80540864*SpawnRandom()+lbl_80540860;
 f32 y=box[1]+(box[3]-box[1])*SpawnRandom();

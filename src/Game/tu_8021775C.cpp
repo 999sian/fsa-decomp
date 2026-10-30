@@ -24,46 +24,44 @@ extern "C" void fn_8021775C(void** p, f32 t) {
     } else {
         cur.x = cur.x + (target.x - cur.x) * (1.0f / t);
     }
+    f32 ty = target.y;
     if (t < *(f32*)__float_epsilon) {
-        cur.y = target.y;
+        cur.y = ty;
     } else {
-        cur.y = cur.y + (target.y - cur.y) * (1.0f / t);
+        cur.y = cur.y + (ty - cur.y) * (1.0f / t);
     }
+    f32 tz = target.z;
     if (t < *(f32*)__float_epsilon) {
-        cur.z = target.z;
+        cur.z = tz;
     } else {
-        cur.z = cur.z + (target.z - cur.z) * (1.0f / t);
+        cur.z = cur.z + (tz - cur.z) * (1.0f / t);
     }
     fn_8013CB44(p[4], &cur, 1, 1, 1);
     fn_8013CB44(p[5], &cur, 1, 1, 1);
 }
 
 extern "C" void fn_80217874(char* this_, f32 t) {
-    Vec* pa = (Vec*)(*(char**)(this_ + 0x18) + 0xc);
-    Vec* pb = (Vec*)(*(char**)(this_ + 0x18) + 0x60c);
-    Vec a;
-    Vec b;
-
-    a.x = pa->x;
-    a.y = pa->y;
-    a.z = pa->z;
-    b.x = pb->x;
-    b.y = pb->y;
-    b.z = pb->z;
+    JGeometry::TVec3<f32>* pa = (JGeometry::TVec3<f32>*)(*(char**)(this_ + 0x18) + 0xc);
+    JGeometry::TVec3<f32>* pb = (JGeometry::TVec3<f32>*)(*(char**)(this_ + 0x18) + 0x60c);
+    JGeometry::TVec3<f32> a(*pa);
+    JGeometry::TVec3<f32> b(*pb);
     if (t < *(f32*)__float_epsilon) {
         a.x = b.x;
     } else {
         a.x = (1.0f / t) * (b.x - a.x) + a.x;
     }
+    f32 by = b.y;
     if (t < *(f32*)__float_epsilon) {
-        a.y = b.y;
+        a.y = by;
     } else {
-        a.y = (1.0f / t) * (b.y - a.y) + a.y;
+        f32 inv = 1.0f / t;
+        a.y = inv * (by - a.y) + a.y;
     }
+    f32 bz = b.z;
     if (t < *(f32*)__float_epsilon) {
-        a.z = b.z;
+        a.z = bz;
     } else {
-        a.z = (1.0f / t) * (b.z - a.z) + a.z;
+        a.z = (1.0f / t) * (bz - a.z) + a.z;
     }
     fn_8013CB44(*(void**)(this_ + 8), &a, 1, 1, 1);
     fn_8013CB44(*(void**)(this_ + 0xc), &a, 1, 1, 1);
@@ -154,9 +152,7 @@ extern "C" void fn_80217AB8(u8* p) {
 extern "C" void fn_80217BC8(void** p) {
     if (p[2] == 0) {
         u8* obj = (u8*)p[6];
-        u8* sub = obj + 0xc;
-        u32 id = *(u32*)(obj + 4);
-        p[2] = fn_8013CC50(id, sub, 0x22f, 1, lbl_8053FC38, 1, 0, 0, 1);
+        p[2] = fn_8013CC50(*(u32*)(obj + 4), obj + 0xc, 0x22f, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[2];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -170,9 +166,7 @@ extern "C" void fn_80217BC8(void** p) {
     }
     if (p[3] == 0) {
         u8* obj = (u8*)p[6];
-        u8* sub = obj + 0xc;
-        u32 id = *(u32*)(obj + 4);
-        p[3] = fn_8013CC50(id, sub, 0x230, 1, lbl_8053FC38, 1, 0, 0, 1);
+        p[3] = fn_8013CC50(*(u32*)(obj + 4), obj + 0xc, 0x230, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[3];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -217,11 +211,11 @@ extern "C" void fn_80217CD8(void** p) {
     }
 }
 
-extern "C" void fn_80217DE8(void** p) {
-    u8* sub = (u8*)p[6] + 0xc;
-    u8* r = (u8*)fn_8013CC50(*(u32*)((u8*)p[6] + 4), sub, 0x231, 1, lbl_8053FC38, 1, 0, 0, 1);
-    sub = (u8*)p[6] + 0xc;
-    u8* r2 = (u8*)fn_8013CC50(*(u32*)((u8*)p[6] + 4), sub, 0x232, 1, lbl_8053FC38, 1, 0, 0, 1);
+extern "C" void fn_80217DE8(const u8* p) {
+    u8* sub = *(u8* const*)(p + 0x18) + 0xc;
+    u8* r = (u8*)fn_8013CC50(*(u32*)(*(u8* const*)(p + 0x18) + 4), sub, 0x231, 1, lbl_8053FC38, 1, 0, 0, 1);
+    sub = *(u8* const*)(p + 0x18) + 0xc;
+    u8* r2 = (u8*)fn_8013CC50(*(u32*)(*(u8* const*)(p + 0x18) + 4), sub, 0x232, 1, lbl_8053FC38, 1, 0, 0, 1);
     if (r != 0) {
         *(f32*)(r + 0x98) = lbl_804CD838[0];
         *(f32*)(r + 0x9c) = lbl_804CD838[1];
@@ -243,10 +237,12 @@ extern "C" void fn_80217DE8(void** p) {
 extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
 extern u16 lbl_8046A5A0[];
 extern const f32 lbl_8053FC38;
+#pragma opt_loop_invariants on
+#pragma opt_common_subs off
 extern "C" void fn_80217ED4(u8* self) {
     f32* tbl;
     u8* pos;
-    u16* ids;
+    const u16* ids;
     u8* obj;
     s32 i;
     i = 0;
@@ -255,8 +251,8 @@ extern "C" void fn_80217ED4(u8* self) {
     pos = obj + 0xc;
     tbl = lbl_804CD838;
     do {
-        u32 room = *(u32*)(obj + 4);
-        u8* r = (u8*)fn_8013CC50(room, pos, *ids, 1, lbl_8053FC38, 1, 0, 0, 1);
+        s32 id = *ids;
+        u8* r = (u8*)((void* (*)(u32, void*, s32, s32, s32, s32, s32, s32, f32))fn_8013CC50)(*(u32*)(obj + 4), pos, id, 1, 1, 0, 0, 1, lbl_8053FC38);
         if (r != 0) {
             *(f32*)(r + 0x98) = lbl_804CD838[0];
             *(f32*)(r + 0x9c) = tbl[1];
@@ -269,7 +265,8 @@ extern "C" void fn_80217ED4(u8* self) {
         ids++;
     } while (i < 6);
 }
-
+#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 extern "C" void** dtor_80217F80(void** p, s16 flag) {
     if (p != 0) {
         fn_801EE434(p[0]);

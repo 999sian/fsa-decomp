@@ -419,6 +419,7 @@ static inline u8 beryCheckFullItem(BeryFull* actor) {
     s32 id = actor->mSw[fn_8022F340(actor->mPlayer)];
     return fn_802D800C(fn_802D6A9C(), id);
 }
+#pragma peephole off
 extern "C" void fn_8038E368(BeryFull* this_) {
     s32 i;
     s32 anim;
@@ -701,5 +702,5 @@ state_done:
         }
     }
 }
-
+#pragma peephole reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -455,8 +455,7 @@ extern "C" void fn_803558A4(void* this_) {
                     f32 x=current.x-saved.x,y=current.y-saved.y;
                     f32 xSquared=x*x;
                     f32 ySquared=y*y;
-                    x=xSquared+ySquared;
-                    if(JGeometry::TUtilf::sqrt(x)>lbl_805427A8) {
+                    if(JGeometry::TUtilf::sqrt(xSquared+ySquared)>lbl_805427A8) {
                         temp=saved;
                         temp.sub(current);
                         delta=temp;

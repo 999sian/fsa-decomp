@@ -162,7 +162,11 @@ extern "C" s32 fn_80441A1C(Menu80441A1C* menu) {
             s16 limit;
             p8 = menu->alphaPane;
             tbl = (s16*)lbl_8050DB0C;
-            capPaneFrame(p8, tbl[0x94 / 2]);
+            frame = p8->alphaFrame;
+            limit = tbl[0x94 / 2];
+            if (frame > limit) {
+                p8->alphaFrame = limit;
+            }
             if (menu->movePane->alphaFrame > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
                 menu->movePane->alphaFrame = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
             }
@@ -176,7 +180,11 @@ extern "C" s32 fn_80441A1C(Menu80441A1C* menu) {
             s16 limit;
             p8 = menu->alphaPane;
             tbl = (s16*)lbl_8050DB0C;
-            capPaneFrame(p8, tbl[0x94 / 2]);
+            frame = p8->alphaFrame;
+            limit = tbl[0x94 / 2];
+            if (frame > limit) {
+                p8->alphaFrame = limit;
+            }
             if (menu->movePane->alphaFrame > ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2]) {
                 menu->movePane->alphaFrame = ((s16*)lbl_8050DB0C)[0x92 / 2] + tbl[0x94 / 2];
             }

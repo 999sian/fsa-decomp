@@ -106,6 +106,7 @@ static inline s32 cardBlockValid(const u8* const data) {
 extern "C" s32 fn_803B933C(void* unused, void* slots, s32 idx);
 extern "C" u8 lbl_8050EC80[];
 #pragma optimization_level 3
+#pragma opt_loop_invariants off
 extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 size) {
     u8* base = lbl_8051E2C0;
     u8* blkA = base + 0;
@@ -340,6 +341,7 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     *(u64*)(lbl_8051C1A0 + 0x1ff8) = serial;
     return 0;
 }
+#pragma opt_loop_invariants reset
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
     CARDFileInfo* fileInfo = info;
     void* src = data;

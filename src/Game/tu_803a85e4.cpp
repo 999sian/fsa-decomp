@@ -157,7 +157,6 @@ extern "C" void fn_80458090(void* obj);
 
 #pragma opt_lifetimes off
 extern "C" void* fn_803A8884(void* this_) {
-    void* o;
     void** self = (void**)this_;
     self[0] = lbl_804AF878;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
@@ -174,7 +173,7 @@ extern "C" void* fn_803A8884(void* this_) {
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), T85_RES->get('SCL ', "cu_cl_obj_base_scl.szs"), 0, 3, 0, 0, 0);
         *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
     }
-    o = __nw__FUl(0x364);
+    void* o = __nw__FUl(0x364);
     if (o != NULL) {
         fn_803EE254(o);
     }

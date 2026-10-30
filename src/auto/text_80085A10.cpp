@@ -518,7 +518,7 @@ extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
 extern "C" void fn_80086724(char* p, s32 index) {
     extern u8 lbl_8053B770[8];
     if (index < 0 || (u32)index >= *(u32*)(p + 0x70)) return;
-    (*(u8**)(p + 0x78))[index / 8] |= *((index & 7) + lbl_8053B770);
+    (*(u8**)(p + 0x78))[index / 8] |= lbl_8053B770[index & 7];
 }
 #pragma peephole reset
 extern "C" void JUTWarningConsole_f(const char*, ...);

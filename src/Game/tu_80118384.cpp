@@ -326,15 +326,15 @@ extern "C" void __dl__FPv(void*);
 extern "C" u32* fn_801189B0(u8* selfArg, void* positionArg, u32 amountArg) {
     u8* self = selfArg;
     u32 amount = amountArg;
-    u32* result;
-    u32* position = (u32*)positionArg;
     u32 capacity;
+    u32* position = (u32*)positionArg;
+    u32* result;
     u32 needed;
     u32* buffer;
-    u32* first;
+    register u32* first;
     u32* last;
-    u32* src;
-    u32* dst;
+    register u32* src;
+    register u32* dst;
     u32* split;
     u32* it;
     u32* volatile guard;
@@ -897,12 +897,12 @@ extern "C" void fn_80119998(u8* self, u32 frames, u32 b, s32 mode, u32 d, u32 e,
     }
 }
 
-#pragma opt_propagation off
+#pragma opt_propagation on
 extern "C" void fn_80119D48(u8* self) {
+    const ResTIMG* res;
     if (*(J2DPicture**)(self + 0x2c) == 0) {
         JKRFileLoader* obj = *(JKRFileLoader**)(lbl_8053AAF8 + 0xa4);
-        const ResTIMG* res;
-        res = static_cast<const ResTIMG*>(obj->getResource(0x3f3f3f3f, (const char*)lbl_80539F10));
+        res = (const ResTIMG*)obj->getResource(0x3f3f3f3f, (const char*)lbl_80539F10);
         *(J2DPicture**)(self + 0x2c) = new J2DPicture(res);
     }
 }

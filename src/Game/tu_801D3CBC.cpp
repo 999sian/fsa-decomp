@@ -64,8 +64,8 @@ extern "C" void fn_801D3DAC(void* this_, void* p2) {
     s32 room;
     u8* self=(u8*)this_;
     void* arg=p2;
-    DrawRec rec;
     u8 buf[12];
+    DrawRec rec;
     rec.w30 = 0xe;
     rec.b2e = 0x40;
     room=*(s32*)(self+4);

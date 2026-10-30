@@ -119,17 +119,26 @@ inline BOOL t34IsSet(s32 a, s32 b) {
     return (1 << (b + a * 4)) & lbl_8050EC80[lbl_8050EC80[0].cur].flags ? TRUE : FALSE;
 }
 
+#pragma opt_loop_invariants off
+#pragma opt_propagation off
 extern "C" void fn_80403514(T34Mgr* p) {
-    p->m118 = 0;
-    p->m11C = 0;
-    for (s32 a = 0; a < 8; a++) {
-        s32 base = a * 4;
-        for (s32 b = 0; b < 4; b++) {
+    int bit;
+    int base = 0;
+    p->m118 = base;
+    p->m11C = base;
+    int cur = lbl_8050EC80[0].cur;
+    for (int a = 0; a < 8; a++, base += 4) {
+        bit = base;
+        for (int b = 0; b < 4; bit++, b++) {
             BOOL set;
-            if (a < 0 || a > 7 || b < 0 || b > 3) {
+            if (a < 0 || a > 7) {
+                set = FALSE;
+            } else if (b < 0 || b > 3) {
                 set = FALSE;
             } else {
-                set = ((1 << (base + b)) & lbl_8050EC80[lbl_8050EC80[0].cur].flags) != 0;
+                T34SaveSlot* slot = &lbl_8050EC80[cur];
+                int mask = 1 << bit;
+                set = (mask & slot->flags) != 0;
             }
             if (!set) {
                 p->m118 = a;
@@ -145,7 +154,8 @@ extern "C" void fn_80403514(T34Mgr* p) {
         }
     }
 }
-
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 extern "C" void fn_80403680(T34Mgr* p) {
     for (int i = 0; i < 4; i++) {
         p->m68[i] = 0;

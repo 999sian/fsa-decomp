@@ -101,18 +101,19 @@ static inline void rope_startWait(u8* this_) {
     *(s32*)(this_ + 0x248) = 0;
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_801B78DC(u8* this_, u8 blocked) {
     s32 i;
     s32 dir;
-    int found;
+    u8 found;
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
     case 1:
         found = 0;
         if (*(s32*)(this_ + 0x24c) >= 0x1e) {
-            dir = 0;
+            dir = found;
             f32 best = *(f32*)__float_max;
-            for (i = 0; i < 4; i++) {
+            for (i = found; i < 4; i++) {
                 if (!fn_801D0B44(this_, i)) {
                     continue;
                 }
@@ -148,7 +149,7 @@ extern "C" void fn_801B78DC(u8* this_, u8 blocked) {
                             if (!fn_801CFD68(this_, 1, dx)) {
                                 best = d;
                                 dir = 1;
-                                found = 1;
+                                found = dir;
                             }
                         }
                     }
@@ -196,7 +197,7 @@ extern "C" void fn_801B78DC(u8* this_, u8 blocked) {
         break;
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_801B7D34(u8* this_) {
     fn_801D0ED0(this_);
     if (*(f32*)(this_ + 0x14) > 0.001f) {

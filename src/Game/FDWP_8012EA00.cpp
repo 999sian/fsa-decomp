@@ -1,9 +1,13 @@
-// FDWP_8012EA00: .text 0x8012EA00-0x8012F008 (actor FDWP, all-players warp trigger)
+// FDWP_8012EA00: .text 0x8012EA00-0x8012F008 — Actor 'FDWP' (All-Players-Present Warp Trigger).
 #include "types.h"
 
 struct FdwpVec {
     f32 x;
     f32 y;
+};
+
+struct FdwpBox {
+    f32 x0, y0, x1, y1;
 };
 
 extern "C" void v01__5ActorFv(void* this_);
@@ -26,24 +30,30 @@ extern u8* lbl_8053AAF8;
 
 class FDWP_Actor {
 public:
-    virtual void vf08();
-    virtual void vf0C();
-    virtual void vf10();
-    virtual void vf14();
-    virtual void vf18();
-    virtual void vf1C();
-    virtual void vf20();
-    virtual void vf24();
-    virtual void vf28();
-    virtual void vf2C();
+    virtual void vf08(); virtual void vf0C(); virtual void vf10(); virtual void vf14();
+    virtual void vf18(); virtual void vf1C(); virtual void vf20(); virtual void vf24();
+    virtual void vf28(); virtual void vf2C();
     virtual void vf30(s32, s32);
     virtual u8 vf34();
     virtual void vf38();
     virtual s32 vf3C();
-};
 
-#define S32(o) (*(s32*)(this_ + (o)))
-#define F32(o) (*(f32*)(this_ + (o)))
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPosX;
+    /* 0x010 */ f32 mPosY;
+    /* 0x014 */ f32 mPosZ;
+    /* 0x018 */ u8 _pad18[0x60 - 0x18];
+    /* 0x060 */ FdwpBox mBounds60;
+    /* 0x070 */ FdwpBox mBounds70;
+    /* 0x080 */ FdwpBox mBounds80;
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x230 - 0x94];
+    /* 0x230 */ s32 mState;      // 0 = checking players, 1 = delay timer, 2 = warping
+    /* 0x234 */ s32 mDestArea;   // Unpacked from (spawnParam >> 8) & 0xF
+    /* 0x238 */ s32 mDestRoom;   // Unpacked from (spawnParam >> 12) & 0xF
+    /* 0x23C */ s32 mWarpTimer;
+};
 
 extern "C" void* fn_8012EA00(void* this_, s16 freeFlag) {
     if (this_ != 0) {
@@ -56,21 +66,22 @@ extern "C" void* fn_8012EA00(void* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8012EA60(u8* this_) {
+// FDWP update (vtable slot 3)
+extern "C" void fn_8012EA60(FDWP_Actor* this_) {
     v03__5ActorFv(this_);
-    switch (S32(0x230)) {
+    switch (this_->mState) {
     case 0: {
-        if (((FDWP_Actor*)this_)->vf3C() != 0 && !((FDWP_Actor*)this_)->vf34()) {
+        if (this_->vf3C() != 0 && !this_->vf34()) {
             break;
         }
-        f32 x0 = F32(0x60);
-        f32 y0 = F32(0x64);
-        f32 x1 = F32(0x68);
-        f32 y1 = F32(0x6C);
-        x0 += F32(0xC);
-        x1 += F32(0xC);
-        y0 += F32(0x10);
-        y1 += F32(0x10);
+        f32 x0 = this_->mBounds60.x0;
+        f32 y0 = this_->mBounds60.y0;
+        f32 x1 = this_->mBounds60.x1;
+        f32 y1 = this_->mBounds60.y1;
+        x0 += this_->mPosX;
+        x1 += this_->mPosX;
+        y0 += this_->mPosY;
+        y1 += this_->mPosY;
         BOOL all;
         for (s32 i = 0; i < 4; i++) {
             if (lbl_8053AAF8[0x82] & (u8)(1 << i)) {
@@ -105,8 +116,8 @@ extern "C" void fn_8012EA60(u8* this_) {
         all = TRUE;
     done:
         if ((u8)all) {
-            S32(0x230) = 2;
-            switch (S32(0x230)) {
+            this_->mState = 2;
+            switch (this_->mState) {
             case 1:
                 fn_8023077C();
                 fn_80119998(fn_80119DD0(), 0x3C, 0, 1, 0, 1, 0x5A, 0);
@@ -114,7 +125,7 @@ extern "C" void fn_8012EA60(u8* this_) {
             case 0:
                 break;
             case 2:
-                fn_802D9FF4(fn_802D6A9C(), S32(0x234), S32(0x238));
+                fn_802D9FF4(fn_802D6A9C(), this_->mDestArea, this_->mDestRoom);
                 fn_80136798(lbl_8053AAF8, 0xF, 0);
                 break;
             }
@@ -122,10 +133,10 @@ extern "C" void fn_8012EA60(u8* this_) {
         break;
     }
     case 1:
-        S32(0x23C)++;
-        if (S32(0x23C) == 0x78) {
-            S32(0x230) = 2;
-            switch (S32(0x230)) {
+        this_->mWarpTimer++;
+        if (this_->mWarpTimer == 0x78) {
+            this_->mState = 2;
+            switch (this_->mState) {
             case 1:
                 fn_8023077C();
                 fn_80119998(fn_80119DD0(), 0x3C, 0, 1, 0, 1, 0x5A, 0);
@@ -133,7 +144,7 @@ extern "C" void fn_8012EA60(u8* this_) {
             case 0:
                 break;
             case 2:
-                fn_802D9FF4(fn_802D6A9C(), S32(0x234), S32(0x238));
+                fn_802D9FF4(fn_802D6A9C(), this_->mDestArea, this_->mDestRoom);
                 fn_80136798(lbl_8053AAF8, 0xF, 0);
                 break;
             }
@@ -145,22 +156,23 @@ extern "C" void fn_8012EA60(u8* this_) {
     }
 }
 
-extern "C" void fn_8012ED40(u8* this_) {
+// FDWP init (vtable slot 1)
+extern "C" void fn_8012ED40(FDWP_Actor* this_) {
     v01__5ActorFv(this_);
-    S32(0x234) = (*(u32*)(this_ + 0x90) >> 8) & 0xF;
-    S32(0x238) = (*(u32*)(this_ + 0x90) >> 12) & 0xF;
-    F32(0x60) = -32.0f;
-    F32(0x64) = -16.0f;
-    F32(0x68) = 32.0f;
-    F32(0x6C) = 16.0f;
-    F32(0x70) = F32(0x60);
-    F32(0x74) = F32(0x64);
-    F32(0x78) = F32(0x68);
-    F32(0x7C) = F32(0x6C);
-    F32(0x80) = F32(0x60);
-    F32(0x84) = F32(0x64);
-    F32(0x88) = F32(0x68);
-    F32(0x8C) = F32(0x6C);
+    this_->mDestArea = (this_->mSpawnParam >> 8) & 0xF;
+    this_->mDestRoom = (this_->mSpawnParam >> 12) & 0xF;
+    this_->mBounds60.x0 = -32.0f;
+    this_->mBounds60.y0 = -16.0f;
+    this_->mBounds60.x1 = 32.0f;
+    this_->mBounds60.y1 = 16.0f;
+    this_->mBounds70.x0 = this_->mBounds60.x0;
+    this_->mBounds70.y0 = this_->mBounds60.y0;
+    this_->mBounds70.x1 = this_->mBounds60.x1;
+    this_->mBounds70.y1 = this_->mBounds60.y1;
+    this_->mBounds80.x0 = this_->mBounds60.x0;
+    this_->mBounds80.y0 = this_->mBounds60.y0;
+    this_->mBounds80.x1 = this_->mBounds60.x1;
+    this_->mBounds80.y1 = this_->mBounds60.y1;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

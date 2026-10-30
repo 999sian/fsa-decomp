@@ -1660,6 +1660,7 @@ extern const f32 lbl_80543D28;
 static inline void menuInitCorner(J2DPicture* picture, const u32 corner, const JUtility::TColor color) {
     picture->mCornerColors[corner].setRGBA(color);
 }
+#pragma opt_strength_reduction off
 extern "C" void* fn_8043F504(u8* self) {
     const char* names = (const char*)lbl_8048F710;
     const ResTIMG* image;
@@ -1820,8 +1821,9 @@ extern "C" void* fn_8043F504(u8* self) {
     fn_80402F04(*(void**)(self + 0x68), (*(J2DScreen**)(self + 0x4))->search(0x506d6d773031ULL));
     fn_80402F04(*(void**)(self + 0x6c), (*(J2DScreen**)(self + 0x4))->search(0x506d6d7470ULL));
     {
+        JUtility::TColor black(0u), white(0u);
         J2DPicture* pane = *(J2DPicture**)(*(u8**)(self + 0x6c) + 4);
-        pane->setBlackWhite(JUtility::TColor(0u), JUtility::TColor(0u));
+        pane->setBlackWhite(black, white);
     }
     p = (u8*)__nw__FUl(0x2c); if (p) *(void**)p = lbl_804AF86C; *(u8**)(self + 0x70) = p;
     fn_80402F04(*(void**)(self + 0x70), (*(J2DScreen**)(self + 0x4))->search(0x546d6d743031ULL));
@@ -1935,6 +1937,7 @@ extern "C" void* fn_8043F504(u8* self) {
     *(u32*)(self + 0x1ec) = 1; self[0x1f3] = 0;
     return self;
 }
+#pragma opt_strength_reduction reset
 extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
     JGeometry::TVec3<f32> v = *self;
     fn_8043E7CC(lbl_8053AED0, &v);

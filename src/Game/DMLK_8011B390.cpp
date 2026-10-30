@@ -193,7 +193,7 @@ extern "C" void fn_8010DF78(u8* this_);
 extern "C" void fn_8030C210(u8* view, u8* pos);
 extern "C" void fn_8011B3F0(u8* this_);
 extern "C" void fn_802303FC(s32 idx, f32* v, s32 flag);
-extern "C" void* fn_8023E724(s32 i);
+extern "C" Vec* fn_8023E724(s32 i);
 extern "C" void fn_801186B0(void* r, s32 v);
 extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" u8 fn_801F2B7C(u8* this_, s32 a, s32 b, s32 c);
@@ -757,7 +757,6 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SP01)
 extern "C" char lbl_8049DB90[];
-extern "C" f32 lbl_8053C7D8;
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void fn_8010E074(u8*);
 extern "C" Actor* fn_8011B390(Actor* param_1, s16 param_2) {
@@ -776,7 +775,6 @@ extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
 extern "C" void fn_8013CC50(u32 room, Vec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80230498(s32 i, Vec* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80230BF4(s32 i, s32 n);
-extern "C" Vec* fn_8023E724(s32 i);
 extern "C" f32 lbl_8053C81C;
 extern "C" f32 lbl_8053C820;
 extern "C" f32 lbl_8053C818;

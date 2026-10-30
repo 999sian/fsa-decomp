@@ -68,7 +68,6 @@ static inline void swt4Set(void* p, s32 value) {
 }
 extern "C" void fn_802A96B0(Swt4* p) {
     int n = 0;
-    const s32 sentinel = 0xff;
     int valid;
     s32 i;
     s32 j;
@@ -77,7 +76,7 @@ extern "C" void fn_802A96B0(Swt4* p) {
     case 0: {
         valid = 1;
         for (i = 0; i < 4; i++) {
-            slots[i] = sentinel;
+            slots[i] = 0xff;
             if (fn_802D800C(fn_802D6A9C(), p->switchId[i])) {
                 slots[i] = fn_802D7E1C(fn_802D6A9C(), p->switchId[i]);
                 n++;
@@ -135,10 +134,10 @@ extern "C" void fn_802A96B0(Swt4* p) {
         break;
     case 2:
         if(fn_8023077C()) {
-            s32 count = SWT4_S32(fn_801F856C(),0x1008);
+            s32 count = ((Swt4ActorList*)fn_801F856C())->count;
             for(i=0;i<4;i++) {
                 for(j=0;j<count;j++) {
-                    u8* actor = SWT4_PTR(fn_801F856C(),8+j*4);
+                    u8* actor = (u8*)((Swt4ActorList*)fn_801F856C())->actors[j];
                     if(actor && SWT4_U32(actor,0x1a0)==0x53575448 && p->switchId[i]==(SWT4_U32(actor,0x90)>>27)) {
                         JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
                         pos.x=((s32)pos.x/16)*16+8;
@@ -208,7 +207,7 @@ extern "C" void fn_802A96B0(Swt4* p) {
         break;
     case 7:
         for(i=0;i<4;i++) {
-            slots[i]=sentinel;
+            slots[i]=0xff;
             if(fn_802D800C(fn_802D6A9C(),p->switchId[i])) {
                 slots[i]=fn_802D7E1C(fn_802D6A9C(),p->switchId[i]); n++;
                 if(slots[i]==0xff) slots[i]=i+4;

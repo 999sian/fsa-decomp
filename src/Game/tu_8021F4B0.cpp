@@ -39,7 +39,7 @@ static inline void setEmitterScale(void* emitter, float scale) {
 }
 
 
-#pragma optimization_level 3
+#pragma optimization_level 4
 extern "C" int fn_8021F4B0(char* self) {
     int result = 0;
     *(int*)(self + 4) += 1;
@@ -54,12 +54,7 @@ extern "C" int fn_8021F4B0(char* self) {
             approachTimed((float*)(self + 8), *(float*)(self + 0x14), frames);
             approachTimed((float*)(self + 0xc), *(float*)(self + 0x18), frames);
             approachTimed((float*)(self + 0x10), *(float*)(self + 0x1c), frames);
-            register int i = 0;
-            void** p = (void**)self;
-            for (; i < 3; i++, p++) {
-                void* emitter = p[13];
-                if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
-            }
+            updateEmitters(self);
         }
         break;
     case 2:
@@ -78,12 +73,7 @@ extern "C" int fn_8021F4B0(char* self) {
             approachTimed((float*)(self + 8), *(float*)(self + 0x20), frames);
             approachTimed((float*)(self + 0xc), *(float*)(self + 0x24), frames);
             approachTimed((float*)(self + 0x10), *(float*)(self + 0x28), frames);
-            register int i = 0;
-            void** p = (void**)self;
-            for (; i < 3; i++, p++) {
-                void* emitter = p[13];
-                if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
-            }
+            updateEmitters(self);
         }
         break;
     case 4:
@@ -110,16 +100,11 @@ extern "C" int fn_8021F4B0(char* self) {
             float frames = 60 - *(int*)(self + 4);
             approachTimed((float*)(self + 0x10), *(float*)(self + 0x2c), frames);
             approachTimed((float*)(self + 0x30), lbl_8053FDDC, frames);
-            register int i = 0;
-            void** p = (void**)self;
-            for (; i < 3; i++, p++) {
-                void* emitter = p[13];
-                if (emitter) fn_8013CB44(emitter, self + 8, 0, 0, 1);
-            }
+            updateEmitters(self);
             float scale = *(float*)(self + 0x30);
-            setEmitterScale(((void**)self)[13], scale);
-            setEmitterScale(((void**)self)[14], scale);
-            setEmitterScale(((void**)self)[15], scale);
+            for (int k = 0; k < 3; k++) {
+                setEmitterScale(((void**)self)[13 + k], scale);
+            }
         }
         break;
     }

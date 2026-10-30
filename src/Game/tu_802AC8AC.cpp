@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void fn_8013B490(void*);
 extern void* lbl_8053AB10;
@@ -113,4 +114,6 @@ extern "C" void* fn_802ACBE8(void* this_) {
     return this_;
 }
 
+extern "C" void fn_802ACC80(void) {
+}
 

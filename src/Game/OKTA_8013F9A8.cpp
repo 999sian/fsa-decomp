@@ -169,13 +169,12 @@ extern const f64 lbl_8053CE68;
 extern s32 lbl_8049F1F8[];
 extern f32 lbl_8049F1A0[];
 extern "C" double fabs(double);
-#pragma peephole off
+#pragma opt_strength_reduction off
 extern "C" void fn_8013FD50(u8* p) {
     f32 negSize;
     f32 size;
-    register const f32* source=(f32*)(p+0xc);
     JGeometry::TVec3<f32> oldPos;
-    JGeometry::setTVec3f(source, &oldPos.x);
+    JGeometry::setTVec3f((f32*)(p+0xc), &oldPos.x);
     JGeometry::TVec3<f32> velocity;
     JGeometry::TVec3<f32> pos;
     s32 quad = -1;
@@ -336,7 +335,7 @@ case 3: { f32 speed=-(*(f32*)(p+0x25c)); (*(f32*)(p+0x27c))=lbl_8053CE28; (*(f32
         break;
     }
 }
-#pragma peephole reset
+#pragma opt_strength_reduction reset
 extern "C" void fn_80140920(u8* this_) {
     f32 random;
     *(f32*)(this_ + 0x60) = lbl_8053CE80;

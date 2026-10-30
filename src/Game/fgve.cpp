@@ -1,34 +1,9 @@
-// TU 0x802dfce8-0x802e038c (actor FGVE).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802dfce8-0x802e038c — Actor 'GRVE' (Grave / Diggable Hole, misdecoded as FGVE in early CSV).
 #include "Game/esd/types.h"
 
-// ---- fn_802DFCE8_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern void* lbl_804A99C0[];
 
-extern "C" void* fn_802DFCE8(void* this_, s16 freeFlag) {
-    if (this_ != 0) {
-        *(void**)this_ = lbl_804A99C0;
-        __dt__5ActorFv(this_, 0);
-        if (freeFlag > 0) {
-            operator delete(this_);
-        }
-    }
-    return this_;
-}
-
-// fn_802DFD48 / fn_802E0128 - FGVE: draw effect once armed; setParams.
-extern const char lbl_8046E9C0[];
-extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
-
-extern "C" void fn_802DFD48(char* p) {
-    if (*(s32*)(p + 0x230) >= 2) {
-        fn_801F06F0(p, lbl_8046E9C0, 0x16d, 0, 7, 1.0f, 1.0f);
-    }
-}
-
-// fn_802DFD90 - FGVE: update(). A grave/hole: detects a player standing
-// on it (or digging), shows the reward, then sinks and spawns effects.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE
@@ -45,9 +20,53 @@ extern "C" void fn_802DFD48(char* p) {
 #define unknown jsys_unknown
 #endif
 #include "JSystem/JGeometry/Vec.h"
+
 struct FgvePt { f32 x, y; };
 struct FgveBox { FgvePt min, max; };
 struct FgveReward { u16 a, b, c, d; };
+
+struct GrveActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ JGeometry::TVec3<f32> mPos;
+    /* 0x018 */ u8 _pad18[0x60 - 0x18];
+    /* 0x060 */ FgveBox mBounds;
+    /* 0x070 */ u8 _pad70[0x90 - 0x70];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x11C - 0x94];
+    /* 0x11C */ u8 mActiveFlag;
+    /* 0x11D */ u8 _pad11D[0x198 - 0x11D];
+    /* 0x198 */ u32 mRoomHandle;
+    /* 0x19C */ u8 _pad19C[0x230 - 0x19C];
+    /* 0x230 */ s32 mState;            // 0 = closed, 1 = pushing, 2 = reward, 3 = sliding, 4 = done
+    /* 0x234 */ s32 mRewardIndex;      // Unpacked from spawnParam & 0x3F
+    /* 0x238 */ s32 mPushingPlayer;    // Player index pushing/digging (-1 = none)
+    /* 0x23C */ f32 mPushProgress;     // Frame counter while pushing / sliding
+    /* 0x240 */ JGeometry::TVec3<f32> mSavedPos;
+};
+
+extern "C" void* fn_802DFCE8(GrveActor* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        this_->mVtable = lbl_804A99C0;
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
+
+extern const char lbl_8046E9C0[];
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
+
+// GRVE draw (vtable slot 6)
+extern "C" void fn_802DFD48(GrveActor* this_) {
+    if (this_->mState >= 2) {
+        fn_801F06F0(this_, lbl_8046E9C0, 0x16d, 0, 7, 1.0f, 1.0f);
+    }
+}
+
 extern const FgveReward lbl_8046E9B0[];
 extern void* lbl_8053AC98;
 extern "C" void fn_80239914(FgveBox* box, u32 room, u32 id);
@@ -60,106 +79,106 @@ extern "C" void fn_802A3948(void* mgr, JGeometry::TVec3<f32>* pos, s32 player, u
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" void fn_801F0D20(void* this_, s32 id);
 
-static inline void fgveOpen(char* p) {
-    *(s32*)(p + 0x230) = 2;
-    *(JGeometry::TVec3<f32>*)(p + 0x240) = *(JGeometry::TVec3<f32>*)(p + 0xc);
-    *(f32*)(p + 0xc) += 16.0f;
-    *(f32*)(p + 0x10) += 16.0f;
-    *(f32*)(p + 0x60) = -16.0f;
-    *(f32*)(p + 0x64) = -16.0f;
-    *(f32*)(p + 0x68) = 16.0f;
-    *(f32*)(p + 0x6c) = 0.0f;
+static inline void fgveOpen(GrveActor* this_) {
+    this_->mState = 2;
+    this_->mSavedPos = this_->mPos;
+    this_->mPos.x += 16.0f;
+    this_->mPos.y += 16.0f;
+    this_->mBounds.min.x = -16.0f;
+    this_->mBounds.min.y = -16.0f;
+    this_->mBounds.max.x = 16.0f;
+    this_->mBounds.max.y = 0.0f;
 }
 
-extern "C" void fn_802DFD90(char* p) {
+// GRVE update (vtable slot 3)
+extern "C" void fn_802DFD90(GrveActor* this_) {
     f32 x, y;
-    if (*(s32*)(p + 0x230) < 2) {
-        x = 16.0f + *(f32*)(p + 0xc);
-        y = 16.0f + *(f32*)(p + 0x10);
+    if (this_->mState < 2) {
+        x = 16.0f + this_->mPos.x;
+        y = 16.0f + this_->mPos.y;
     } else {
-        x = *(f32*)(p + 0xc);
-        y = *(f32*)(p + 0x10);
+        x = this_->mPos.x;
+        y = this_->mPos.y;
     }
     FgveBox box;
-    box.min.x = *(f32*)(p + 0x60);
-    box.min.y = *(f32*)(p + 0x64);
-    box.max.x = *(f32*)(p + 0x68);
-    box.max.y = *(f32*)(p + 0x6c);
+    box.min.x = this_->mBounds.min.x;
+    box.min.y = this_->mBounds.min.y;
+    box.max.x = this_->mBounds.max.x;
+    box.max.y = this_->mBounds.max.y;
     box.min.x += x;
     box.min.y += y;
     box.max.x += x;
     box.max.y += y;
-    fn_80239914(&box, *(u32*)(p + 0x4), *(u32*)(p + 0x198));
-    s32 player = fn_80239558(&box, *(u32*)(p + 0x4), *(u32*)(p + 0x198));
-    switch (*(s32*)(p + 0x230)) {
+    fn_80239914(&box, this_->mRoomId, this_->mRoomHandle);
+    s32 player = fn_80239558(&box, this_->mRoomId, this_->mRoomHandle);
+    switch (this_->mState) {
     case 0: {
-        s32 digger = fn_8023AF14(&box, *(u32*)(p + 0x4), 0, 0.0f);
+        s32 digger = fn_8023AF14(&box, this_->mRoomId, 0, 0.0f);
         if (player >= 0 && fn_80230CFC(player) == 3) {
-            *(s32*)(p + 0x230) = 1;
-            *(s32*)(p + 0x238) = player;
-            *(f32*)(p + 0x23c) = 0.0f;
+            this_->mState = 1;
+            this_->mPushingPlayer = player;
+            this_->mPushProgress = 0.0f;
         } else if (digger >= 0 && fn_8023513C(digger) && fn_80230CFC(digger) == 3) {
-            *(s32*)(p + 0x238) = digger;
-            *(f32*)(p + 0x23c) = 0.0f;
-            fgveOpen(p);
+            this_->mPushingPlayer = digger;
+            this_->mPushProgress = 0.0f;
+            fgveOpen(this_);
         }
         break;
     }
     case 1:
-        if (player >= 0 && *(s32*)(p + 0x238) == player && fn_80230CFC(player) == 3) {
-            *(f32*)(p + 0x23c) += 1.0f;
-            if (*(f32*)(p + 0x23c) >= 25.0f) {
-                fgveOpen(p);
+        if (player >= 0 && this_->mPushingPlayer == player && fn_80230CFC(player) == 3) {
+            this_->mPushProgress += 1.0f;
+            if (this_->mPushProgress >= 25.0f) {
+                fgveOpen(this_);
             }
-        } else if (*(s32*)(p + 0x238) != player) {
-            *(s32*)(p + 0x238) = -1;
-            *(s32*)(p + 0x230) = 0;
+        } else if (this_->mPushingPlayer != player) {
+            this_->mPushingPlayer = -1;
+            this_->mState = 0;
         }
         break;
     case 2: {
-        s32 i = *(s32*)(p + 0x234);
-        fn_8029E050(lbl_8053AC98, (JGeometry::TVec3<f32>*)(p + 0x240), *(u32*)(p + 0x4),
+        s32 i = this_->mRewardIndex;
+        fn_8029E050(lbl_8053AC98, &this_->mSavedPos, this_->mRoomId,
                     lbl_8046E9B0[i].a, lbl_8046E9B0[i].b, lbl_8046E9B0[i].c, lbl_8046E9B0[i].d);
-        *(s32*)(p + 0x230) = 3;
-        *(f32*)(p + 0x23c) = 0.0f;
+        this_->mState = 3;
+        this_->mPushProgress = 0.0f;
         break;
     }
     case 3:
-        if (((s32)*(f32*)(p + 0x23c) & 3) == 0) {
-            fn_801F0E34(p, 0x3000e, 0);
+        if (((s32)this_->mPushProgress & 3) == 0) {
+            fn_801F0E34(this_, 0x3000e, 0);
         }
-        *(f32*)(p + 0x23c) += 0.5;
-        *(f32*)(p + 0x10) -= 0.5;
-        if (*(f32*)(p + 0x23c) >= 16.0f) {
-            *(f32*)(p + 0x244) = *(f32*)(p + 0x10) - 16.0f;
-            fn_802A3948(lbl_8053AC98, (JGeometry::TVec3<f32>*)(p + 0x240), *(s32*)(p + 0x238), *(u32*)(p + 0x4), 0x266);
-            *(f32*)(p + 0x240) += 16.0f;
-            fn_802A3948(lbl_8053AC98, (JGeometry::TVec3<f32>*)(p + 0x240), *(s32*)(p + 0x238), *(u32*)(p + 0x4), 0x269);
-            *(s32*)(p + 0x230) = 4;
+        this_->mPushProgress += 0.5;
+        this_->mPos.y -= 0.5;
+        if (this_->mPushProgress >= 16.0f) {
+            this_->mSavedPos.y = this_->mPos.y - 16.0f;
+            fn_802A3948(lbl_8053AC98, &this_->mSavedPos, this_->mPushingPlayer, this_->mRoomId, 0x266);
+            this_->mSavedPos.x += 16.0f;
+            fn_802A3948(lbl_8053AC98, &this_->mSavedPos, this_->mPushingPlayer, this_->mRoomId, 0x269);
+            this_->mState = 4;
         }
         break;
     case 4:
-        if (*(s32*)(p + 0x234) == 1) {
-            fn_801F0D20(p, 3);
+        if (this_->mRewardIndex == 1) {
+            fn_801F0D20(this_, 3);
         }
-        *(u8*)(p + 0x11c) = 0;
+        this_->mActiveFlag = 0;
         break;
     }
 }
 
-extern "C" void fn_802E0128(char* p) {
-    *(f32*)(p + 0x60) = -16.0f;
-    *(f32*)(p + 0x64) = -16.0f;
-    *(f32*)(p + 0x68) = 16.0f;
-    *(f32*)(p + 0x6c) = 0.0f;
-    *(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0x3F;
-    *(s32*)(p + 0x238) = -1;
-    *(f32*)(p + 0x23c) = 0.0f;
-    *(s32*)(p + 0x230) = 0;
+// GRVE init (vtable slot 1)
+extern "C" void fn_802E0128(GrveActor* this_) {
+    this_->mBounds.min.x = -16.0f;
+    this_->mBounds.min.y = -16.0f;
+    this_->mBounds.max.x = 16.0f;
+    this_->mBounds.max.y = 0.0f;
+    this_->mRewardIndex = this_->mSpawnParam & 0x3F;
+    this_->mPushingPlayer = -1;
+    this_->mPushProgress = 0.0f;
+    this_->mState = 0;
 }
 
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE

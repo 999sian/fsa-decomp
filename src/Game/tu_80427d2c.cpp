@@ -1882,6 +1882,31 @@ extern "C" void fn_8042B1DC() {
     *(u32*)(lbl_8053AE74 + 0x6b8) += (uVar1 >> 4) * 0x40;
 }
 
+extern "C" void fn_8042B430(void* block, s32 off)
+{
+    u8* qtab = lbl_8053AE64;
+    u8* out = (u8*)lbl_8052A9A0 - 8;
+    u8* blk = (u8*)block;
+    f64 q = __psq_l(qtab, 0, 0, 0);
+    f64 v = __ps_mul(__psq_l(blk, 0, 0, 5), q);
+    u32 hi = *(u32*)(blk + 0xc) | *(u32*)(blk + 0x8);
+    s32 n = 8;
+    if (hi == 0 && *(u32*)(blk + 0x4) == 0) {
+        __psq_st(__ps_merge00(v, v), out + 8, 0, 0, 0);
+        __psq_st(__ps_merge00(v, v), out + 0x10, 0, 0, 0);
+        __psq_st(__ps_merge00(v, v), out + 0x18, 0, 0, 0);
+        __psq_st(__ps_merge00(v, v), out + 0x20, 0, 0, 0);
+    } else {
+        for (s32 i = 0; i < n; i++) {
+            f64 a = __ps_add(v, v);
+            f64 b = __ps_sub(v, v);
+            __psq_st(a, out + 8, 0, 0, 0);
+            __psq_st(b, out + 0x10, 0, 0, 0);
+            out += 8;
+        }
+    }
+}
+
 extern "C" f64 __psq_l(const void*, s32, s32, s32);
 extern "C" void __psq_st(f64, void*, s32, s32, s32);
 extern "C" f64 __ps_mul(f64, f64);

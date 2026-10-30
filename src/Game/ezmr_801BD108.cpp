@@ -95,6 +95,8 @@ static inline s32 ezmrCreate(s32 room, void* pos, u32 flag) {
 
 #pragma opt_propagation off
 extern "C" void fn_801BD348(u8* this_) {
+    s32 sw;
+    s16 v;
     fn_801D0ED0(this_);
     if (!((*(u32*)(this_ + 0x90) >> 17) & 1)) {
         fn_801D0E58(this_);
@@ -153,19 +155,27 @@ extern "C" void fn_801BD348(u8* this_) {
     *(f32*)(this_ + 0x8c) = hi;
     *(u32*)(this_ + 0xb0) = 0;
     *(s32*)(this_ + 0x98) = 2;
-    if (ezmrGetSpeed(this_) < 0) {
+    sw = *(s32*)(this_ + 0x2f0);
+    v = *(s16*)(this_ + 0x2f8);
+    if (sw != 0 && fn_802D800C(fn_802D6A9C(), sw)) v = -v;
+    if (v < 0) {
         *(s16*)(this_ + 0x2fc) = *(s16*)(this_ + 0x2fa) - 0x4000;
     } else {
         *(s16*)(this_ + 0x2fc) = *(s16*)(this_ + 0x2fa) + 0x4000;
     }
-    f32 dx = JMASSin(*(s16*)(this_ + 0x2fa)) * lbl_8053EC70;
-    f32 dy = JMASCos(*(s16*)(this_ + 0x2fa)) * lbl_8053EC70;
+    u16 ang = *(s16*)(this_ + 0x2fa);
+    f32 dx = JMath::sincosTable_.mTable[ang >> 5].first;
+    dx *= lbl_8053EC70;
+    f32 dy = JMath::sincosTable_.mTable[ang >> 5].second * lbl_8053EC70;
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
     pos.x += (f32)*(s32*)(this_ + 0x2f4) * dx;
     pos.y += (f32)*(s32*)(this_ + 0x2f4) * dy;
+    s32 i;
+    int flag;
     u8* p = this_;
-    for (s32 i = 0; i < *(s32*)(this_ + 0x2a8); i++) {
-        *(s32*)(p + 0x2ac) = ezmrCreate(*(s32*)(this_ + 0x4), &pos, *(u8*)(this_ + 0x2ec) == 0);
+    for (i = 0; i < *(s32*)(this_ + 0x2a8); i++) {
+        flag = *(u8*)(this_ + 0x2ec) ? 0 : 1;
+        *(s32*)(p + 0x2ac) = Actor_CreateByID(fn_801F856C(), 'FBOB', *(s32*)(this_ + 4), &pos, flag, -1, -1);
         fn_801BD8C0(fn_801F666C(fn_801F856C(), *(s32*)(p + 0x2ac)), pos, *(s16*)(this_ + 0x2fc));
         pos.x += dx;
         pos.y += dy;

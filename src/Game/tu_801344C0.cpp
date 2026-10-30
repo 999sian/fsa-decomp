@@ -131,8 +131,8 @@ void main(void)
     JFWDisplay::getManager()->clearAllXfb();
     fn_803BA980(lbl_8051C1A0);
     solidHeap = create__12JKRSolidHeapFUlP7JKRHeapb(0x180000, JKRHeap::sRootHeap, false);
-    initObject = __nw__FUlP7JKRHeapi(0x90,
-        expHeap = create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false), 0);
+    expHeap = create__10JKRExpHeapFUlP7JKRHeapb(0xffffffff, JKRHeap::sRootHeap, false);
+    initObject = __nw__FUlP7JKRHeapi(0x90, expHeap, 0);
     if (initObject != NULL) {
         initObject = fn_8045A080(initObject);
     }

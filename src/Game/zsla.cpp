@@ -315,7 +315,8 @@ void fn_80222730(void* this_) {
             char* a = (char*)fn_801F666C(fn_801F856C(), id);
             if (a != 0) {
                 *(s32*)(a + 0x98) = 2;
-                JGeometry::TVec3<f32> vel(0.0f,__fmadds(0.6f,2.0f*lbl_8053AAF8->rnd.get_ufloat_1()-1.0f,3.2f),0.0f);
+                JGeometry::TVec3<f32> vel;
+                ZslaSetVelocity(vel,3.2f+0.6f*(2.0f*lbl_8053AAF8->rnd.get_ufloat_1()-1.0f));
                 *(JGeometry::TVec3<f32>*)(a + 0x3c) = vel;
                 *(u8*)(a + 0x194) = 1;
                 *(s32*)(a + 0x23c) = (s32)(height * (1.0f / *(f32*)(a + 0x40)));

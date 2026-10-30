@@ -3333,13 +3333,14 @@ static inline void IntroSetupScores(u8* p, s32 count) {
 }
 
 extern "C" void fn_803B42C0(void* this_) {
-    register IntroTags* tbl = (IntroTags*)lbl_80476208;
+    IntroTags* tbl = (IntroTags*)lbl_80476208;
     u8* p = (u8*)this_;
     Menu_Intro* m;
     f32 f31;
     u8* src;
     u8* dst;
     int i;
+    const u64* t;
 
     *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
     *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
@@ -3416,6 +3417,139 @@ extern "C" void fn_803B42C0(void* this_) {
     *(void**)(p + 0x168) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x004e646174613035ULL);
     *(void**)(p + 0x16c) = ((Scr_803B1B60*)*(void**)(p + 0x1c))->v3C(0x005072736c746267ULL);
     IntroSetupScores(p, 3);
+    {
+        s32 font = *(s32*)((u8*)lbl_8053AD78 + 0x154);
+        ((PaneVt_803B38E8*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743032ULL))->v9C(font);
+    }
+    {
+        s32 font = *(s32*)((u8*)lbl_8053AD78 + 0x154);
+        ((PaneVt_803B38E8*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743031ULL))->v9C(font);
+    }
+    fn_803832BC(((J2DTextBox*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743032ULL))->getStringPtr(), 0xdd, 0, 0, 0);
+    fn_803832BC(((J2DTextBox*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743031ULL))->getStringPtr(), 0xdd, 0, 0, 0);
+    m = (Menu_Intro*)p;
+    t = tbl->title;
+    for (i = 0; i < 13; i++, t++) {
+        m->alphaTitle[i] = m->screens[m->cur]->search(*t)->getAlpha();
+    }
+    m->y41c = m->screens[m->cur]->search(0x00506d6d776b3032ULL)->getBounds()->i.y;
+    t = tbl->p3[0];
+    for (i = 0; i < 3; i++, t++) {
+        m->alpha3[i] = m->screens[m->cur]->search(*t)->getAlpha();
+    }
+    m->y420 = m->screens[m->cur]->search(0x5031616762623032ULL)->getBounds()->i.y;
+    t = tbl->p2[0];
+    for (i = 0; i < 2; i++, t++) {
+        m->alpha[i] = m->screens[m->cur]->search(*t)->getAlpha();
+    }
+    m->y424 = m->screens[m->cur]->search(0x000050316f6b3032ULL)->getBounds()->i.y;
+    *(f32*)(p + 0x428) = m->screens[m->cur]->search(0x0050316167623031ULL)->getBounds()->i.y;
+    m->screens[m->cur]->search(0x004e646174613032ULL)->hide();
+    m->screens[m->cur]->search(0x004e646174613031ULL)->hide();
+    m->screens[m->cur]->search(0x00506d6d776b3032ULL)->hide();
+}
+
+extern "C" void fn_803B5378(void* this_) {
+    IntroTags* tbl = (IntroTags*)lbl_80476208;
+    u8* p = (u8*)this_;
+    Menu_Intro* m;
+    f32 f31;
+    u8* src;
+    u8* dst;
+    int i;
+    const u64* t;
+
+    *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
+    *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
+    *(void**)(p + 0x38) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3332ULL);
+    *(void**)(p + 0x3c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3432ULL);
+    f31 = getBounds__7J2DPaneFv(*(void**)(p + 0x30))[1];
+    *(f32*)(p + 0x42c) = getBounds__7J2DPaneFv(((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723031ULL))[1] - f31;
+    f31 = getBounds__7J2DPaneFv(*(void**)(p + 0x30))[1];
+    *(f32*)(p + 0x430) = getBounds__7J2DPaneFv(((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723231ULL))[1] - f31;
+    *(void**)(p + 0x40) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3131ULL);
+    *(void**)(p + 0x44) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3231ULL);
+    *(void**)(p + 0x48) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3331ULL);
+    *(void**)(p + 0x4c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3431ULL);
+    for (i = 0; i < 4; i++) {
+        src = *(u8**)(p + 0x40 + i * 4);
+        dst = p + 0x46c + i * 16;
+        dst[0] = src[0x150];
+        dst[1] = src[0x151];
+        dst[2] = src[0x152];
+        dst[3] = src[0x153];
+        dst[4] = src[0x154];
+        dst[5] = src[0x155];
+        dst[6] = src[0x156];
+        dst[7] = src[0x157];
+        dst[8] = src[0x158];
+        dst[9] = src[0x159];
+        dst[10] = src[0x15a];
+        dst[11] = src[0x15b];
+        dst[12] = src[0x15c];
+        dst[13] = src[0x15d];
+        dst[14] = src[0x15e];
+        dst[15] = src[0x15f];
+    }
+    *(void**)(p + 0x50) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723031ULL);
+    *(void**)(p + 0x54) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723132ULL);
+    *(void**)(p + 0x58) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723133ULL);
+    *(void**)(p + 0x5c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723134ULL);
+    *(void**)(p + 0x60) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723231ULL);
+    *(void**)(p + 0x64) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723232ULL);
+    *(void**)(p + 0x68) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723233ULL);
+    *(void**)(p + 0x6c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723234ULL);
+    *(void**)(p + 0xa8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653131ULL);
+    *(void**)(p + 0xb8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653132ULL);
+    *(void**)(p + 0xc8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653133ULL);
+    *(void**)(p + 0xd8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653134ULL);
+    *(void**)(p + 0xe8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653135ULL);
+    *(void**)(p + 0xf8) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3131ULL);
+    *(void**)(p + 0x108) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3132ULL);
+    *(void**)(p + 0x118) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3133ULL);
+    *(void**)(p + 0x128) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3134ULL);
+    *(void**)(p + 0x138) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3135ULL);
+    *(void**)(p + 0xac) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653231ULL);
+    *(void**)(p + 0xbc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653232ULL);
+    *(void**)(p + 0xcc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653233ULL);
+    *(void**)(p + 0xdc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653234ULL);
+    *(void**)(p + 0xec) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653235ULL);
+    *(void**)(p + 0xfc) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3231ULL);
+    *(void**)(p + 0x10c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3232ULL);
+    *(void**)(p + 0x11c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3233ULL);
+    *(void**)(p + 0x12c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3234ULL);
+    *(void**)(p + 0x13c) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3235ULL);
+    *(void**)(p + 0xb0) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653331ULL);
+    *(void**)(p + 0xc0) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653332ULL);
+    *(void**)(p + 0xd0) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653333ULL);
+    *(void**)(p + 0xe0) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653334ULL);
+    *(void**)(p + 0xf0) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653335ULL);
+    *(void**)(p + 0x100) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3331ULL);
+    *(void**)(p + 0x110) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3332ULL);
+    *(void**)(p + 0x120) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3333ULL);
+    *(void**)(p + 0x130) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3334ULL);
+    *(void**)(p + 0x140) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3335ULL);
+    *(void**)(p + 0xb4) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653431ULL);
+    *(void**)(p + 0xc4) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653432ULL);
+    *(void**)(p + 0xd4) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653433ULL);
+    *(void**)(p + 0xe4) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653434ULL);
+    *(void**)(p + 0xf4) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f72653435ULL);
+    *(void**)(p + 0x104) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3431ULL);
+    *(void**)(p + 0x114) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3432ULL);
+    *(void**)(p + 0x124) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3433ULL);
+    *(void**)(p + 0x134) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3434ULL);
+    *(void**)(p + 0x144) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x5473636f726b3435ULL);
+    *(void**)(p + 0x148) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x00506c7465737431ULL);
+    *(void**)(p + 0x14c) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x00506c7477737432ULL);
+    *(void**)(p + 0x150) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x00506c7465737433ULL);
+    *(void**)(p + 0x154) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x00506c7465737434ULL);
+    *(void**)(p + 0x158) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743031ULL);
+    *(void**)(p + 0x15c) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743032ULL);
+    *(void**)(p + 0x160) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743033ULL);
+    *(void**)(p + 0x164) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743034ULL);
+    *(void**)(p + 0x168) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x004e646174613035ULL);
+    *(void**)(p + 0x16c) = ((Scr_803B1B60*)*(void**)(p + 0x1c))->v3C(0x005072736c746267ULL);
+    IntroSetupScores(p, 4);
     {
         s32 font = *(s32*)((u8*)lbl_8053AD78 + 0x154);
         ((PaneVt_803B38E8*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743032ULL))->v9C(font);

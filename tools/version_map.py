@@ -54,6 +54,14 @@ from collections import Counter, defaultdict
 from typing import Dict, List, Optional, Tuple
 
 ROOT = os.environ.get("FSA_ROOT") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# A project that builds one version does not necessarily have the base version's extracted DOL or
+# its asm dump next to it. FSA_ROOTS="G4SE01=/path/to/base" says where each version's orig/,
+# config/ and build/ live; versions not listed use ROOT.
+ROOTS = dict(p.split("=", 1) for p in os.environ.get("FSA_ROOTS", "").split(",") if "=" in p)
+
+
+def root_of(vid: str) -> str:
+    return ROOTS.get(vid.strip(), ROOT)
 BASE = "G4SE01"
 OTHERS = ["G4SJ01", "G4SP01"]
 SHORT = {"G4SE01": "us", "G4SJ01": "jp", "G4SP01": "pal"}
@@ -112,7 +120,8 @@ class Func:
 class Version:
     def __init__(self, vid: str):
         self.vid = vid
-        self.dol = open(f"{ROOT}/orig/{vid}/sys/main.dol", "rb").read()
+        self.root = root_of(vid)
+        self.dol = open(f"{self.root}/orig/{vid}/sys/main.dol", "rb").read()
         hdr = self.dol
         self.segs = [
             (o, a, s)
@@ -123,8 +132,8 @@ class Version:
             )
             if s
         ]
-        self.sym_path = f"{ROOT}/config/{vid}/symbols.txt"
-        self.split_path = f"{ROOT}/config/{vid}/splits.txt"
+        self.sym_path = f"{self.root}/config/{vid}/symbols.txt"
+        self.split_path = f"{self.root}/config/{vid}/splits.txt"
         self.syms: List[Sym] = []
         self.sym_lines_other: List[str] = []
         for line in open(self.sym_path):
@@ -152,7 +161,8 @@ class Version:
         self.code_relocs: Dict[int, Tuple[str, Optional[int]]] = {}
         self.data_relocs: Dict[int, Optional[int]] = {}
         self.asm_warnings = 0
-        self._parse_asm(f"{ROOT}/build/{vid}/asm")
+        self._warn_if_stale()
+        self._parse_asm(f"{self.root}/build/{vid}/asm")
         self.funcs: Dict[str, List[Func]] = {}
         for sec in CODE_SECTIONS:
             fl = []
@@ -216,6 +226,17 @@ class Version:
             for fn in files:
                 if fn.endswith(".s"):
                     self._parse_asm_file(os.path.join(root, fn))
+    def _warn_if_stale(self) -> None:
+        """The map reads build/<V>/asm, so config/<V>/symbols.txt must be older than the split that made it."""
+        stamp = f"{self.root}/build/{self.vid}/config.json"
+        try:
+            if os.path.getmtime(stamp) < max(os.path.getmtime(self.sym_path), os.path.getmtime(self.split_path)):
+                print(f"warning: config/{self.vid}/symbols.txt or splits.txt is newer than build/{self.vid}/"
+                      f"config.json, so build/{self.vid}/asm is from an older config and the map of {self.vid} "
+                      f"is not trustworthy. Rebuild it first (rm -rf build/{self.vid} && python3 configure.py "
+                      f"--version {self.vid} && ninja).", file=sys.stderr)
+        except OSError:
+            pass
 
     def _parse_asm_file(self, path: str):
         cur = None  # current address inside a data object
@@ -929,18 +950,13 @@ def write_splits(path: str, header: List[str], units):
                 fh.write(f"\t{sec:<11} start:0x{s:08X} end:0x{e:08X}{extra}\n")
 
 
-def rename_addr_suffix(name: str, delta: int) -> str:
-    def sub(m):
-        return f"_{int(m.group(1), 16) + delta:08X}"
-
-    q = name.startswith('"')
-    n = name.strip('"')
-    n2 = re.sub(r"_([0-9A-F]{8})(?=$|_)", sub, n) if is_auto(n) else n
-    return f'"{n2}"' if q else n2
-
-
 def section_delta(fm: FuncMap, dm: DataMap, sec: str, start: int, end: int) -> Tuple[Optional[int], str]:
     A, B = fm.A, fm.B
+    if sec in ("extab", "extabindex"):
+        # EH tables are not name-matched by the data map; their delta comes from the
+        # owning functions (eh_delta). Every game TU lists extab/extabindex first, so
+        # without this the whole split is skipped before .text is ever looked at.
+        return eh_delta(fm, sec, start, end)
     syms = [s for s in A.syms if s.sec == sec and start <= s.addr < end and s.type != "label"]
     if sec in CODE_SECTIONS:
         funcs = [s for s in syms if s.type == "function"]
@@ -1000,6 +1016,9 @@ def verify_range(fm: FuncMap, dm: DataMap, sec: str, start: int, end: int, d: in
         return ""
     if sec in CODE_SECTIONS:
         return ""  # functions verified through the function map
+    if sec in (".ctors", ".dtors"):
+        return ""  # every word was mapped (and the image pattern matched uniquely) by section_delta; the
+        # words are relocated pointers, so a raw byte compare fails on exactly the bytes it verified
     ba = A.read(start, end - start)
     bb = B.read(start + d, end - start)
     if ba is None or bb is None:
@@ -1027,8 +1046,9 @@ def propagate(fm: FuncMap, dm: DataMap, do_splits: bool, dry: bool):
     b_names = Counter(s.name for s in B.syms)
 
     def want(sa: Sym, sb: Sym):
-        if is_auto(sa.name):
-            return
+        # No `is_auto(sa.name)` test: a placeholder like `fn_80238548` *is* the name our compiled
+        # object calls the function by, so the target has to define that name or the link fails with
+        # `undefined: 'fn_80238548'` (referenced from another unit's source).
         if sb.name == sa.name:
             return
         if not is_auto(sb.name):
@@ -1054,26 +1074,52 @@ def propagate(fm: FuncMap, dm: DataMap, do_splits: bool, dry: bool):
         _, a_units = load_splits(A.split_path)
         b_header, b_units = load_splits(B.split_path)
         have = {u for u, _ in b_units}
+        # Ranges the target already claims. A project that gives uncovered code its own source file
+        # (auto/text_XXXX.c) owns them, so claiming a function there without that file's extabindex makes dtk
+        # refuse the whole split ("Mismatched splits for extabindex 2:0x80011CCC and function
+        # 3:0x800FADAC"). Additive only: never take a range another unit already owns.
+        claimed = [(sec, s_, e_, u) for u, secs_ in b_units for sec, s_, e_, _x in secs_]
         for unit, secs in a_units:
+            if unit in have:
+                continue  # the target already has this unit: leave its (carefully placed) block alone
             out = []
             why = ""
             for sec, s, e, extra in secs:
-                d, why = section_delta(fm, dm, sec, s, e)
-                if d is None:
-                    break
-                why = verify_range(fm, dm, sec, s, e, d)
-                if why:
-                    break
+                if sec in EH_SECTIONS:
+                    # Left to the target's own auto chunks. A partially claimed extab makes dtk
+                    # re-analyse the leftover bytes (its regional etab symbols are not the US ones),
+                    # and it then refuses its own boundary ("Invalid alignment for split").
+                    # Code is what a version measures; a unit that later links there gets its extab
+                    # block from mvlink/promote_sweep, one unit at a time, hash-gated.
+                    continue
+                d, issue = section_delta(fm, dm, sec, s, e)
+                if d is not None:
+                    issue = verify_range(fm, dm, sec, s, e, d)
+                if d is None or issue:
+                    if sec in CODE_SECTIONS:
+                        why = issue or f"{sec} is unmapped"
+                        break
+                    # Unmapped data must not hide measurable code. Linking still
+                    # requires the separate per-version, whole-object hash gate.
+                    continue
                 out.append((sec, s + d, e + d, extra, d))
-            if why or len(out) != len(secs):
-                skipped.append((unit, why))
+            if why or not out:
+                skipped.append((unit, why or "no claimable section"))
+                continue
+            clash = next((cu for sec, s_, e_, _x, _d in out
+                          for csec, cs, ce, cu in claimed if csec == sec and s_ < ce and cs < e_), "")
+            if clash:
+                skipped.append((unit, f"overlaps {clash}"))
                 continue
             new_units.append((unit, [(sec, s, e, x) for sec, s, e, x, _ in out]))
             for sec, s, e, x, d in out:
                 drop_ranges.append((sec, s, e))
                 for sa in A.syms:
                     if sa.sec == sec and s - d <= sa.addr < e - d:
-                        nb = Sym(rename_addr_suffix(sa.name, d), sa.sec, sa.addr + d, sa.attrs)
+                        # The US name, not a regional-address rename: our compiled object defines the
+                        # US names, and dtk/objdiff pair the retail side to it by name. A `fn_8038EC20`
+                        # here would leave `fn_802ABC74` in the source unpairable (3% instead of 100%).
+                        nb = Sym(sa.name, sa.sec, sa.addr + d, sa.attrs)
                         unit_syms.append(nb)
 
     # apply symbol edits
@@ -1101,11 +1147,30 @@ def propagate(fm: FuncMap, dm: DataMap, do_splits: bool, dry: bool):
             n_ren += 1
             continue
         new_syms.append(sb)
+    # A propagated name comes from the US source and must win: dtk and objdiff pair the retail side to
+    # our object by name. A local symbol that already carries that name (an unmatched `fn_XXXXXXXX`
+    # named after *its* address, which the US name can coincide with) would be a multiply-defined link
+    # error, so move the local one onto its own address-derived name.
+    prop_names = {nb.name for nb in unit_syms}
+    used = {s.name for s in new_syms}
+    n_clash = 0
+    for i, sb in enumerate(new_syms):
+        if sb.name not in prop_names:
+            continue
+        pref = "fn" if sb.sec in CODE_SECTIONS else "lbl"
+        cand, k = f"{pref}_{sb.addr:08X}", 0
+        while cand in used:
+            k += 1
+            cand = f"{pref}_{sb.addr:08X}_{k}"
+        used.add(cand)
+        new_syms[i] = Sym(cand, sb.sec, sb.addr, sb.attrs)
+        n_clash += 1
     new_syms.extend(unit_syms)
     new_syms.sort(key=lambda s: s.addr)
 
     print(f"== propagate {A.vid} -> {B.vid}: {n_ren} renames, {len(conflicts)} name conflicts kept, "
-          f"{len(dup)} duplicates skipped, {len(new_units)} splits ({len(unit_syms)} symbols)")
+          f"{len(dup)} duplicates skipped, {n_clash} local names moved aside, "
+          f"{len(new_units)} splits ({len(unit_syms)} symbols)")
     for a, b, addr in conflicts[:20]:
         print(f"   keep {B.vid} {b} @ {addr:#010x} (US says {a})")
     if len(conflicts) > 20:

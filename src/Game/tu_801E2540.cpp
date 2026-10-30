@@ -330,8 +330,8 @@ extern "C" void fn_801E2D88(u8* this_) {
 extern "C" void fn_801E2EE4(const Actor* this_) {
     const u8* p=(const u8*)this_;
     f32 y=*(f32*)(p+0x10);
-    actorApplyRectFrom(this_, lbl_8053F4D0+*(f32*)(p+0xc), *(f32*)(p+0xc)-lbl_8053F4D0,
-        y-lbl_8053F4D0, lbl_8053F4D0+y);
+    actorApplyRectFrom(this_, *(f32*)(p+0xc)-lbl_8053F4D0, y-lbl_8053F4D0,
+        lbl_8053F4D0+*(f32*)(p+0xc), lbl_8053F4D0+y);
 }
 
 extern "C" s32 fn_801E2F40(u8* this_) {

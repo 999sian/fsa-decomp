@@ -272,12 +272,12 @@ extern "C" void fn_803584C0(u8* self) {
     Vec8035A860 vA;
     JGeometry::TVec3f dv2;
     s16 ang0;
-    s32 x;
     s32 i;
-    s32 j;
+    s32 x;
     s32 k;
+    s32 j;
     bool ok;
-    u16 idx;
+    u32 idx;
     f32 d;
     f32 py;
     s8 r;
@@ -309,8 +309,11 @@ extern "C" void fn_803584C0(u8* self) {
         self[0x246 + i] = fn_8035AC84(self, i);
         fn_801F317C(self, box);
         py = *(f32*)(self + 0x10);
-        box[1] = (box[1] - py) * __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4)) + py;
-        box[3] = (box[3] - py) * __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4)) + py;
+        f32 cs=__fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
+        f32 bottom=box[1]-py;
+        f32 top=box[3]-py;
+        box[1]=bottom*cs+py;
+        box[3]=top*cs+py;
         if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
             d = py - v8[1];
             if (self[0x24e] != 0 && lbl_8054286C == d) {
@@ -530,6 +533,9 @@ extern "C" void fn_80358F98(u8* self) {
     f32 d;
     f32 py;
     s32 i;
+    u8* q;
+    s32 a;
+    s32 b;
     s32 k;
     s8 r;
     s16 old;
@@ -546,18 +552,18 @@ extern "C" void fn_80358F98(u8* self) {
         }
     }
     *(f32*)(self + 0x240) = lbl_8054286C;
-    for (int n = 0; n < 4; n++) {
-        u8* q = self + n;
+    for (i = 0; i < 4; i++) {
+        q = self + i;
         q[0x246] = 0;
         q[0x24a] = 0;
-        if (!fn_8023F264(n)) continue;
-        q[0x246] = fn_8035AE9C(self, (void*)n);
+        if (!fn_8023F264(i)) continue;
+        q[0x246] = fn_8035AE9C(self, (void*)i);
         fn_801F317C(self, box);
         py = *(f32*)(self + 0x10);
         f32 c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
         box[1] = c * (box[1] - py) + py;
         box[3] = c * (box[3] - py) + py;
-        if (fn_8023AAF8(n, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
+        if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), (Vec8035A860*)v8)) {
             d = py - v8[1];
             if (self[0x24e] != 0 && lbl_8054286C == d) {
                 d = lbl_8054287C;
@@ -581,9 +587,9 @@ extern "C" void fn_80358F98(u8* self) {
         fn_801F0D20(self, 3);
     }
     applyRotationCounter803597EC(self, i);
-    for (int a = 0; a < 4; a++) {
+    for (a = 0; a < 4; a++) {
         if ((s8)self[0x24a + a] != 0) {
-            for (int b = 0; b < 4; b++) {
+            for (b = 0; b < 4; b++) {
                 u8 t;
                 if (!fn_8022F514((void*)b) && (s8)self[0x24a + b] == 0 && (s8)(t = self[0x246 + b]) != 0 &&
                     (s8)self[0x24a + a] * (s8)t < 0) {

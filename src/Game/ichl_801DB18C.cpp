@@ -475,7 +475,10 @@ extern "C" void fn_801DB9CC(char* p) {
     *(s16*)(p + 0x2dc) = fn_801CD664(0x10000);
     if (*(s32*)(p + 0x16c) == -1) {
         const IchlV2& v = *(IchlV2*)(p + 0x2b4);
-        if (!ichlIsZero(v)) {
+        register const f32 square = v.squared();
+        register const f32 epsilon = 32.0f * FLT_EPSILON;
+        bool zero = square <= epsilon;
+        if (!zero) {
             f32 rx, ry;
             if (v.x < lbl_8053F2E4) {
                 f32 yc;

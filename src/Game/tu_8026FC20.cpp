@@ -2736,7 +2736,7 @@ void fn_80277F98(char* p) {
         S32(p, 0xbf4) = 4;
         JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0x8);
         JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(p + 0xd78);
-        if (!(v.squared() <= lbl_80540298 * FLT_EPSILON)) {
+        if (!hitIsZero(&v)) {
             pos += v;
             F32(p, 0xd80) = F32(p, 0xd80) - lbl_805402F8;
             if (F32(p, 0x10) <= lbl_8054028C) {

@@ -1,13 +1,13 @@
 # The Legend of Zelda: Four Swords Adventures
 
 [![Build Status](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml/badge.svg)](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml)
-[![Matched Code](https://img.shields.io/badge/Code-30.68%25-yellow.svg)](https://github.com/999sian/fsa-decomp)
-[![Matched Functions](https://img.shields.io/badge/Functions-62.67%25-green.svg)](https://github.com/999sian/fsa-decomp)
-[![Linked Objects](https://img.shields.io/badge/Linked_Files-444%20%2F%20889-blue.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Code](https://img.shields.io/badge/Code-59.03%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Functions](https://img.shields.io/badge/Functions-88.13%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Linked Objects](https://img.shields.io/badge/Linked_Files-455%20%2F%201007-blue.svg)](https://github.com/999sian/fsa-decomp)
 
-A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.
+A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**. The repository also covers the Japan-only **Navi Trackers** executable — later known as **Tetra's Trackers** — as a separate target.
 
-The goal of this project is to produce readable, idiomatic C/C++ source code that compiles with the original Metrowerks compiler and links to a `main.dol` binary that is **byte-for-byte identical** to the retail release.
+The goal of this project is to produce readable, idiomatic C/C++ source code that compiles with the original Metrowerks compiler and links to binaries that are **byte-for-byte identical** to the retail releases.
 
 > **Note**: This repository contains **no copyrighted game assets or retail binaries**. An existing, legally acquired copy of the game is required to extract original files and build the target executable.
 
@@ -17,24 +17,40 @@ The goal of this project is to produce readable, idiomatic C/C++ source code tha
 
 | ID | Region | Disc SHA-1 | `main.dol` SHA-1 | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** (29.74% code matched) |
-| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Supported** (0.28% code matched, retail verified) |
-| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Supported** (0.27% code matched, retail verified) |
+| **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** (59.03% code matched) |
+| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Supported** (44.96% code matched, retail verified) |
+| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Supported** (40.68% code matched, retail verified) |
+
+### Navi Trackers / Tetra's Trackers (JP)
+
+The Japanese disc ships a second executable, `files/DOL/framework.dol` — **Navi Trackers**, the mode later localised as **Tetra's Trackers**. It is not an FSA regional `main.dol`: it has its own configuration, symbols, splits and progress, and is built as the separate **`G4SJ01_NT`** target.
+
+| ID | Executable | `framework.dol` SHA-1 | Status |
+| :--- | :--- | :--- | :--- |
+| **G4SJ01_NT** | `files/DOL/framework.dol` | `ab5f67bcf0687923d8dc1caf5afeb3bb9fe69011` | **Supported** (1.75% code matched, retail verified) |
+
+```sh
+python3 configure.py --version G4SJ01_NT
+ninja -j3
+sha1sum -c config/G4SJ01_NT/build.sha1
+```
+
+See [`docs/versions/README.md`](docs/versions/README.md#navi-trackers-g4sj01_nt) for details.
 ---
 
 ## Progress Tracker
 
-Current progress is automatically tracked against compiler-verified metadata from `main.dol`:
+Current FSA progress is automatically tracked against compiler-verified metadata from `main.dol` (Navi Trackers is tracked separately with `tools/progress.py --version G4SJ01_NT`):
 
 <!-- PROGRESS_START -->
 | Category | Matched Code | Matched Functions | Linked Files | Progress |
 | :--- | :--- | :--- | :--- | :--- |
-| **Overall** | **2.27%** (102,988 / 4,542,176 B) | **5.19%** (601 / 11,585 fns) | **116 / 116** | `░░░░░░░░░░░░░░░` |
-| **Game Code** | **0.00%** (0 / 0 B) | **0.00%** (0 / 0 fns) | **0 / 0** | `░░░░░░░░░░░░░░░` |
-| **SDK Code** | **100.00%** (62,908 / 62,908 B) | **100.00%** (392 / 392 fns) | **86 / 86** | `███████████████` |
-| **JSystem Code** | **100.00%** (40,080 / 40,080 B) | **100.00%** (209 / 209 fns) | **30 / 30** | `███████████████` |
+| **Overall** | **59.03%** (2,622,048 / 4,442,032 B) | **88.13%** (10,186 / 11,558 fns) | **455 / 1007** | `█████████░░░░░░` |
+| **Game Code** | **50.26%** (1,794,716 / 3,570,768 B) | **80.85%** (5,477 / 6,774 fns) | **105 / 610** | `████████░░░░░░░` |
+| **SDK Code** | **99.94%** (237,244 / 237,392 B) | **99.91%** (1,065 / 1,066 fns) | **174 / 179** | `███████████████` |
+| **JSystem Code** | **93.09%** (590,088 / 633,868 B) | **98.04%** (3,644 / 3,717 fns) | **176 / 218** | `██████████████░` |
 
-*Fuzzy code matching stands at **2.27%** (includes near-matches).*
+*Fuzzy code matching stands at **89.93%** (includes near-matches).*
 <!-- PROGRESS_END -->
 ---
 

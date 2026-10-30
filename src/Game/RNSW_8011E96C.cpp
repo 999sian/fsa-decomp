@@ -71,9 +71,7 @@ extern "C" void fn_8011E9CC(u8* this_) {
         }
         S32(0x238)++;
         if (S32(0x238) >= S32(0x23C)) {
-            s32 sel;
-            RNSW_Data* sp;
-            sel = fn_801CD664(4);
+            u32 sel = fn_801CD664(4);
             if (S32(0x234) == 1) {
                 sel = S32(0x240);
                 S32(0x240) = sel + 1;

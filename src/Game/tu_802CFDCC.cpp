@@ -316,10 +316,8 @@ extern "C" void fn_802D010C(Actor* p) {
         }
         if (*(s32*)((u8*)p + 0x230) == 1) {
             if (*(s32*)((u8*)p + 0x268) == 0) {
-                s32 (*groups)[24] = (s32(*)[24])tbl;
-                s32* times = groups[1];
-                s32* frames = groups[0];
-                *(s32*)((u8*)p + 0x268) = times[*(s32*)((u8*)p + 0x264)];
+                q = tbl + 24;
+                *(s32*)((u8*)p + 0x268) = q[*(s32*)((u8*)p + 0x264)];
                 q = tbl;
                 *(s32*)((u8*)p + 0x264) = q[*(s32*)((u8*)p + 0x264)];
                 *(f32*)((u8*)p + 0x270) = lbl_80540E8C;

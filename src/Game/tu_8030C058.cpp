@@ -489,14 +489,22 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
                 *(f32*)(p + 0x824) = old[3];
             }
             if (*(s32*)(p + 0x838) > 0) {
-                f32 w = cameraBlend(*(s32*)(p + 0x838), 1.0f / 70.0f);
+                const f32 phase = cameraBlendAngle(*(s32*)(p + 0x838), 1.0f / 70.0f);
+                f32 angle = phase;
+                if (angle < 0.0f) angle = -angle;
+                const f32 previousLeft = *(f32*)(p + 0x818);
+                const f32 previousTop = *(f32*)(p + 0x81c);
+                const f32 previousRight = *(f32*)(p + 0x820);
+                const f32 previousBottom = *(f32*)(p + 0x824);
+                f32 cosine = JMath::sincosTable_.mTable[(u16)((2048.0f / 360.0f) * angle) & 2047].second;
+                f32 w = 0.5f * cosine + 0.5f;
                 blended = 1;
                 --*(s32*)(p + 0x838);
                 f32 inv = 1.0f - w;
-                left = *(f32*)(p + 0x818) * inv + left * w;
-                top = *(f32*)(p + 0x81c) * inv + top * w;
-                right = *(f32*)(p + 0x820) * inv + right * w;
-                bottom = *(f32*)(p + 0x824) * inv + bottom * w;
+                left = previousLeft * inv + left * w;
+                top = previousTop * inv + top * w;
+                right = previousRight * inv + right * w;
+                bottom = previousBottom * inv + bottom * w;
             }
         }
         if (!blended && p[0x7f4] && p[0x7f6]) {
@@ -508,14 +516,22 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
                 *(f32*)(p + 0x834) = old[3];
             }
             if (*(s32*)(p + 0x83c) > 0) {
-                f32 w = cameraBlend(*(s32*)(p + 0x83c), 1.0f / 40.0f);
+                const f32 phase = cameraBlendAngle(*(s32*)(p + 0x83c), 1.0f / 40.0f);
+                f32 angle = phase;
+                if (angle < 0.0f) angle = -angle;
+                const f32 previousLeft = *(f32*)(p + 0x828);
+                const f32 previousTop = *(f32*)(p + 0x82c);
+                const f32 previousRight = *(f32*)(p + 0x830);
+                const f32 previousBottom = *(f32*)(p + 0x834);
+                f32 cosine = JMath::sincosTable_.mTable[(u16)((2048.0f / 360.0f) * angle) & 2047].second;
+                f32 w = 0.5f * cosine + 0.5f;
                 blended = 1;
                 --*(s32*)(p + 0x83c);
                 f32 inv = 1.0f - w;
-                left = *(f32*)(p + 0x828) * inv + left * w;
-                top = *(f32*)(p + 0x82c) * inv + top * w;
-                right = *(f32*)(p + 0x830) * inv + right * w;
-                bottom = *(f32*)(p + 0x834) * inv + bottom * w;
+                left = previousLeft * inv + left * w;
+                top = previousTop * inv + top * w;
+                right = previousRight * inv + right * w;
+                bottom = previousBottom * inv + bottom * w;
             }
         }
         if (!blended) {
@@ -557,14 +573,22 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
         }
     }
     if (p[0x840]) {
+        f32 inv = 1.0f - *(f32*)(p + 0x854);
         f32 w = *(f32*)(p + 0x854);
-        f32 inv = 1.0f - w;
-        top = *(f32*)(p + 0x848) * w + top * inv;
-        bottom = *(f32*)(p + 0x850) * w + bottom * inv;
-        left = *(f32*)(p + 0x844) * w + left * inv;
+        const f32 previousTop = *(f32*)(p + 0x848);
+        const f32 previousBottom = *(f32*)(p + 0x850);
+        const f32 previousLeft = *(f32*)(p + 0x844);
+        const f32 previousRight = *(f32*)(p + 0x84c);
+        f32 t = top * inv;
+        f32 b = bottom * inv;
+        f32 l = left * inv;
+        f32 r = right * inv;
+        top = previousTop * w + t;
+        bottom = previousBottom * w + b;
+        left = previousLeft * w + l;
         minY = top;
         maxY = bottom;
-        right = *(f32*)(p + 0x84c) * w + right * inv;
+        right = previousRight * w + r;
     }
     if (old) { old[0] = left; old[1] = top; old[2] = right; old[3] = bottom; }
     f32 pad = *(f32*)(p + 0x1d4);

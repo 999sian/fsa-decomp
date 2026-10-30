@@ -265,7 +265,7 @@ static inline void gnefDelete(s32& handle) {
 
 #pragma opt_common_subs off
 extern "C" void fn_802ED984(GnefSelf* self) {
-    const u8* data=lbl_8046F508;
+    const GnefEffectData* data=(const GnefEffectData*)lbl_8046F508;
     switch (self->m24C) {
     case 0:
         fn_802D6A9C();
@@ -315,11 +315,11 @@ extern "C" void fn_802ED984(GnefSelf* self) {
         self->m250--;
         if (self->m250 <= 0) {
             gnefStop(self->mHandles[0]);
-            s32 index = self->m254 * 4;
-self->mHandles[0] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+0],0,-1,0,0,1,lbl_80541418);
-self->mHandles[1] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+1],0,-1,0,0,1,lbl_80541418);
-self->mHandles[2] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+2],0,-1,0,0,1,lbl_80541418);
-self->mHandles[3] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+3],0,-1,0,0,1,lbl_80541418);
+            u32 index = self->m254 * 4;
+self->mHandles[0] = fn_8013CC50(self->m04,&self->x,data->wind[index+0],0,-1,0,0,1,lbl_80541418);
+self->mHandles[1] = fn_8013CC50(self->m04,&self->x,data->wind[index+1],0,-1,0,0,1,lbl_80541418);
+self->mHandles[2] = fn_8013CC50(self->m04,&self->x,data->wind[index+2],0,-1,0,0,1,lbl_80541418);
+self->mHandles[3] = fn_8013CC50(self->m04,&self->x,data->wind[index+3],0,-1,0,0,1,lbl_80541418);
             self->m250 = 180; self->m24C++;
             fn_801F0E34(self, 0x5005a, 0);
         }
@@ -363,10 +363,10 @@ self->mHandles[3] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[ind
         break;
     case 9:
         if(self->m277) {
-            s32 index=self->m254 * 3;
-            fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+0],0,0,0,0,1,lbl_80541418);
-fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+1],0,0,0,0,1,lbl_80541418);
-fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+2],0,0,0,0,1,lbl_80541418);
+            u32 index=self->m254 * 3;
+            fn_8013CC50(self->m04,&self->x,data->burst[index+0],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,data->burst[index+1],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,data->burst[index+2],0,0,0,0,1,lbl_80541418);
             fn_801F0E34(self,0x50058,0);
             self->m250=120; self->m24C=10;
         }
@@ -374,9 +374,9 @@ fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+2],0,0,0,0,1,lbl_
     case 10:
         self->m250--;
         if(self->m250<=0) {
-            s32 index=self->m254 * 3;
-            self->mHandles[4] = fn_8013CC50(self->m04,&self->m268,((const u16*)(data+0x54))[index+0],0,0,0,0,1,lbl_80541418);
-self->mHandles[5] = fn_8013CC50(self->m04,&self->m268,((const u16*)(data+0x54))[index+1],0,0,0,0,1,lbl_80541418);
+            u32 index=self->m254 * 3;
+            self->mHandles[4] = fn_8013CC50(self->m04,&self->m268,data->travel[index+0],0,0,0,0,1,lbl_80541418);
+self->mHandles[5] = fn_8013CC50(self->m04,&self->m268,data->travel[index+1],0,0,0,0,1,lbl_80541418);
             self->m2CC=fn_804032E8('TIMG',lbl_804AA340[self->m254]);
             *(f32*)((u8*)self+0x44)=lbl_80541420;
             self->m24C++;
@@ -394,12 +394,12 @@ self->mHandles[5] = fn_8013CC50(self->m04,&self->m268,((const u16*)(data+0x54))[
         break;
     case 12:
         if(self->m278) {
-            s32 index=self->m254 * 5;
-            fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+0],0,0,0,0,1,lbl_80541418);
-fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+1],0,0,0,0,1,lbl_80541418);
-fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+2],0,0,0,0,1,lbl_80541418);
-fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+3],0,0,0,0,1,lbl_80541418);
-fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+4],0,0,0,0,1,lbl_80541418);
+            u32 index=self->m254 * 5;
+            fn_8013CC50(self->m04,&self->x,data->finish[index+0],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,data->finish[index+1],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,data->finish[index+2],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,data->finish[index+3],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,data->finish[index+4],0,0,0,0,1,lbl_80541418);
             fn_801F0E34(self,0x5006f,0);
             self->m24C=13; self->m250=180;
         }

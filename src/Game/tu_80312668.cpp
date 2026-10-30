@@ -155,9 +155,10 @@ extern "C" void fn_801F35AC(Actor*);
 #pragma opt_propagation off
 extern "C" void fn_803129AC(Actor* p) {
     u8* self = (u8*)p;
+    s32 j;
     s32 idx;
     u8 flag;
-    int i;
+    s32 i;
     f32 vec[3];
     u8* mgr;
     u8** slots;
@@ -234,14 +235,14 @@ extern "C" void fn_803129AC(Actor* p) {
         vec[1] -= lbl_80541804;
         fn_80230498(*(s32*)(self + 0x244), vec, 0x3f, 0xff, -0x80, -0x80, 1);
         fn_80230BF4(*(s32*)(self + 0x244), 3);
-        for (i = 0; i < 4; i++) {
-            if (*(s32*)(self + 0x244) != i && fn_8022E438(i)) {
-                f32* pos = (f32*)fn_8023E724(i);
+        for (j = 0; j < 4; j++) {
+            if (j != *(s32*)(self + 0x244) && fn_8022E438(j)) {
+                f32* pos = (f32*)fn_8023E724(j);
                 vec[0] = pos[0];
                 vec[1] = pos[1];
                 vec[2] = pos[2];
                 vec[1] += lbl_80541808;
-                fn_80230498(i, vec, 0x3f, 0xff, -0x80, -0x80, 1);
+                fn_80230498(j, vec, 0x3f, 0xff, -0x80, -0x80, 1);
             }
         }
         fn_8029D898(lbl_8053AC98, 0x1a);
@@ -505,9 +506,9 @@ extern "C" void fn_803129AC(Actor* p) {
         if (fn_80388CAC(*(s32*)(self + 0x248), *(u32*)(self + 0x198))) {
             fn_8037AD70(lbl_8053AD70, *(s32*)(self + 0x234));
             *(s32*)(self + 0x230) = 0x16;
-            for (i = 0; i < 4; i++) {
-                if (*(s32*)(self + 0x244) != i && fn_8022E438(i)) {
-                    fn_80230498(i, fn_8023E724(*(s32*)(self + 0x244)), 0x3f, 0xff, -0x80, -0x80, 1);
+            for (j = 0; j < 4; j++) {
+                if (j != *(s32*)(self + 0x244) && fn_8022E438(j)) {
+                    fn_80230498(j, fn_8023E724(*(s32*)(self + 0x244)), 0x3f, 0xff, -0x80, -0x80, 1);
                 }
             }
         }
@@ -516,8 +517,8 @@ extern "C" void fn_803129AC(Actor* p) {
         fn_80230534(0);
         fn_8022CC20(*(s32*)(self + 0x248));
         fn_802D8050(fn_802D6A9C(), (*(u32*)(self + 0x90) >> 20) & 0x1f, 1, 0xff);
-        for (i = 0; i < 4; i++) {
-            fn_8022CA6C(i, 5, 1);
+        for (j = 0; j < 4; j++) {
+            fn_8022CA6C(j, 5, 1);
         }
         fn_8022ADCC();
         fn_801F35AC(p);

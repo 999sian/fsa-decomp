@@ -1,14 +1,39 @@
-// TU 0x802ec1d4-0x802ec73c (actor GEN3).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802ec1d4-0x802ec73c — Actor 'GEN3' (Table-Driven Multi-Actor Spawner).
 #include "Game/esd/types.h"
+#include "Game/esd/Actor.h"
 
-// ---- Gen3_dtor_802EC1D4.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern void* lbl_804AA1D0[];
 
-extern "C" void* fn_802EC1D4(void* this_, short how) {
+struct Gen3VT {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10();
+    virtual u8 check();
+};
+
+struct Gen3Actor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPos[3];
+    /* 0x018 */ u8 _pad18[0x90 - 0x18];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x230 - 0x94];
+    /* 0x230 */ s32 mState;          // 0 = wait switch, 1 = pre-spawn smoke, 2 = spawn actor, 4 = wait reset
+    /* 0x234 */ u32 mTypeIndex;      // Unpacked from spawnParam & 0x7F
+    /* 0x238 */ s32 mSpawnInterval;  // Unpacked from (spawnParam >> 7) & 0x1FF
+    /* 0x23C */ s32 mTotalCount;     // Unpacked from (spawnParam >> 16) & 0xF
+    /* 0x240 */ s32 mRepeatMode;     // Unpacked from (spawnParam >> 20) & 0xF
+    /* 0x244 */ s32 mSuppressBgm;    // Unpacked from (spawnParam >> 24) & 1
+    /* 0x248 */ s32 mRemainingCount;
+    /* 0x24C */ s32 mTimer;
+    /* 0x250 */ u32 mTargetFourCC;   // Looked up from lbl_8046F398[mTypeIndex]
+};
+
+extern "C" void* fn_802EC1D4(Gen3Actor* this_, short how) {
     if (this_) {
-        *(void**)this_ = lbl_804AA1D0;
+        this_->mVtable = lbl_804AA1D0;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
             operator delete(this_);
@@ -17,33 +42,10 @@ extern "C" void* fn_802EC1D4(void* this_, short how) {
     return this_;
 }
 
-// ---- Gen3_EmptyHook.cpp ----
-// Gen3_EmptyHook - GEN3: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
-
 void Gen3_EmptyHook(void) {}
-
 }
 
-// ---- fn_802EC238: GEN3 update() ----
-// State machine: 0 wait for trigger; 1 count down, then (mode 1) stop when
-// 30 target actors already exist or spawn the smoke; 2 count down and spawn
-// the configured actor, repeat this->0x23c times; 4 wait for the trigger to
-// be released.
-struct Gen3VT {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual void v5();
-    virtual void v6();
-    virtual void v7();
-    virtual void v8();
-    virtual void v9();
-    virtual void v10();
-    virtual u8 check();
-};
 extern const u32 lbl_8046F450[];
 extern const f32 lbl_805413F0;
 extern char* lbl_8053AF80;
@@ -55,108 +57,96 @@ extern "C" void fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 
 extern "C" void fn_80458FF0(void* obj, u32 id, s32 a, s32 b);
 extern "C" void fn_801F35AC(void* this_);
 
-extern "C" void fn_802EC238(char* p) {
+// GEN3 update (vtable slot 3)
+extern "C" void fn_802EC238(Gen3Actor* p) {
     s32 i;
     s32 id;
-    switch (*(s32*)(p + 0x230)) {
+    switch (p->mState) {
     case 0:
         if (((Gen3VT*)p)->check()) {
-            *(s32*)(p + 0x230) = 1;
-            *(s32*)(p + 0x24c) = 1;
+            p->mState = 1;
+            p->mTimer = 1;
         }
         break;
     case 1:
-        *(s32*)(p + 0x24c) = *(s32*)(p + 0x24c) - 1;
-        if (*(s32*)(p + 0x24c) == 0) {
+        p->mTimer = p->mTimer - 1;
+        if (p->mTimer == 0) {
             i = 0;
-            if (*(s32*)(p + 0x240) == 1) {
+            if (p->mRepeatMode == 1) {
                 id = -1;
                 for (; i < 30; i++) {
-                    s32 r = fn_801F78F4(fn_801F856C(), *(u32*)(p + 0x250), id);
+                    s32 r = fn_801F78F4(fn_801F856C(), p->mTargetFourCC, id);
                     id = r;
                     if (r < 0) {
                         goto spawn;
                     }
                 }
-                *(s32*)(p + 0x248) = *(s32*)(p + 0x23c);
-                *(s32*)(p + 0x230) = 4;
+                p->mRemainingCount = p->mTotalCount;
+                p->mState = 4;
                 break;
             }
         spawn:
-            i = *(u32*)(p + 0x4);
+            i = p->mRoomId;
             if (i >= 8) {
-                Actor_CreateByID(fn_801F856C(), 0x4b4d5249, i, p + 0xc, 3, -1, -1);
+                Actor_CreateByID(fn_801F856C(), 'KMRI', i, p->mPos, 3, -1, -1);
             } else {
-                fn_8013CC50(lbl_805413F0, i, p + 0xc, 0x35c, 1, 1, 0, 0, 1);
+                fn_8013CC50(lbl_805413F0, i, p->mPos, 0x35c, 1, 1, 0, 0, 1);
             }
         }
-        *(s32*)(p + 0x230) = 2;
-        *(s32*)(p + 0x24c) = 2;
+        p->mState = 2;
+        p->mTimer = 2;
         break;
     case 2:
-        *(s32*)(p + 0x24c) = *(s32*)(p + 0x24c) - 1;
-        if (*(s32*)(p + 0x24c) == 0) {
-            i = lbl_8046F450[*(u32*)(p + 0x234)];
-            Actor_CreateByID(fn_801F856C(), *(u32*)(p + 0x250), *(u32*)(p + 0x4), p + 0xc, i, -1, -1);
+        p->mTimer = p->mTimer - 1;
+        if (p->mTimer == 0) {
+            i = lbl_8046F450[p->mTypeIndex];
+            Actor_CreateByID(fn_801F856C(), p->mTargetFourCC, p->mRoomId, p->mPos, i, -1, -1);
             if (*(u32*)(lbl_8053AF80 + 0x58) != 0x1000021 && *(u8*)(lbl_8053AAF8 + 0x7f) == 1 &&
-                *(s32*)(p + 0x244) == 0) {
+                p->mSuppressBgm == 0) {
                 fn_80458FF0(lbl_8053AF80, 0x1000021, 1, 0);
             }
-            *(s32*)(p + 0x24c) = *(s32*)(p + 0x238);
-            *(s32*)(p + 0x248) = *(s32*)(p + 0x248) - 1;
-            if (*(s32*)(p + 0x248) == 0) {
-                s32 mode = *(s32*)(p + 0x240);
+            p->mTimer = p->mSpawnInterval;
+            p->mRemainingCount = p->mRemainingCount - 1;
+            if (p->mRemainingCount == 0) {
+                s32 mode = p->mRepeatMode;
                 if (mode == 0) {
                     fn_801F35AC(p);
                 } else if (mode == 1) {
-                    *(s32*)(p + 0x248) = *(s32*)(p + 0x23c);
-                    *(s32*)(p + 0x230) = 4;
+                    p->mRemainingCount = p->mTotalCount;
+                    p->mState = 4;
                 }
             } else {
-                *(s32*)(p + 0x230) = 1;
+                p->mState = 1;
             }
         }
         break;
     case 4:
         if (!((Gen3VT*)p)->check()) {
-            *(s32*)(p + 0x230) = 0;
+            p->mState = 0;
         }
         break;
     }
 }
 
-// ---- Gen3_SetParams.cpp ----
-#include "Game/esd/Actor.h"
-
-// Gen3_SetParams - GEN3: setParams (0x70)
-// Extracts a 7-bit selector from this->0x90 into this->0x234, used to
-// index a FourCC lookup table (lbl_8046F398, stride 4) whose result is
-// stored at this->0x250 (the target FourCC searched for by update());
-// extracts 0x238/0x23c/0x240/0x244 from further bitfields, copies 0x23c
-// into 0x248, sets the initial countdown (0x24c=1) and state (0x230=0).
-// GEN3 is a generic "spawn/find" template actor whose target type is
-// data-driven rather than hardcoded.
 extern "C" {
-extern u32 lbl_8046F398[0x2e]; // real symbol size is 0xb8 bytes (46 words) per symbols.txt
+extern u32 lbl_8046F398[0x2e];
 
-void Gen3_SetParams(void* thisPtr) {
-	char* p = (char*)thisPtr;
-	u32 typeIdx = ((Actor*)thisPtr)->spawnParam & 0x7f;
-	*(u32*)(p + 0x234) = typeIdx;
-	u32 idx = *(u32*)(p + 0x234);
-	*(u32*)(p + 0x250) = lbl_8046F398[idx];
-	*(u32*)(p + 0x238) = (((Actor*)thisPtr)->spawnParam >> 7) & 0x1ff;
-	*(u32*)(p + 0x23c) = (((Actor*)thisPtr)->spawnParam >> 16) & 0xf;
-	*(u32*)(p + 0x240) = (((Actor*)thisPtr)->spawnParam >> 20) & 0xf;
-	*(u32*)(p + 0x244) = (((Actor*)thisPtr)->spawnParam >> 24) & 0x1;
-	*(u32*)(p + 0x248) = *(u32*)(p + 0x23c);
-	*(u32*)(p + 0x24c) = 1;
-	*(u32*)(p + 0x230) = 0;
+// GEN3 init (vtable slot 1)
+void Gen3_SetParams(Gen3Actor* p) {
+    u32 typeIdx = p->mSpawnParam & 0x7f;
+    p->mTypeIndex = typeIdx;
+    u32 idx = p->mTypeIndex;
+    p->mTargetFourCC = lbl_8046F398[idx];
+    p->mSpawnInterval = (p->mSpawnParam >> 7) & 0x1ff;
+    p->mTotalCount = (p->mSpawnParam >> 16) & 0xf;
+    p->mRepeatMode = (p->mSpawnParam >> 20) & 0xf;
+    p->mSuppressBgm = (p->mSpawnParam >> 24) & 0x1;
+    p->mRemainingCount = p->mTotalCount;
+    p->mTimer = 1;
+    p->mState = 0;
 }
 }
 
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE

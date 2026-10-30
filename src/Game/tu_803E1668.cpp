@@ -186,14 +186,14 @@ public:
 extern "C" void fn_802F86CC(void* a, s32 b, s32 c, s32 d, s32 e, s32 f);
 #pragma dont_inline reset
 extern "C" void fn_803E1668(u8* self) {
-    u8* base = (u8*)lbl_80477970;
+    const u8* base = (u8*)lbl_80477970;
     u8* p = (u8*)self;
     JGeometry::TVec3f pos;
     f32 ratio = (f32)(*(J2DPane**)(p + 0xc))->search(*(u64*)(base + 0x750))->getAlpha() / (f32)p[0x342];
     if (*(s32*)(p + 0x220) < 0x64) {
         f32 alpha = lbl_80543650 * ratio;
         s32 i;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xf20);
         for (i = 0; i < 4; i++) {
             if (tags[*(s32*)(p + 0x1bc)][i] != 0) {
                 DrawRec rec;
@@ -211,14 +211,14 @@ extern "C" void fn_803E1668(u8* self) {
                         (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
                 pos.z = lbl_80543664;
                 rec.ids[7] = i + 12;
-                s32 id = ((s32*)(base + 0x40))[*(s32*)(p + 0x220) % 30] + 0x10;
+                const s32 id = ((s32*)(base + 0x40))[*(s32*)(p + 0x220) % 30] + 0x10;
                 void* res = (*(MenuResource803E**)(lbl_8053AAF8 + 0xa4))->get(0x534F4220, base + 0xfa0);
                 ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, res, id, &rec, 1.0f, 1.0f);
             }
         }
     } else if (*(s32*)(p + 0x220) < 0x70) {
         f32 alpha = lbl_80543650 * ratio;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xf20);
         for (s32 i = 3; i >= 0; i--) {
             DrawRec rec;
             rec.b26 = 0;
@@ -283,8 +283,8 @@ case 1: {
         }
     } else if (*(s32*)(p + 0x220) < 0xd4) {
         f32 alpha = lbl_80543650 * ratio;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
-        s32* tbl = (s32*)(base + 0x40);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xf20);
+        const s32* tbl = (s32*)(base + 0x40);
         for (s32 i = 0; i < 4; i++) {
             DrawRec rec;
             rec.b26 = 0;
@@ -305,13 +305,13 @@ case 1: {
             } else {
                 rec.ids[7] = i + 12;
             }
-            s32 id = tbl[*(s32*)(p + 0x220) % 30] + 0x10;
+            const s32 id = tbl[*(s32*)(p + 0x220) % 30] + 0x10;
             void* res = (*(MenuResource803E**)(lbl_8053AAF8 + 0xa4))->get(0x534F4220, base + 0xfa0);
             ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, res, id, &rec, 1.0f, 1.0f);
         }
     } else {
         f32 alpha = lbl_80543650 * ratio;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xf20);
         for (s32 i = 3; i >= 0; i--) {
             DrawRec rec;
             rec.b26 = 0;

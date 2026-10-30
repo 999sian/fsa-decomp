@@ -90,14 +90,14 @@ typedef void (*VFn)(void*);
 
 
 extern "C" void fn_801DAE24(const LinkMgr* mgr) {
-    int i;
+    s32 i;
     const s32* ids = (const s32*)mgr;
-    const u32 none = 0xffffffffU;
-    int count = mgr->getCount();
-    for (i = 0; i < count; i++) {
+    s32 none = -1;
+    s32 n = mgr->mCount;
+    for (i = 0; i < n; i++) {
         ItemBase* actor = (ItemBase*)fn_801F666C(fn_801F856C(), ids[2]);
         if (actor != 0) {
-            *(u32*)((u8*)actor + 0x10c) = none;
+            *(s32*)((u8*)actor + 0x10c) = none;
             actor->v07();
         }
         ids++;

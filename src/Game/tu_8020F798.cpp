@@ -1,5 +1,6 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 struct Vec3f { float x, y, z; };
 struct TblEnt { char pad[0xc]; char* p; f32 f; };
 extern TblEnt lbl_8046A238[];
@@ -123,4 +124,6 @@ extern "C" void fn_8020FADC(char* self)
         fn_801CB71C(self + 0x358, self + 0xc, 0, 0);
     }
 }
+
+void fn_8020FC2C(void) {}
 

@@ -49,3 +49,6 @@ docs/versions/function_map.csv
 
 # decomp.wtf keeps its own state (report, index, twins) here
 .decomp-wtf/
+
+# auto-generated per-function stubs (regenerable from the split)
+src/auto/

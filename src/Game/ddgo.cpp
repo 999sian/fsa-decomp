@@ -446,12 +446,12 @@ extern "C" void fn_801ACFF4(void* this_) {
     y=*(f32*)(t+0x10); x=*(f32*)(t+0xc);
     table=lbl_804A3108;
     left=*(f32*)(t+0x60);top=*(f32*)(t+0x64);right=*(f32*)(t+0x68);bottom=*(f32*)(t+0x6c);
-    f32 p[3], q[3], scale;
+    f32 p[3], q[3];
     s32 dir, handle;
     char* other;
     fn_8030C210(*(void**)((char*)lbl_8053AB10+0x24),t+0xc);
     left+=x; top+=y; right+=x; bottom+=y;
-    scale=lbl_8053E7D0;
+    f32 scale=lbl_8053E7D0;
     if (*(s32*)(t+0x294)==1) scale=lbl_8053E7E8;
     {
         f32* boxes=table+16;
@@ -503,7 +503,12 @@ extern "C" void fn_801ACFF4(void* this_) {
             s32 out=-1;
             dir=*(s32*)(t+0x98);
             *(s32*)(t+0x250)=0;
-            if (*(s32*)(t+0x294)==1) dir=DdgoOldDirection(t);
+            if (*(s32*)(t+0x294)==1) {
+                s32 frame=*(s32*)(t+0x258);
+                dir=3; if(frame<3)dir=0;
+                if(frame>=3 && frame<=5)dir=1;
+                if(frame>=6 && frame<=8)dir=2;
+            }
             fn_801EEC98(t,*(s32*)(t+0x198),0,&out,0,0,0,0);
             if(out>=0) { *(s32*)(t+0x98)=out; *(s32*)(t+0x238)=2; }
             if (*(s32*)(t+0x294)==0 || *(s32*)(t+0x98)!=3) *(s32*)(t+0x230)=4;
@@ -546,7 +551,7 @@ extern "C" void fn_801ACFF4(void* this_) {
             if(*(s32*)(t+0x23c)==1) {
                 p[0]=*(f32*)(t+0xc);p[1]=*(f32*)(t+0x10);p[2]=*(f32*)(t+0x14);
                 if(*(s32*)(t+0x294)==1) {
-                    f32* offset=table+8+*(s32*)(t+0x98)*2;
+                    f32* offsets=table+8; f32* offset=offsets+*(s32*)(t+0x98)*2;
                     p[0]+=offset[0];p[1]+=offset[1];
                 } else {
                     f32* offset=table+*(s32*)(t+0x98)*2;
@@ -570,7 +575,7 @@ extern "C" void fn_801ACFF4(void* this_) {
             other=fn_801F666C(fn_801F856C(),handle);
             if(!other || *(u16*)(other+0x94))break;
             if(*(s32*)(t+0x294)==1 && *(u32*)(other+0x90)!=8 && *(u32*)(other+0x90)!=9)break;
-            if(ClassifyBamAngleToQuadrant((u16)(s32)(JMAAtan2Radian(*(f32*)(other+0xc)-*(f32*)(t+0xc),*(f32*)(other+0x10)-*(f32*)(t+0x10))*lbl_8053E814))==*(s32*)(t+0x98)) {
+            if(*(s32*)(t+0x98)==ClassifyBamAngleToQuadrant((u16)(s32)(JMath::atanTable_.atan2_(*(f32*)(other+0xc)-*(f32*)(t+0xc),*(f32*)(other+0x10)-*(f32*)(t+0x10))*lbl_8053E814))) {
                 *(u8*)(other+0x280)=1;*(s32*)(t+0x230)=6;
             }
             break;

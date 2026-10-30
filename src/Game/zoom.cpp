@@ -1,14 +1,36 @@
-// TU 0x802e694c-0x802e6ec4 (actor ZOOM).
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x802e694c-0x802e6ec4 — Actor 'ZOOM' (Camera Zoom Zone Trigger).
 #include "Game/esd/types.h"
 
-// ---- Zoom_dtor_802E694C.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern void* lbl_804A9DF8[];
 
-extern "C" void* fn_802E694C(void* this_, short how) {
+struct ZoomPt { f32 x, y; };
+struct ZoomBox { ZoomPt min, max; };
+
+struct ZoomActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ f32 mPosX;
+    /* 0x010 */ f32 mPosY;
+    /* 0x014 */ f32 mPosZ;
+    /* 0x018 */ u8 _pad18[0x60 - 0x18];
+    /* 0x060 */ ZoomBox mBounds;
+    /* 0x070 */ u8 _pad70[0x90 - 0x70];
+    /* 0x090 */ u32 mSpawnParam;
+    /* 0x094 */ u8 _pad94[0x230 - 0x94];
+    /* 0x230 */ s32 mState;          // 0 = waiting for player, 1 = starting, 2 = holding zoom, 3 = releasing
+    /* 0x234 */ s32 mSoundIndex;     // Unpacked from (spawnParam >> 23) & 3
+    /* 0x238 */ s32 mSkipPlayerLock; // Unpacked from (spawnParam >> 22) & 1
+    /* 0x23C */ s32 mHoldDuration;   // Unpacked from spawnParam & 0xFFF
+    /* 0x240 */ s32 mHoldTimer;
+    /* 0x244 */ s32 mWidthTiles;     // ((spawnParam >> 17) & 0x1F) + 1
+    /* 0x248 */ s32 mHeightTiles;    // ((spawnParam >> 12) & 0x1F) + 1
+};
+
+extern "C" void* fn_802E694C(ZoomActor* this_, short how) {
     if (this_) {
-        *(void**)this_ = lbl_804A9DF8;
+        this_->mVtable = lbl_804A9DF8;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
             operator delete(this_);
@@ -17,19 +39,10 @@ extern "C" void* fn_802E694C(void* this_, short how) {
     return this_;
 }
 
-// ---- Zoom_EmptyHook.cpp ----
-// Zoom_EmptyHook - ZOOM: empty no-op override (0x4, leaf, no extab needed)
 extern "C" {
-
 void Zoom_EmptyHook(void) {}
-
 }
 
-// fn_802E69B0 / fn_802E6BCC - ZOOM: zone trigger (update / setParams).
-struct ZoomPt { f32 x, y; };
-struct ZoomBox {
-    ZoomPt min, max;
-};
 struct ZoomTarget {
     u8 pad[0x7f4];
     u8 busy;
@@ -44,16 +57,9 @@ struct ZoomTarget {
     }
 };
 struct ZoomVT {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual void v5();
-    virtual void v6();
-    virtual void v7();
-    virtual void v8();
-    virtual void v9();
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9();
     virtual void notify(s32 a, s32 b);
 };
 extern char* lbl_8053AB10;
@@ -65,55 +71,56 @@ extern "C" u8 fn_8023077C();
 extern "C" u8 fn_80230534(s32 a);
 extern "C" void detach__5ActorFv(void* this_);
 
-extern "C" void fn_802E69B0(char* p) {
-    switch (*(s32*)(p + 0x230)) {
+// ZOOM update (vtable slot 3)
+extern "C" void fn_802E69B0(ZoomActor* p) {
+    switch (p->mState) {
     case 0: {
-        f32 y = *(f32*)(p + 0x10);
-        f32 x = *(f32*)(p + 0xc);
+        f32 y = p->mPosY;
+        f32 x = p->mPosX;
         ZoomBox box;
-        box.min.x = *(f32*)(p + 0x60);
-        box.min.y = *(f32*)(p + 0x64);
-        box.max.x = *(f32*)(p + 0x68);
-        box.max.y = *(f32*)(p + 0x6c);
+        box.min.x = p->mBounds.min.x;
+        box.min.y = p->mBounds.min.y;
+        box.max.x = p->mBounds.max.x;
+        box.max.y = p->mBounds.max.y;
         box.min.x += x;
         box.min.y += y;
         box.max.x += x;
         box.max.y += y;
-        if (fn_8023AF14(&box, *(u32*)(p + 0x4), 0, 0.0f) >= 0 &&
+        if (fn_8023AF14(&box, p->mRoomId, 0, 0.0f) >= 0 &&
             ZOOM_TARGET->tryRequest() == true) {
-            if (*(u32*)(p + 0x90) >> 27) {
+            if (p->mSpawnParam >> 27) {
                 ((ZoomVT*)p)->notify(0xff, 1);
             }
-            *(s32*)(p + 0x230) = 1;
-            *(s32*)(p + 0x240) = *(s32*)(p + 0x23c);
-            if (*(s32*)(p + 0x234) != 0) {
-                fn_801F0D20(p, lbl_8046F260[*(s32*)(p + 0x234)]);
+            p->mState = 1;
+            p->mHoldTimer = p->mHoldDuration;
+            if (p->mSoundIndex != 0) {
+                fn_801F0D20(p, lbl_8046F260[p->mSoundIndex]);
             }
         }
         break;
     }
     case 1:
-        if (*(s32*)(p + 0x238) == 0) {
+        if (p->mSkipPlayerLock == 0) {
             if (fn_8023077C() == 1) {
-                *(s32*)(p + 0x230) = 2;
+                p->mState = 2;
                 fn_801F0D20(p, 0x3c);
             }
         } else {
-            *(s32*)(p + 0x230) = 2;
+            p->mState = 2;
             fn_801F0D20(p, 0x3c);
         }
         break;
     case 2:
         ZOOM_TARGET->tryRequest();
-        if (*(s32*)(p + 0x240) == 0) {
-            *(s32*)(p + 0x230) = 3;
+        if (p->mHoldTimer == 0) {
+            p->mState = 3;
         } else {
-            *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
+            p->mHoldTimer = p->mHoldTimer - 1;
         }
         break;
     case 3:
         ZOOM_TARGET->tryRequest();
-        if (*(s32*)(p + 0x238) == 0) {
+        if (p->mSkipPlayerLock == 0) {
             if (fn_80230534(0) == 1) {
                 detach__5ActorFv(p);
             }
@@ -124,26 +131,25 @@ extern "C" void fn_802E69B0(char* p) {
     }
 }
 
-extern "C" void fn_802E6BCC(char* p) {
-    *(u32*)(p + 0x234) = (*(u32*)(p + 0x90) >> 23) & 3;
-    *(u32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 22) & 1;
-    *(u32*)(p + 0x23c) = *(u32*)(p + 0x90) & 0xFFF;
-    *(s32*)(p + 0x244) = ((*(u32*)(p + 0x90) >> 17) & 0x1f) + 1;
-    *(s32*)(p + 0x248) = ((*(u32*)(p + 0x90) >> 12) & 0x1f) + 1;
-    *(s32*)(p + 0x240) = 0;
-    *(f32*)(p + 0xc) += 8.0f;
-    *(f32*)(p + 0x10) += 8.0f;
-    f32 h = 16.0f * *(s32*)(p + 0x248);
-    f32 w = 16.0f * *(s32*)(p + 0x244);
-    *(f32*)(p + 0x60) = -w;
-    *(f32*)(p + 0x64) = -h;
-    *(f32*)(p + 0x68) = w;
-    *(f32*)(p + 0x6c) = h;
-    *(s32*)(p + 0x230) = 0;
+// ZOOM init (vtable slot 1)
+extern "C" void fn_802E6BCC(ZoomActor* p) {
+    p->mSoundIndex = (p->mSpawnParam >> 23) & 3;
+    p->mSkipPlayerLock = (p->mSpawnParam >> 22) & 1;
+    p->mHoldDuration = p->mSpawnParam & 0xFFF;
+    p->mWidthTiles = ((p->mSpawnParam >> 17) & 0x1f) + 1;
+    p->mHeightTiles = ((p->mSpawnParam >> 12) & 0x1f) + 1;
+    p->mHoldTimer = 0;
+    p->mPosX += 8.0f;
+    p->mPosY += 8.0f;
+    f32 h = 16.0f * p->mHeightTiles;
+    f32 w = 16.0f * p->mWidthTiles;
+    p->mBounds.min.x = -w;
+    p->mBounds.min.y = -h;
+    p->mBounds.max.x = w;
+    p->mBounds.max.y = h;
+    p->mState = 0;
 }
 
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE

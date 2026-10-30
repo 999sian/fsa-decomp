@@ -1,22 +1,48 @@
-// DEAL_80108414: .text 0x80108414-0x80108A6C (actor DEAL)
-// Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
+// DEAL_80108414: .text 0x80108414-0x80108A6C — Actor 'DEAL' (Unused Item Shop Dealer).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
-
-// ---- from Game/fn_80108414_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 void operator delete(void* p);
 extern void* lbl_8049CD48[];
 extern void* lbl_8049CC34[];
 
-extern "C" void* fn_80108414(void* this_, s16 freeFlag) {
+struct DEAL_Box {
+    f32 x0, y0, x1, y1;
+};
+
+struct DealSub238 {
+    /* 0x00 */ u8 _pad00[0x10];
+    /* 0x10 */ s32 mAnimOffset; // +0x248 on DealActor
+    /* 0x14 */ u8 _pad14[0x10];
+    /* 0x24 */ void* mVtable;   // +0x25C on DealActor
+};
+
+struct DealActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ s32 mRoomId;
+    /* 0x008 */ u32 mField08;
+    /* 0x00C */ JGeometry::TVec3f mPos;
+    /* 0x018 */ u8 _pad18[0x60 - 0x18];
+    /* 0x060 */ DEAL_Box mBounds;
+    /* 0x070 */ u8 _pad70[0x80 - 0x70];
+    /* 0x080 */ DEAL_Box mHitBounds;
+    /* 0x090 */ u8 _pad90[0x108 - 0x90];
+    /* 0x108 */ s32 mSortPriority;
+    /* 0x10C */ u8 _pad10C[0x198 - 0x10C];
+    /* 0x198 */ void* mRoomHandle;
+    /* 0x19C */ u8 _pad19C[0x230 - 0x19C];
+    /* 0x230 */ s32 mState;          // 0 = idle, 1 = talking, 3 = post-talk
+    /* 0x234 */ s32 mTalkingPlayer;  // Player index interacting with shop (-1 = none)
+    /* 0x238 */ DealSub238 mAnimSub; // Embedded animation controller
+};
+
+extern "C" void* fn_80108414(DealActor* this_, s16 freeFlag) {
     if (this_ != 0) {
-        char* p = (char*)this_;
-        *(void**)p = lbl_8049CD48;
-        if (p + 0x238 != 0) {
-            if (p + 0x25c != 0) {
-                *(void**)(p + 0x25c) = lbl_8049CC34;
+        this_->mVtable = lbl_8049CD48;
+        if (&this_->mAnimSub != 0) {
+            if (&this_->mAnimSub.mVtable != 0) {
+                this_->mAnimSub.mVtable = lbl_8049CC34;
             }
         }
         __dt__5ActorFv(this_, 0);
@@ -27,7 +53,6 @@ extern "C" void* fn_80108414(void* this_, s16 freeFlag) {
     return this_;
 }
 
-// ---- fn_80108494 / fn_80108568 / fn_80108764
 extern "C" void v06__5ActorFv(void* this_);
 extern "C" void v03__5ActorFv(void* this_);
 extern "C" void v01__5ActorFv(void* this_);
@@ -67,21 +92,17 @@ public:
     virtual void* vf18(u32 type, const char* name);
 };
 
-struct DEAL_Box {
-    f32 x0, y0, x1, y1;
-};
-
-
-extern "C" void fn_80108494(u8* this_) {
+// DEAL draw (vtable slot 6)
+extern "C" void fn_80108494(DealActor* this_) {
     v06__5ActorFv(this_);
-    s32 id = *(s32*)(this_ + 0x248) + 0x1AB;
-    void* pos = this_ + 0xC;
-    if (*(s32*)(this_ + 4) < 8) {
+    s32 id = this_->mAnimSub.mAnimOffset + 0x1AB;
+    void* pos = &this_->mPos;
+    if (this_->mRoomId < 8) {
         void* res = (*(DEAL_ResMgr**)(lbl_8053AAF8 + 0xA4))->vf18('SOB ', lbl_80464014);
         fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id, lbl_8053C318, lbl_8053C318, 0);
     }
-    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xC,
-                *(s32*)(this_ + 0x248) + 0x1AB, 0, 1, -1, 0, 0, 0);
+    fn_803075AC(this_->mRoomHandle, this_->mRoomId, &this_->mPos,
+                this_->mAnimSub.mAnimOffset + 0x1AB, 0, 1, -1, 0, 0, 0);
 }
 
 static inline u8 DEAL_HasItem() {
@@ -95,70 +116,70 @@ static inline u8 DEAL_HasItem() {
     return 1;
 }
 
-extern "C" void fn_80108568(u8* this_) {
+// DEAL update (vtable slot 3)
+extern "C" void fn_80108568(DealActor* this_) {
     v03__5ActorFv(this_);
     DEAL_Box b;
-    b.x0 = *(f32*)(this_ + 0x60);
-    b.y0 = *(f32*)(this_ + 0x64);
-    b.x1 = *(f32*)(this_ + 0x68);
-    b.y1 = *(f32*)(this_ + 0x6C);
-    b.x0 += *(f32*)(this_ + 0xC);
-    b.y0 += *(f32*)(this_ + 0x10);
-    b.x1 += *(f32*)(this_ + 0xC);
-    b.y1 += *(f32*)(this_ + 0x10);
-    fn_80239914(&b, *(s32*)(this_ + 4), *(void**)(this_ + 0x198));
-    switch (*(s32*)(this_ + 0x230)) {
+    b.x0 = this_->mBounds.x0;
+    b.y0 = this_->mBounds.y0;
+    b.x1 = this_->mBounds.x1;
+    b.y1 = this_->mBounds.y1;
+    b.x0 += this_->mPos.x;
+    b.y0 += this_->mPos.y;
+    b.x1 += this_->mPos.x;
+    b.y1 += this_->mPos.y;
+    fn_80239914(&b, this_->mRoomId, this_->mRoomHandle);
+    switch (this_->mState) {
     case 0: {
-        fn_8022FEB8(&b, *(s32*)(this_ + 4), *(void**)(this_ + 0x198), 1, 0);
-        s32 slot = fn_8022FD8C(*(void**)(this_ + 0x198));
+        fn_8022FEB8(&b, this_->mRoomId, this_->mRoomHandle, 1, 0);
+        s32 slot = fn_8022FD8C(this_->mRoomHandle);
         if (slot >= 0 && fn_802300EC()) {
             int msg = 0x259;
             if (!DEAL_HasItem()) {
                 msg = 0x2AA;
             }
-            void* room = *(void**)(this_ + 0x198);
-            s32 player = *(s32*)(this_ + 4);
-            if (fn_8038AD24(slot, msg, room, player, *(JGeometry::TVec3f*)(this_ + 0xC), 0x28)) {
-                *(s32*)(this_ + 0x234) = slot;
-                *(s32*)(this_ + 0x230) = 1;
+            void* room = this_->mRoomHandle;
+            s32 player = this_->mRoomId;
+            if (fn_8038AD24(slot, msg, room, player, this_->mPos, 0x28)) {
+                this_->mTalkingPlayer = slot;
+                this_->mState = 1;
             }
         }
         break;
     }
     case 1:
-        fn_8022FF8C(*(s32*)(this_ + 0x234), &b, *(s32*)(this_ + 4), *(void**)(this_ + 0x198), 1, 0);
-        if (fn_80388CAC(*(s32*)(this_ + 0x234), *(void**)(this_ + 0x198))) {
-            *(s32*)(this_ + 0x234) = -1;
-            *(s32*)(this_ + 0x230) = 0;
+        fn_8022FF8C(this_->mTalkingPlayer, &b, this_->mRoomId, this_->mRoomHandle, 1, 0);
+        if (fn_80388CAC(this_->mTalkingPlayer, this_->mRoomHandle)) {
+            this_->mTalkingPlayer = -1;
+            this_->mState = 0;
         }
         break;
     case 3:
-        if (fn_80388EEC(*(s32*)(this_ + 0x234))) {
-            *(s32*)(this_ + 0x234) = -1;
-            *(s32*)(this_ + 0x230) = 0;
+        if (fn_80388EEC(this_->mTalkingPlayer)) {
+            this_->mTalkingPlayer = -1;
+            this_->mState = 0;
         }
         break;
     }
-    fn_801D1C18(this_ + 0x238);
+    fn_801D1C18(&this_->mAnimSub);
 }
 
-extern "C" void fn_80108764(u8* this_) {
+// DEAL init (vtable slot 1)
+extern "C" void fn_80108764(DealActor* this_) {
     v01__5ActorFv(this_);
-    *(f32*)(this_ + 0x60) = lbl_8053C31C;
-    *(f32*)(this_ + 0x64) = lbl_8053C31C;
-    *(f32*)(this_ + 0x68) = lbl_8053C320;
-    *(f32*)(this_ + 0x6C) = lbl_8053C320;
-    *(f32*)(this_ + 0x80) = lbl_8053C324;
-    *(f32*)(this_ + 0x84) = lbl_8053C324;
-    *(f32*)(this_ + 0x88) = lbl_8053C324;
-    *(f32*)(this_ + 0x8C) = lbl_8053C324;
-    *(s32*)(this_ + 0x108) = 0;
-    fn_801D2608(this_ + 0x238, lbl_80539ED8, 1);
-    fn_801D22DC(this_ + 0x238, 0, 2, 0);
-    fn_801D1F14(this_ + 0x238, lbl_8053C324);
+    this_->mBounds.x0 = lbl_8053C31C;
+    this_->mBounds.y0 = lbl_8053C31C;
+    this_->mBounds.x1 = lbl_8053C320;
+    this_->mBounds.y1 = lbl_8053C320;
+    this_->mHitBounds.x0 = lbl_8053C324;
+    this_->mHitBounds.y0 = lbl_8053C324;
+    this_->mHitBounds.x1 = lbl_8053C324;
+    this_->mHitBounds.y1 = lbl_8053C324;
+    this_->mSortPriority = 0;
+    fn_801D2608(&this_->mAnimSub, lbl_80539ED8, 1);
+    fn_801D22DC(&this_->mAnimSub, 0, 2, 0);
+    fn_801D1F14(&this_->mAnimSub, lbl_8053C324);
 }
-
-// ---- from Game/fn_801087F4_ctor.cpp
 
 struct Actor {
     Actor();
@@ -166,7 +187,6 @@ struct Actor {
 };
 
 extern "C" void fn_801D267C(void*);
-extern void* lbl_8049CD48[];
 
 class fn_801087F4_actor : public Actor {
 public:
@@ -174,11 +194,11 @@ public:
 };
 
 fn_801087F4_actor::fn_801087F4_actor() : Actor() {
-    *(void**)this = lbl_8049CD48;
-    char* p = (char*)this;
-    *(s32*)(p + 0x230) = 0;
-    *(s32*)(p + 0x234) = -1;
-    fn_801D267C(p + 0x238);
+    DealActor* self = (DealActor*)this;
+    self->mVtable = lbl_8049CD48;
+    self->mState = 0;
+    self->mTalkingPlayer = -1;
+    fn_801D267C(&self->mAnimSub);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

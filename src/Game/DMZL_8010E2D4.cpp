@@ -849,10 +849,11 @@ extern "C" void fn_80111CC0(u8* this_) {
 }
 
 #pragma opt_propagation off
-extern "C" void fn_80111D44(u8* this_) {
-    int tag;
+extern "C" void fn_80111D44(void* param) {
+    u8* this_=(u8*)param;
+    u32 tag;
     u8* list;
-    register u8** it;
+    u8** it;
     u8* elem;
     s32 idx;
     list = (u8*)fn_8011921C();

@@ -1,10 +1,6 @@
-// TU 0x80316e34-0x803172dc.
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// TU 0x80316e34-0x803172dc — Animated Effect Record Helpers (shared by JIJI, TWTG, FTGL).
 #include "Game/esd/types.h"
 
-// ---- Animated effect record (used by JIJI/TWTG/FTGL) ----
-// A small record that plays a frame sequence (table lbl_804AADB8, indexed by
-// the current mode) and fires two effects (0x275/0x276) for players 0..7.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE
@@ -21,7 +17,6 @@
 #define unknown jsys_unknown
 #endif
 #include "JSystem/JGeometry/Vec.h"
-
 #include "Game/AnimEffectRec.h"
 
 extern const s32 lbl_804715A8[4];
@@ -44,7 +39,6 @@ extern "C" void fn_80316E50(AnimEffectRec* r, s32 player, const JGeometry::TVec3
     r->pos = pos;
 }
 
-// Redundant (s16) casts on the s16 durations force the retail extsh.
 extern "C" s32 fn_80316E74(AnimEffectRec* r, s32 arg) {
     s32 ret = -1;
     s32 mode = fn_8037E9F4(arg);
@@ -85,23 +79,17 @@ extern "C" s32 fn_80316E74(AnimEffectRec* r, s32 arg) {
     return ret;
 }
 
-// Deleting destructor (TWTG deletes its record at +0x278 with this).
 AnimEffectRec::~AnimEffectRec() {}
 
-// ---- ResetResourceHandleRecord.cpp ----
-// Small POD-record reset used by JIJI/TWTG/FTGL after a resource handle lookup.
 extern "C" {
-void ResetResourceHandleRecord(void* thisPtr) {
-	char* p = (char*)thisPtr;
-	*(s32*)(p + 0x0) = -1;
-	*(s32*)(p + 0x4) = -1;
-	*(u8*)(p + 0x8) = 0;
-	*(u8*)(p + 0x9) = 0;
+void ResetResourceHandleRecord(AnimEffectRec* thisPtr) {
+    thisPtr->frame = -1;
+    thisPtr->mode = -1;
+    thisPtr->index = 0;
+    thisPtr->timer = 0;
 }
 }
 
-// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
-// macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
 #undef ARRAY_SIZE

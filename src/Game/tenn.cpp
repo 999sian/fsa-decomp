@@ -486,9 +486,8 @@ L_FE8:
 L_1030:
     if (*(s32*)(p + 0x238) > 0) *(s32*)(p + 0x238) -= 1;
     if (*(s32*)(p + 0x23c) > 0) *(s32*)(p + 0x23c) -= 1;
-    register char* tail = p + 8;
-    s32 remaining = *(s32*)(p + 0x240);
-    if (remaining > 0) *(s32*)(tail + 0x238) = remaining - 1;
+    char* tail = p + 8;
+    if (*(s32*)(tail + 0x238) > 0) *(s32*)(tail + 0x238) -= 1;
     if (*(s32*)(tail + 0x23c) > 0) *(s32*)(tail + 0x23c) -= 1;
 }
 #pragma opt_propagation reset

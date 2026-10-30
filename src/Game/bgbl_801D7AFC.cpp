@@ -30,6 +30,7 @@ extern "C" void fn_80238548(s32 player, u32 a, f32* vec, s32 mode);
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8013CB44(void* h, JGeometry::TVec3<f32>* pos, u32 a, u32 b, u32 c);
 
+#pragma opt_propagation off
 extern "C" void fn_801D7BA0(u8* this_) {
     s32 i;
     s32 mode;
@@ -74,11 +75,11 @@ extern "C" void fn_801D7BA0(u8* this_) {
     if (fn_801CD2F8(*(s32*)(this_ + 4))) {
         fn_801D1C18(this_ + 0x270);
     }
-    ((JGeometry::TVec3<f32>*)&this_[0xc])->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+    ((JGeometry::TVec3<f32>*)(this_ + 0xc))->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
     fn_8013CB44(*(void**)(this_ + 0x2a8), (JGeometry::TVec3<f32>*)(this_ + 0xc), 1, 2, 1);
     fn_8013CB44(*(void**)(this_ + 0x2ac), (JGeometry::TVec3<f32>*)(this_ + 0xc), 1, 2, 1);
 }
-
+#pragma opt_propagation reset
 struct BGBL_Part {
     u8 pad0[0x98];
     f32 m98, m9C, mA0;

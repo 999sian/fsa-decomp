@@ -21,24 +21,29 @@ RusaRegistry* fn_80212AC0() {
 }
 
 // NonMatching: only the prologue scheduling differs (retail copies i from found's zero).
-void fn_80212AF0(RusaRegistry* reg, JGeometry::TVec3<f32>* pos) {
-	s32 n = reg->mCount;
-	s32 i = 0;
-	void* found = NULL;
-	void* actor;
-	for (s32* ids = reg->mIds; i < n; ids++, i++) {
-		actor = fn_801F666C(fn_801F856C(), *ids);
-		if (actor != NULL && fn_80211000(actor, pos)) {
-			found = actor;
-			break;
-		}
-	}
-	if (found != NULL) {
-		JGeometry::TVec3<f32> d;
-		fn_80210E90(found, pos, &d);
-		*pos += d;
-	}
+#pragma opt_common_subs off
+extern "C" void fn_80212AF0(const RusaRegistry* reg, JGeometry::TVec3<f32>* pos) {
+    s32 n;
+    s32 i;
+    void* found;
+    found = NULL;
+    n = reg->mCount;
+    i = (s32)found;
+    void* actor;
+    for (const s32* ids = reg->mIds; i < n; ids++, i++) {
+        actor = fn_801F666C(fn_801F856C(), *ids);
+        if (actor != NULL && fn_80211000(actor, pos)) {
+            found = actor;
+            break;
+        }
+    }
+    if (found != NULL) {
+        JGeometry::TVec3<f32> d;
+        fn_80210E90(found, pos, &d);
+        *pos += d;
+    }
 }
+#pragma opt_common_subs reset
 }
 
 // ---- RusaRegistry_Unregister_80212BA0.cpp ----

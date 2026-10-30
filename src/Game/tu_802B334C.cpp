@@ -1,13 +1,19 @@
-// TU 0x802B334C-0x802B3674.
+// TU 0x802B334C-0x802B3674 — Multi-Switch Sound Trigger Actor.
 #include "types.h"
 
 void operator delete(void* p);
 extern "C" void __dt__5ActorFv(void* this_, int how);
 
+struct SwitchSfxActor {
+    /* 0x000 */ void* mVtable;
+    /* 0x004 */ u8 _pad04[0x90 - 0x04];
+    /* 0x090 */ u32 mSpawnParam; // Holds four 5-bit room switch IDs at bits 7..26
+};
+
 extern void* lbl_804A85E0[];
-extern "C" void* fn_802B334C(void* this_, s16 freeFlag) {
+extern "C" void* fn_802B334C(SwitchSfxActor* this_, s16 freeFlag) {
     if (this_ != 0) {
-        *(void**)this_ = lbl_804A85E0;
+        this_->mVtable = lbl_804A85E0;
         __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             operator delete(this_);
@@ -25,13 +31,13 @@ extern "C" void fn_801F0E34(void* this_, s32 id, s32 flag);
 static const u32 lbl_8046CA98[4] = {0x7c00000, 0x3e0000, 0x1f000, 0xf80};
 static const u32 lbl_8046CAA8[4] = {0x16, 0x11, 0xc, 0x7};
 
-extern "C" void fn_802B33B0(u8* this_) {
+extern "C" void fn_802B33B0(SwitchSfxActor* this_) {
     u32 bits;
     s32 count;
     s32 i;
     count = 0;
     for (i = 0; i < 4; i++) {
-        bits = *(u32*)(this_ + 0x90) & lbl_8046CA98[i];
+        bits = this_->mSpawnParam & lbl_8046CA98[i];
         if (bits != 0 && fn_802D800C(fn_802D6A9C(), bits >> lbl_8046CAA8[i])) {
             count++;
         }

@@ -55,7 +55,7 @@ extern "C" void fn_80335ADC(void* this_) {
                 *(u32*)(p + 0x90) |= 1;
             } else {
                 p[0x246] = cnt - 1;
-                *(s32*)(p + 0x90) &= -2;
+                *(u32*)(p + 0x90) &= ~1u;
                 if (p[0x248] < 2) {
                     f32 rnd = rand01();
                     if (rnd <= *(f32*)(p + 0x23c)) {
@@ -103,5 +103,5 @@ extern "C" void fn_80335D4C(void* this_) {
     p[0x248] = (*(u32*)(p + 0x90) >> 4) & 0xf;
 }
 
-
+void fn_80335E1C(void) {}
 

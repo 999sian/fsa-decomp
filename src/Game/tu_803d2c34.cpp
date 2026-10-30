@@ -1413,10 +1413,8 @@ extern "C" void* fn_803D58E0(void* this_, void* archive, u8 flag) {
 	self->f28=(MCPaneHolder*)o;
 	fn_80402F04(self->f28,self->screen->search(0x5061636375723032ULL));
 
-    MemCardMenu* slots;
-    int i;
-    for(i=0;i<8;i++) {
-        slots=(MemCardMenu*)((u8*)this_+i*4);
+    for(s32 i=0;i<8;i++) {
+        MemCardMenu* slots=(MemCardMenu*)((u8*)this_+i*4);
         o=new MCAlpha;
         slots->f2c[0]=(MCAlpha*)o;
         fn_80402F04(slots->f2c[0],self->screen->search(((u64*)lbl_80476F20)[i]));

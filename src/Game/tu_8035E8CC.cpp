@@ -140,13 +140,13 @@ extern "C" void fn_8035EC98(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x234) == 0) {
         s32 i;
-        u16* ids = lbl_80472820;
         f32 pos[3];
         pos[0] = lbl_805429C0;
         pos[1] = lbl_805429C4;
         pos[2] = lbl_805429BC;
         for (i = 0; i < 0x11; i++) {
-            fn_8013CC50(*(void**)(p + 4), pos, *ids++, 1, 1, 0, 0, 1, lbl_805429C8);
+            s32 id = lbl_80472820[i];
+            fn_8013CC50(*(void**)(p + 4), pos, id, 1, 1, 0, 0, 1, lbl_805429C8);
         }
         fn_801F0E34(this_, 0x30087, 0);
         *(s32*)(p + 0x234) = 0x14;

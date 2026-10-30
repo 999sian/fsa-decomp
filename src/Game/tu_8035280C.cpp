@@ -57,9 +57,9 @@ inline f32 turtleRand() {
 extern "C" u32 __cvt_fp2unsigned(f64);
 #pragma opt_lifetimes off
 #pragma opt_propagation on
-extern "C" void fn_80352870(char* self)
+extern "C" void fn_80352870(Actor* self)
 {
-    char* const p=self;
+    char* p=(char*)self;
     s32 id;
     u32 param;
     s32 count;

@@ -91,9 +91,9 @@ extern const f32 lbl_805407FC;
 extern const f32 lbl_80540800;
 #pragma opt_propagation off
 extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
-    unsigned int flags;
+    u32 flags;
     s32 actor;
-    int i;
+    s32 i;
     bool found;
     s32 player;
     s32 kind;

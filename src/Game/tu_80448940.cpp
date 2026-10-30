@@ -114,59 +114,60 @@ extern "C" void fn_80449070(void* self_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
+#pragma opt_propagation off
 extern "C" void fn_804490B8(void* self_) {
-    u8* base = (u8*)lbl_80490940;
+    const u64* base = lbl_80490940;
     u8* self = (u8*)self_;
-    u8* entry = base;
-    void* handle;
+    const u64* entry = base;
+    ResTIMG* handle;
     J2DPane* pane;
-    int i;
+    s32 i;
 
     for (i = 0; i < 4; i++) {
         self[0x32] &= ~(u8)(1 << i);
-        handle = fn_804030C4(0x54494D47, *(u32*)&lbl_804B1C68);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x48));
-        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x50));
-        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x58));
-        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x60));
-        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
-        entry += 0x70;
+        handle = (ResTIMG*)fn_804030C4(0x54494D47, *(u32*)&lbl_804B1C68);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 9));
+        ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 10));
+        ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 11));
+        ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 12));
+        ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
+        entry += 14;
     }
 
-    self[0x32] &= 0xEF;
-    handle = fn_804030C4(0x54494D47, *(u32*)&lbl_804B1C68);
+    self[0x32] &= ~0x10;
+    handle = (ResTIMG*)fn_804030C4(0x54494D47, *(u32*)&lbl_804B1C68);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x20));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x28));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x30));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x38));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x40));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x48));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x50));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x58));
-    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    ((J2DPicture*)pane)->changeTexture((ResTIMG*)handle, 0);
 
     for (i = 0; i < 4; i++) {
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(base + 0x30));
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(base + 6));
         ((u8*)pane)[0xb0] = 0;
-        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(base + 0x68));
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(base + 13));
         ((u8*)pane)[0xb0] = 0;
-        base += 0x70;
+        base += 14;
     }
 
     pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60));
     ((u8*)pane)[0xb0] = 0;
 }
-
+#pragma opt_propagation reset
 extern "C" void __dl__FPv(void*);
 extern "C" u8 lbl_804B1C90[];
 extern u8* lbl_8053AF18;

@@ -650,7 +650,6 @@ u32 fn_8040F474(void) {
 extern "C" void fn_8040F480(u8* self) {
 Tbl8048C1F8* tbl=&lbl_8048C1F8;
 u8 mode=0;
-EC80Row* ec;
 *(s32*)(self+0x668)=6;
 fn_8042EB24(lbl_8053AEC4);fn_8037AA58();
 switch((int)((u8*)lbl_80529DEC)[0x237]){
@@ -671,29 +670,29 @@ if(*(s32*)(self+0x340)<0&&*(s32*)(self+0x340)>=8)*(s32*)(self+0x340)=0;
 }else{
 *(s32*)(self+0x370)=12;
 for(s32 i=1;i<7;i++){switch(i){case 1:
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503231ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503232ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503233ULL))->hide();break;
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503231ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503232ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503233ULL))->hide();break;
 case 2:
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503331ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503332ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503333ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503334ULL))->hide();break;
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503331ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503332ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503333ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503334ULL))->hide();break;
 case 3:
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503431ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503432ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503433ULL))->hide();break;
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503431ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503432ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503433ULL))->hide();break;
 case 4:
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503531ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503532ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503533ULL))->hide();break;
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503531ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503532ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503533ULL))->hide();break;
 case 5:
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503631ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503632ULL))->hide();break;
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503631ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503632ULL))->hide();break;
 case 6:
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503731ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503732ULL))->hide();
-((J2DPane*)(*(J2DPane**)(self+0xc))->search(0x503733ULL))->hide();break;
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503731ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503732ULL))->hide();
+((J2DPane*)(*(Tu80403Pane**)(self+0xc))->search(0x503733ULL))->hide();break;
 }}
 (*(PaneRef**)(self+0xcc))->pane->show();
 if(mode==2)mode=1;
@@ -704,14 +703,14 @@ else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);
 else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);
 else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);
 else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);
-else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763131ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763132ULL)),(char*)(self+0x438));
+else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763131ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763132ULL)),(char*)(self+0x438));
 {s32 st=*(s32*)(self+0x340); if(st<8)fn_803832BC(self+0x438,menuBootText((u32*)tbl->pad,st),0,0,0);
 else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);
 else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);
 else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);
 else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);
 else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);
-else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
+else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
 {BOOL done; s32 idx=*(s32*)(self+0x340);
 if(lbl_8053AAF8[0x7e])done=((u8)(1<<idx)&lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a)!=0;else done=0;
 if(!done){*(s32*)(self+0x34c)=*(s32*)(self+0x348);if(*(s32*)(self+0x348)==3)*(s32*)(self+0x34c)=2;
@@ -725,22 +724,21 @@ fn_803832BC(self+0x5a0,menuBootText(tbl->text[2],*(s32*)(self+0x340)),0,0,0);
 fn_803832BC(self+0x5be,menuBootText(tbl->text[3],*(s32*)(self+0x340)),0,0,0);
 }
 *(s32*)(self+0x344)=*(s32*)(self+0x340);fn_804083D8(self);
-ec=lbl_8050EC80;
 for(s32 i=0;i<8;i++){
 if(*(s32*)(self+0x370)<i){(*(PaneRef**)(self+0x28+i*20))->pane->hide();(*(PaneRef**)(self+0x208+i*4))->pane->hide();}
-else {BOOL done;if(lbl_8053AAF8[0x7e])done=((u8)(1<<i)&lbl_8050EC80[ec->selfIndex].field7a)!=0;else done=0;
+else {BOOL done;if(lbl_8053AAF8[0x7e])done=((u8)(1<<i)&lbl_8050EC80[lbl_8050EC80[0].selfIndex].field7a)!=0;else done=0;
 if(!done)(*(PaneRef**)(self+0x208+i*4))->pane->hide();}
 }
 if(*(s32*)(self+0x340)<8){s32 n=*(s32*)(self+0x340);s16* coord=(s16*)tbl->cursorPos;
 s32 x=coord[(n*4+*(s32*)(self+0x348))*2],y=coord[(n*4+*(s32*)(self+0x348))*2+1];
 *(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;}
 *(f32*)(*(u8**)(self+0x1c)+8)=*(s32*)(self+0x378);
-animationTransform__7J2DPaneFv((*(J2DPane**)(self+0xc))->search(0x4e646174613038ULL));
+animationTransform__7J2DPaneFv((*(Tu80403Pane**)(self+0xc))->search(0x4e646174613038ULL));
 *(f32*)(*(u8**)(self+0x20)+8)=*(s32*)(self+0x37c);
 animation__9J2DScreenFv(*(void**)(self+0xc));
 if(mode!=2||*(s32*)(self+0x364)==0){
 for(s32 i=0;i<18;i++)fn_80402E70(*(void**)(self+0xd4+i*4));
-((Tu80403Pane*)(*(J2DPane**)(self+0xc))->search(0x4e646174613038ULL))->setAnimation(0);
+(*(Tu80403Pane**)(self+0xc))->search(0x4e646174613038ULL)->setAnimation(0);
 }
 switch(mode){
 case 0:if(*(s32*)(self+0x38c)&16){if(self[0x65d]==0) {for(int k=0;k<3;k++){(*(Obj240**)(self+0x278+k*20))->f26=0;self[0x65d]=1;
@@ -782,20 +780,20 @@ else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);
 else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);
 else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);
 else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);
-else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763131ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763132ULL)),(char*)(self+0x438));{s32 st=*(s32*)(self+0x340); if(st<8)fn_803832BC(self+0x438,menuBootText((u32*)tbl->pad,st),0,0,0);
+else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763131ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763132ULL)),(char*)(self+0x438));{s32 st=*(s32*)(self+0x340); if(st<8)fn_803832BC(self+0x438,menuBootText((u32*)tbl->pad,st),0,0,0);
 else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);
 else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);
 else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);
 else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);
 else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);
-else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
+else self[0x438]=0;}strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));strcpy(getStringPtr__10J2DTextBoxCFv((*(Tu80403Pane**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
 fn_8040873C(self);
 f32 zero=lbl_80543898;*(f32*)(self+0x39c)=zero;*(f32*)(self+0x3a0)=zero;*(f32*)(self+0x3a4)=zero;*(s32*)(self+0x358)=0;*(s32*)(self+0x350)=4;
 }else{
-u8* row=(u8*)lbl_8050EC80+ec->selfIndex*0xc8;
+u8* row=(u8*)lbl_8050EC80+lbl_8050EC80[0].selfIndex*0xc8;
 if(!(row[0x85]&2)&&!(*(u32*)(row+0x28)&1)){
 *(f32*)(self+0x39c)=lbl_80543944;
-((u8*)lbl_8050EC80)[ec->selfIndex*0xc8+0x85]|=2;
+((u8*)lbl_8050EC80)[lbl_8050EC80[0].selfIndex*0xc8+0x85]|=2;
 fn_8040873C(self);*(s32*)(self+0x350)=2;
 }else if(*(s32*)(self+0x348)==0){if(self[0x65d]==0) {for(int k=0;k<3;k++){(*(Obj240**)(self+0x278+k*20))->f26=0;self[0x65d]=1;
 (*(Obj240**)(self+0x27c+k*20))->f26=0;self[0x65d]=1;
@@ -809,23 +807,23 @@ if(*(s32*)(self+0x348)==2){{s32 n=*(s32*)(self+0x340);s16* coord=(s16*)tbl->curs
 s32 x=coord[(n*4+0)*2],y=coord[(n*4+0)*2+1];
 *(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;}{s32 n=*(s32*)(self+0x340),slot=*(s32*)(self+0x348);BOOL done;
 if(n<0||n>7)done=0;else if(slot<0||slot>3)done=0;
-else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+ec->selfIndex*0xc8+0x28))!=0;
+else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+lbl_8050EC80[0].selfIndex*0xc8+0x28))!=0;
 if(!done&&!((u8*)lbl_80529DEC)[0x254])*(s32*)(self+0x388)=0;}}else{{s32 n=*(s32*)(self+0x340);s16* coord=(s16*)tbl->cursorPos;
 s32 x=coord[(n*4+2)*2],y=coord[(n*4+2)*2+1];
 *(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;}{s32 n=*(s32*)(self+0x340),slot=*(s32*)(self+0x348);BOOL done;
 if(n<0||n>7)done=0;else if(slot<0||slot>3)done=0;
-else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+ec->selfIndex*0xc8+0x28))!=0;
+else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+lbl_8050EC80[0].selfIndex*0xc8+0x28))!=0;
 if(!done&&!((u8*)lbl_80529DEC)[0x254])*(s32*)(self+0x388)=1;}}
 }else if(*(s32*)(self+0x348)==1){{s32 n=*(s32*)(self+0x340);s16* coord=(s16*)tbl->cursorPos;
 s32 x=coord[(n*4+0)*2],y=coord[(n*4+0)*2+1];
 *(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;}{s32 n=*(s32*)(self+0x340),slot=*(s32*)(self+0x348);BOOL done;
 if(n<0||n>7)done=0;else if(slot<0||slot>3)done=0;
-else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+ec->selfIndex*0xc8+0x28))!=0;
+else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+lbl_8050EC80[0].selfIndex*0xc8+0x28))!=0;
 if(!done&&!((u8*)lbl_80529DEC)[0x254])*(s32*)(self+0x388)=0;}}else{{s32 n=*(s32*)(self+0x340);s16* coord=(s16*)tbl->cursorPos;
 s32 x=coord[(n*4+1)*2],y=coord[(n*4+1)*2+1];
 *(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;}{s32 n=*(s32*)(self+0x340),slot=*(s32*)(self+0x348);BOOL done;
 if(n<0||n>7)done=0;else if(slot<0||slot>3)done=0;
-else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+ec->selfIndex*0xc8+0x28))!=0;
+else done=((1<<(slot+n*4)) & *(u32*)((u8*)lbl_8050EC80+lbl_8050EC80[0].selfIndex*0xc8+0x28))!=0;
 if(!done&&!((u8*)lbl_80529DEC)[0x254])*(s32*)(self+0x388)=1;}}
 *(s32*)(self+0x350)=8;if(*(s32*)(self+0x388)!=-1)self[0x664]=1;
 }

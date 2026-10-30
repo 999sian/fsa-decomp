@@ -120,6 +120,15 @@ extern "C" void fn_80170008(char* self) {
     *(f32*)(self + 0x14) = z;
 }
 
+void fn_80170450(u8* self)
+{
+    s32 kind;
+    kind = *(u16*)(self + 0x94);
+    if (kind != 5) {
+        *(s32*)(self + 0x108) = 10000;
+    }
+}
+
 extern "C" void fn_801719C0(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x108) > 0) {

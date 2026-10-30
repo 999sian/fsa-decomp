@@ -302,7 +302,7 @@ JGeometry::TBox2f queryTmp,queryBox,tallyTmp,tallyBox;
 s32 choices[4];JGeometry::TVec3f delta;f32 distance;
 s32 count=0;
 if(*(s32*)(self+0x230)==6||*(s32*)(self+0x230)==7){
-u8* playerScores=self;for(s32 i=0;i<4;i++,playerScores+=4){if(nwokEnabled(i)==1){u8 mask=1<<i;lbl_8053AF08[0x28+i]=*(s32*)(playerScores+0x274);lbl_8053AF08[0x2c]|=mask;}}
+u8* playerScores=self;for(s32 i=0;i<4;playerScores+=4,i++){if(nwokEnabled(i)==1){u8 mask=1<<i;lbl_8053AF08[0x28+i]=*(s32*)(playerScores+0x274);lbl_8053AF08[0x2c]|=mask;}}
 count=fn_8034AAA0(self);
 }
 box.i.x=*(f32*)(self+0x60);box.i.y=*(f32*)(self+0x64);box.f.x=*(f32*)(self+0x68);box.f.y=*(f32*)(self+0x6c);box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
@@ -403,7 +403,7 @@ if(angle<0x2000||angle>=0xe000)*(s32*)(self+0x23c)=3;else if(angle>=0x2000&&angl
 case 0:*(s32*)(self+0x238)&=3;*(s32*)(self+0x234)=((s32*)lbl_804720E8)[*(s32*)(self+0x238)];break;
 case 1:*(s32*)(self+0x238)&=1;*(s32*)(self+0x234)=((s32*)&lbl_80542510)[*(s32*)(self+0x238)];break;}}
 if(*(s32*)(self+0x230)>=6&&*(s32*)(self+0x230)<=10){
-f32 y=*(f32*)(self+0x10)-*(f32*)(self+0x14);f32 x=*(f32*)(self+0xc);camera.set(x,y,lbl_8054254C);fn_8030C210(((void**)lbl_8053AB10)[9],&camera);}
+f32 x;f32 y;y=*(f32*)(self+0x10);y-=*(f32*)(self+0x14);x=*(f32*)(self+0xc);camera.set(x,y,lbl_8054254C);fn_8030C210(((void**)lbl_8053AB10)[9],&camera);}
 }
 #pragma opt_propagation reset
 extern "C" void* fn_801F856C(void);

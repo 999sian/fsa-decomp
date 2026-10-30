@@ -1290,9 +1290,10 @@ extern "C" u8 fn_8037F2FC(u32 id, s32 lines, u8 flag, const JUtility::TColor* __
     return 0;
 }
 
+#pragma opt_lifetimes off
 extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale) {
-    f32 acc = lbl_805430C8;
     s32 w;
+    f32 acc = lbl_805430C8;
     switch(type) {
     case 1:
         out[*len] = (char)0xa0;
@@ -1654,7 +1655,7 @@ extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale) {
     }
     return acc;
 }
-
+#pragma opt_lifetimes reset
 extern "C" f32 fn_80381560(u8 type, s32 num, f32 scale)
 {
     switch (type) {

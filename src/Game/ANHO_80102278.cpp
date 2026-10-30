@@ -124,8 +124,8 @@ extern "C" void fn_80102398(char* p) {
         fn_8022FEB8(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 1, 0);
         *(s32*)(p + 0x23c) = fn_8022FD8C(*(s32*)(p + 0x198));
         if (*(s32*)(p + 0x23c) >= 0 && fn_802300EC(*(s32*)(p + 0x23c))) {
-            s32 room0 = ((Actor*)p)->field_04;
-            s32 handle0 = ((Actor*)p)->field_198;
+            s32 room0 = *(s32*)(p+4);
+            s32 handle0 = *(s32*)(p+0x198);
             if (anhoStartMessage(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, handle0, room0, temp0, pos, 0)) {
                 for (iA = 0; iA < 4; iA++) fn_802308E0(iA);
                 *(s32*)(p + 0x230) = 1;
