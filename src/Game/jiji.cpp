@@ -310,7 +310,7 @@ struct JijiUpdateActor {
     virtual void v00(); virtual void v01(); virtual void v02();
     virtual void v03(); virtual void v04(); virtual void v05();
     virtual void v06(); virtual void v07(); virtual void v08();
-    virtual void v09(); virtual void v10(); virtual void v11();
+    virtual void v09(); virtual void v10(s32,s32); virtual void v11();
     virtual void v12(s32,s32);
 };
 
@@ -526,7 +526,7 @@ extern "C" void fn_8037BC30(u8* p) {
         if(!fn_80388CAC(*(s32*)(p+0x244),*(s32*)(p+0x198))) break;
         *(s32*)(p+0x240)=0;
         *(s32*)(p+0x244)=-1;
-        ((void(*)(u8*,s32,s32))(*(void***)(p))[12])(p,255,1);
+        ((JijiUpdateActor*)p)->v12(255,1);
         if(*(s32*)(p+0x268)!=0) {*(u8*)(p+0x272)=0; *(s32*)(p+0x268)=0;}
         if(*(s32*)(p+0x254)) *(s32*)(p+0x230)=6;
         else *(s32*)(p+0x230)=1;
