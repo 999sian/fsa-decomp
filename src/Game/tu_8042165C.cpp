@@ -129,6 +129,9 @@ struct HeartPane {
     virtual void v66(); virtual void v67(); virtual void v68(); virtual void v69();
     virtual void v70(); virtual void v71(); virtual void v72();
     virtual void setColor(JUtility::TColor color);
+    virtual void v74();
+    virtual JUtility::TColor getBlack() const;
+    virtual JUtility::TColor getWhite() const;
 };
 
 static inline void RankColors(u8* obj, JUtility::TColor a, JUtility::TColor b, JUtility::TColor c, JUtility::TColor d) {
