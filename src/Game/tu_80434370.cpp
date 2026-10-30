@@ -73,6 +73,9 @@ extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
 extern "C" void* lbl_8053AAF8;
 extern "C" u8 lbl_8050EC80[];
+static inline void menuMovePane(PaneState* rec, f32 offset) {
+    rec->pane->move(rec->centerX-offset,rec->y);
+}
 static inline f32 menuFontRatio(f32 fontSize, const f32 baseSize) { return fontSize/baseSize; }
 static inline f32 menuTextWidth(f32 measured, f32 ratio, const f32 padding) {
     f32 width=measured*ratio;
@@ -358,10 +361,10 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
     }
     if (*(u8*)(this_+0x6c)==0) {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0x129,0,0,0);
-        f30=f31/lbl_80543BF8;
+        f30=f31/24.0f;
         *(u8*)(this_+0x68)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7C;
         width1=f29*f30;
-        width1+=lbl_80543BF8;
+        width1+=24.0f;
         f31=width1*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x1c);
@@ -378,7 +381,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_88;
         width2=f29*f30;
-        width2+=lbl_80543BF8;
+        width2+=24.0f;
         half2=width2*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x24);
@@ -394,10 +397,10 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
     }
     } else {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0xf8,0,0,0);
-        f31/=lbl_80543BF8;
+        f31/=24.0f;
         *(u8*)(this_+0x68)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7D;
         width1=f29*f31;
-        width1+=lbl_80543BF8;
+        width1+=24.0f;
         f30=width1*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x1c);
@@ -414,7 +417,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0xf9,0,0,0);
         *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7F;
         width2=f29*f31;
-        width2+=lbl_80543BF8;
+        width2+=24.0f;
         f30=width2*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x24);
@@ -431,7 +434,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713033ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x6a)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_89;
         f31=f29*f31;
-        f31+=lbl_80543BF8;
+        f31+=24.0f;
         f30=f31*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x2c);
