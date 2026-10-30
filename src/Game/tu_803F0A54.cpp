@@ -1489,6 +1489,15 @@ static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fad
     }
 }
 
+static inline void fadePanesB803F(const u64* tags, u8* p, s32 n, s32 ofs, f32 fade) {
+    for (s32 i = 0; i < n; i++, tags++) {
+        J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
+        f32 alpha = p[ofs + i];
+        alpha *= fade;
+        pane->setAlpha((u8)alpha);
+    }
+}
+
 static inline void fadeGroup803F(u8* p, const u64* tags, u8* alphas, f32 fade) {
     for (s32 i = 0; i < 9; i++, alphas++, tags++) {
         J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
@@ -1503,9 +1512,9 @@ extern "C" void fn_803F943C(u8* p) {
     u8* base=lbl_80478A60;
     s32 i;
     int start;
-    s32 j;
     s32 stop;
     s32 offset;
+    s32 j;
     f32 fade;
     *(s16*)(p+0x240)+=1;
     if(*(s16*)(p+0x240)>0) {
