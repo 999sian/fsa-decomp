@@ -49,8 +49,10 @@ extern "C" Actor* fn_802ACEA4(Actor* p, s16 n) {
     return p;
 }
 
-extern "C" void fn_802F745C(void* mgr, void* src, s32 room, void* out);
-extern "C" void fn_802F6CF4(void* mgr, void* src, s32 room, void* out);
+#include "Game/ItemBase.h"
+#include "JSystem/JKernel/JKRFileLoader.h"
+extern "C" void fn_802F745C(void* mgr, Vec* pos, void* resource, DrawRec* rec);
+extern "C" void fn_802F6CF4(void* mgr, Vec* pos, void* resource, DrawRec* rec);
 extern "C" void* fn_802D6A9C();
 extern "C" f32 lbl_805408D0;
 extern "C" void* lbl_8053AAF8;
