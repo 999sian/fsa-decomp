@@ -647,7 +647,7 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
         if (*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
             fn_802144F0(this_ + 0x4ec);
             if (*(u32*)(this_ + 0x230) & 0x1000000) {
-                ((u32*)this_)[0x230 / 4] &= ~0x1000000;
+                *(volatile u32*)(this_ + 0x230) &= ~0x1000000;
                 fn_801C3B7C(this_, 0x2c);
             } else if (*(u32*)(this_ + 0x230) & 0x2000000) {
                 fn_801C3B7C(this_, 0x11);
