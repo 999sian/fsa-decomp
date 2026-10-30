@@ -142,17 +142,171 @@ void TU80414F6C::fn_80414F78() {
     }
 }
 
+#pragma opt_common_subs off
 void TU80414F6C::fn_80415028() {
-    u8* p = (u8*)this;
-    if (*(s32*)(p + 0x1c) < 0) {
-        return;
-    }
-    *(s32*)(p + 0x20) = *(s32*)(p + 0x20) - 1;
-    if (*(s32*)(p + 0x1c) > 0 && *(s32*)(p + 0x20) <= 0) {
-        return;
-    }
+    f32 x; f32 y;
+    u8* p=(u8*)this;
+    s32 oldRow=*(s32*)(p+0xc);
+    s32 oldCol=*(s32*)(p+0x10);
+    if(*(s32*)(p+0x1c)>=0){
+        --*(s32*)(p+0x20);
+        if(*(s32*)(p+0x1c)>0 && *(s32*)(p+0x20)<=0){
+            u32* seed=(u32*)(lbl_8053AAF8+0xb4);
+            *seed=*seed*0x19660d+0x3c6ef35f;
+            u32 bits=(*seed>>9)|0x3f800000;
+            s32 n;
+            s32 total=*(s16*)(p+0x104);
+            n=total-1;
+            s32 r=(s32)((f32)n*(*(f32*)&bits-1.0f));
+            if(r>=n)r=total-2;
+            s32 choice=p[0x117+r];
+            s32 count=0;
+            for(s32 j=0;j<10;j++){if((*(u16*)(p+0x106)&(u16)(1<<j)) && j!=choice){p[0x117+count]=j;++count;}}
+            *(s32*)(p+0x10)=choice%5;*(s32*)(p+0xc)=choice/5;
+            s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+if(selected>=10){
+*(s32*)(p+0x14)=30;*(s32*)(p+0x18)=1;fn_803832BC(p+0xe4,0x109,0,0,0);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+}else{
+if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,lbl_8048D2B0[selected],0,0,0);else p[0xe4]=0;
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+
+const u64* tag = &lbl_8048D198[selected];
+x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
+(*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
 }
 
+            --*(s32*)(p+0x1c);
+            if(*(s32*)(p+0x1c)==0)*(s32*)(p+0x20)=20;else *(s32*)(p+0x20)=5;
+            fn_80458880(lbl_8053AF80,38,-1);
+        }
+        if(*(s32*)(p+0x1c)!=0 || *(s32*)(p+0x20)!=0)return;
+    }
+    if(*(s32*)(p+0x1c)==0){
+        s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+        if(selected>=5)lbl_8050EC80[0x81+0xc8**(s32*)(lbl_8050EC80+0x10)]=1;else lbl_8050EC80[0x81+0xc8**(s32*)(lbl_8050EC80+0x10)]=0;
+*(s32*)(lbl_80529DEC+0x128)=selected/4;*(s32*)(lbl_80529DEC+0x12c)=selected%4;
+fn_80458F9C(lbl_8053AF80,10);fn_80458880(lbl_8053AF80,11,-1);*(s32*)(p+0xe0)=7;
+lbl_80529DEC[0x242]=0;lbl_80529DEC[0x252]=1;
+
+        return;
+    }
+    if(fn_80309C4C(lbl_8053AD30,0x1000,-1)){
+        *(s32*)(p+0xe0)=4;lbl_80529DEC[0x237]=3;fn_80458880(lbl_8053AF80,11,-1);return;
+    }
+    if(fn_80309C4C(lbl_8053AD30,0x100,-1)){
+        s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+        if(selected>=5)lbl_8050EC80[0x81+0xc8**(s32*)(lbl_8050EC80+0x10)]=1;else lbl_8050EC80[0x81+0xc8**(s32*)(lbl_8050EC80+0x10)]=0;
+
+        if(selected<10){
+            if(*(u16*)(p+0x106)&(u16)(1<<selected)){*(s32*)(lbl_80529DEC+0x128)=selected/4;*(s32*)(lbl_80529DEC+0x12c)=selected%4;
+fn_80458F9C(lbl_8053AF80,10);fn_80458880(lbl_8053AF80,11,-1);*(s32*)(p+0xe0)=7;
+lbl_80529DEC[0x242]=0;lbl_80529DEC[0x252]=0;
+}
+            else {fn_8042EDAC(lbl_8053AEC4,0x102,0);p[0x10a]=0;p[0x109]=2;}
+        }else if(*(s32*)(p+0x1c)==-1){*(s32*)(p+0x1c)=25;*(s32*)(p+0x20)=1;*(s32*)(p+0x18)=1;}
+        return;
+    }
+    if(fn_80309C4C(lbl_8053AD30,0x200,-1)){*(s32*)(p+0xe0)=4;fn_80458880(lbl_8053AF80,11,-1);return;}
+    if(fn_80309A9C(lbl_8053AD30,1,-1)){
+        --*(s32*)(p+0x10);if(*(s32*)(p+0x10)<0)*(s32*)(p+0x10)=4;
+        if(*(s32*)(p+0x10)==oldCol)return;
+        s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+        if(selected>=10 && oldCol+*(s32*)(p+0xc)*5>=10)return;
+        if(selected>=10){
+*(s32*)(p+0x14)=30;*(s32*)(p+0x18)=1;fn_803832BC(p+0xe4,0x109,0,0,0);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+}else{
+if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,lbl_8048D2B0[selected],0,0,0);else p[0xe4]=0;
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+
+const u64* tag = &lbl_8048D198[selected];
+x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
+(*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
+}
+fn_80458880(lbl_8053AF80,38,-1);return;
+    }else if(fn_80309A9C(lbl_8053AD30,2,-1)){
+        ++*(s32*)(p+0x10);if(*(s32*)(p+0xc)<2 && *(s32*)(p+0x10)>4)*(s32*)(p+0x10)=0;
+        if(*(s32*)(p+0x10)==oldCol)return;
+        s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+        if(selected>=10 && oldCol+*(s32*)(p+0xc)*5>=10)return;
+        if(selected>=10){
+*(s32*)(p+0x14)=30;*(s32*)(p+0x18)=1;fn_803832BC(p+0xe4,0x109,0,0,0);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+}else{
+if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,lbl_8048D2B0[selected],0,0,0);else p[0xe4]=0;
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+
+const u64* tag = &lbl_8048D198[selected];
+x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
+(*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
+}
+fn_80458880(lbl_8053AF80,38,-1);return;
+    }else if(fn_80309A9C(lbl_8053AD30,8,-1)){
+        --*(s32*)(p+0xc);if(*(s32*)(p+0xc)<0)*(s32*)(p+0xc)=2;
+        if(*(s32*)(p+0xc)==oldRow)return;
+        s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+        if(selected>=10){
+*(s32*)(p+0x14)=30;*(s32*)(p+0x18)=1;fn_803832BC(p+0xe4,0x109,0,0,0);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+}else{
+if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,lbl_8048D2B0[selected],0,0,0);else p[0xe4]=0;
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+
+const u64* tag = &lbl_8048D198[selected];
+x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
+(*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
+}
+fn_80458880(lbl_8053AF80,38,-1);return;
+    }else if(fn_80309A9C(lbl_8053AD30,4,-1)){
+        ++*(s32*)(p+0xc);if(*(s32*)(p+0xc)>2)*(s32*)(p+0xc)=0;
+        if(*(s32*)(p+0xc)==oldRow)return;
+        s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+        if(selected>=10){
+*(s32*)(p+0x14)=30;*(s32*)(p+0x18)=1;fn_803832BC(p+0xe4,0x109,0,0,0);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+}else{
+if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,lbl_8048D2B0[selected],0,0,0);else p[0xe4]=0;
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+
+const u64* tag = &lbl_8048D198[selected];
+x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
+(*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
+}
+fn_80458880(lbl_8053AF80,38,-1);
+    }
+}
+#pragma opt_common_subs reset
 extern "C" u8 fn_80402940(void* obj, s32 idx, f32 a, f32 b, s32 c);
 extern const f32 lbl_805439D0;
 
