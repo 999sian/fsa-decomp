@@ -433,16 +433,6 @@ extern "C" void fn_801F6884(void*);
 extern const s32 lbl_804A2B08[];
 extern const f32 lbl_8053E4BC;
 extern const f32 lbl_8053E4C4;
-static inline void sykyPrepareBounds(u8* p, JGeometry::TVec3<f32>& marker, JGeometry::TVec3<f32>& spawn, JGeometry::TVec3<f32>& saved, JGeometry::TBox2<f32>& box) {
-    marker = *(JGeometry::TVec3<f32>*)(p + 0xc);
-    marker.y -= lbl_8053E4BC;
-    spawn.x = *(f32*)(p + 0xc);
-    spawn.y = *(f32*)(p + 0x10);
-    spawn.z = *(f32*)(p + 0x14);
-    saved = *(JGeometry::TVec3<f32>*)(p + 0xc);
-    box.set(*(JGeometry::TBox2<f32>*)(p + 0x60));
-    box.addPos(*(JGeometry::TVec2<f32>*)&spawn);
-}
 static inline u16 sykyFacingAngle(const f32 x, const f32 y) {
     f32 radians=JMath::atanTable_.atan2_(x,y);
     return (u16)(s32)(radians*lbl_8053E4C4);
@@ -457,7 +447,8 @@ extern const f32 lbl_8053E4D0;
 extern const f32 lbl_8053E4D4;
 extern const f32 lbl_8053E4D8;
 extern const f32 lbl_8053E4DC;
-extern "C" void fn_8019F3AC(u8* p) {
+#pragma opt_common_subs off
+extern "C" void fn_8019F3AC(u8* const p) {
  JGeometry::TVec3<f32> marker,spawn,saved;
  JGeometry::TBox2<f32> box,camera;
  JGeometry::TVec3<f32> copy0,copy1,copy4,copy6;
@@ -485,7 +476,7 @@ extern "C" void fn_8019F3AC(u8* p) {
      if(!fn_8038AD24((*(s32*)(p+0x250)),0x342,handle,room,&copy0,0))break;
      fn_801EE8F4(p,&dir0,&dist0,(*(s32*)(p+0x250))+1);
      if(dist0<lbl_8053E4C0){
-  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir0.x,-dir0.y));
+  u16 a=sykyFacingAngle(-dir0.x,-dir0.y);
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -500,7 +491,7 @@ extern "C" void fn_8019F3AC(u8* p) {
      if(!fn_8038AD24((*(s32*)(p+0x250)),0x334,handle,room,&copy1,0))break;
      fn_801EE8F4(p,&dir1,&dist1,(*(s32*)(p+0x250))+1);
      if(dist1<lbl_8053E4C0){
-  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir1.x,-dir1.y));
+  u16 a=sykyFacingAngle(-dir1.x,-dir1.y);
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -526,7 +517,7 @@ extern "C" void fn_8019F3AC(u8* p) {
      (*(s32*)(p+0x23c))=120;(*(s32*)(p+0x240))=0;(*(s32*)(p+0x244))=0;
      fn_801EE8F4(p,&dir2,&dist2,2);
      if(dist2<lbl_8053E4C0){
-  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir2.x,-dir2.y));
+  u16 a=sykyFacingAngle(-dir2.x,-dir2.y);
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -626,7 +617,7 @@ extern "C" void fn_8019F3AC(u8* p) {
    if(!fn_8038AD24((*(s32*)(p+0x250)),0x338,handle,room,&copy6,0))break;
    fn_801EE8F4(p,&dir6,&dist6,(*(s32*)(p+0x250))+1);
    if(dist6<lbl_8053E4C0){
-  u16 a=(u16)(s32)(lbl_8053E4C4*JMath::atanTable_.atan2_(-dir6.x,-dir6.y));
+  u16 a=sykyFacingAngle(-dir6.x,-dir6.y);
   if(a<0x2000 || a>=0xe000)(*(s32*)(p+0x98))=3;
   else if(a>=0x2000 && a<0x6000)(*(s32*)(p+0x98))=1;
   else if(a>=0x6000 && a<=0xa000)(*(s32*)(p+0x98))=2;
@@ -646,7 +637,7 @@ extern "C" void fn_8019F3AC(u8* p) {
    (*(s32*)(p+0x264))=lbl_804A2B08[(*(s32*)(p+0x248))];(*(s32*)(p+0x238))=15;(*(s32*)(p+0x248))++;(*(s32*)(p+0x248))&=3;
  }
 }
-
+#pragma opt_common_subs reset
 extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
 extern "C" void __dl__FPv(void* p);
 extern "C" void fn_8022B17C(void);
