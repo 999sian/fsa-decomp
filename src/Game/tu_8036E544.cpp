@@ -90,8 +90,7 @@ static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
     slots[0] = slots[1] = slots[2] = 0;
     n = 0;
     out = slots;
-    q = p;
-    for (i = 0; i < 20; q += 4, i++) {
+    for (i = 0, q = p; i < 20; q += 4, i++) {
         if (*(void**)(q + 0x258) == 0) {
             n++;
             *out++ = i;
@@ -162,15 +161,18 @@ extern "C" void fn_8036E5E8(void* this_) {
     }
     *(JGeometry::TVec3f*)(*(char**)(p + 0x250) + 0xc) = *(JGeometry::TVec3f*)(p + 0xc);
     u16* rm = *(u16**)(sManager__8JUTVideo + 4);
-    s32 w = rm[2];
-    s32 h = rm[3];
+    s32 h;
+    s32 w;
+    w = rm[2];
+    h = rm[3];
     JGeometry::TVec3f center((f32)w * lbl_80542D5C, (f32)h * lbl_80542D5C, lbl_80542D60);
     count = 0;
     q = p;
     for (i = 0; i < 20; i++, q += 4) {
-        if (*(char**)(q + 0x258)) {
+        char* em = *(char**)(q + 0x258);
+        if (em) {
             count++;
-            if (canDeleteEmitter(*(char**)(q + 0x258))) {
+            if (canDeleteEmitter(em)) {
                 killEmitter((void**)(q + 0x258));
             }
         }
@@ -195,7 +197,7 @@ extern "C" void fn_8036E5E8(void* this_) {
             void* mgr = fn_801F856C();
             j = 0;
             n = *(s32*)((char*)mgr + 0x1008);
-            for (k = j; j < n; j++, k += 4) {
+            for (k = j; j < n; k += 4, j++) {
                 char* a = *(char**)((char*)fn_801F856C() + k + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
                     s32 s = *(s32*)(a + 0x238);
