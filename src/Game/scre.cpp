@@ -114,6 +114,12 @@ extern const f32 lbl_80543190;
 static inline void screDigit(int n, const JGeometry::TVec3f pos, const JUtility::TColor color) {
     add__7RupyNumFUcifQ28JUtility6TColor(lbl_8053AF50, n, (int)&pos, lbl_80543188, color);
 }
+static inline void screDigitPos(u8* p, int n, const JGeometry::TVec3f pos, f32 alpha) {
+    if (*(s32*)(p + 4) < 8) {
+        JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
+        screDigit(n, pos, color);
+    }
+}
 static inline void screDigitAt(u8* p, int n, f32 alpha) {
     if (*(s32*)(p + 4) < 8) {
         JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
@@ -132,34 +138,63 @@ extern "C" void fn_80391F58(void* this_) {
     f32 alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
     switch (*(s32*)(p + 0x23c)) {
     case 0:
-        if (*(s32*)(p + 4) < 8) {
-            JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
-            lbl_8053AF50->add(1, (int)&pos, lbl_80543188, color);
-        }
+        screDigitAt(p, 1, alpha);
         break;
     case 1:
-        if (*(s32*)(p + 4) < 8) {
-            JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
-            lbl_8053AF50->add(5, (int)&pos, lbl_80543188, color);
-        }
+        screDigitAt(p, 5, alpha);
         break;
-    case 2: {
-        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-        pos.x -= lbl_8054319C;
-        if (*(s32*)(p + 4) < 8) {
-            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
-            lbl_8053AF50->add(2, (int)&pos, lbl_80543188, color);
-        }
-        JGeometry::TVec3f pos2 = *(JGeometry::TVec3f*)(p + 0xc);
-        pos2.x += lbl_8054319C;
-        if (*(s32*)(p + 4) < 8) {
-            JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
-            lbl_8053AF50->add(0, (int)&pos2, lbl_80543188, color);
-        }
+    case 2:
+        screDigitOff(p, 2, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
         break;
-    }
+    case 3:
+        screDigitOff(p, 5, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        break;
+    case 4:
+        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        screDigitAt(p, 0, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        break;
+    case 5:
+        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        screDigitAt(p, 5, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        break;
+    case 6:
+        screDigitOff(p, 2, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        screDigitAt(p, 0, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        break;
+    case 7:
+        screDigitOff(p, 3, *(f32*)(p + 0xc) - lbl_80543190, alpha);
+        screDigitAt(p, 0, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_80543190, alpha);
+        break;
+    case 8:
+        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        break;
+    case 9:
+        screDigitOff(p, 1, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
+        screDigitOff(p, 5, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        break;
+    case 10:
+        screDigitOff(p, 2, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        break;
+    case 11:
+        screDigitOff(p, 3, *(f32*)(p + 0xc) - lbl_8054319C - lbl_80543190, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) - lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C, alpha);
+        screDigitOff(p, 0, *(f32*)(p + 0xc) + lbl_8054319C + lbl_80543190, alpha);
+        break;
     }
 }
 
