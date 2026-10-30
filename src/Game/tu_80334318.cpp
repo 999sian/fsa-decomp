@@ -213,10 +213,10 @@ static inline bool SBAL_isNearZero(const f32* v) {
     f32 eps = lbl_80541F98 * *(f32*)__float_epsilon;
     bool all = false;
     bool xy = false;
-    if (SBAL_epsEquals(v[0], lbl_80541F70, eps) && SBAL_epsEquals(v[1], lbl_80541F70, eps)) {
+    if (SBAL_epsEquals(v[0], 0.0f, eps) && SBAL_epsEquals(v[1], 0.0f, eps)) {
         xy = true;
     }
-    if (xy && SBAL_epsEquals(v[2], lbl_80541F70, eps)) {
+    if (xy && SBAL_epsEquals(v[2], 0.0f, eps)) {
         all = true;
     }
     return all;
@@ -295,8 +295,10 @@ extern "C" void fn_80334A04(u8* p) {
             r = fn_801F2B7C(p, *(s32*)(p + 0x114), -1, 4) != 0;
         }
         if (r) {
-            *(f32*)(p + 0x3c) = -*(f32*)(p + 0x3c);
-            *(f32*)(p + 0x40) = -*(f32*)(p + 0x40);
+            f32 nx = -*(f32*)(p + 0x3c);
+            f32 ny = -*(f32*)(p + 0x40);
+            *(f32*)(p + 0x3c) = nx;
+            *(f32*)(p + 0x40) = ny;
             *(f32*)(p + 0x44) = lbl_80541F70;
             *(s32*)(p + 0x244) = 20;
             *(s32*)(p + 0x230) = 3;
@@ -373,7 +375,7 @@ extern "C" void fn_80334A04(u8* p) {
         }
         break;
     case 5:
-        if (((u8 (*)(u8*))(*(void***)p)[13])(p)) {
+        if ((u8)((SBALActor*)p)->v11()) {
             *(f32*)(p + 0x14) = lbl_80541FA8;
             *(s32*)(p + 0x230) = 6;
         }
@@ -406,7 +408,7 @@ extern "C" void fn_80334A04(u8* p) {
             ((JGeometry::TVec3<f32>*)(p + 0x3c))->scale(lbl_80541FBC);
             if (*(f32*)(p + 0x240) < lbl_80541FC0) {
                 ((JGeometry::TVec3<f32>*)(p + 0x3c))->zero();
-                if (((s32 (*)(u8*))(*(void***)p)[21])(p) < 0) {
+                if (((SBALActor*)p)->v19() < 0) {
                     ((Actor*)p)->detach();
                 } else {
                     *(f32*)(p + 0x240) = lbl_80541F84;
