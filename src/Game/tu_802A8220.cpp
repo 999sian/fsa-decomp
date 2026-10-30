@@ -34,6 +34,23 @@ extern "C" void fn_802A8280(void)
     return;
 }
 
+#include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AB10;
+extern "C" void* lbl_8053AF80;
+extern "C" u8* fn_802D6A9C();
+extern "C" void fn_801F0D20(void*,s32);
+extern "C" void fn_80458880(void*,s32,s32);
+extern "C" s32 fn_80138A30(void*);
+extern "C" void* fn_801F856C();
+extern "C" s32 Actor_CreateByID(void*,u32,u32,void*,u32,s32,s32);
+extern "C" Actor* fn_801F666C(void*,s32);
+extern "C" s32 fn_801F8544(void*,u32,u32,void*,u32);
+extern "C" void fn_802D8050(void*,u32,u8,u8);
+extern "C" const f32 sincosTable___5JMath[];
+extern "C" f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_80540850,lbl_80540854,lbl_80540858,lbl_8054085C,lbl_80540860,lbl_80540864,lbl_80540868,lbl_8054086C,lbl_80540870;
+
 extern "C" void fn_802A8284(u8* this_) {
     this_[0] = 0;
 }
