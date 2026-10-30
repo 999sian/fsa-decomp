@@ -174,6 +174,14 @@ extern void* lbl_8053AEC0;
 extern "C" void fn_8043670C(void* p, s32 a);
 extern "C" void fn_80431A9C(void* mgr, s32 id, u8 v, s32 a);
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
+#include "Game/ItemBase.h"
+extern "C" u8* sManager__8JUTVideo;
+extern const f32 lbl_80543650,lbl_80543654,lbl_80543658,lbl_8054365C,lbl_80543660,lbl_8054366C;
+class MenuResource803E {
+public:
+    virtual void v08(); virtual void v0c(); virtual void v10(); virtual void v14();
+    virtual void* get(u32, const void*);
+};
 extern "C" void fn_802F86CC(void* a, s32 b, s32 c, s32 d, s32 e, s32 f);
 #pragma dont_inline on
 extern "C" void fn_803E1668(u8* p) {
@@ -870,11 +878,7 @@ static inline void MenuRestore803E(u8* p, const u64* a, const u64* b, const u64*
     ((Pane803E4650*)(*(J2DPane**)(p + 8))->search(*b))->setAlpha(p[0x266]);
     ((Pane803E4650*)(*(J2DPane**)(p + 8))->search(*c))->setAlpha(p[0x267]);
 }
-class MenuResource803E {
-public:
-    virtual void v08(); virtual void v0c(); virtual void v10(); virtual void v14();
-    virtual void* get(u32, const void*);
-};
+
 static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, const u8* base=lbl_80477970) {
     MenuResource803E* mgr = *(MenuResource803E**)(lbl_8053AAF8 + 0xa4);
     void* res = mgr->get('SOB ', base + 0xfa0);
