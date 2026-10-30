@@ -59,6 +59,36 @@ struct SubObj {
     virtual SubObj* w13(u64 x);
 };
 extern const u8 lbl_8048E1B8[];
+struct HudAlphaTags {
+u8 pad0[0x148];
+u64 meter[4][4];
+u64 badge[4][3];
+u64 heart0[4][8];
+u64 heart1[4][8];
+u64 heart2[4][8];
+u64 heart3[4][8];
+u64 item0[4][3];
+u64 item1[4][3];
+u64 digit0[4][12];
+u64 digit1[4][12];
+u64 pair[4][2];
+u64 timer0[4][5];
+u64 timer1[4][5];
+u64 icon[4][6];
+u64 extra[4][2];
+u8 padc68[0x140];
+u64 side[4][1];
+u64 status[4][1];
+u8 padde8[0x40];
+u64 a[4][1];
+u64 b[4][1];
+u8 pade68[0x60];
+u64 c[4][1];
+u64 d[4][1];
+u64 e[4][1];
+u64 f[4][1];
+};
+
 struct HeartPane {
     virtual void v0();
     virtual void v1();
@@ -897,8 +927,8 @@ fn_80402E08(*(void**)(p+0xe0),*(f32*)(p+0xf8),fn_8043D514(lbl_8053AED0));
     }
     fn_8042165C(this_);
     fn_8037EB4C();
-    if(lbl_8053AED0[0xdc]&0x10)lbl_8053AED0[0xdc]&=~(u8)(1<<i);
-    if(!((this_[0x25d] & (u8)(1<<i))!=0) || (lbl_8053AED0[0xdc]&(u8)(1<<i)) || (*(u8**)(lbl_8053AB10+0x30))[0x284] || lbl_8053AAF8[0x85]) {
+    if((lbl_8053AED0[0xdc]>>4)&1)lbl_8053AED0[0xdc]&=~(u8)(1<<i);
+    if(!(((u32)(-(s32)(this_[0x25d] & (u8)(1<<i))|(this_[0x25d] & (u8)(1<<i)))>>31)) || (lbl_8053AED0[0xdc]&(u8)(1<<i)) || (*(u8**)(lbl_8053AB10+0x30))[0x284] || lbl_8053AAF8[0x85]) {
 if(*(f32*)(p+0x108)>lbl_80543A44)*(f32*)(p+0x108)-=lbl_80543A44;else *(f32*)(p+0x108)=lbl_80543A40;
 if(*(f32*)(p+0x128)>lbl_80543A44)*(f32*)(p+0x128)-=lbl_80543A44;else *(f32*)(p+0x128)=lbl_80543A40;
 if(*(f32*)(p+0x138)>lbl_80543A44)*(f32*)(p+0x138)-=lbl_80543A44;else *(f32*)(p+0x138)=lbl_80543A40;
@@ -931,44 +961,44 @@ if(*(f32*)(p+0x138)<lbl_80543A6C)*(f32*)(p+0x138)+=lbl_80543A44;else *(f32*)(p+0
 }
     if(a==*(f32*)(p+0x108) && b==*(f32*)(p+0x128) && c==*(f32*)(p+0x138) && !flag)return;
 for(s32 j=0;j<4;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x148+i*32+j*8)))->w07((s32)((f32)this_[0x218]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x148+i*32+j*8)))->w07((s32)((f32)this_[0x218]**(f32*)(this_+(i*4+0x108))));
 }
 for(s32 j=0;j<3;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x1c8+i*24+j*8)))->w07((s32)((f32)this_[0x219+j]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x1c8+i*24+j*8)))->w07((s32)((f32)this_[0x219+j]**(f32*)(this_+(i*4+0x108))));
 }
 for(s32 j=0;j<8;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x228+i*64+j*8)))->w07((s32)((f32)this_[0x21c]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x328+i*64+j*8)))->w07((s32)((f32)this_[0x21d]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x428+i*64+j*8)))->w07((s32)((f32)this_[0x21e]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x528+i*64+j*8)))->w07((s32)((f32)this_[0x21f]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x228+i*64+j*8)))->w07((s32)((f32)this_[0x21c]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x328+i*64+j*8)))->w07((s32)((f32)this_[0x21d]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x428+i*64+j*8)))->w07((s32)((f32)this_[0x21e]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x528+i*64+j*8)))->w07((s32)((f32)this_[0x21f]**(f32*)(this_+(i*4+0x108))));
 }
 for(s32 j=0;j<3;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x628+i*24+j*8)))->w07((s32)((f32)this_[0x220+j]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x688+i*24+j*8)))->w07((s32)((f32)this_[0x223+j]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x628+i*24+j*8)))->w07((s32)((f32)this_[0x220+j]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x688+i*24+j*8)))->w07((s32)((f32)this_[0x223+j]**(f32*)(this_+(i*4+0x108))));
 }
 for(s32 j=0;j<12;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x6e8+i*96+j*8)))->w07((s32)((f32)this_[0x226]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x868+i*96+j*8)))->w07((s32)((f32)this_[0x227]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x6e8+i*96+j*8)))->w07((s32)((f32)this_[0x226]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x868+i*96+j*8)))->w07((s32)((f32)this_[0x227]**(f32*)(this_+(i*4+0x108))));
 }
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x9e8+i*16)))->w07((s32)((f32)this_[0x228]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x9e8+i*16+8)))->w07((s32)((f32)this_[0x229]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x9e8+i*16)))->w07((s32)((f32)this_[0x228]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0x9e8+i*16+8)))->w07((s32)((f32)this_[0x229]**(f32*)(this_+(i*4+0x108))));
 for(s32 j=0;j<5;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xa28+i*40+j*8)))->w07((s32)((f32)this_[0x22a]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xac8+i*40+j*8)))->w07((s32)((f32)this_[0x22b]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xa28+i*40+j*8)))->w07((s32)((f32)this_[0x22a]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xac8+i*40+j*8)))->w07((s32)((f32)this_[0x22b]**(f32*)(this_+(i*4+0x108))));
 }
 for(s32 j=0;j<6;j++){
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xb68+i*48+j*8)))->w07((s32)((f32)this_[0x22c+j]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xb68+i*48+j*8)))->w07((s32)((f32)this_[0x22c+j]**(f32*)(this_+(i*4+0x108))));
 }
 ((SubObj*)((HeartPane*)*(void**)(this_+24))->search(*(const u64*)(table+0xda8+i*8)))->w07((s32)((f32)this_[0x232]**(f32*)(p+0x138)));
 ((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xdc8+i*8)))->w07((s32)((f32)this_[0x233]**(f32*)(p+0x128)));
-((SubObj*)((HeartPane*)*(void**)(this_+24))->search(*(const u64*)(table+0xc28+i*16)))->w07((s32)((f32)this_[0x234]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+24))->search(*(const u64*)(table+0xc28+i*16+8)))->w07((s32)((f32)this_[0x235]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xe28+i*8)))->w07((s32)((f32)this_[0x236]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xe48+i*8)))->w07((s32)((f32)this_[0x237]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xec8+i*8)))->w07((s32)((f32)this_[0x238]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xee8+i*8)))->w07((s32)((f32)this_[0x239]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xf08+i*8)))->w07((s32)((f32)this_[0x23a]**(f32*)(p+0x108)));
-((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xf28+i*8)))->w07((s32)((f32)this_[0x23b]**(f32*)(p+0x108)));
+((SubObj*)((HeartPane*)*(void**)(this_+24))->search(*(const u64*)(table+0xc28+i*16)))->w07((s32)((f32)this_[0x234]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+24))->search(*(const u64*)(table+0xc28+i*16+8)))->w07((s32)((f32)this_[0x235]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xe28+i*8)))->w07((s32)((f32)this_[0x236]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xe48+i*8)))->w07((s32)((f32)this_[0x237]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xec8+i*8)))->w07((s32)((f32)this_[0x238]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xee8+i*8)))->w07((s32)((f32)this_[0x239]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xf08+i*8)))->w07((s32)((f32)this_[0x23a]**(f32*)(this_+(i*4+0x108))));
+((SubObj*)((HeartPane*)*(void**)(this_+4))->search(*(const u64*)(table+0xf28+i*8)))->w07((s32)((f32)this_[0x23b]**(f32*)(this_+(i*4+0x108))));
 }
 #pragma pop
 
