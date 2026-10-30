@@ -15,6 +15,14 @@ extern "C" Actor* fn_801F666C(void*,s32);
 extern "C" void fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
 extern "C" char* lbl_8053AAF8;
 extern "C" char* lbl_8053AB10;
+extern const f32 lbl_80540AF4;
+extern const f32 lbl_80540B00;
+extern const f32 lbl_80540B04;
+extern const f32 lbl_80540B18;
+extern const f32 lbl_80540B1C;
+extern const f32 lbl_80540B20;
+extern const f32 lbl_80540B24;
+extern const f32 lbl_80540B28;
 static inline f32 interactionRand() { return ((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1(); }
 
 extern "C" char lbl_804A88E8[];
@@ -88,7 +96,7 @@ extern "C" void fn_802B8FE0(Actor* self) {
             for (s32 i=0;i<4;++i) {
                 f32 scale=fn_8023725C(i);
                 bounds.set(*(f32*)(p+0x60)*scale,*(f32*)(p+0x64)*scale,*(f32*)(p+0x68)*scale,*(f32*)(p+0x6c)*scale);
-                bounds.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
+                bounds.addPos(*(JGeometry::TVec2f*)(p+0xc));
                 if (fn_8023AAF8(i,&bounds,*(s32*)(p+4),&hit)==1) {
                     *(s32*)(p+0x240)=5;
                     f32 dx=hit.x-*(f32*)(p+0xc);
@@ -115,15 +123,15 @@ extern "C" void fn_802B8FE0(Actor* self) {
                                     Actor* item=fn_801F666C(fn_801F856C(),id);
                                     if (item!=0) {
                                         if (item->field_1A0=='KEY0') {
-                                            keyVelocity.set(0.35f-0.7f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),0.35f-0.7f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            keyVelocity.set(0.35f-0.7f*interactionRand(),0.35f-0.7f*interactionRand(),2.0f*interactionRand()+5.0f);
                                             *(JGeometry::TVec3f*)((char*)item+0x3c)=keyVelocity;
                                         } else if (item->field_1A0=='BHRT') {
-                                            s16 angle=65536.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-                                            f32 speed=0.35f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+0.15f;
-                                            heartVelocity.set(speed*JMASinShort(angle),speed*JMACosShort(angle),2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            s16 angle=65536.0f*interactionRand();
+                                            f32 speed=0.35f*interactionRand()+0.15f;
+                                            heartVelocity.set(speed*JMASinShort(angle),speed*JMACosShort(angle),2.0f*interactionRand()+5.0f);
                                             *(JGeometry::TVec3f*)((char*)item+0x3c)=heartVelocity;
                                         } else {
-                                            otherVelocity.set(0.5f-((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),0.5f-((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            otherVelocity.set(0.5f-interactionRand(),0.5f-interactionRand(),2.0f*interactionRand()+5.0f);
                                             *(JGeometry::TVec3f*)((char*)item+0x3c)=otherVelocity;
                                         }
                                         fn_8013CC50(*(s32*)(p+4),p+0xc,0x291,0,0,0,0,1,0.4f);
