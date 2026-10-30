@@ -2,6 +2,30 @@
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/JFramework/JFWDisplay.h"
+#include "dolphin/os/OSSerial.h"
+extern "C" s32 fn_80427D60(void*);
+extern "C" void fn_80427D94(void*);
+extern "C" s32 fn_80427DB4(void*,s32);
+extern "C" u32 fn_80309C4C(void*,u32,s32);
+extern "C" u32 fn_80309D24(void*,s32,u32);
+extern "C" u32 fn_80309D6C(void*,s32,u32);
+extern "C" u8 fn_80309A00(void*,s32);
+extern "C" u8 fn_802B1DCC(void*);
+extern "C" void* lbl_8053ACA8;
+extern "C" void OSSetProgressiveMode(u32);
+extern "C" void fn_80458880(void*,s32,s32);
+extern "C" void fn_80458F9C(void*,s32);
+extern "C" void* fn_8013CC50(s32,Vec*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" f32 lbl_805432E4,lbl_805432F0,lbl_805432F4,lbl_805432DC,lbl_805432F8;
+extern "C" s32 fn_8030AAF4(s32);
+extern "C" u8 fn_8030A308(void*, s32);
+extern "C" u8 fn_8030A388(void*, s32);
+extern "C" void* lbl_8053AD30;
+extern "C" u8 lbl_8050DB0C[];
+extern "C" void* fn_8013C824(void);
+extern "C" u32 OSGetProgressiveMode(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*,void*);
+
 
 struct TResMgr {
     virtual void v00();
