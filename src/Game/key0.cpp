@@ -926,7 +926,7 @@ extern "C" u8 fn_8023A51C(s32 a);
 extern "C" void* fn_8023A478(s32 a);
 extern "C" s32 fn_8023A240(void);
 extern "C" s32 fn_80138A30(s32 a);
-extern "C" void fn_8038AD24(s32 a, s32 b, s32 c, s32 d, void* e, s32 f);
+extern "C" void fn_8038AD24(s32 a, s32 b, s32 c, s32 d, JGeometry::TVec3<f32> e, s32 f);
 extern "C" u8 fn_80388CAC(s32 a, s32 b);
 extern "C" u8 fn_8023061C(s32 a, s32 b);
 extern "C" u8 fn_80230534(s32 a);
