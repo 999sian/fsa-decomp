@@ -84,7 +84,7 @@ extern "C" const char platformHouse[16]="house_smp.bin";
 extern "C" double cos(double);
 extern "C" double sin(double);
 extern "C" const f32 sincosTable___5JMath[];
-static inline void platformRotation(f32 m[3][4], f32 ry) {
+static inline void platformRotation(f32 m[3][4], const f32 ry) {
     f32 sz, sy, sx, cz, cy, cx;
     cx=cos(0.0);
     cy=cos(ry);
@@ -117,87 +117,87 @@ static inline f32 platformCos(f32 angle) {
 }
 
 extern "C" void fn_802ACF04(Actor* a) {
-const char* base=(const char*)lbl_8046C8B0;
+Actor* self=a;
 DrawRec rec;
 f32 m[3][4];
 Vec pos;
 rec.b1c=-1;rec.b1d=-2;
 m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-m[0][0]=((const f32*)(base+0x90))[*(s32*)((u8*)a+0x234)];m[0][1]=0.0f;m[0][2]=0.0f;
+m[0][0]=platformScaleX[*(s32*)((u8*)self+0x234)];m[0][1]=0.0f;m[0][2]=0.0f;
 m[1][0]=0.0f;m[1][1]=1.0f;m[1][2]=0.0f;
-m[2][0]=0.0f;m[2][1]=0.0f;m[2][2]=((const f32*)(base+0xac))[*(s32*)((u8*)a+0x234)];
+m[2][0]=0.0f;m[2][1]=0.0f;m[2][2]=platformScaleY[*(s32*)((u8*)self+0x234)];
 rec.w18=m;
-void* texture=(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('TIMG',base+0xc8);
-pos.z=a->field_0C.z;
-pos.y=a->field_0C.y+((const f32*)(base+0x74))[*(s32*)((u8*)a+0x234)];
-pos.x=a->field_0C.x+((const f32*)(base+0x58))[*(s32*)((u8*)a+0x234)];
-if((s32)a->field_04<8)fn_802F745C(*(void**)((u8*)lbl_8053AB10+0x20),&pos,texture,&rec);
+void* texture=(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('TIMG',platformTexture);
+pos.z=self->field_0C.z;
+pos.y=self->field_0C.y+platformCenterY[*(s32*)((u8*)self+0x234)];
+pos.x=self->field_0C.x+platformCenterX[*(s32*)((u8*)self+0x234)];
+if((s32)self->field_04<8)fn_802F745C(*(void**)((u8*)lbl_8053AB10+0x20),&pos,texture,&rec);
 m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-platformRotation(m,*(f32*)((u8*)a+0x248));
+platformRotation(m,*(f32*)((u8*)self+0x248));
 rec.b1c=-1;rec.b1d=-1;rec.b21=1;rec.w18=m;
-switch(*(s32*)((u8*)a+0x234)) {
-default:if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&a->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0xdc),&rec);break;
-case 1:if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&a->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0xec),&rec);break;
-case 2:if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&a->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x108),&rec);break;
-case 3:if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&a->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x11c),&rec);if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&a->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x12c),&rec);break;
+switch(*(s32*)((u8*)self+0x234)) {
+default:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformFloor),&rec);break;
+case 1:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformSwordLeft),&rec);break;
+case 2:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformHouseLeft),&rec);break;
+case 3:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformTree0),&rec);if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformTree1),&rec);break;
 case 4:case 5:break;
-case 6:if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&a->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x13c),&rec);break;
+case 6:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformField),&rec);break;
 }
 m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-if(*(s32*)((u8*)a+0x234)==3 || *(s32*)((u8*)a+0x234)==4 || *(s32*)((u8*)a+0x234)==5)
-platformRotation(m,3.1415927f-*(f32*)((u8*)a+0x248));
-else platformRotation(m,-*(f32*)((u8*)a+0x248));
+if(*(s32*)((u8*)self+0x234)==3 || *(s32*)((u8*)self+0x234)==4 || *(s32*)((u8*)self+0x234)==5)
+platformRotation(m,3.1415927f-*(f32*)((u8*)self+0x248));
+else platformRotation(m,-*(f32*)((u8*)self+0x248));
 rec.w18=m;
-switch(*(s32*)((u8*)a+0x234)) {
+switch(*(s32*)((u8*)self+0x234)) {
 default:{
 Vec v0;
-f32 angle=*(f32*)((u8*)a+0x248);
-f32 z=a->field_0C.z;
-f32 y=32.0f*platformSin(angle)+a->field_0C.y;
-f32 x=(64.0f+a->field_0C.x)-32.0f*platformCos(-angle);
+f32 angle=*(f32*)((u8*)self+0x248);
+f32 z=self->field_0C.z;
+f32 y=32.0f*platformSin(angle)+self->field_0C.y;
+f32 x=(64.0f+self->field_0C.x)-32.0f*platformCos(-angle);
 v0.y=y; v0.z=z; v0.x=x;
-if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v0,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0xdc),&rec);
+if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v0,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformFloor),&rec);
 }break;
 case 1:{
 Vec v1;
-f32 angle=*(f32*)((u8*)a+0x248);
-f32 z=a->field_0C.z;
-f32 y=32.0f*platformSin(angle)+a->field_0C.y;
-f32 x=(64.0f+a->field_0C.x)-32.0f*platformCos(-angle);
+f32 angle=*(f32*)((u8*)self+0x248);
+f32 z=self->field_0C.z;
+f32 y=32.0f*platformSin(angle)+self->field_0C.y;
+f32 x=(64.0f+self->field_0C.x)-32.0f*platformCos(-angle);
 v1.y=y; v1.z=z; v1.x=x;
-if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v1,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x14c),&rec);
+if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v1,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformSwordRight),&rec);
 }break;
 case 2:{
 Vec v2;
-f32 angle=*(f32*)((u8*)a+0x248);
-f32 z=a->field_0C.z;
-f32 y=48.0f*platformSin(angle)+a->field_0C.y;
-f32 x=(96.0f+a->field_0C.x)-48.0f*platformCos(-angle);
+f32 angle=*(f32*)((u8*)self+0x248);
+f32 z=self->field_0C.z;
+f32 y=48.0f*platformSin(angle)+self->field_0C.y;
+f32 x=(96.0f+self->field_0C.x)-48.0f*platformCos(-angle);
 v2.y=y; v2.z=z; v2.x=x;
-if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v2,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x168),&rec);
+if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v2,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformHouseRight),&rec);
 }break;
 case 3: {
 Vec v3;
-v3.y=a->field_0C.y;v3.x=64.0f+a->field_0C.x;v3.z=a->field_0C.z;
-if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v3,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x11c),&rec);
+v3.y=self->field_0C.y;v3.x=64.0f+self->field_0C.x;v3.z=self->field_0C.z;
+if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v3,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformTree0),&rec);
 Vec v4;
-v4.y=a->field_0C.y;v4.x=64.0f+a->field_0C.x;v4.z=a->field_0C.z;
-if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v4,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x12c),&rec);
+v4.y=self->field_0C.y;v4.x=64.0f+self->field_0C.x;v4.z=self->field_0C.z;
+if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v4,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformTree1),&rec);
 break;
 }
 case 4:case 5:
 rec.b1c=1;rec.b1d=-1;
-if(*(s32*)((u8*)a+0x230)==7) {Vec v5;v5.y=a->field_0C.y;v5.x=96.0f+a->field_0C.x;v5.z=a->field_0C.z;if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v5,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x17c),&rec);}
-else if(*(s32*)((u8*)a+0x230)!=8){Vec v6;v6.y=a->field_0C.y;v6.x=96.0f+a->field_0C.x;v6.z=a->field_0C.z;if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v6,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x18c),&rec);}
+if(*(s32*)((u8*)self+0x230)==7) {Vec v5;v5.y=self->field_0C.y;v5.x=96.0f+self->field_0C.x;v5.z=self->field_0C.z;if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v5,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformGround),&rec);}
+else if(*(s32*)((u8*)self+0x230)!=8){Vec v6;v6.y=self->field_0C.y;v6.x=96.0f+self->field_0C.x;v6.z=self->field_0C.z;if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v6,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformHouse),&rec);}
 break;
 case 6:{
 Vec v7;
-f32 angle=*(f32*)((u8*)a+0x248);
-f32 z=a->field_0C.z;
-f32 y=32.0f*platformSin(angle)+a->field_0C.y;
-f32 x=(64.0f+a->field_0C.x)-32.0f*platformCos(-angle);
+f32 angle=*(f32*)((u8*)self+0x248);
+f32 z=self->field_0C.z;
+f32 y=32.0f*platformSin(angle)+self->field_0C.y;
+f32 x=(64.0f+self->field_0C.x)-32.0f*platformCos(-angle);
 v7.y=y; v7.z=z; v7.x=x;
-if((s32)a->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v7,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',base+0x13c),&rec);
+if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v7,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformField),&rec);
 }break;
 }
 }
