@@ -177,7 +177,7 @@ extern "C" u8 fn_802DE9A0(void);
 extern "C" u8 fn_802DEB58(void);
 extern "C" void* Actor_CreateByID(void*,u32,s32,void*,u32,s32,s32);
 static inline bool SmriCheckGround(SmriActor* p) {
-    const f32 half=lbl_80541738;
+    const f32 half=0.5f;
     JGeometry::TBox2f box;
     box.set(*(JGeometry::TBox2f*)((u8*)p+0x80));
     box.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
@@ -224,7 +224,9 @@ extern "C" void fn_8030EDBC(SmriActor* p) {
  for(;;){
  s32 found=fn_801F78F4(fn_801F856C(),'SMRI',index); index=found; if(found<0)break;
  SmriActor* actor=(SmriActor*)fn_801F666C(fn_801F856C(),found);
- if(actor->state==8 && actor->field_110==p->field_110)actor->state=9;
+ if(actor->state!=8)continue;
+ if(actor->field_110!=p->field_110)continue;
+ actor->state=9; break;
  }
  fn_803513C0(object);p->state=8;p->handle=other->field_198;break;
  }}}}}
