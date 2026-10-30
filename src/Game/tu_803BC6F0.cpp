@@ -415,6 +415,19 @@ static inline void initPane(void* obj) {
     stopPane(*(void**)((u8*)obj + 4));
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
+struct Tu803BKeyTbl {
+    u8 pad0[0x4b8];
+    u64 keys[40][3];
+};
+
+static inline void setPicBlackWhite(u8* p, const u64& key, JUtility::TColor black, JUtility::TColor white) {
+    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
+}
+
+static inline u8 menuBlendChannel(s32 goal, u8 value, f32 t) {
+    return (f32)(goal-value)*t+(f32)value;
+}
+
 #pragma dont_inline on
 void fn_803BC6F0(char* this_, u32 a, f32 t) {
     f32 k = t;
@@ -429,15 +442,6 @@ void fn_803BC6F0(char* this_, u32 a, f32 t) {
     (void)a;
 }
 #pragma dont_inline reset
-
-struct Tu803BKeyTbl {
-    u8 pad0[0x4b8];
-    u64 keys[40][3];
-};
-
-static inline void setPicBlackWhite(u8* p, const u64& key, JUtility::TColor black, JUtility::TColor white) {
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
-}
 
 static inline void setPicBlackWhiteKey(u8* p, u64 key, const JUtility::TColor& black, const JUtility::TColor& white) {
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
@@ -682,7 +686,7 @@ extern "C" void fn_803BE3D8(void* a) {
     u8* p=(u8*)a;
     JGeometry::TVec3<f32> pos1,pos2,pos;
     u8* base=(u8*)lbl_804765D0;
-    advanceMenuPulse((MenuSlots24*)p);
+    (*(s16*)(p+0xdc))++;
     if(*(s16*)(p+0xdc)>=0x36) *(s16*)(p+0xdc)=0;
     if(*(s32*)(p+0xd0)!=0) {
         DrawRec rec1;
