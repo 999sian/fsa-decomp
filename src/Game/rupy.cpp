@@ -791,9 +791,12 @@ extern "C" void fn_8032BFB0(char* p) {
     if (*(s32*)(p + 4) < 8 && *(s32*)(p + 0x24c) < 0xe0) {
         s32 t = *(s32*)(p + 0x24c) % 64;
         if (t > 0x20) {
-            ((u8*)&rec.w10)[3] = (s32)(lbl_80541DC4 * (lbl_80541DCC - (f32)t) * lbl_80541DD0);
+            f32 a = lbl_80541DCC - (f32)t;
+            f32 b = lbl_80541DC4 * a;
+            ((u8*)&rec.w10)[3] = (s32)(b * lbl_80541DD0);
         } else {
-            ((u8*)&rec.w10)[3] = (s32)(lbl_80541DC4 * (f32)t * lbl_80541DD0);
+            f32 a = lbl_80541DC4 * (f32)t;
+            ((u8*)&rec.w10)[3] = (s32)(a * lbl_80541DD0);
         }
     }
     if (*(f32*)(p + 0x14) > lbl_80541D88) {
@@ -814,8 +817,8 @@ extern "C" void fn_8032BFB0(char* p) {
         if (*(s32*)(p + 0x264) >= 0 && *(s32*)(p + 0x264) <= 3) {
             rec.b1d = fn_8023CB24(*(s32*)(p + 0x264)) + 1;
             rec.b1c = fn_8023CA88(*(s32*)(p + 0x264));
-            mode = -1;
         }
+        mode = -1;
     }
     if (*(s32*)(p + 0x230) == 0xd && *(f32*)(p + 0x14) > lbl_80541D88) {
         rec.w30 = 0x11;
@@ -863,9 +866,11 @@ extern "C" void fn_8032C664(u8* p) {
     if (*(s32*)(p + 0x230) != 0x11 && *(s32*)(p + 0x230) != 0xf && *(s32*)(p + 0x230) != 0x10) {
         *(JGeometry::TVec3f*)(p + 0xc) += *(JGeometry::TVec3f*)(p + 0x3c);
     }
-    if (*(u16*)(p + 0x94) != 1 && fn_801F6758(p + 0xc, *(s32*)(p + 4), lbl_80541DE0) == 1) {
+    if (*(u16*)(p + 0x94) != 1) {
+ f32 margin=lbl_80541DE0; void* pos=p+0xc; s32 room=*(s32*)(p+4);
+ if (fn_801F6758(pos,room,margin)==1) {
         p[0x11c] = 0;
-    }
+    }}
     fn_8032B7C0(p);
     switch (*(s32*)(p + 0x230)) {
     case 0x11:
@@ -876,10 +881,12 @@ extern "C" void fn_8032C664(u8* p) {
         return;
     case 0:
         if (((JGeometry::TVec3f*)(p + 0x3c))->squared() > lbl_80541DE4) {
-            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541DE8, base->se0[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+ const u16* sounds=base->se0;
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541DE8, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
         }
         if (*(u16*)(p + 0x94) == 0x22) {
-            if (fn_801F6758(p + 0xc, *(s32*)(p + 4), lbl_80541DEC)) {
+            f32 margin=lbl_80541DEC; void* pos=p+0xc; s32 room=*(s32*)(p+4);
+ if (fn_801F6758(pos,room,margin)) {
                 *(f32*)(p + 0x3c) = lbl_80541D88;
                 *(f32*)(p + 0x40) = lbl_80541D88;
             }
@@ -923,9 +930,15 @@ extern "C" void fn_8032C664(u8* p) {
         break;
     case 0xf:
         fn_801F0E34(p, 0x5006d, 0);
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se1[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se2[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, base->se3[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        {const u16* sounds=base->se1;
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        }
+        {const u16* sounds=base->se2;
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        }
+        {const u16* sounds=base->se3;
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        }
         *(s32*)(p + 0x230) = 0x10;
     case 0x10: {
         s32 t = *(s32*)(p + 0x274);
@@ -1131,8 +1144,8 @@ extern "C" void fn_8032C664(u8* p) {
             }
             fn_801F714C(p + 0x240, (u16)(*(u16*)(p + 0x242) + (s32)(lbl_80541E18 * JMath::atanTable_.atan2_(-dx, -dy))), 1, 0x1000);
             fn_801F714C(p + 0x242, 0, 1, 0x500);
-            *(f32*)(p + 0x3c) = lbl_80541DBC * JMath::sincosTable_.mTable[(u32)*(u16*)(p + 0x240) >> 5].first;
-            *(f32*)(p + 0x40) = lbl_80541DBC * JMath::sincosTable_.mTable[(u32)*(u16*)(p + 0x240) >> 5].second;
+            *(f32*)(p + 0x3c) = lbl_80541DBC * JMath::sincosTable_.sinShort(*(u16*)(p + 0x240));
+            *(f32*)(p + 0x40) = lbl_80541DBC * JMath::sincosTable_.cosShort(*(u16*)(p + 0x240));
         } else {
             *(f32*)(p + 0x44) = lbl_80541D88;
             *(f32*)(p + 0x40) = lbl_80541D88;
@@ -1180,6 +1193,7 @@ extern "C" void fn_8032C664(u8* p) {
     }
 }
 
+#pragma opt_propagation reset
 // RUPY: small helpers.
 extern const f32 lbl_80541D88;
 extern "C" void fn_8032D534(char* p) {
