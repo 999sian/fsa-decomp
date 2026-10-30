@@ -68,7 +68,7 @@ static inline f32 DdgoRandom() {
     u32* seed=(u32*)((char*)lbl_8053AAF8+0xb4);
     *seed=*seed*0x19660d+0x3c6ef35f;
     u32 bits=(*seed>>9)|0x3f800000;
-    return *(f32*)&bits-lbl_8053E7D0;
+    return *(f32*)&bits-one;
 }
 static inline void DdgoIndexedBox(char* t, f32* boxes, s32 index, f32 scale) {
     f32* box=boxes+index*4;
@@ -454,7 +454,8 @@ extern "C" void fn_801ACFF4(void* this_) {
     scale=lbl_8053E7D0;
     if (*(s32*)(t+0x294)==1) scale=lbl_8053E7E8;
     {
-        f32* box=table+16+*(s32*)(t+0x98)*4;
+        f32* boxes=table+16;
+        f32* box=boxes+*(s32*)(t+0x98)*4;
         f32 l=box[0], topEdge=box[1], b=box[3], r=box[2];
         l=scale*l;topEdge=scale*topEdge;b=scale*b;
         *(f32*)(t+0x60)=l;*(f32*)(t+0x64)=topEdge;
@@ -490,7 +491,12 @@ extern "C" void fn_801ACFF4(void* this_) {
         *(s32*)(t+0x230)=1;
     case 1:
         DdgoSetVelocity(t,lbl_8053E7F8,lbl_8053E7FC);
-        *(s32*)(t+0x23c)=(s32)(lbl_8053E800*((JMARandFast*)((char*)lbl_8053AAF8+0xb4))->get_ufloat_1())+50;
+        f32 one=lbl_8053E7D0;
+        f32 range=lbl_8053E800;
+        u32* seed=(u32*)((char*)lbl_8053AAF8+0xb4);
+        *seed=*seed*0x19660d+0x3c6ef35f;
+        u32 bits=(*seed>>9)|0x3f800000;
+        *(s32*)(t+0x23c)=(s32)(range*(*(f32*)&bits-one))+50;
         *(s32*)(t+0xbc)=3;
         if (*(s32*)(t+0x294)==1) *(s32*)(t+0xbc)=4;
         if (*(s32*)(t+0x244)==0 && (*(s32*)(t+0x250)=*(s32*)(t+0x250)+1, *(s32*)(t+0x250)>3) && DdgoRandom()<lbl_8053E7F4) {
