@@ -112,7 +112,7 @@ extern "C" void fn_802D8050(void*, s32, s32, s32);
 extern "C" void fn_8010DF58(void* this_);
 extern "C" void fn_8010DF78(void* this_);
 extern "C" void fn_8010F7EC(u8*, s32);
-extern "C" void fn_80110E9C(const void*);
+extern "C" void fn_80110E9C(u8*);
 extern "C" void fn_8011093C(void*);
 extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8010F4DC(u8* this_);
@@ -738,7 +738,7 @@ extern const f32 lbl_8053C578;
 extern const f32 lbl_8053C57C;
 extern const f32 lbl_8053C580;
 extern const f32 lbl_8053C584;
-extern "C" void fn_80110E9C(const void* this_) {
+extern "C" void fn_80110E9C(u8* this_) {
 JGeometry::TVec3<f32>* v;
 s32 j;
 s32 i;
