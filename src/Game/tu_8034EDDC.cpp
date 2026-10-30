@@ -219,6 +219,43 @@ extern "C" void fn_8034EE3C(u8* self) {
     fn_80307AC8(*(u32*)(self + 0x198), *(u32*)(self + 4), self + 0xc, *(s32*)(self + 0x240) + 0x14, 0, 0, -1);
 }
 
+extern "C" u32 fn_8013CC50(u32 owner, void* pos, u16 id, s32 a, f32 f, s32 b, s32 c, s32 d, s32 e);
+extern "C" void* fn_801F856C(void);
+extern "C" void Actor_CreateByID(void* mgr, u32 id, s32 kind, void* pos, s32 a, s32 b, s32 c);
+extern "C" void fn_801F0D20(void* self, s32 a);
+extern "C" s32 fn_8023DE58(s32 player);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" s32 fn_80350974(u8* self);
+extern "C" s32 fn_803506E0(u8* self);
+extern "C" s32 fn_80350530(u8* self);
+extern "C" s32 fn_803502CC(u8* self);
+extern "C" void fn_8035001C(u8* self, u32 kind);
+extern const f32 lbl_80542608;
+extern const f32 lbl_8054260C;
+extern const f32 lbl_80542610;
+extern const f32 lbl_80542614;
+struct EnemyVt_8034 {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10(s32 a, s32 b);
+    virtual u8 v11();
+};
+static inline f32 tu8034_dist(f32 x) {
+    if (x <= lbl_805425D8) {
+        return x;
+    }
+    f32 y = __frsqrte(x);
+    y = lbl_80542600 * y * (lbl_80542604 - (x * (y * y)));
+    return x * y;
+}
 extern "C" void fn_8034F43C(char* p) {
     if (*(s32*)(p + 0x230) == 4) {
         *(s32*)(p + 0x230) = 4;
@@ -552,7 +589,7 @@ extern "C" s32 fn_80350974(u8* self) {
     s32 cnt;
     s32 room;
     JGeometry::TVec2<f32>* pos;
-    int i;
+    s32 i;
     s32 j;
     s32 k;
     s32 st;
@@ -585,7 +622,7 @@ extern "C" s32 fn_80350974(u8* self) {
                 *(f32*)(self + 0x88) = p[2];
                 *(f32*)(self + 0x8c) = p[3];
                 r = fn_80351020(self, i);
-                *(self + 0x283 + i) = r;
+                self[i + 0x283] = r;
                 if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                     cnt++;
                     break;
@@ -625,8 +662,10 @@ extern "C" s32 fn_80350974(u8* self) {
             }
         } else {
             r = fn_80351020(self, i);
-            self[i + 0x283] = r;
-            if ((u8)r == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
+            u8 result = (u8)r;
+            s32 offset = i + 0x283;
+            self[offset] = r;
+            if (result == 1 && *(f32*)((u8*)fn_8023E724(i) + 8) <= lbl_805425D8) {
                 cnt++;
             }
         }
