@@ -157,6 +157,17 @@ static inline void MenuUpdateColors8045(T80454DEC* self) {
         }
     }
 }
+static inline void MenuLayout8045(T80454DEC* self, f32 off) {
+    self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected] + off);
+    self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected] + off);
+    for (int i = 0; i < 3; i++) {
+        if (i == self->selected) {
+            fn_80402E08(self->entries[i], lbl_80543E44, off);
+        } else {
+            fn_80402E08(self->entries[i], lbl_80543E44, lbl_80543E44);
+        }
+    }
+}
 extern "C" s32 fn_80453B14(u8* this_) {
     T80454DEC* self = (T80454DEC*)this_;
     s32 i;
@@ -186,28 +197,12 @@ extern "C" s32 fn_80453B14(u8* this_) {
         if (*(s16*)(this_ + 0x1c) > 0 && fn_80309A9C(lbl_8053AD30, 8, -1)) {
             (*(s16*)(this_ + 0x1c))--;
             *(s16*)(this_ + 0x20) = 1;
-            for (i = 0; i < 3; i++) {
-                if (i == *(s16*)(this_ + 0x1c)) {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
-                } else {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
-                }
-            }
+            MenuUpdateColors8045(self);
             fn_80458880(lbl_8053AF80, 0, -1);
         } else if (*(s16*)(this_ + 0x1c) < 2 && fn_80309A9C(lbl_8053AD30, 4, -1)) {
             (*(s16*)(this_ + 0x1c))++;
             *(s16*)(this_ + 0x20) = 1;
-            for (i = 0; i < 3; i++) {
-                if (i == *(s16*)(this_ + 0x1c)) {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
-                } else {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
-                }
-            }
+            MenuUpdateColors8045(self);
             fn_80458880(lbl_8053AF80, 0, -1);
         } else if (fn_80309C4C(lbl_8053AD30, 0x1100, -1)) {
             if (*(s16*)(this_ + 0x1c) == 0) {
@@ -219,15 +214,7 @@ extern "C" s32 fn_80453B14(u8* this_) {
             fn_80458880(lbl_8053AF80, 0xb, -1);
         } else if (fn_80309C4C(lbl_8053AD30, 0x200, -1)) {
             *(s16*)(this_ + 0x1c) = 0;
-            for (i = 0; i < 3; i++) {
-                if (i == *(s16*)(this_ + 0x1c)) {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
-                } else {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
-                }
-            }
+            MenuUpdateColors8045(self);
             *(s16*)(this_ + 0x1e) = 0xa;
             *(s16*)(this_ + 0x20) = 1;
             fn_80458880(lbl_8053AF80, 0xb, -1);
@@ -355,15 +342,7 @@ extern "C" s32 fn_80453B14(u8* this_) {
             fn_80402E08(*(void**)(this_ + 0xc), lbl_80543E44, lbl_80543E40);
             *(s16*)(*(u8**)(this_ + 0xc) + 0x22) = 0;
             *(s16*)(this_ + 0x1c) = 0;
-            for (i = 0; i < 3; i++) {
-                if (i == *(s16*)(this_ + 0x1c)) {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
-                } else {
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
-                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
-                }
-            }
+            MenuUpdateColors8045(self);
             self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected]);
             self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected]);
         }
