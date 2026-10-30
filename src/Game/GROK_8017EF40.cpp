@@ -66,7 +66,7 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     m[2][2]=scaleZ*(cx*cy);
 }
 
-#pragma optimization_level 2
+#pragma optimization_level 4
 #pragma peephole off
 #pragma opt_propagation off
 #pragma opt_strength_reduction off
