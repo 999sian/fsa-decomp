@@ -157,8 +157,11 @@ extern "C" void fn_803129AC(Actor* p) {
     u8* self = (u8*)p;
     s32 idx;
     u8 flag;
-    s32 i;
+    int i;
     f32 vec[3];
+    u8* mgr;
+    u8** slots;
+    u8* other;
     switch (*(s32*)(self + 0x230)) {
     case 0:
         if (!fn_802D800C(fn_802D6A9C(), *(u32*)(self + 0x23c))) {
@@ -201,7 +204,9 @@ extern "C" void fn_803129AC(Actor* p) {
         if (self[0x27e] == 0 && flag == 1) {
             idx = *(s32*)(self + 0x278);
             if (idx >= 0) {
-                u8* other = ((u8**)fn_801F856C() + idx)[2];
+                mgr = fn_801F856C();
+                slots = (u8**)mgr;
+                other = (slots + idx)[2];
                 if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                     other[0x276] = 1;
                 }
@@ -230,7 +235,7 @@ extern "C" void fn_803129AC(Actor* p) {
         fn_80230498(*(s32*)(self + 0x244), vec, 0x3f, 0xff, -0x80, -0x80, 1);
         fn_80230BF4(*(s32*)(self + 0x244), 3);
         for (i = 0; i < 4; i++) {
-            if (i != *(s32*)(self + 0x244) && fn_8022E438(i)) {
+            if (*(s32*)(self + 0x244) != i && fn_8022E438(i)) {
                 f32* pos = (f32*)fn_8023E724(i);
                 vec[0] = pos[0];
                 vec[1] = pos[1];
@@ -323,7 +328,9 @@ extern "C" void fn_803129AC(Actor* p) {
         }
         idx = *(s32*)(self + 0x278);
         if (idx >= 0) {
-            u8* other = ((u8**)fn_801F856C() + idx)[2];
+            mgr = fn_801F856C();
+            slots = (u8**)mgr;
+            other = (slots + idx)[2];
             if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                 other[0x277] = 1;
             }
@@ -333,16 +340,22 @@ extern "C" void fn_803129AC(Actor* p) {
         *(f32*)(self + 0x14) = lbl_80541810;
         *(f32*)(self + 0x44) = lbl_80541818;
         break;
-    case 0xd:
-        if (*(f32*)(self + 0x14) >= lbl_8054181C) {
-            *(f32*)(self + 0x14) = lbl_8054181C;
+    case 0xd: {
+        f32 lim;
+        f32 z;
+        z = *(f32*)(self + 0x14);
+        lim = lbl_8054181C;
+        if (z >= lim) {
+            *(f32*)(self + 0x14) = lim;
             *(s32*)(self + 0x230) = 0xe;
             *(s32*)(self + 0x238) = 0x5a;
             *(f32*)(self + 0x44) = lbl_80541810;
         }
         idx = *(s32*)(self + 0x278);
         if (idx >= 0) {
-            u8* other = ((u8**)fn_801F856C() + idx)[2];
+            mgr = fn_801F856C();
+            slots = (u8**)mgr;
+            other = (slots + idx)[2];
             if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                 if (fn_802ED7F0((char*)other, *(f32*)(self + 0x14))) {
                     *(f32*)(self + 0x14) += *(f32*)(self + 0x44);
@@ -352,6 +365,7 @@ extern "C" void fn_803129AC(Actor* p) {
             }
         }
         break;
+    }
     case 0xe:
         (*(s32*)(self + 0x238))--;
         if (*(s32*)(self + 0x238) > 0) {
@@ -359,7 +373,9 @@ extern "C" void fn_803129AC(Actor* p) {
         }
         idx = *(s32*)(self + 0x278);
         if (idx >= 0) {
-            u8* other = ((u8**)fn_801F856C() + idx)[2];
+            mgr = fn_801F856C();
+            slots = (u8**)mgr;
+            other = (slots + idx)[2];
             if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                 other[0x278] = 1;
             }
@@ -394,7 +410,9 @@ extern "C" void fn_803129AC(Actor* p) {
         *(f32*)(self + 0x14) += *(f32*)(self + 0x44);
         idx = *(s32*)(self + 0x278);
         if (idx >= 0) {
-            u8* other = ((u8**)fn_801F856C() + idx)[2];
+            mgr = fn_801F856C();
+            slots = (u8**)mgr;
+            other = (slots + idx)[2];
             if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                 fn_802ED7F0((char*)other, *(f32*)(self + 0x14));
             }
@@ -410,7 +428,9 @@ extern "C" void fn_803129AC(Actor* p) {
         *(f32*)(self + 0x14) += *(f32*)(self + 0x44);
         idx = *(s32*)(self + 0x278);
         if (idx >= 0) {
-            u8* other = ((u8**)fn_801F856C() + idx)[2];
+            mgr = fn_801F856C();
+            slots = (u8**)mgr;
+            other = (slots + idx)[2];
             if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                 fn_802ED7F0((char*)other, *(f32*)(self + 0x14));
             }
@@ -422,7 +442,9 @@ extern "C" void fn_803129AC(Actor* p) {
         } else if (z <= lbl_80541838 && self[0x27d] == 0) {
             idx = *(s32*)(self + 0x278);
             if (idx >= 0) {
-                u8* other = ((u8**)fn_801F856C() + idx)[2];
+                mgr = fn_801F856C();
+                slots = (u8**)mgr;
+                other = (slots + idx)[2];
                 if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                     Gnef_SetCueFlag(other);
                     self[0x27d] = 1;
@@ -484,7 +506,7 @@ extern "C" void fn_803129AC(Actor* p) {
             fn_8037AD70(lbl_8053AD70, *(s32*)(self + 0x234));
             *(s32*)(self + 0x230) = 0x16;
             for (i = 0; i < 4; i++) {
-                if (i != *(s32*)(self + 0x244) && fn_8022E438(i)) {
+                if (*(s32*)(self + 0x244) != i && fn_8022E438(i)) {
                     fn_80230498(i, fn_8023E724(*(s32*)(self + 0x244)), 0x3f, 0xff, -0x80, -0x80, 1);
                 }
             }
@@ -504,7 +526,9 @@ extern "C" void fn_803129AC(Actor* p) {
         *(f32*)(self + 0x14) += *(f32*)(self + 0x44);
         idx = *(s32*)(self + 0x278);
         if (idx >= 0) {
-            u8* other = ((u8**)fn_801F856C() + idx)[2];
+            mgr = fn_801F856C();
+            slots = (u8**)mgr;
+            other = (slots + idx)[2];
             if (other != 0 && *(u32*)(other + 0x1a0) == 0x474e4546) {
                 fn_802ED7F0((char*)other, *(f32*)(self + 0x14));
             }
