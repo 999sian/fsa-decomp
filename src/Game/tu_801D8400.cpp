@@ -643,35 +643,9 @@ extern const f32 lbl_8053F208;
 extern const f32 lbl_8053F20C;
 extern const f32 lbl_8053F220;
 
-static inline void t84FrontPos(char* p, JGeometry::TVec3<f32>* v) {
-    if (*(u32*)(p + 0x230) & 0x2000) {
-        v->set(*(f32*)(p + 0xc) - lbl_8053F204, lbl_8053F200 + *(f32*)(p + 0x10), lbl_8053F1CC);
-    } else {
-        v->set(lbl_8053F204 + *(f32*)(p + 0xc), lbl_8053F200 + *(f32*)(p + 0x10), lbl_8053F1CC);
-    }
-}
-
-static inline s16 t84FaceAngle(char* p) {
-    return (*(u32*)(p + 0x230) & 0x2000) ? 0x2000 : -0x2000;
-}
-
-static inline s32 t84FindPlayer(char* p) {
-    s32 pl;
-    s32 found = -1;
-    JGeometry::TVec3<f32> v;
-    t84FrontPos(p, &v);
-    s16 ang = t84FaceAngle(p);
-    pl = fn_801D0338(p, &v, ang);
-    if (pl >= 0) {
-        f32 dy = fn_8023E724(pl)->y - v.y;
-        f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
-        s16 d = ang - (s16)(a * lbl_8053F208);
-        if (lbl_8053F20C * JGeometry::TUtilf::abs(d) <= lbl_8053F1F0) {
-            found = pl;
-        }
-    }
-    return found;
-}
+static inline void t84FrontPos(char*, JGeometry::TVec3<f32>*);
+static inline s16 t84FaceAngle(char*);
+static inline s32 t84FindPlayer(char*);
 
 #pragma opt_common_subs on
 #pragma opt_propagation on
