@@ -4,10 +4,9 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
-static inline JGeometry::TVec3<f32> DMZLDivide(JGeometry::TVec3<f32> v, const f32 divisor) {
+static inline JGeometry::TVec3<f32> DMZLDivide(const JGeometry::TVec3<f32>& v, const f32 divisor) {
 JGeometry::TVec3<f32> copy(v);
-copy.x /= divisor; copy.y /= divisor; copy.z /= divisor;
-return copy;
+return JGeometry::TVec3<f32>(copy.x/divisor,copy.y/divisor,copy.z/divisor);
 }
 extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
