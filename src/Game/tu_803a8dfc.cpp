@@ -3700,6 +3700,8 @@ extern "C" void fn_803AA1F8(void* this_) {
     }
 }
 
+extern const u16 lbl_80543390[];
+
 extern "C" void fn_803AA8F8(void* this_) {
     u8* self = (u8*)this_;
     switch (self[0x4c1]) {
