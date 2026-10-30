@@ -38,7 +38,7 @@ extern "C" u8* fn_801F666C(void*, s32);
 extern "C" s32 fn_801F3D94(void*, s32);
 extern "C" s32 fn_801F285C(void*, void*, void*, s32, s32);
 extern "C" u8 fn_802353AC(s32);
-extern "C" void* fn_8023E724(s32);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
 extern "C" s32 fn_8023B6CC(s32);
 extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
 extern "C" u8 fn_8022F514(s32);
