@@ -465,7 +465,7 @@ static inline void msgRestoreChoiceTV(const u8* p, const u64* tags) {
     const u64* child = tags;
     for (; j < 4; j++, child++) {
         if (*child == 0) continue;
-        ((MsgDraw*)p)->screen->search(*child)->setAlpha(p[j + 0x1a5]);
+        ((MsgDraw*)p)->screen->search(*child)->setAlpha(((const MsgPop*)p)->childAlpha[j]);
     }
 }
 
