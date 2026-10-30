@@ -56,6 +56,11 @@ extern "C" s32 fn_803A3484(void) {
     return 1;
 }
 
+static inline f32 titleRandom(u32& seed) {
+    seed=seed*0x19660d+0x3c6ef35f;
+    u32 bits=(seed>>9)|0x3f800000;
+    return *(f32*)&bits-1.0f;
+}
 static inline f32 titleAddStep(f32& value, const f32 step, const f32 bound) {
     value += step;
     return bound;
@@ -97,12 +102,12 @@ if(*(s16*)(p+0x6e)!=3 && *(u32*)(lbl_8053AF80+0x58)!=0x1000006)fn_80458FF0(lbl_8
 }else{
     switch(*(s16*)(p+0x6e)){
     case 0:{
-        f32 cur=*(f32*)(p+0x4c);f32 step=lbl_805432F0;const f32 limit=lbl_805432F4;
+        f32 cur=*(f32*)(p+0x4c);f32 step=lbl_805432F0;f32 limit=255.0f;
 *(f32*)(p+0x4c)=cur+step;
         if(*(f32*)(p+0x4c)>=limit){*(f32*)(p+0x4c)=limit;++*(s16*)(p+0x6e);}
         break;
     }case 1:if(lbl_80529DEC[0x238]==4)++*(s16*)(p+0x6e);break;
-    case 2:{f32 cur=*(f32*)(p+0x4c);f32 step=lbl_805432F0;const f32 limit=lbl_805432E0;
+    case 2:{f32 cur=*(f32*)(p+0x4c);f32 step=lbl_805432F0;f32 limit=0.0f;
 *(f32*)(p+0x4c)=cur-step;if(*(f32*)(p+0x4c)<=limit)*(f32*)(p+0x4c)=limit;break;}
     }
     if(lbl_80529DEC[0x238]==1){
@@ -143,7 +148,7 @@ if(*(s16*)(p+0x6e)!=3 && *(u32*)(lbl_8053AF80+0x58)!=0x1000006)fn_80458FF0(lbl_8
         }else if(fn_80427DB4(*(void**)(p+0x48),3)){lbl_80529DEC[0x250]=0;*(s16*)(p+0x6c)=2;}
     }else{
         switch(lbl_80529DEC[0x238]){
-        case 2:{f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;const f32 limit=lbl_805432F4;
+        case 2:{f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;f32 limit=255.0f;
 *(f32*)(p+0x50)=cur+step;if(*(f32*)(p+0x50)>=limit){*(f32*)(p+0x50)=limit;lbl_80529DEC[0x238]=3;}break;
         }case 3:
             ++*(s16*)(p+0x74);
@@ -153,7 +158,7 @@ if(*(s16*)(p+0x6e)!=3 && *(u32*)(lbl_8053AF80+0x58)!=0x1000006)fn_80458FF0(lbl_8
             ++*(s16*)(p+0x72);if(*(s16*)(p+0x72)>60)*(s16*)(p+0x72)=0;break;
         case 4:{
             if(*(s16*)(p+0x6e)!=2)break;
-            f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;const f32 limit=lbl_805432E0;
+            f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;f32 limit=0.0f;
 *(f32*)(p+0x50)=cur-step;
             if(*(f32*)(p+0x50)<=limit){
                 *(f32*)(p+0x50)=limit;
@@ -164,10 +169,10 @@ if(*(s16*)(p+0x6e)!=3 && *(u32*)(lbl_8053AF80+0x58)!=0x1000006)fn_80458FF0(lbl_8
         }case 5:lbl_80529DEC[0x238]=7;break;
         case 6:lbl_80529DEC[0x238]=8;break;
         case 7:case 8:++*(s16*)(p+0x72);if(lbl_80529DEC[0x251]>90 && *(s16*)(p+0x72)>=90){lbl_80529DEC[0x238]=9;*(s16*)(p+0x6e)=0;lbl_80529DEC[0x251]=0;}break;
-        case 9:{f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;const f32 limit=lbl_805432F4;
+        case 9:{f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;f32 limit=255.0f;
 *(f32*)(p+0x50)=cur+step;if(*(f32*)(p+0x50)>=limit){*(f32*)(p+0x50)=limit;lbl_80529DEC[0x238]=10;*(s16*)(p+0x72)=0;}break;
         }case 10:++*(s16*)(p+0x72);if(*(s16*)(p+0x72)>=120){*(f32*)(p+0x50)=lbl_805432DC;lbl_80529DEC[0x238]=11;}break;
-        case 11:{f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;const f32 limit=lbl_805432E0;
+        case 11:{f32 cur=*(f32*)(p+0x50);f32 step=lbl_805432F0;f32 limit=0.0f;
 *(f32*)(p+0x50)=cur-step;if(*(f32*)(p+0x50)<=limit){*(f32*)(p+0x50)=limit;lbl_80529DEC[0x238]=255;lbl_80529DEC[0x226]=1;}break;}
         }
     }
@@ -192,13 +197,15 @@ if(!*(void**)(p+0x40)){Vec v;v.x=lbl_805432E0;v.y=lbl_805432E0;v.z=lbl_805432E0;
             if(t<*(s16*)((u8*)*(void**)(p+0x24)+6))*(f32*)((u8*)*(void**)(p+0x24)+8)=(f32)t;
             else {
                 u32* seed=(u32*)(lbl_8053AAF8+0xb4);
-                f32 one=lbl_805432E4;
+                f32 one=1.0f;
                 f32 scale=lbl_805432F8;
                 *seed=*seed*0x19660d+0x3c6ef35f;
                 u32 bits=(*seed>>9)|0x3f800000;
                 s32 frames=*(s16*)((u8*)*(void**)(p+0x24)+6);
-                s32 r=(s32)(scale*(*(f32*)&bits-one));
-                if(t>=r+frames+400)*(s32*)(p+0x5c)=0;
+                int r=(int)(scale*(*(f32*)&bits-one));
+                s32 end=r+frames;
+                end+=400;
+                if(t>=end)*(s32*)(p+0x5c)=0;
                 *(f32*)((u8*)*(void**)(p+0x24)+8)=lbl_805432E0;
             }
         }else *(f32*)((u8*)*(void**)(p+0x24)+8)=lbl_805432E0;
