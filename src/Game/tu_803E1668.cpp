@@ -847,6 +847,34 @@ extern const f32 lbl_805436CC;
 extern const f32 lbl_80543690;
 extern const f32 lbl_805436D4;
 extern const f32 lbl_805436D0;
+#include "Game/ItemBase.h"
+extern "C" u8 fn_8030A388(void*, s32);
+extern "C" void fn_8013B490(void*);
+extern "C" void fn_804316EC(void*);
+extern "C" u8* sManager__8JUTVideo;
+extern const f32 lbl_80543650, lbl_80543658, lbl_80543660, lbl_805436D8, lbl_805436DC, lbl_805436E0;
+static inline bool MenuEnabled803E(s32 i) { return (lbl_8053AAF8[0x82] & (u8)(1 << (i + 4))) != 0; }
+static inline s16 MenuNext803E(s16 old, s32 count) {
+    s16 next = old;
+    for (s32 i = 0; i < count; i++) {
+        next++;
+        if (next >= count) next = 0;
+        if (!(lbl_8053AAF8[0x82] & (u8)(1 << (next + 4)))) return next;
+        if (next == old) return -1;
+    }
+    return -1;
+}
+static inline void MenuRestore803E(u8* p, const u64* a, const u64* b, const u64* c) {
+    ((Pane803E4650*)(*(J2DPane**)(p + 8))->search(*a))->setAlpha(p[0x265]);
+    ((Pane803E4650*)(*(J2DPane**)(p + 8))->search(*b))->setAlpha(p[0x266]);
+    ((Pane803E4650*)(*(J2DPane**)(p + 8))->search(*c))->setAlpha(p[0x267]);
+}
+static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec) {
+    void* mgr = *(void**)(lbl_8053AAF8 + 0xa4);
+    void* res = ((void*(*)(void*,u32,void*))(*(void***)(mgr))[6])(mgr, 'SOB ', lbl_80477970 + 0xfa0);
+    ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(((void**)lbl_8053AB10)[8], &pos, res, id, &rec, lbl_80543668, lbl_80543668);
+}
+
 extern "C" void fn_803E51C4(u8* param_1) {
     s32 i;
     s32 v;
@@ -1909,7 +1937,7 @@ MenuRowAlpha803E(p,*selected,base,lbl_80543664);
 }}}
 time=*(s16*)(p+0x254);
 if(time>15){if(time<23){
-((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slideX=(lbl_805436AC*(MenuSquare803E(time-15)/64.0f));
+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0]=(lbl_805436AC*(MenuSquare803E(time-15)/64.0f));
 s32 id=*(s32*)(p+0x1bc);
 t=(f32)(8-(*(s16*)(p+0x254)-15))/8.0f;
 if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
@@ -1917,7 +1945,7 @@ if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
 u64* names=(u64*)(base+0x140);names+=id*6;u8* alpha=p+id*6;for(int k=0;k<6;k++,alpha++,names++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=t;((Pane803E4650*)pane)->setAlpha((int)value);}}
 
 }else{
-((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slideX=lbl_805436AC;
+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0]=lbl_805436AC;
 MenuRowAlpha803E(p,*(s32*)(p+0x1bc),base,lbl_80543664);
 
 }}
@@ -1967,7 +1995,7 @@ fn_80402E08(*(void**)(p+0x78),lbl_80543664,*(f32*)(p+0xfc));
 (*(J2DPane**)(p+4))->search(0x004e646174613035ULL)->move(*(f32*)(p+316)+*(f32*)(p+332),*(f32*)(p+320));
 (*(J2DPane**)(p+4))->search(0x004e646174613037ULL)->move(*(f32*)(p+324)+*(f32*)(p+332),*(f32*)(p+328));
 f32 y=getBounds__7J2DPaneFv((*(J2DPane**)(p+4))->search(0x50736375726f3032ULL))[1];
-(*(J2DPane**)(p+4))->search(0x50736375726f3032ULL)->move(*(f32*)(p+0x19c)+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slideX,y);
+(*(J2DPane**)(p+4))->search(0x50736375726f3032ULL)->move(*(f32*)(p+0x19c)+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0],y);
 }
 #pragma optimization_level 3
 extern "C" void fn_80403680(void* p);
