@@ -394,6 +394,13 @@ static inline void tu803C_setCellQ(u8* this_, u8* base, u8* tgt, s32 idx, s32 ke
     fn_804023D0(*(void**)(tgt + 0x44), o, this_[flagOff]);
 }
 
+static inline void tu803C_group(u8* p,u8* q,u8* keys,s32 count,s32 layout,s32 cell,s32 flag) {
+    s32 j;
+    for(j=0;j<count;j++,keys+=8) {
+        fn_804023D0(*(void**)(q+cell),keyObj(*(void**)(p+layout),*(u64*)keys),p[flag+j]);
+    }
+}
+
 static inline void tu803C_max(s32* m, s32 v) {
     if (*m < v) {
         *m = v;
@@ -1824,14 +1831,23 @@ void fn_803C24BC(char* this_) {
     p[0x112] = p[0x110];
     p[0x110] = 4;
 }
+#pragma opt_lifetimes on
 #pragma opt_propagation off
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
-extern "C" void fn_803C2E24(u8* p) {
-    s32 iVar6, iVar4, iVar10, iVar13, iVar11, iVar9, iVar12, iVar8;
+extern "C" void fn_803C2E24(MenuSlots24* menu) {
+ u8* p=(u8*)menu;
+    int iVar6;
+    int iVar4;
+    int iVar10;
+    int iVar13;
+    int iVar11;
+    int iVar9;
+    s16 iVar12;
+    int iVar8;
     s32 aVal, sVal;
-    s32 ord[2];
-    s32* pw;
+    int ord[2];
+    int* pw;
     s32 i,j;
     u8* keys;
     u8* base=(u8*)lbl_804765D0;
@@ -1854,18 +1870,18 @@ extern "C" void fn_803C2E24(u8* p) {
     addMenuTiming(sVal,iVar9);
     if(iVar6<sVal)iVar6=sVal;
     u8* ordWalker=(u8*)ord;
-    pw=(s32*)ordWalker;
+    pw=(int*)ordWalker;
     for (s32 n=0;n<3;n++)if(n!=*(s32*)(p+0xa4))*pw++=n;
 
     *(s16*)(p + 0xd8) += 1;
     if (*(s16*)(p + 0xd8) > iVar4) {
-        if (((1 << *(s32*)(p + 0xa4)) & 0xff & p[0x115]) != 0) {
+        if ((p[0x115] & (u8)(1 << *(s32*)(p + 0xa4))) != 0) {
             ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x20), i, 0, lbl_80543458, lbl_80543498);
             fn_80402628(*(void**)(p + 0x20), i, *(u8*)(*(u8**)(p + 0x20) + 0x28), 0);
             {u8* keys;
  for(i=0,keys=base+0x368;i<9;i++,keys+=8) {
  void* o=(*(J2DPane**)(p+4))->search(*(u64*)keys);
- fn_804023D0(*(void**)(p+0x20),o,p[i+0x196]); }} 
+ fn_804023D0(*(void**)(p+0x20),o,((MenuSlots24*)p)->flags196[(u32)i]); }} 
 
         } else {
             ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x14), i, 0, lbl_80543458, lbl_80543498);
@@ -1877,11 +1893,11 @@ extern "C" void fn_803C2E24(u8* p) {
             {u8* keys;
  for(i=0,keys=base+0x48;i<0x51;i++,keys+=8) {
  void* o=(*(J2DPane**)(p+4))->search(*(u64*)keys);
- fn_804023D0(*(void**)(p+0x14),o,p[i+0x132]); }} 
+ fn_804023D0(*(void**)(p+0x14),o,((MenuSlots24*)p)->flags132[(u32)i]); }} 
             {u8* keys;
  for(i=0,keys=base+0x2d0;i<0x13;i++,keys+=8) {
  void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);
- fn_804023D0(*(void**)(p+0x14),o,p[i+0x183]); }} 
+ fn_804023D0(*(void**)(p+0x14),o,((MenuSlots24*)p)->flags183[(u32)i]); }} 
         }
     }
     u8* q=p;
@@ -1892,13 +1908,13 @@ extern "C" void fn_803C2E24(u8* p) {
       fn_80402628(*(void**)(q+0x24),iVar13,(*(u8**)(q+0x24))[0x28],0);
       switch(i) {
       case 0:{j=0;keys=base+0x7f8;
- do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,p[j+0x19f]);j++;keys+=8;}while(j<4);}break;
+ do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,((MenuSlots24*)p)->flags19f[(u32)j]);j++;keys+=8;}while(j<4);}break;
       case 1:{j=0;keys=base+0x7d8;
- do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,p[j+0x19f]);j++;keys+=8;}while(j<4);}break;
+ do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,((MenuSlots24*)p)->flags19f[(u32)j]);j++;keys+=8;}while(j<4);}break;
       case 2:{j=0;keys=base+0x7b8;
- do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,p[j+0x19f]);j++;keys+=8;}while(j<4);}break;
+ do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,((MenuSlots24*)p)->flags19f[(u32)j]);j++;keys+=8;}while(j<4);}break;
       case 3:{j=0;keys=base+0x798;
- do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,p[j+0x19f]);j++;keys+=8;}while(j<4);}break;
+ do {void* o=(*(J2DPane**)(p+8))->search(*(u64*)keys);fn_804023D0(*(void**)(q+0x24),o,((MenuSlots24*)p)->flags19f[(u32)j]);j++;keys+=8;}while(j<4);}break;
       }
      }
     }
@@ -2053,19 +2069,22 @@ extern "C" void fn_803C2E24(u8* p) {
     } while (k < 2);
 
     if (*(s32*)(p + 0xa4) != 0 && *(s16*)(p + 0xd8) > iVar9) {
-        fn_80402940(*(void**)(p + 0x38 + *(s32*)(p + 0xa4) * 4), iVar12,
-                             *(f32*)(*(u8**)(p + 0x38) + 0xc) - *(f32*)(*(u8**)(p + 0x38 + *(s32*)(p + 0xa4) * 4) + 0xc), lbl_80543458, 0);
-        fn_80402940(*(void**)(p + 0x44 + *(s32*)(p + 0xa4) * 4), iVar12,
-                             *(f32*)(*(u8**)(p + 0x44) + 0xc) - *(f32*)(*(u8**)(p + 0x44 + *(s32*)(p + 0xa4) * 4) + 0xc), lbl_80543458, 0);
+        MenuSlots38* slots=(MenuSlots38*)p;
+        fn_80402940(slots->slot[*(s32*)(p+0xa4)],iVar12,
+            *(f32*)(slots->slot[0]+0xc)-*(f32*)(slots->slot[*(s32*)(p+0xa4)]+0xc),lbl_80543458,0);
+        MenuSlots44* slots2=(MenuSlots44*)p;
+        fn_80402940(slots2->slot[*(s32*)(p+0xa4)],iVar12,
+            *(f32*)(slots2->slot[0]+0xc)-*(f32*)(slots2->slot[*(s32*)(p+0xa4)]+0xc),lbl_80543458,0);
     }
     if (*(s16*)(p + 0xd8) > iVar6) {
         p[0x112] = p[0x110];
         p[0x110] = 5;
     }
 }
-#pragma opt_propagation reset
-#pragma opt_strength_reduction reset
 #pragma opt_loop_invariants reset
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma opt_lifetimes off
 typedef void* (*KeyGetFn)(void* self, u64 key);
 typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
 #pragma opt_propagation off
@@ -4884,7 +4903,7 @@ extern "C" void fn_803CF504(u8* p) {
     fn_804310CC(lbl_8053AEC0);
     *(s32*)(p + 0x80) = 0;
     *(s32*)(p + 0x7c) = 0;
-    *(s32*)(p + 0x84) = 0x117;
+    *(u32*)(p + 0x84) = 0x117;
     *(u32*)(p + 0xa4) = (u8)lbl_80529DEC[0x23b];
     *(s32*)(p + 0xa0) = 0;
     *(s32*)(p + 0xa8) = 0;
@@ -4903,7 +4922,7 @@ extern "C" void fn_803CF504(u8* p) {
     if (*(u32*)(p + 0x84) == 0x117 && lbl_8053AAF8[0x7f] != 0) {
         *(u32*)(p + 0x84) = 0x116;
     }
-    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466743031ULL)), *(s32*)(p + 0x84), 0, 0, 0);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466743031ULL)), *(u32*)(p + 0x84), 0, 0, 0);
     if (*(u32*)(p + 0x84) == 0x60 || *(u32*)(p + 0x84) == 0x64) {
         *(s32*)(p + 0xb0) = 0x5a;
     }
@@ -4929,10 +4948,9 @@ extern "C" void fn_803CF504(u8* p) {
     ((J2DPane*)*(void**)(*(u8**)(p + 0x50) + 4))->show();
     {
         u8* q = p;
-        const u64 (*kt)[3] = (const u64 (*)[3])tbl;
-        const u64* k15 = kt[0];
-        const u64* k16 = kt[1];
-        const u64* k17 = kt[2];
+        const u64* k15 = &((const u64*)tbl)[0];
+        const u64* k16 = &((const u64*)tbl)[3];
+        const u64* k17 = &((const u64*)tbl)[6];
         s32 i;
         for (i = 0; i < 3; i++) {
             ((J2DPane*)*(void**)(*(u8**)(q + 0x38) + 4))->show();
