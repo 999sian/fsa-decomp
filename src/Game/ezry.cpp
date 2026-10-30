@@ -24,7 +24,7 @@ extern const f32 lbl_8053D69C;
 extern const f32 lbl_8053D6A0;
 extern "C" void fn_801F0E34(void* target, s32 soundId, s32 flag);
 extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
-extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
+extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, u8 flag);
 extern "C" void fn_8013CB44(void* emitter, f32* pos, u32 a, u32 b, u32 c);
 extern "C" void fn_801F71A4(void* obj, f32 a, f32 b, f32 c);
 
