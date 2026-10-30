@@ -4,10 +4,10 @@
 
 /* Actor with the 0x18 bytes of members that follow the base (size 0x250). */
 struct ActorExt : Actor {
-    /* 0x230 */ u32 m230;
-    /* 0x234 */ u32 m234;
-    /* 0x238 */ u32 m238;
-    /* 0x23C */ u32 m23C;
+    /* 0x230 */ s32 m230;
+    /* 0x234 */ s32 m234;
+    /* 0x238 */ s32 m238;
+    /* 0x23C */ s32 m23C;
     /* 0x240 */ s32 m240;
     /* 0x244 */ s32 m244;
     /* 0x248 */ u32 m248;
@@ -51,6 +51,8 @@ extern "C" void fn_802D8050(void*,u32,u8,u8);
 extern "C" const f32 sincosTable___5JMath[];
 extern "C" const f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_80540850,lbl_80540854,lbl_80540858,lbl_8054085C,lbl_80540860,lbl_80540864,lbl_80540868,lbl_8054086C,lbl_80540870;
 
+#pragma push
+#pragma opt_propagation off
 extern "C" void fn_802A8284(u8* this_) {
     ActorExt* a=(ActorExt*)this_;
     s32 room=a->field_04;
@@ -86,12 +88,16 @@ extern "C" void fn_802A8284(u8* this_) {
             s32 angle=0;
             for(s32 i=0;i<a->m240;i++) {
                 if(a->m244==8) {
-                    s32 idx=i==0?0x200:0x600;
-                    pos.y=lbl_80540840*sincosTable___5JMath[idx*2+1]+a->field_0C.y;
-                    pos.x=lbl_80540840*sincosTable___5JMath[idx*2]+a->field_0C.x;pos.z=lbl_80540844;
-                } else if(a->m244==10) {pos=a->field_0C;pos.z=lbl_80540848;}
+                    if(i==0) {
+pos.y=lbl_80540840*sincosTable___5JMath[0x401]+a->field_0C.y;
+pos.x=lbl_80540840*sincosTable___5JMath[0x400]+a->field_0C.x;pos.z=lbl_80540844;
+} else {
+pos.y=lbl_80540840*sincosTable___5JMath[0xc01]+a->field_0C.y;
+pos.x=lbl_80540840*sincosTable___5JMath[0xc00]+a->field_0C.x;pos.z=lbl_80540844;
+}
+                } else if(a->m244==10) {pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;pos.z=lbl_80540848;}
                 else if(a->m244==11||a->m244==13) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-if((u8)(radius==lbl_80540854))radius=lbl_80540850;
+if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
 f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
 f32 y=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
@@ -133,19 +139,19 @@ if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
         a->m230=2;
     case 2: {
         { u8* camera=*(u8**)(lbl_8053AB10+0x24);if(!camera[0x7f4])camera[0x7f5]=1; }
-        pos=a->field_0C;
+        pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
         s32 i=0;
         do {
             s32 room=a->field_04;
             if(fn_802D6A9C()[0x131df+room]) {
                 if(a->m244==6||a->m244==7||a->m244==12){
                     f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-                    if((u8)(radius==lbl_80540854))radius=lbl_80540850;
+                    if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
                     pos.x=a->field_0C.x+(radius-lbl_8054085C*radius*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1());
                 }else pos.x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
                 pos.z=lbl_80540854;
             } else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-if((u8)(radius==lbl_80540854))radius=lbl_80540850;
+if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
 f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
 f32 y=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
@@ -156,18 +162,19 @@ f32 y=box[1]+(box[3]-box[1])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()
 f32 x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
 pos.y=y;pos.z=z;pos.x=x;}
             s32 pick=lbl_80540870*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-            s32 type=pick<5?2:pick<20?1:0;
+            s32 type;
+            if(pick<5)type=2;else if(pick<20)type=1;else type=0;
             fn_801F8544(fn_801F856C(),0x52555059,a->field_04,&pos,type);
             ++a->m23C;
             if((s32)a->m23C>=a->m240)break;
         } while(++i<2);
         if((s32)a->m23C>=a->m240) {
             for(s32 i=0;i<(s32)a->m234;i++) {
-                pos=a->field_0C;
+                pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
                 s32 room=a->field_04;
                 if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
                 else if(a->m244==6||a->m244==7||a->m244==12) {f32 radius=lbl_8054084C*(f32)((a->field_90>>8)&15);
-if((u8)(radius==lbl_80540854))radius=lbl_80540850;
+if((u8)(radius!=lbl_80540854)==0)radius=lbl_80540850;
 f32 spread=lbl_8054085C*radius;
 f32 z=lbl_80540864*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+lbl_80540860;
 f32 y=radius-spread*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
@@ -191,7 +198,7 @@ f32 x=box[0]+(box[2]-box[0])*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()
 pos.y=y;pos.z=z;pos.x=x;
         s32 room=a->field_04;
 if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
-        if(a->m248==0){
+        if((s32)a->m248==0){
             if(a->m244==1){
                 s32 handle=Actor_CreateByID(fn_801F856C(),0x48424d42,a->field_04,&pos,3,-1,-1);
                 if(handle>=0){
@@ -207,7 +214,7 @@ if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
     }
     case 4:
         if(a->m244==11||a->m244==13){ u8* camera=*(u8**)(lbl_8053AB10+0x24);if(!camera[0x7f4])camera[0x7f5]=1; }
-        if(a->m248==0)a->detach();
+        if((s32)a->m248==0)a->detach();
         break;
     }
     if(a->m230!=0) {
@@ -219,7 +226,7 @@ if(fn_802D6A9C()[0x131df+room]) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
         }
     }
 }
-
+#pragma pop
 extern "C" void fn_802A92FC(ActorExt* param_1)
 {
     param_1->m248 = 0;
