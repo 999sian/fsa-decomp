@@ -1284,17 +1284,17 @@ struct MsgMeasureSave {
 
 static inline void msgSetLineBit(MsgMeasure* m, int n) {
     if (n < 32) {
-        m->bits[0] = (1 << n) | m->bits[0];
+        m->bits[0] |= (s64)(1 << n);
     } else if (n < 64) {
-        m->bits[1] = (1 << (n - 32)) | m->bits[1];
+        m->bits[1] |= (s64)(1 << (n - 32));
     }
 }
 
-static inline void msgClearLineBit(MsgMeasure* m, s32 n) {
+static inline void msgClearLineBit(MsgMeasure* m, int n) {
     if (n < 32) {
-        m->bits[0] = ~(1 << n) & m->bits[0];
+        m->bits[0] &= ~(s64)(1 << n);
     } else if (n < 64) {
-        m->bits[1] = ~(1 << n) & m->bits[1];
+        m->bits[1] &= ~(s64)(1 << n);
     }
 }
 
