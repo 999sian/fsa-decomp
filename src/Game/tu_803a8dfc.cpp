@@ -3297,6 +3297,13 @@ extern "C" void fn_803B38E8(void* this_) {
 }
 
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
+
+static inline void IntroReadAlpha(Menu_Intro* m, u8* dst, const u64* tags, s32 count) {
+    for (s32 i = 0; i < count; i++) {
+        dst[i] = m->screens[m->cur]->search(tags[i])->getAlpha();
+    }
+}
+
 extern "C" void fn_803B42C0(void* this_) {
     IntroTags* tbl = (IntroTags*)lbl_80476208;
     u8* p = (u8*)this_;
