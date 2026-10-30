@@ -1863,8 +1863,8 @@ extern "C" void fn_80230224(s32 i, s32 b);
 extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
     s32 a = resolvePlayer(param_1);
     s32 b;
+    const u32* bits;
     s32 k;
-    s32 j;
     s32 found;
     u8 c;
     u16 flags;
@@ -1894,20 +1894,19 @@ extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
  if(((flags>>3)&1)||(flags&0x80))c=1;
  else if(lbl_8053AAF8->b7e==1)c=fn_8023061C(b,0);
  else {
- s32 players[4]; s32* entry; s32* first;
+ s32 players[4]; s32 j; s32* entry; s32* first;
  first=players;entry=first;
  for(j=0;j<4;j++,entry++){*entry=-1;if(fn_8023F264(j)==1)*entry=j;}
  {for(k=0;k<4;k++,first++)if(*first>=0)fn_80230224(*first,0);}
  c=1;
  }
- if(c){j=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
-fn_802D46D8(fn_802D6A9C(),a,(u32)j,1);
+ if(c){u32 bit=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
+fn_802D46D8(fn_802D6A9C(),a,bit,1);
 if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
  b=resolvePlayer(a); s32 temp[4]; s32 j, offset; s32* out;
- j=0;out=temp;offset=j;
- for(;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
+ for(j=offset=0,out=temp;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
  *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
- if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
+ if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==(int)b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
  }
  lbl_8053AD78->wf8--;
  for(;found<lbl_8053AD78->wf8;found++)lbl_8053AD78->wfc[found]=temp[found+1];
@@ -1923,14 +1922,13 @@ if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
  }}}
  else {
  if(flags&0x800)c=1;else c=fn_8022FB1C(param_1,param_2);
- if(c){j=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
-fn_802D46D8(fn_802D6A9C(),a,(u32)j,1);
+ if(c){u32 bit=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
+fn_802D46D8(fn_802D6A9C(),a,bit,1);
 if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
  b=resolvePlayer(a); s32 temp[4]; s32 j, offset; s32* out;
- j=0;out=temp;offset=j;
- for(;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
+ for(j=offset=0,out=temp;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
  *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
- if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
+ if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==(int)b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
  }
  lbl_8053AD78->wf8--;
  for(;found<lbl_8053AD78->wf8;found++)lbl_8053AD78->wfc[found]=temp[found+1];
@@ -2239,6 +2237,11 @@ found:
     return 1;
 }
 #pragma opt_lifetimes off
+static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
+    typedef u8 (*ShowFn)(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u32);
+    u32 index = fn_803846BC(id);
+    return ((ShowFn)fn_8038A42C)(manager, player, source, index, value, &pos, flags);
+}
 extern "C" u8 fn_8038AD24(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u16 flags) {
     f32 out[3];
     s32 i;
