@@ -79,6 +79,12 @@ extern "C" void fn_8030C210(void*,void*);
 extern "C" void fn_8022B130();
 extern "C" u8 fn_80384C58(int,int);
 extern const u8 lbl_80539EB8[2];
+static inline u8 anhoStartMessage(int player, int message, int handle, int room, JGeometry::TVec3<f32>& copy, const JGeometry::TVec3<f32>& pos, int mode) {
+    copy = pos;
+    return fn_8038AD24(player, message, handle, room, copy, mode);
+}
+
+#pragma opt_lifetimes off
 extern "C" void fn_80102398(char* p) {
     JGeometry::TVec3<f32> pos(*(Vec*)(p + 0xC));
     pos.y -= lbl_8053C1B8;
@@ -110,8 +116,8 @@ extern "C" void fn_80102398(char* p) {
         fn_8022FEB8(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 1, 0);
         *(s32*)(p + 0x23c) = fn_8022FD8C(*(s32*)(p + 0x198));
         if (*(s32*)(p + 0x23c) >= 0 && fn_802300EC(*(s32*)(p + 0x23c))) {
-            s32 handle0 = *(s32*)(p+0x198);
             s32 room0 = *(s32*)(p+4);
+            s32 handle0 = *(s32*)(p+0x198);
             if (fn_8038AD24(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, handle0, room0, (temp0 = pos, temp0), 0)) {
                 for (int i = 0; i < 4; i++) fn_802308E0(i);
                 *(s32*)(p + 0x230) = 1;
@@ -221,7 +227,9 @@ extern "C" void fn_80102398(char* p) {
         if (*(s32*)(p + 0x244) > 50 && ((u8*)p)[0x250] == 1) {
             fn_8022FE80(0,fn_8023DE58(0),*(s32*)(p + 0x198),0,0);
             if (fn_8022FD8C(*(s32*)(p + 0x198)) == 0) {
-                fn_8038AD24(0,0x331,*(s32*)(p + 0x198),*(s32*)(p + 0x4),(temp1 = pos, temp1),2);
+                s32 handle1 = *(s32*)(p+0x198);
+                s32 room1 = *(s32*)(p+4);
+                fn_8038AD24(0,0x331,handle1,room1,(temp1 = pos, temp1),2);
                 *(s32*)(p + 0x230)=6; *(s32*)(p + 0x244)=0; fn_8022B130();
             }
         }
@@ -252,8 +260,10 @@ extern "C" void fn_80102398(char* p) {
     case 7:
         fn_8022FEB8(box, *(s32*)(p+4), *(s32*)(p+0x198), 1, 0);
         *(s32*)(p+0x23C)=fn_8022FD8C(*(s32*)(p+0x198));
-        if (*(s32*)(p+0x23C)>=0 &&
-            fn_8038AD24(*(s32*)(p+0x23C),0x332,*(s32*)(p+0x198),*(s32*)(p+4),(temp2 = pos, temp2),0)) {
+        if (*(s32*)(p+0x23C)>=0) {
+            s32 handle2=*(s32*)(p+0x198);
+            s32 room2=*(s32*)(p+4);
+            if (fn_8038AD24(*(s32*)(p+0x23C),0x332,handle2,room2,(temp2 = pos, temp2),0)) {
             *(s32*)(p+0x230)=8; *(s32*)(p+0x244)=0;
                 fn_801EE8F4(p, &dir2, &dist2, *(s32*)(p + 0x23c) + 1);
                 if (dist2 < lbl_8053C1BC) {
@@ -265,6 +275,7 @@ extern "C" void fn_80102398(char* p) {
                     else ((u8*)p)[0x235] = 0;
                 }
         }
+        }
         break;
     case 8:
         fn_8022FEB8(box, *(s32*)(p+4), *(s32*)(p+0x198), 1, 0);
@@ -274,7 +285,7 @@ extern "C" void fn_80102398(char* p) {
         break;
     }
 }
-
+#pragma opt_lifetimes reset
 struct AnhoRandom {
     u32 seed;
     u32 get() {
