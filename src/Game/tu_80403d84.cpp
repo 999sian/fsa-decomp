@@ -259,7 +259,7 @@ BOOL fn_804045F8(void*, s32 bit) {
 }
 
 extern "C" void* lbl_8053AF80;
-extern "C" u8 lbl_8048C2F8[];
+extern "C" const u8 lbl_8048C2F8[];
 extern "C" f32 lbl_805438C0;
 extern "C" f32 lbl_80543898;
 extern "C" void fn_80458880(void*, s32, s32);
@@ -318,7 +318,7 @@ extern "C" void fn_80404648(u8* self) {
 		s32 state = *(s32*)(self + 0x340);
 		if (state <= 7) {
 			s32 i = state * 4;
-			u8* q = lbl_8048C2F8 + state * 64;
+			u8* q = (u8*)lbl_8048C2F8 + state * 64;
             u8* p = self + state * 16;
 			while (i < *(s32*)(self + 0x340) * 4 + 4) {
 				*(u16*)(*(u8**)(p + 0x128) + 0x26) = 0;
@@ -422,7 +422,7 @@ extern "C" void fn_804049DC(u8* self) {
 		s32 state = *(s32*)(self + 0x340);
 		if (state <= 7) {
 			s32 i = state * 4;
-			u8* q = lbl_8048C2F8 + state * 64;
+			u8* q = (u8*)lbl_8048C2F8 + state * 64;
             u8* p = self + state * 16;
 			while (i < *(s32*)(self + 0x340) * 4 + 4) {
 				*(s16*)(*(u8**)(p + 0x128) + 0x26) = 0;
@@ -2247,7 +2247,7 @@ extern "C" void fn_8040ED20(u8* self) {
                 s32 i;
                 i = *(s32*)(self + 0x340) * 4;
                 p = self + *(s32*)(self + 0x340) * 16;
-                q = lbl_8048C2F8 + *(s32*)(self + 0x340) * 64;
+                q = (u8*)lbl_8048C2F8 + *(s32*)(self + 0x340) * 64;
                 while (i < *(s32*)(self + 0x340) * 4 + 4) {
                     *(s16*)(*(u8**)(p + 0x128) + 0x26) = 0;
                     u8* obj = *(u8**)(*(u8**)(p + 0x128) + 4);
@@ -2916,7 +2916,7 @@ if(*(s32*)(self+0x340)<=7){
  if(lbl_8053AAF8[0x7e]==0){
  s32 i=*(s32*)(self+0x340)*4;
  u8* p=self+*(s32*)(self+0x340)*16;
- u64* tags=(u64*)(lbl_8048C2F8+*(s32*)(self+0x340)*64);
+ const u64* tags=(const u64*)(lbl_8048C2F8+*(s32*)(self+0x340)*64);
  s32 room;
  for(;i<(room=*(s32*)(self+0x340))*4+4;p+=4,tags+=2,i++){
  if(*(u32*)(self+0x38c)&(1<<i)){
@@ -2931,8 +2931,9 @@ if(*(s32*)(self+0x340)<=7){
  }
 }
  else{
+ u8* p;
  s32 i=*(s32*)(self+0x340)*3;
- u8* p=self+i*4;
+ p=self+i*4;
  for(;i<*(s32*)(self+0x340)*3+3;i++,p+=4){
  s32 group=i/3;
  u8 style;
@@ -2950,7 +2951,7 @@ if(*(s32*)(self+0x340)<=7){
  case 0: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,50,0,0),JUtility::TColor(255,255,255,255));
  menuSetCornerColor((*(PaneRef**)(p+0x1a8)),JUtility::TColor(127,248,37,255));
- u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ const u64* tags=(const u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(100,255,50,0),JUtility::TColor(100,255,50,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(100,255,50,0),JUtility::TColor(100,255,50,255));
  break;
@@ -2958,7 +2959,7 @@ if(*(s32*)(self+0x340)<=7){
 case 1: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(50,0,0,0),JUtility::TColor(255,255,255,255));
  menuSetCornerColor((*(PaneRef**)(p+0x1a8)),JUtility::TColor(255,150,120,255));
- u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ const u64* tags=(const u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(255,100,50,0),JUtility::TColor(255,100,50,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(255,100,50,0),JUtility::TColor(255,100,50,255));
  break;
@@ -2966,7 +2967,7 @@ case 1: {
 case 2: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,10,40,0),JUtility::TColor(255,255,255,255));
  menuSetCornerColor((*(PaneRef**)(p+0x1a8)),JUtility::TColor(120,240,255,255));
- u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ const u64* tags=(const u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(50,220,240,0),JUtility::TColor(50,220,240,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(50,220,240,0),JUtility::TColor(50,220,240,255));
  break;
@@ -2974,13 +2975,13 @@ case 2: {
 case 3: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(20,0,20,0),JUtility::TColor(255,255,255,255));
  menuSetCornerColor((*(PaneRef**)(p+0x1a8)),JUtility::TColor(220,150,255,255));
- u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ const u64* tags=(const u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(200,100,240,0),JUtility::TColor(200,100,240,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(200,100,240,0),JUtility::TColor(200,100,240,255));
  break;
 }
  default:{
- u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ const u64* tags=(const u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(255,255,120,0),JUtility::TColor(255,255,120,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(255,255,120,0),JUtility::TColor(255,255,120,255));
  break;}
@@ -2990,7 +2991,7 @@ case 3: {
  {
  s32 i=*(s32*)(self+0x340)*4;
  u8* p=self+*(s32*)(self+0x340)*16;
- u64* tags=(u64*)(lbl_8048C2F8+*(s32*)(self+0x340)*64);
+ const u64* tags=(const u64*)(lbl_8048C2F8+*(s32*)(self+0x340)*64);
  s32 room;
  for(;i<(room=*(s32*)(self+0x340))*4+4;p+=4,tags+=2,i++){
  if(*(u32*)(self+0x38c)&(1<<i)){
