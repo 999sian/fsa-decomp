@@ -5096,8 +5096,6 @@ void fn_802544B0(char* p) {
     S32(p, 0xc78) = 0;
     S32(p, 0xc7c) = 0;
 }
-void fn_80254660(char* p) { initItemState(p); }
-
 extern u8 lbl_8050EC80[];
 extern u8 lbl_80529DEC[];
 extern "C" void* lbl_8053AD70;
@@ -5110,6 +5108,8 @@ void fn_8027221C(char*, s32);
 void fn_8027023C(char*);
 void fn_8030BD3C(void*, s32);
 void fn_8037AE00(void*);
+
+void fn_80254660(char* p) { initItemState(p); }
 
 inline BOOL stageCleared(s32 a, s32 b) {
     if (a < 0 || a > 7) return FALSE;
