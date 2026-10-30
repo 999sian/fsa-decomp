@@ -72,6 +72,12 @@ extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
 extern "C" void* lbl_8053AAF8;
 extern "C" u8 lbl_8050EC80[];
+struct MenuPaneRecord {
+    u32 field_00;
+    J2DPane* pane;
+    u32 field_08;
+    f32 y, x, field_14, width, height;
+};
 struct MenuOptionRecord {
     u8 field_00[0x7c];
     u8 flag_7C, flag_7D, field_7E, flag_7F;
@@ -351,7 +357,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
     if (*(u8*)(this_+0x6c)==0) {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0x129,0,0,0);
         f30=f31/lbl_80543BF8;
-        *(u8*)(this_+0x68)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x7c];
+        *(u8*)(this_+0x68)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7C;
         f29*=f30;
         f29+=lbl_80543BF8;
         f31=f29*lbl_80543BC8;
@@ -368,7 +374,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0x24d,0,0,0);
-        *(u8*)(this_+0x69)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x88];
+        *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_88;
         f29*=f30;
         f29+=lbl_80543BF8;
         f30=f29*lbl_80543BC8;
@@ -387,7 +393,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
     } else {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0xf8,0,0,0);
         f31/=lbl_80543BF8;
-        *(u8*)(this_+0x68)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x7d];
+        *(u8*)(this_+0x68)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7D;
         f29*=f31;
         f29+=lbl_80543BF8;
         f30=f29*lbl_80543BC8;
@@ -404,7 +410,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0xf9,0,0,0);
-        *(u8*)(this_+0x69)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x7f];
+        *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7F;
         f29*=f31;
         f29+=lbl_80543BF8;
         f30=f29*lbl_80543BC8;
@@ -421,9 +427,8 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713033ULL))->getStringPtr(),0x24d,0,0,0);
-        *(u8*)(this_+0x6a)=lbl_8050EC80[*(s32*)(lbl_8050EC80+0x10)*0xc8+0x89];
-        f32 width3=f29*f31;
-        f31=width3;
+        *(u8*)(this_+0x6a)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_89;
+        f31=f29*f31;
         f31+=lbl_80543BF8;
         f30=f31*lbl_80543BC8;
         {
