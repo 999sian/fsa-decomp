@@ -2409,23 +2409,6 @@ extern "C" void fn_803C4330(char* p) {
 
 #pragma opt_lifetimes on
 #pragma opt_propagation off
-static inline void updateSelectedMenuCells(u8* p, const u8* table, s32 idx) {
-    void* pane;
-    { const u64* keys=(const u64*)(table+0x780); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x125]); }
-    { const u64* keys=(const u64*)(table+0x768); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x126]); }
-    { const u64* keys=(const u64*)(table+0x750); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x127]); }
-    { const u64* keys=(const u64*)(table+0x6c8); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x128]); }
-    { const u64* keys=(const u64*)(table+0x6b0); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x129]); }
-    { const u64* keys=(const u64*)(table+0x698); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x12a]); }
-    { const u64* keys=(const u64*)(table+0x680); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x12b]); }
-    { const u64* keys=(const u64*)(table+0x668); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x12c]); }
-    { const u64* keys=(const u64*)(table+0x650); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x12d]); }
-    { const u64* keys=(const u64*)(table+0x638); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x12e]); }
-    { const u64* keys=(const u64*)(table+0x620); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x12f]); }
-    { const u64* keys=(const u64*)(table+0x608); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x130]); }
-    { const u64* keys=(const u64*)(table+0x5f0); pane=(*(J2DPane**)(p+8))->search(keys[idx]); fn_804023D0(*(void**)(p+idx*4+0x38),pane,p[0x131]); }
-}
-
 extern "C" void fn_803C4628(u8* this_) {
     J2DPane* pane;
     int end;
