@@ -249,12 +249,12 @@ struct EnemyVt_8034 {
     virtual u8 v11();
 };
 static inline f32 tu8034_dist(f32 x) {
-    if (x > lbl_805425D8) {
-        f32 y = __frsqrte(x);
-        y = lbl_80542600 * y * (lbl_80542604 - (x * (y * y)));
-        x = x * y;
+    if (x <= lbl_805425D8) {
+        return x;
     }
-    return x;
+    f32 y = __frsqrte(x);
+    y = lbl_80542600 * y * (lbl_80542604 - (x * (y * y)));
+    return x * y;
 }
 static inline f32 tu8034_sqrt2(f32 x) {
     if (x <= 0.0f) {
