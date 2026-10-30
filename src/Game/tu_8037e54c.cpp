@@ -1858,13 +1858,28 @@ extern "C" u8 fn_8038470C(s32 p, s32 q) {
     return 0;
 }
 
+static inline void removeMessageSlot(s32 a, s32& found, s32 start) {
+if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
+ s32 b=resolvePlayer(a); s32 temp[4]; s32 j, offset; s32* out;
+ j=start; out=temp; offset=j;
+ for(;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
+ *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
+ if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
+ }
+ lbl_8053AD78->wf8--;
+ for(;found<lbl_8053AD78->wf8;found++)lbl_8053AD78->wfc[found]=temp[found+1];
+ lbl_8053AD78->wfc[lbl_8053AD78->wf8]=-1;
+ if((*(u16*)((u8*)lbl_8053AD78->sub[a]+0x28)&0x40)==0)fn_80458880(lbl_8053AF80,0x29,-1);
+}
+}
+
 extern "C" void fn_80230224(s32 i, s32 b);
 #pragma opt_lifetimes on
 extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
     s32 a = resolvePlayer(param_1);
     s32 b;
-    u32 bit;
     s32 k;
+    s32 j;
     s32 found;
     u8 c;
     u16 flags;
@@ -1894,20 +1909,20 @@ extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
  if(((flags>>3)&1)||(flags&0x80))c=1;
  else if(lbl_8053AAF8->b7e==1)c=fn_8023061C(b,0);
  else {
- s32 players[4]; s32 j; s32* entry; s32* first;
+ s32 players[4]; s32* entry; s32* first;
  first=players;entry=first;
  for(j=0;j<4;j++,entry++){*entry=-1;if(fn_8023F264(j)==1)*entry=j;}
  {for(k=0;k<4;k++,first++)if(*first>=0)fn_80230224(*first,0);}
  c=1;
  }
- if(c){bit=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
-fn_802D46D8(fn_802D6A9C(),a,bit,1);
+ if(c){j=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
+fn_802D46D8(fn_802D6A9C(),a,(u32)j,1);
 if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
  b=resolvePlayer(a); s32 temp[4]; s32 j, offset; s32* out;
  j=0;out=temp;offset=j;
  for(;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
  *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
- if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==(int)b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
+ if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
  }
  lbl_8053AD78->wf8--;
  for(;found<lbl_8053AD78->wf8;found++)lbl_8053AD78->wfc[found]=temp[found+1];
@@ -1923,14 +1938,14 @@ if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
  }}}
  else {
  if(flags&0x800)c=1;else c=fn_8022FB1C(param_1,param_2);
- if(c){bit=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
-fn_802D46D8(fn_802D6A9C(),a,bit,1);
+ if(c){j=*(u32*)((u8*)lbl_8053AD78->sub[a]+0x20);
+fn_802D46D8(fn_802D6A9C(),a,(u32)j,1);
 if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
  b=resolvePlayer(a); s32 temp[4]; s32 j, offset; s32* out;
  j=0;out=temp;offset=j;
  for(;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
  *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
- if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==(int)b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
+ if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
  }
  lbl_8053AD78->wf8--;
  for(;found<lbl_8053AD78->wf8;found++)lbl_8053AD78->wfc[found]=temp[found+1];
