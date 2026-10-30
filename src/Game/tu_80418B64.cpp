@@ -426,7 +426,10 @@ extern "C" void fn_80419570(u8* self, s32 idx) {
 
 // Pane name tables inside lbl_8048D320, indexed by player.
 struct HudPaneNames8041 {
-    u64 pad000[0x77];
+    u64 pad000[0x29];
+    u64 a148[8]; u64 a188[8]; u64 a1c8[8]; u64 a208[8];
+    u64 a248[12]; u64 a2a8[12]; u64 a308[3]; u64 a320[3];
+    u64 a338[5]; u64 a360[5]; u64 a388[2]; u64 a398[4];
     u64 a3b8[4][5];
     u64 a458[4][5];
     u64 a4f8[4][2];
@@ -2185,13 +2188,16 @@ static inline u8* HudNewPaneState8041() {
 
 extern u8 lbl_804B1390[];
 extern "C" u8* fn_80420574(u8* self) {
+    const u8* base = (const u8*)lbl_8048D320;
+    const u8* ids = lbl_804B1390;
     *(u8**)self = lbl_804B1390 + 0x44;
-    *(s32*)(self + 0x244) = -1;
-    *(s32*)(self + 0x248) = -1;
-    if (*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) != 0) {
+    *(s32*)(self+0x244) = -1;
+    *(s32*)(self+0x248) = -1;
+    if (*(s32*)(lbl_80529DEC+0x118) != 0 || *(s32*)(lbl_80529DEC+0x11c) != 0)
         lbl_8053AED0[0x10e] |= 1;
-    }
-    self[0x291] = 1;
+    if (*(s32*)(lbl_80529DEC+0x118) == 6 && *(s32*)(lbl_80529DEC+0x11c) == 2)
+        self[0x291] = 1;
+    else self[0x291] = 1;
     self[0x292] = 0;
     self[0x28f] = 0;
     self[0x290] = 0;
@@ -2202,6 +2208,110 @@ extern "C" u8* fn_80420574(u8* self) {
     self[0x297] = 0;
     self[0x218] = 1;
     self[0x298] = 0;
+    if (fn_80138A30(lbl_8053AAF8) >= 2) {
+        void* p = __nw__FUl(0x10);
+        if (p) fn_80441778(p);
+        *(void**)(self+0x50) = p;
+    } else *(void**)(self+0x50) = 0;
+    *(J2DOrthoGraph**)(self+0x4c) = new J2DOrthoGraph(lbl_80543A00, lbl_80543A00,
+        (f32)(s32)JUTVideo::getManager()->getFbWidth(),
+        (f32)(s32)JUTVideo::getManager()->getEfbHeight(), lbl_80543A38, lbl_80543A3C);
+    *(J2DScreen**)(self+4) = new J2DScreen;
+    (*(J2DScreen**)(self+4))->setPriority((const char*)base+0xe4c, 0x1100000, *(JKRArchive**)(lbl_80529DEC+0x4c));
+    for (s32 i=0; i<4; i++) {
+        *(J2DScreen**)(self+8+i*4) = new J2DScreen;
+        (*(J2DScreen**)(self+8+i*4))->setPriority((const char*)base+0xe5c, 0x1100000, *(JKRArchive**)(lbl_80529DEC+0x4c));
+        *(J2DScreen**)(self+0x2c+i*4) = new J2DScreen;
+        (*(J2DScreen**)(self+0x2c+i*4))->setPriority((const char*)base+0xe6c, 0x1100000, *(JKRArchive**)(lbl_80529DEC+0x20));
+    }
+    *(J2DScreen**)(self+0x18) = new J2DScreen;
+    (*(J2DScreen**)(self+0x18))->setPriority((const char*)base+0xe7c, 0x1100000, *(JKRArchive**)(lbl_80529DEC+0x4c));
+    HudHidePane8041(self, 0x005070316c693031ULL);
+    HudHidePane8041(self, 0x005070326c693031ULL);
+    HudHidePane8041(self, 0x005070336c693031ULL);
+    HudHidePane8041(self, 0x005070346c693031ULL);
+    self[0x24c] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x388))->getAlpha();
+    self[0x24d] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x390))->getAlpha();
+    self[0x24e] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x338))->getAlpha();
+    self[0x24f] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x360))->getAlpha();
+    self[0x25e] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x248))->getAlpha();
+    self[0x25f] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x2a8))->getAlpha();
+    for (s32 i=0;i<3;i++) {
+        self[0x258+i] = (*(J2DScreen**)(self+4))->search(*(const u64*)(base+0x308+i*8))->getAlpha();
+        self[0x25b+i] = (*(J2DScreen**)(self+4))->search(*(const u64*)(base+0x320+i*8))->getAlpha();
+    }
+    self[0x260] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x8f8))->getAlpha();
+    self[0x261] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x900))->getAlpha();
+    self[0x262] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x908))->getAlpha();
+    self[0x263] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x910))->getAlpha();
+    self[0x264] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x918))->getAlpha();
+    self[0x265] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x920))->getAlpha();
+    self[0x266] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xb40))->getAlpha();
+    self[0x267] = (*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xb20))->getAlpha();
+    self[0x250] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x148))->getAlpha();
+    self[0x251] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x188))->getAlpha();
+    self[0x252] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x1c8))->getAlpha();
+    self[0x253] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x208))->getAlpha();
+    self[0x26a] = (*(J2DScreen**)(self+4))->search(0x506870316e693032ULL)->getAlpha();
+    self[0x26b] = (*(J2DScreen**)(self+4))->search(0x506870316e693031ULL)->getAlpha();
+    self[0x26c] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x398))->getAlpha();
+    self[0x26d] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x3a0))->getAlpha();
+    self[0x26e] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x3a8))->getAlpha();
+    self[0x26f] = (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0x3b0))->getAlpha();
+    self[0x268] = (*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xae0))->getAlpha();
+    self[0x269] = (*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xb00))->getAlpha();
+    for (s32 i=0;i<6;i++)
+        self[0x27b+i] = (*(J2DScreen**)(self+0x2c))->search(*(const u64*)(base+0xab0+i*8))->getAlpha();
+    ((JUtility::TColor*)(self+0x248))->setRGBA(((J2DPicture*)(*(J2DScreen**)(self+4))->search(*(const u64*)(base+0x338)))->getBlack());
+    ((JUtility::TColor*)(self+0x244))->setRGBA(((J2DPicture*)(*(J2DScreen**)(self+4))->search(*(const u64*)(base+0x338)))->getWhite());
+    *(u8**)(self+0x54) = HudNewPaneState8041();
+    fn_80402F04(*(u8**)(self+0x54), (*(J2DScreen**)(self+4))->search(0x004e646174613133ULL));
+    *(u8**)(self+0x58) = HudNewPaneState8041();
+    fn_80402F04(*(u8**)(self+0x58), (*(J2DScreen**)(self+4))->search(0x506870316e693032ULL));
+    *(u8**)(self+0x5c) = HudNewPaneState8041();
+    fn_80402F04(*(u8**)(self+0x5c), (*(J2DScreen**)(self+4))->search(0x5068317069696233ULL));
+    *(u8**)(self+0x6c) = HudNewPaneState8041();
+    fn_80402F04(*(u8**)(self+0x6c), (*(J2DScreen**)(self+4))->search(0x004e646174613136ULL));
+    *(u8**)(self+0x70) = HudNewPaneState8041();
+    fn_80402F04(*(u8**)(self+0x70), (*(J2DScreen**)(self+4))->search(0x004e646174613032ULL));
+    for (s32 i=0;i<4;i++) {
+        *(u8**)(self+0x74+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0x74+i*4), (*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xae0+i*8)));
+        *(u8**)(self+0x84+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0x84+i*4), (*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xb20+i*8)));
+        *(u8**)(self+0x94+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0x94+i*4), (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xb40+i*8)));
+        *(u8**)(self+0xa4+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0xa4+i*4), (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xb60+i*8)));
+        *(u8**)(self+0xb4+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0xb4+i*4), (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xb80+i*8)));
+        *(u8**)(self+0xc4+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0xc4+i*4), (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xbc0+i*8)));
+        *(u8**)(self+0xd4+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0xd4+i*4), (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xbe0+i*8)));
+        *(u8**)(self+0xe4+i*4) = HudNewPaneState8041();
+        fn_80402F04(*(u8**)(self+0xe4+i*4), (*(J2DScreen**)(self+0x4))->search(*(const u64*)(base+0xc00+i*8)));
+    }
+    if (!lbl_8053AAF8[0x7e]) {
+        for(s32 i=0;i<8;i++) for(s32 j=0;j<3;j++) {
+            const ResTIMG* img=(const ResTIMG*)fn_804030C4(0x54494d47, *(const u32*)(ids+j*4));
+            ((J2DPicture*)(*(J2DScreen**)(self+4))->search(*(const u64*)(base+0x148+i*8)))->append(img,lbl_80543A0C);
+            ((J2DPicture*)(*(J2DScreen**)(self+4))->search(*(const u64*)(base+0x188+i*8)))->append(img,lbl_80543A0C);
+        }
+    } else {
+        for(s32 i=0;i<4;i++) for(s32 j=1;j<4;j++) {
+            const ResTIMG* img=(const ResTIMG*)fn_804030C4(0x54494d47, *(const u32*)(ids+0x34+j*4));
+            ((J2DPicture*)(*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xae0+i*8)))->append(img,lbl_80543A0C);
+            ((J2DPicture*)(*(J2DScreen**)(self+0x18))->search(*(const u64*)(base+0xb00+i*8)))->append(img,lbl_80543A0C);
+        }
+    }
+    if(self[0x291]) {
+        for(s32 i=0;i<4;i++) for(s32 j=0;j<8;j++) for(s32 k=0;k<3;k++) {
+            const ResTIMG* img=(const ResTIMG*)fn_804030C4(0x54494d47, *(const u32*)(ids+k*4));
+            ((J2DPicture*)(*(J2DScreen**)(self+8+i*4))->search(*(const u64*)(base+0xc20+j*8)))->append(img,lbl_80543A0C);
+            ((J2DPicture*)(*(J2DScreen**)(self+8+i*4))->search(*(const u64*)(base+0xca0+j*8)))->append(img,lbl_80543A0C);
+        }
+    }
     return self;
 }
 
