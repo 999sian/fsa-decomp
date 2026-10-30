@@ -222,7 +222,7 @@ if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v7,(*(J
 }
 #pragma opt_propagation reset
 extern "C" {
-void fn_80239914(s32 room, void* obj);
+void fn_80239914(void* box, s32 room, void* obj);
 Vec* fn_8023E724(s32 idx);
 u8 fn_8022F478(s32 idx);
 u8 fn_80234F68(s32 idx);
