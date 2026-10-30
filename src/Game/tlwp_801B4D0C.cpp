@@ -397,6 +397,13 @@ void fn_801365E8(void*, s32, s32, s32);
 extern const f32 lbl_8053EA64, lbl_8053EA68, lbl_8053EA6C, lbl_8053EA70, lbl_8053EA74, lbl_8053EA78;
 
 
+
+static inline u16 tlwpAngle(f32 dx, f32 dy) {
+    f32 angle = JMath::atanTable_.atan2_(-dx, -dy);
+    angle *= lbl_8053EA70;
+    return (s32)angle;
+}
+
 static inline u8 tlwpReady() {
     if ((u8)lbl_8053AAF8[0x7e] != 0) return 1;
     return 0;
@@ -509,7 +516,8 @@ else if (isnan(dist)) { dist=NAN; }
         int i;
         s32 count;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
-        count=i=0;
+        i=0;
+        count=i;
         q=p;
         for(;i<4;i++,q+=0xc) {
             if(fn_8023F264(i)) {
