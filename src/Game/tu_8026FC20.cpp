@@ -2471,12 +2471,19 @@ extern u8* lbl_8053AB10;
 extern const f32 lbl_805402F0, lbl_805402F4, lbl_805402C0, lbl_805402C4, lbl_805402D8, lbl_80540300;
 extern const f64 lbl_805402F8;
 }
-inline u8 hitAnySlot(char* o) {
+struct HitSlots {
+    u8 pad0[0x48];
+    u8 slot[8];
+    u8 pad50[0xb4 - 0x50];
+    u8 mode;
+};
+inline u8 hitAnySlot(char* s) {
+    HitSlots* o = (HitSlots*)s;
     for (s32 i = 0; i < 8; i++) {
-        if (U8(o, 0xb4) == 1 && (i == 2 || i == 4 || i == 5)) {
+        if (o->mode == 1 && (i == 2 || i == 4 || i == 5)) {
             continue;
         }
-        if (*(u8*)(i + 0x48 + (u32)o) == 1) {
+        if (o->slot[i] == 1) {
             return 1;
         }
     }
@@ -2508,10 +2515,11 @@ void fn_80277F98(char* p) {
         }
     }
     if (U8(lbl_8053AAF8, 0x7e) == 0 && !fn_80240670(p)) {
+        s32 no = S32(p, 0x4);
         char* cam = *(char**)(lbl_8053AB10 + 0x24);
         if (U8(cam, 0x7f5) == 0) {
             U8(cam, 0x7f4) = 1;
-            S32(cam, 0x7f8) = S32(p, 0x4);
+            S32(cam, 0x7f8) = no;
             U8(cam, 0x7f6) = 1;
         }
     }
@@ -2526,8 +2534,7 @@ void fn_80277F98(char* p) {
         U8(p, 0x3fd) = 6;
         U8(p, 0x3fc)++;
         if (U8(p, 0x3fc) == 0x6a) {
-            bool on = (U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) != 0;
-            if (on) {
+            if (hitInMask(p)) {
                 if (U8(lbl_8053AAF8, 0x7f) != 0) {
                     if (U8(lbl_8053AAF8, 0x7e) != 0) {
                         s32 n = fn_80241920(p) / 2;
@@ -2552,54 +2559,56 @@ void fn_80277F98(char* p) {
         if (((u8(*)(char*))fn_8025F448)(p)) {
             S32(p, 0x494) = 0;
             U8(p, 0x498) = 0;
-        } else if (U8(p, 0x499) == 0 && U8(p, 0xd2d) == 0 && S32(p, 0x494) == 0 && isStage7() && U8(lbl_8053AAF8, 0x7f) != 0 &&
-                   U8(lbl_8053AAF8, 0x7e) != 0) {
-            s32 cnt = 1;
-            for (s32 i = 0; i < 4; i++) {
-                if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << i)) && !fn_80243194(p, i)) {
-                    s32 m = fn_80236228(i);
-                    if (fn_80241920(p) < m) {
-                        cnt++;
+        } else if (U8(p, 0x499) == 0 && U8(p, 0xd2d) == 0 && S32(p, 0x494) == 0) {
+            u8 stage7 = isStage7();
+            if (stage7 && U8(lbl_8053AAF8, 0x7f) != 0 && U8(lbl_8053AAF8, 0x7e) != 0) {
+                s32 cnt = 1;
+                for (s32 i = 0; i < 4; i++) {
+                    if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << i)) && !fn_80243194(p, i)) {
+                        s32 m = fn_80236228(i);
+                        if (fn_80241920(p) < m) {
+                            cnt++;
+                        }
                     }
                 }
-            }
-            if (cnt >= fn_80138A30(lbl_8053AAF8)) {
-                cnt = 4;
-            }
-            switch (cnt) {
-            case 1:
-                S32(p, 0x494) = 0x258;
-                break;
-            case 2:
-                S32(p, 0x494) = 0x1a4;
-                break;
-            case 3:
-                S32(p, 0x494) = 0x12c;
-                break;
-            case 4:
-                S32(p, 0x494) = 0xb4;
-                break;
-            }
-            if (!Player_IsLinked(p) && S32(p, 0x49c) < 0 && fn_801F7A08(fn_801F856C(), 'BLZD') < 0) {
+                if (cnt >= fn_80138A30(lbl_8053AAF8)) {
+                    cnt = 4;
+                }
                 switch (cnt) {
                 case 1:
-                    S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 3);
+                    S32(p, 0x494) = 0x258;
                     break;
                 case 2:
-                    S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 5);
+                    S32(p, 0x494) = 0x1a4;
                     break;
                 case 3:
-                    S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 6);
+                    S32(p, 0x494) = 0x12c;
                     break;
                 case 4:
-                    S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 7);
+                    S32(p, 0x494) = 0xb4;
                     break;
                 }
+                if (!Player_IsLinked(p) && S32(p, 0x49c) < 0 && fn_801F7A08(fn_801F856C(), 'BLZD') < 0) {
+                    switch (cnt) {
+                    case 1:
+                        S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 3);
+                        break;
+                    case 2:
+                        S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 5);
+                        break;
+                    case 3:
+                        S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 6);
+                        break;
+                    case 4:
+                        S32(p, 0x49c) = fn_801F6718(fn_801F856C(), S32(p, 0x4), S32(p, 0x3b4), p + 0x8, 0, 7);
+                        break;
+                    }
+                }
+                if (PTR(p, 0x1308) == NULL && !fn_80239D38()) {
+                    PTR(p, 0x1308) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x565, 0, -1, 0, p + 0x130c, 1, lbl_8054029C);
+                }
+                Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x38, -1, -1);
             }
-            if (PTR(p, 0x1308) == NULL && !fn_80239D38()) {
-                PTR(p, 0x1308) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x565, 0, -1, 0, p + 0x130c, 1, lbl_8054029C);
-            }
-            Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x38, -1, -1);
         }
         s32 h = S32(p, 0x49c);
         if (h >= 0) {
@@ -2652,7 +2661,7 @@ void fn_80277F98(char* p) {
                     S32(lbl_80529DEC, 0x1ac) = S32(lbl_8053AF80, 0x58);
                     U8(lbl_80529DEC, 0x253) = 1;
                 }
-                if (S32(lbl_8053AF80, 0x58) != 0) {
+                if (PTR(lbl_8053AF80, 0x58) != NULL) {
                     fn_80458F9C(lbl_8053AF80, 0x14);
                 }
             }
@@ -2665,13 +2674,17 @@ void fn_80277F98(char* p) {
         U8(p, 0xcfc) = 0;
         *(JGeometry::TVec3<f32>*)(p + 0x8) = *(JGeometry::TVec3<f32>*)fn_8023E7B0(S32(p, 0xd70));
         s32 r = fn_8023DE58(S32(p, 0xd70));
-        f32* b = r < 8 ? (f32*)(fn_802D6A9C() + 0xcc) : (f32*)(fn_802D6A9C() + 0xdc);
+        char* m = fn_802D6A9C();
+        f32* b = r < 8 ? (f32*)(m + 0xcc) : (f32*)(m + 0xdc);
         f32 bx = b[0];
         f32 by = b[1];
         s32 room = S32(p, 0x3b4);
-        f32* b2 = room < 8 ? (f32*)(fn_802D6A9C() + 0xcc) : (f32*)(fn_802D6A9C() + 0xdc);
-        F32(p, 0x8) += b2[0] - bx;
-        F32(p, 0xc) += b2[1] - by;
+        char* m2 = fn_802D6A9C();
+        f32* b2 = room < 8 ? (f32*)(m2 + 0xcc) : (f32*)(m2 + 0xdc);
+        f32 dx = b2[0] - bx;
+        f32 dy = b2[1] - by;
+        F32(p, 0x8) += dx;
+        F32(p, 0xc) += dy;
         F32(p, 0xc) += lbl_805402B0;
         F32(p, 0x10) += lbl_805402B0;
         s32 dir = fn_80230CFC(S32(p, 0xd70));
@@ -2717,7 +2730,7 @@ void fn_80277F98(char* p) {
         S32(p, 0xbf4) = 4;
         JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0x8);
         JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(p + 0xd78);
-        if (!(JMathInlineVEC::PSVECSquareMag(&v) <= lbl_80540298 * FLT_EPSILON)) {
+        if (!(v.squared() <= lbl_80540298 * FLT_EPSILON)) {
             pos += v;
             F32(p, 0xd80) = F32(p, 0xd80) - lbl_805402F8;
             if (F32(p, 0x10) <= lbl_8054028C) {
@@ -2793,9 +2806,7 @@ void fn_80277F98(char* p) {
         S32(p, 0xd0c)--;
     }
     if (PTR(p, 0x1308) != NULL) {
-        F32(p, 0x1320) = F32(p, 0x8);
-        F32(p, 0x1324) = F32(p, 0xc) - lbl_805402A8;
-        F32(p, 0x1328) = lbl_805402D8 + F32(p, 0x10);
+        ((Vec3*)(p + 0x1320))->set(F32(p, 0x8), F32(p, 0xc) - lbl_805402A8, lbl_805402D8 + F32(p, 0x10));
         F32(p, 0x1310) = F32(p, 0x1320);
         F32(p, 0x1314) = F32(p, 0x1324);
         F32(p, 0x1318) = F32(p, 0x1328);
