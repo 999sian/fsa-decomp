@@ -1504,6 +1504,7 @@ extern "C" s32 fn_803066F0(void*,s32,s32);
 
 extern "C" u64 fn_802D7AC4(void*,s32);
 #pragma opt_lifetimes on
+#pragma opt_propagation off
 static inline void packetHeaderBits(u8* p,s32 owner,int player) {
     ((Ctl4_80301CD0*)(p+0xb))->y=fn_8023CE10(owner)>>5;
     Ctl4_80301CD0* header0=(Ctl4_80301CD0*)(p+0xb);
@@ -1526,6 +1527,7 @@ static inline void packetHeaderBits(u8* p,s32 owner,int player) {
     header3->x=active!=0;
 }
 
+#pragma opt_propagation reset
 static inline void packetHeaderFields(s32 owner,int player,u8* p) {
     ((Ctl4_80301CD0*)(p+0xb))->y=fn_8023CE10(owner)>>5;
     Ctl4_80301CD0* header0=(Ctl4_80301CD0*)(p+0xb);
@@ -1559,9 +1561,12 @@ extern "C" void fn_80306A94(void* ctx,int player) {
         ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
     else ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=14;
     fn_803085A4((s32)ctx,player);
-    s32 owner=fn_8022EA0C(player);
-    u8* p=lbl_80506DE8+player*0x68;
-    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
+    Hi_80301CD0* firstFlags;
+    s32 owner;
+    u8* p;
+    owner=fn_8022EA0C(player);
+    p=lbl_80506DE8+player*0x68;
+    firstFlags=(Hi_80301CD0*)(p+1);
     for(s32 i=0;i<4;i++) {
         u32 slot=fn_802340A0(i);
         if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
