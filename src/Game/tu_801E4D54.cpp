@@ -24,11 +24,6 @@ extern "C" void fn_801E5BA8(u8*, u8*, f32*, u8);
 extern "C" f32 lbl_8053F578;
 extern "C" f32 lbl_8053F580;
 
-static inline void clearBombSlot(u8* slot) {
-    fn_801D7874(slot);
-    slot[4] = 0;
-}
-
 static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
     u8* slot;
     u8 found = 0;
@@ -46,13 +41,15 @@ static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
     return found;
 }
 
-extern "C" void fn_801E4D88(u8* this_) {
-    s32 cleanupIndex;
+#pragma opt_lifetimes off
+extern "C" void fn_801E4D88(u8* actor) {
+    u8* this_ = actor;
+    int cleanupIndex;
     u8* e;
     u8** actors;
     s32 i;
     u8* p;
-    s32 id;
+    int id;
     s32 count;
     u8* list[0x400];
     JGeometry::TVec3<f32> pv;
@@ -81,7 +78,7 @@ extern "C" void fn_801E4D88(u8* this_) {
         {
             s32 j;
             u8** cursor=list;
-            for(j=0;j<count;j++,cursor++) {
+            for(j=0;j<count;cursor++,j++) {
                 if (*(s32*)(e+0x198)==*(s32*)(*cursor+0x198)) break;
             }
             if(j<count) continue;
@@ -161,7 +158,7 @@ extern "C" void fn_801E4D88(u8* this_) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" f32 lbl_8053F578;
 extern "C" s32 fn_8023F264(s32 i);
 extern "C" s32 fn_80236B50(s32 i);
