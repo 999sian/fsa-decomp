@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- from Game/fn_8013F9A8_dtor.cpp
 
