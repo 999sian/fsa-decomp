@@ -942,7 +942,18 @@ static inline void key0LinkHere(char* p) {
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
-    key0LinkSelf(p, packed);
+    Key0Pt key = key0Point(p + 0x230);
+    Key0Pt pos = key0Point(p + 0xc);
+    u32 id = *(u32*)(p + 0x238);
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+}
+
+// KEY0: the key sat dropped too long; send it home.
+static inline void key0ReturnHome(char* p) {
+    *(s32*)(p + 0x294) = 0;
+    *(u8*)(p + 0x2b0) = 1;
+    key0Register(p);
+    key0LinkHere(p);
 }
 
 // KEY0's view of the actor vtable: only slot 0x34 is called here.
@@ -1030,7 +1041,7 @@ extern "C" void fn_802C4498(char* p) {
         fn_801F355C(p);
         *(s32*)(p + 0xb0) = 0x20000;
         break;
-    case 1: {
+    case 1:
         *(s32*)(p + 0x294) = 0;
         if ((*(u32*)(p + 0x90) >> 27) != 0 && ((Key0VObj*)p)->v11() != 1) {
             break;
@@ -1039,23 +1050,15 @@ extern "C" void fn_802C4498(char* p) {
         *(s32*)(p + 0x240) = 4;
         Actor_CreateByID(fn_801F856C(), 0x53454e32, *(s32*)(p + 4), p + 0xc, 0x3c00, -1, -1);
         fn_801F355C(p);
-        u32 packed = key0PackActorFlags((u8*)p);
-        if (!fn_802DCD0C(fn_802D6A9C())) {
-            u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-            packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
-        } else {
-            packed = *(u16*)(p + 0x2aa) << 8;
-        }
-        key0LinkSelf(p, packed);
+        key0LinkHere(p);
         break;
-    }
     case 2:
         fn_802C2840((u8*)p);
         if (key0RoomFlag(*(s32*)(p + 4))) {
             if (!*(u8*)(p + 0x2b2)) {
-                *(f32*)(p + 0x40) += lbl_80540CD0;
-                if (*(f32*)(p + 0x40) > lbl_80540CB8) {
-                    *(f32*)(p + 0x40) = lbl_80540CB8;
+                vel.y += lbl_80540CD0;
+                if (vel.y > lbl_80540CB8) {
+                    vel.y = lbl_80540CB8;
                 }
                 pos.add(vel);
                 if (((u8 (*)(char*, void*, s32))fn_801F2618)(p, 0, 0)) {
@@ -1112,10 +1115,10 @@ extern "C" void fn_802C4498(char* p) {
         }
         break;
     case 5:
-        *(f32*)(p + 0x44) += lbl_80540CC8;
+        vel.z += lbl_80540CC8;
         pos.add(vel);
-        if (*(f32*)(p + 0x14) < lbl_80540C74) {
-            *(f32*)(p + 0x14) = lbl_80540C74;
+        if (pos.z < lbl_80540C74) {
+            pos.z = lbl_80540C74;
             vel.x = vel.y = vel.z = lbl_80540C74;
             *(s32*)(p + 0x240) = 2;
             fn_801F0E34(p, 0x30072, 0);
@@ -1123,8 +1126,8 @@ extern "C" void fn_802C4498(char* p) {
         break;
     case 6: {
         *(s32*)(p + 0x294) = 0;
-        s32 idx;
         s32 n = *(s32*)((u8*)fn_801F856C() + 0x1008);
+        s32 idx;
         s32 i;
         for (i = 0, idx = 0; i < n; idx += 4, i++) {
             *(u8**)(p + 0x244) = (u8*)*(u32*)((u8*)fn_801F856C() + 8 + idx);
@@ -1145,7 +1148,11 @@ extern "C" void fn_802C4498(char* p) {
         *(s32*)(p + 0x294) = 0;
         s32 idx = *(s32*)(p + 0x28c);
         if (idx >= 0) {
-            *(u8**)(p + 0x244) = (u8*)((u32*)fn_801F856C() + idx)[2];
+            struct Key0Mgr {
+                u32 hdr[2];
+                u8* obj[1];
+            };
+            *(u8**)(p + 0x244) = ((Key0Mgr*)fn_801F856C())->obj[idx];
             if (*(u8**)(p + 0x244) != 0) {
                 u8* o = *(u8**)(p + 0x244);
                 *(f32*)(p + 0x248) = *(f32*)(o + 0xc);
@@ -1180,14 +1187,14 @@ extern "C" void fn_802C4498(char* p) {
             break;
         }
         pos.add(vel);
-        if (*(f32*)(p + 0x14) > lbl_80540C74) {
-            *(f32*)(p + 0x44) -= lbl_80540C7C;
+        if (pos.z > lbl_80540C74) {
+            vel.z -= lbl_80540C7C;
             break;
         }
         s32 kind = *(s32*)(p + 0x280);
         if (kind < 0x10) {
-            *(f32*)(p + 0x14) = lbl_80540C74;
-            *(f32*)(p + 0x44) = lbl_80540C74;
+            pos.z = lbl_80540C74;
+            vel.z = lbl_80540C74;
             *(s32*)(p + 0x27c) = 0;
             *(u8*)(p + 0x2ad) = 0xff;
             *(s32*)(p + 0x240) = 2;
@@ -1204,8 +1211,8 @@ extern "C" void fn_802C4498(char* p) {
         }
         break;
     case 9: {
-        s32 i = 0;
-        *(s32*)(p + 0x294) = i;
+        s32 i;
+        *(s32*)(p + 0x294) = i = 0;
         for (; i < 4; i++) {
             if ((u8)fn_8023A51C(i) == 1) {
                 s32 room = *(s32*)(p + 4);
@@ -1305,14 +1312,7 @@ extern "C" void fn_802C4498(char* p) {
     *(s32*)(p + 0x294) = 0;
     *(u8*)(p + 0x2b0) = 1;
     key0Register(p);
-    u32 packed = key0PackActorFlags((u8*)p);
-    if (!fn_802DCD0C(fn_802D6A9C())) {
-        u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-        packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
-    } else {
-        packed = *(u16*)(p + 0x2aa) << 8;
-    }
-    key0LinkSelf(p, packed);
+    key0LinkHere(p);
 }
 
 extern "C" void fn_802C5284(char* p) {
