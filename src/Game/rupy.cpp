@@ -857,14 +857,9 @@ extern "C" void fn_8030C210(void* a, void* b);
 extern "C" s32 fn_8022F340(s32 a);
 extern "C" void fn_801F3604(void* a);
 extern "C" u8 fn_8023F264(s32 a);
-static inline s32 rupyRandScaled(const f32 scale) { return scale * rupyInitRand01(); }
-
-static inline f32 rupyDistance(f32 dx, f32 dy) { return std::sqrtf(dx * dx + dy * dy); }
-
 #pragma opt_propagation off
 #pragma opt_lifetimes off
-extern "C" void fn_8032C664(Actor* actor) {
-    u8* p=(u8*)actor;
+extern "C" void fn_8032C664(u8* p) {
     RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 i;
     s32 room;
@@ -896,8 +891,8 @@ extern "C" void fn_8032C664(Actor* actor) {
         if (*(u16*)(p + 0x94) == 0x22) {
             f32 margin=lbl_80541DEC; void* pos=p+0xc; s32 room=*(s32*)(p+4);
  if (fn_801F6758(pos,room,margin)) {
-                *(f32*)(p + 0x3c) = lbl_80541D88;
-                *(f32*)(p + 0x40) = lbl_80541D88;
+                *(f32*)(p + 0x3c) = 0.0f;
+                *(f32*)(p + 0x40) = 0.0f;
             }
             fn_801F2618(p, 0, 0);
         }
@@ -916,10 +911,10 @@ extern "C" void fn_8032C664(Actor* actor) {
             break;
         }
         fn_801F71A4(p + 0x298, lbl_80541DF0 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x270) >> 5].first + lbl_80541DB4, lbl_80541DE4, lbl_80541DE4);
-{ RupyRandomBits bits1; u32* rng=(u32*)lbl_8053AAF8;
+{ RupyRandomBits bits1; unsigned int* rng=(unsigned int*)lbl_8053AAF8;
  rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
  bits1.word=(rng[45]>>9)|0x3f800000U;
-        *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * (bits1.value-lbl_80541D90)) + 0x200;
+        *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * (bits1.value-1.0f)) + 0x200;
 }
         for (i = 0; i < 4; i++) {
             if (fn_80230188(i) == 0) {
@@ -933,7 +928,7 @@ extern "C" void fn_8032C664(Actor* actor) {
             if (p[0x27e] == 0 && *(s32*)(p + 0x230) == 1) {
                 *(s32*)(p + 0x230) = 0;
             }
-        } else if (*(f32*)(p + 0x14) > lbl_80541D88) {
+        } else if (*(f32*)(p + 0x14) > 0.0f) {
             *(s32*)(p + 0x230) = 0;
             *(s32*)(p + 0x260) = 1;
         }
@@ -944,13 +939,13 @@ extern "C" void fn_8032C664(Actor* actor) {
     case 0xf:
         fn_801F0E34(p, 0x5006d, 0);
         {const u16* sounds=base->se1;
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.0f, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
         }
         {const u16* sounds=base->se2;
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.0f, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
         }
         {const u16* sounds=base->se3;
-        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541D90, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.0f, sounds[*(s32*)(p + 0x268)], 0, 0, 0, 0, 1);
         }
         *(s32*)(p + 0x230) = 0x10;
     case 0x10: {
@@ -966,7 +961,7 @@ extern "C" void fn_8032C664(Actor* actor) {
                     *(f32*)(p + 0x40) = lbl_80541DB4;
                 }
             }
-            *(f32*)(p + 0x238) = lbl_80541D90;
+            *(f32*)(p + 0x238) = 1.0f;
             *(s32*)(p + 0xb0) = 0x20000;
             if (*(s32*)(p + 0x268) >= 4) {
                 *(s32*)(p + 0xb0) = 0x2000a;
@@ -988,9 +983,9 @@ extern "C" void fn_8032C664(Actor* actor) {
         }
         break;
     case 3:
-        *(f32*)(p + 0x44) = lbl_80541D88;
-        *(f32*)(p + 0x40) = lbl_80541D88;
-        *(f32*)(p + 0x3c) = lbl_80541D88;
+        *(f32*)(p + 0x44) = 0.0f;
+        *(f32*)(p + 0x40) = 0.0f;
+        *(f32*)(p + 0x3c) = 0.0f;
         if (*(s32*)(p + 0x268) >= 4 && *(s32*)(p + 0x264) >= 0 && *(s32*)(p + 4) >= 8 &&
             ((u8*)lbl_8053AAF8)[0x7e] == 1) {
             s32 player=fn_8022F340(*(s32*)(p+0x264)); const s32* messages=base->msg;
@@ -1002,12 +997,12 @@ extern "C" void fn_8032C664(Actor* actor) {
         *(s32*)(p + 0x24c) = 0x212;
         *(s32*)(p + 0x230) = 4;
     case 4:
-        actor->field_3C.z -= lbl_80541DAC;
-        if (actor->field_0C.z <= lbl_80541D88 && actor->field_3C.z < lbl_80541D88) {
-            *(f32*)(p + 0x44) = lbl_80541D88;
-            *(f32*)(p + 0x40) = lbl_80541D88;
-            *(f32*)(p + 0x3c) = lbl_80541D88;
-            *(f32*)(p + 0x14) = lbl_80541D88;
+        *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_80541DAC;
+        if (*(f32*)(p + 0x14) <= 0.0f && *(f32*)(p + 0x44) < 0.0f) {
+            *(f32*)(p + 0x44) = 0.0f;
+            *(f32*)(p + 0x40) = 0.0f;
+            *(f32*)(p + 0x3c) = 0.0f;
+            *(f32*)(p + 0x14) = 0.0f;
         }
         if (p[0x282] == 0 && *(s32*)(p + 0x264) >= 0) {
             if (fn_8023F264(*(s32*)(p + 0x264))) {
@@ -1061,9 +1056,9 @@ extern "C" void fn_8032C664(Actor* actor) {
             }
             room = *(s32*)(p + 4);
             tbl = (u8*)fn_802D6A9C() + 0x10000;
-            if (tbl[room + 0x31df] != 0 && *(f32*)(p + 0x14) > lbl_80541D88) {
+            if (tbl[room + 0x31df] != 0 && *(f32*)(p + 0x14) > 0.0f) {
                 *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-                *(f32*)(p + 0x14) = lbl_80541D88;
+                *(f32*)(p + 0x14) = 0.0f;
             }
             *(s32*)(p + 0x230) = 0;
         }
@@ -1081,10 +1076,10 @@ extern "C" void fn_8032C664(Actor* actor) {
         }
         if (*(u16*)(p + 0x94) != 0x23 && *(u16*)(p + 0x94) != 0x24) {
             fn_801F71A4(p + 0x298, lbl_80541DF0 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x270) >> 5].first + lbl_80541DB4, lbl_80541DE4, lbl_80541DE4);
-{ RupyRandomBits bits2; u32* rng=(u32*)lbl_8053AAF8;
+{ RupyRandomBits bits2; unsigned int* rng=(unsigned int*)lbl_8053AAF8;
  rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
  bits2.word=(rng[45]>>9)|0x3f800000U;
-            *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * (bits2.value-lbl_80541D90)) + 0x200;
+            *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * (bits2.value-1.0f)) + 0x200;
 }
         }
         room = *(s32*)(p + 4);
@@ -1108,10 +1103,10 @@ extern "C" void fn_8032C664(Actor* actor) {
                     Actor_CreateByID(fn_801F856C(), 0x52534e50, room, p + 0xc, 0, -1, -1);
                 }
             }
-{ RupyRandomBits bits3; u32* rng=(u32*)lbl_8053AAF8;
+{ RupyRandomBits bits3; unsigned int* rng=(unsigned int*)lbl_8053AAF8;
  rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
  bits3.word=(rng[45]>>9)|0x3f800000U;
-            *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits3.value-lbl_80541D90)) + 0x3c;
+            *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits3.value-1.0f)) + 0x3c;
 }
             if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
                 *(s32*)(p + 0x24c) = 0x3d9;
@@ -1126,10 +1121,10 @@ extern "C" void fn_8032C664(Actor* actor) {
         }
         break;
     case 0xe:
-{ RupyRandomBits bits4; u32* rng=(u32*)lbl_8053AAF8;
+{ RupyRandomBits bits4; unsigned int* rng=(unsigned int*)lbl_8053AAF8;
  rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
  bits4.word=(rng[45]>>9)|0x3f800000U;
-        *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits4.value-lbl_80541D90)) + 0x3c;
+        *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits4.value-1.0f)) + 0x3c;
 }
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
             *(s32*)(p + 0x24c) = 0x3d9;
@@ -1163,10 +1158,10 @@ extern "C" void fn_8032C664(Actor* actor) {
                 detach__5ActorFv(p);
                 break;
             }
-{ RupyRandomBits bits5; u32* rng=(u32*)lbl_8053AAF8;
+{ RupyRandomBits bits5; unsigned int* rng=(unsigned int*)lbl_8053AAF8;
  rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
  bits5.word=(rng[45]>>9)|0x3f800000U;
-            *(s32*)(p + 0x258) += (s32)(lbl_80541DF4 * (bits5.value-lbl_80541D90)) + 0x200;
+            *(s32*)(p + 0x258) += (s32)(lbl_80541DF4 * (bits5.value-1.0f)) + 0x200;
 }
             fn_801F71A4(p + 0x14, lbl_80541D98 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x258) >> 5].first + lbl_80541DF8, lbl_80541DAC, lbl_80541DBC);
             if (*(f32*)(p + 0x14) < lbl_80541DF8) {
@@ -1177,9 +1172,9 @@ extern "C" void fn_8032C664(Actor* actor) {
             *(f32*)(p + 0x3c) = lbl_80541DBC * JMath::sincosTable_.sinShort(*(u16*)(p + 0x240));
             *(f32*)(p + 0x40) = lbl_80541DBC * JMath::sincosTable_.cosShort(*(u16*)(p + 0x240));
         } else {
-            *(f32*)(p + 0x44) = lbl_80541D88;
-            *(f32*)(p + 0x40) = lbl_80541D88;
-            *(f32*)(p + 0x3c) = lbl_80541D88;
+            *(f32*)(p + 0x44) = 0.0f;
+            *(f32*)(p + 0x40) = 0.0f;
+            *(f32*)(p + 0x3c) = 0.0f;
             *(s32*)(p + 0x230) = 0;
             *(u16*)(p + 0x94) = 0;
         }
@@ -1200,7 +1195,7 @@ extern "C" void fn_8032C664(Actor* actor) {
         s32 st = *(s32*)(p + 0x230);
         if (st != 7 && st != 8 && st != 0xa && st != 0xc && st != 0xe && *(s32*)(p + 4) < 8 &&
             *(s32*)(p + 0x268) >= 3 && p[0x281] == 0) {
-            JGeometry::TVec3f v(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14), lbl_80541D88);
+            JGeometry::TVec3f v(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14), 0.0f);
             fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), &v);
         }
     }
@@ -1210,10 +1205,10 @@ extern "C" void fn_8032C664(Actor* actor) {
             (*(s32*)(p + 0x254))++;
             *(s32*)(p + 0x254) &= 3;
             if (*(s32*)(p + 0x254) == 0) {
-{ RupyRandomBits bits6; u32* rng=(u32*)lbl_8053AAF8;
+{ RupyRandomBits bits6; unsigned int* rng=(unsigned int*)lbl_8053AAF8;
  rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
  bits6.word=(rng[45]>>9)|0x3f800000U;
-                *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits6.value-lbl_80541D90)) + 0x3c;
+                *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits6.value-1.0f)) + 0x3c;
 }
             } else {
                 *(s32*)(p + 0x250) = 2;
