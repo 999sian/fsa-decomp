@@ -666,8 +666,6 @@ struct MenuResourceLookup {
     virtual void v04();
     virtual void v08();
     virtual void v0c();
-    virtual void v10();
-    virtual void v14();
     virtual void* find(u32, const char*);
 };
 static inline void* menuDrawResource(const char* name) {
@@ -684,39 +682,42 @@ extern "C" void fn_803BE3D8(void* a) {
     if(*(s32*)(p+0xd0)!=0) {
         DrawRec rec1;
         DrawRec rec2;
-        for(s32 i=0;i<8;i++) {
+        const u64* key1=(const u64*)(base+0x478);
+        const u64* key2=(const u64*)(base+0x438);
+        const s32* icons=(const s32*)(base+0x818);
+        for(s32 i=0;i<8;i++,key1++,key2++,icons++) {
             JGeometry::TVec3<f32> pos1;
             JGeometry::TVec3<f32> pos2;
             {
     f32 width;
-    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*key1);
     width=pane->mBounds.f.x-pane->mBounds.i.x;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key1);
     pos1.x=lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key1);
     width=pane->mBounds.f.y-pane->mBounds.i.y;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key1);
     pos1.y=lbl_80543484*(lbl_80543488+(width*lbl_80543480+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
-    pos1.z=lbl_80543458;
+    pos1.z=0.0f;
 }
             {
     f32 width;
-    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*key2);
     width=pane->mBounds.f.x-pane->mBounds.i.x;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key2);
     pos2.x=lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key2);
     width=pane->mBounds.f.y-pane->mBounds.i.y;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key2);
     pos2.y=lbl_80543484*(lbl_80543488+(width*lbl_80543480+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
-    pos2.z=lbl_80543458;
+    pos2.z=0.0f;
 }
             rec1.b26=0;
             ((u8*)&rec1.w10)[0]=0;((u8*)&rec1.w10)[1]=0;((u8*)&rec1.w10)[2]=0;
-            ((u8*)&rec1.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8)))[0xb2];
-            ((u8*)&rec2.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8)))[0xb2];
+            ((u8*)&rec1.w10)[3]=((u8*)keyObj(*(void**)(p+4),*key1))[0xb2];
+            ((u8*)&rec2.w10)[3]=((u8*)keyObj(*(void**)(p+4),*key2))[0xb2];
             rec2.b26=0;
-            f32 rect[4];rect[0]=lbl_80543458;rect[1]=lbl_80543458;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
+            f32 rect[4];rect[0]=0.0f;rect[1]=0.0f;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
             fn_8013B414(lbl_8053AB10,rect,1);
             if(i==6) {
                 fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x830),0xab,&rec1,lbl_80543478,lbl_80543478);
@@ -726,9 +727,9 @@ extern "C" void fn_803BE3D8(void* a) {
                 fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x844),0x10,&rec1,lbl_80543478,lbl_80543478);
                 fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos2,menuDrawResource((const char*)base+0x844),0x10,&rec2,lbl_80543478,lbl_80543478);
             } else {
-                s32 id=*(s32*)(base+0x818+i*4)+8;
+                s32 id=*icons+8;
                 fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x854),id,&rec1,lbl_80543478,lbl_80543478);
-                id=*(s32*)(base+0x818+i*4)+8;
+                id=*icons+8;
                 fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos2,menuDrawResource((const char*)base+0x854),id,&rec2,lbl_80543478,lbl_80543478);
             }
         }
