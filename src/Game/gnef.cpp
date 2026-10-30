@@ -238,7 +238,7 @@ static inline void gnefView() {
 }
 static inline void gnefSetLink(s32 index, u8 flag) {
     if (index >= 0) {
-        GnefActor* actor = fn_801F856C()->mActors[index];
+        GnefActor* actor = ((GnefActorMgr*)((u8*)fn_801F856C() + index * 4))->mActors[0];
         if (actor && actor->mName == 'SLR4') fn_802EEA24(flag);
     }
 }
@@ -255,33 +255,174 @@ static inline void gnefDelete(s32& handle) {
     handle = 0;
 }
 
-extern "C" void fn_802ED984(u8* this_) {
-    switch (*(s32*)(this_ + 0x24c)) {
+#pragma opt_common_subs off
+extern "C" void fn_802ED984(GnefSelf* self) {
+    const u8* data=lbl_8046F508;
+    switch (self->m24C) {
     case 0:
         fn_802D6A9C();
-        if (fn_802DCD0C() == 0) {
-            u8* s = *(u8**)(lbl_8053AB10 + 0x24);
-            if (s[0x7f5] == 0) {
-                s[0x7f4] = 1;
-                *(s32*)(s + 0x7f8) = 4;
-                *(f32*)(s + 0x7fc) = *(f32*)(this_ + 0xc);
-                *(f32*)(s + 0x800) = *(f32*)(this_ + 0x10);
-                *(f32*)(s + 0x804) = *(f32*)(this_ + 0x14);
-                s[0x7f6] = 0;
-            }
-            if (fn_801F68E0() != 0) {
-                *(s32*)(this_ + 0x250) = 0x14;
-                *(s32*)(this_ + 0x24c) += 1;
-                fn_80458FF0(lbl_8053AF80, 0x10000d, 0, 0);
+        if (!fn_802DCD0C()) {
+            gnefCamera(self);
+            fn_801F856C();
+            if (fn_801F68E0()) {
+                self->m250 = 20; self->m24C++;
+                fn_80458FF0(lbl_8053AF80, 0x0100000d, 0, 0);
                 fn_8022ADE4();
             }
         }
         break;
-    default:
+    case 1:
+        gnefCamera(self);
+        self->m250--;
+        if (self->m250 <= 0) { self->m250 = 60; self->m24C++; }
         break;
+    case 2:
+        gnefCamera(self); gnefView();
+        self->m250--;
+        if (self->m250 <= 0) {
+            fn_802D8050(fn_802D6A9C(), self->m90 & 31, 1, 255);
+            self->m250 = 180; self->m24C++;
+        }
+        break;
+    case 3:
+        gnefCamera(self); gnefView();
+        self->m250--;
+        if (self->m250 <= 0) {
+            fn_801F856C(); fn_801F6884();
+            gnefSetLink(self->m260, 0); gnefSetLink(self->m264, 0);
+            self->m24C++;
+        }
+        break;
+    case 4:
+        if (fn_802D800C(fn_802D6A9C(), self->m258)) {
+            fn_801F856C();
+            if (fn_801F68E0()) {
+                gnefSetLink(self->m260, 1); gnefSetLink(self->m264, 1);
+                self->m250 = 60; self->m24C = 5;
+            }
+        }
+        break;
+    case 5:
+        gnefCamera(self); gnefView();
+        self->m250--;
+        if (self->m250 <= 0) {
+            gnefStop(self->mHandles[0]);
+            s32 index = self->m254 * 4;
+self->mHandles[0] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+0],0,-1,0,0,1,lbl_80541418);
+self->mHandles[1] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+1],0,-1,0,0,1,lbl_80541418);
+self->mHandles[2] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+2],0,-1,0,0,1,lbl_80541418);
+self->mHandles[3] = fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xc0))[index+3],0,-1,0,0,1,lbl_80541418);
+            self->m250 = 180; self->m24C++;
+            fn_801F0E34(self, 0x5005a, 0);
+        }
+        break;
+    case 6:
+        gnefCamera(self); gnefView();
+        self->m250--;
+        if (self->m250 <= 0) {
+            fn_802D8050(fn_802D6A9C(), self->m25C, 1, 255);
+            fn_801F856C(); fn_801F6884();
+            for (s32 i=0;i<4;i++) fn_8022CA6C(i,5,0);
+            gnefSetLink(self->m260, 0); gnefSetLink(self->m264, 0);
+            self->m24C++;
+        }
+        fn_801F0E34(self, 0x5005b, 0);
+        break;
+    case 7:
+        if (self->m279) {
+            if (self->m276) {
+                fn_802D8050(fn_802D6A9C(), self->m25C, 0, 255);
+                self->m250=124; self->m24C++;
+                fn_801F0E34(self, 0x5005c, 0);
+            }
+        } else {
+            if (fn_802ED538((u8*)self)) {
+                gnefStop(self->mHandles[3]);
+                if (lbl_8053AF80[0x7e] == 1) fn_8045815C(lbl_8053AF80,1);
+                self->m279=1;
+            } else fn_801F0E34(self,0x5005b,0);
+        }
+        break;
+    case 8:
+        self->m275-=2;
+        *(u8*)(self->mHandles[1]+0xbb)=self->m275;
+        *(u8*)(self->mHandles[2]+0xbb)=self->m275;
+        self->m250--;
+        if(self->m250<=0) {
+            gnefDelete(self->mHandles[1]); gnefDelete(self->mHandles[2]);
+            self->m275=255; self->m24C++;
+        }
+        break;
+    case 9:
+        if(self->m277) {
+            s32 index=self->m254 * 3;
+            fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+0],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+1],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,((const u16*)(data+0x3c))[index+2],0,0,0,0,1,lbl_80541418);
+            fn_801F0E34(self,0x50058,0);
+            self->m250=120; self->m24C=10;
+        }
+        break;
+    case 10:
+        self->m250--;
+        if(self->m250<=0) {
+            s32 index=self->m254 * 3;
+            self->mHandles[4] = fn_8013CC50(self->m04,&self->m268,((const u16*)(data+0x54))[index+0],0,0,0,0,1,lbl_80541418);
+self->mHandles[5] = fn_8013CC50(self->m04,&self->m268,((const u16*)(data+0x54))[index+1],0,0,0,0,1,lbl_80541418);
+            self->m2CC=fn_804032E8('TIMG',lbl_804AA340[self->m254]);
+            *(f32*)((u8*)self+0x44)=lbl_80541420;
+            self->m24C++;
+        }
+        break;
+    case 11:
+        fn_8013CB44(self->mHandles[4],&self->m268,0,-1,0);
+        fn_8013CB44(self->mHandles[5],&self->m268,0,-1,0);
+        if(self->m275>2) self->m275-=2; else self->m275=0;
+        *(u8*)(self->mHandles[0]+0xbb)=self->m275;
+        if(self->m270>=lbl_80541424) {
+            self->m270=lbl_80541424;
+            gnefDelete(self->mHandles[0]); self->m24C=12;
+        }
+        break;
+    case 12:
+        if(self->m278) {
+            s32 index=self->m254 * 5;
+            fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+0],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+1],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+2],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+3],0,0,0,0,1,lbl_80541418);
+fn_8013CC50(self->m04,&self->x,((const u16*)(data+0xe0))[index+4],0,0,0,0,1,lbl_80541418);
+            fn_801F0E34(self,0x5006f,0);
+            self->m24C=13; self->m250=180;
+        }
+        break;
+    case 13:
+        self->m250--;
+        if(self->m250<=0) {
+            fn_802D8050(fn_802D6A9C(),self->m90>>27,1,255);
+            self->m2CC=0; self->m24C++;
+        }
+        break;
+    case 14:
+        fn_8013CB44(self->mHandles[4],&self->m268,0,-1,0);
+        fn_8013CB44(self->mHandles[5],&self->m268,0,-1,0);
+        break;
+    case 15:
+        if(self->m275>8) self->m275-=8; else self->m275=0;
+        if(self->m275) {
+            *(u8*)(self->mHandles[4]+0xbb)=self->m275;
+            *(u8*)(self->mHandles[5]+0xbb)=self->m275;
+            fn_8013CB44(self->mHandles[4],&self->m268,0,-1,0);
+            fn_8013CB44(self->mHandles[5],&self->m268,0,-1,0);
+        } else {
+            gnefDelete(self->mHandles[4]); gnefDelete(self->mHandles[5]);
+            self->m24C=16;
+        }
+        break;
+    case 16: default: break;
     }
 }
-
+#pragma opt_common_subs reset
 
 struct GnefObj {
     u8 pad00[0xc];
