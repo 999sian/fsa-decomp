@@ -26,7 +26,7 @@ static f32 fnDist(char* p, Vec* dst) {
 }
 
 extern "C" u8 fn_8023FC5C(u8* p);
-extern "C" void* GetPtrField_0x4(void* p);
+extern "C" s32 GetPtrField_0x4(void* p);
 #include "Game/ItemBase.h"
 struct PlayerSpriteRes64998 {
     virtual void v0();
@@ -69,14 +69,15 @@ extern "C" void fn_803075AC(s32,s32,void*,s32,s32,s32,s32,s32,s32,s32);
 extern const f32 lbl_805401F8,lbl_805401FC,lbl_80540204,lbl_80540208,lbl_8054020C;
 extern "C" void fn_80264998(char* p) {
     u8* self=(u8*)p;
-    const char* table=lbl_8046B960;
-    if(!self[0xcac] || self[0xcee]==1)return;
+    char* table=lbl_8046B960;
+    if(!self[0xcac])return;
+    if(self[0xcee]==1)return;
     if(self[0x1215] && !((u8)lbl_8053AAF8[0x82] & (u8)(1<<*(s32*)(self+4))))return;
-    u8 alpha=fn_8023FC5C(self);
+    u32 alpha=fn_8023FC5C(self);
     s32 player=(s32)GetPtrField_0x4(self);
     if(*(u16*)(self+0x3c4)>=0x3d5)*(u16*)(self+0x3c4)=0x3d4;
     if(*(f32*)(self+0xb90)>lbl_805401F0) {
-        u8 c[4]={0,0,0,255};u32 color=*(u32*)c;
+        u8 c[4];c[0]=0;c[1]=0;c[2]=0;c[3]=255;u32 color=*(u32*)c;
         fn_80158B5C(*(void**)(lbl_8053AB10+0x2c),*(s32*)(self+0x3b4),self+0x338,&color);
     }
     if(*(s32*)(self+0x3b4)>8 && fn_80246B10(p,64)) {
@@ -98,7 +99,7 @@ extern "C" void fn_80264998(char* p) {
             pos+=JGeometry::TVec3<f32>(lbl_805401F0,-*(f32*)(self+0x10),lbl_805401F0);
         }
         if(self[0xca1]<255)shadow.b2c=0;
-        ((u8*)&shadow.w10)[3]=alpha<self[0xca1]?alpha:self[0xca1];
+        ((u8*)&shadow.w10)[3]=(u8)alpha<self[0xca1]?alpha:self[0xca1];
         if(((u8*)&shadow.w10)[3]>=159)((u8*)&shadow.w10)[3]=159;
         if(*(f32*)(self+0x10)>lbl_805401F0) {
             f32 a=(f32)((u8*)&shadow.w10)[3]-lbl_80540200**(f32*)(self+0x10);
@@ -112,11 +113,11 @@ extern "C" void fn_80264998(char* p) {
         ((u8*)&shadow.w14)[0]=40;((u8*)&shadow.w14)[1]=40;((u8*)&shadow.w14)[2]=40;
         if(self[0x43f]!=1) {
             if(*(s32*)(self+0x3b4)==8) {
-                JGeometry::TVec3<f32> draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
-                playerSprite64998(0,&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
+                const JGeometry::TVec3<f32>& draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+                playerSprite64998(0,(void*)&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
             }else {
-                JGeometry::TVec3<f32> draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
-                playerSprite64998(*(s32*)(self+0x3b4),&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
+                const JGeometry::TVec3<f32>& draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+                playerSprite64998(*(s32*)(self+0x3b4),(void*)&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
             }
         }
         if(*(f32*)(self+0x10)>lbl_805401F0 && *(s32*)(self+0x3b4)>=8) {
@@ -125,8 +126,8 @@ extern "C" void fn_80264998(char* p) {
                 JGeometry::TVec3<f32> pos;
                 if(fn_80240DAC(p))pos.set(*(f32*)(self+8),*(f32*)(self+0x328)-lbl_805401F8,lbl_805401F0);
                 else pos.set(*(f32*)(self+8),*(f32*)(self+0xc)-lbl_805401F8,lbl_805401F0);
-                JGeometry::TVec3<f32> draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
-                fn_803075AC(-40000-*(s32*)(self+4),*(s32*)(self+0x3b4),&draw,0x3cd,0,1,-1,0,0,0);
+                const JGeometry::TVec3<f32>& draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+                fn_803075AC(-40000-*(s32*)(self+4),*(s32*)(self+0x3b4),(void*)&draw,0x3cd,0,1,-1,0,0,0);
             }
         }
     }
@@ -134,7 +135,7 @@ extern "C" void fn_80264998(char* p) {
     if(fn_80241544(p)>=2)rec.ids[10]=6;
     rec.ids[7]=player+12;
     rec.b2d=1;
-    if(alpha<255)shadow.b2c=0;
+    if((u8)alpha<255)shadow.b2c=0;
     if(self[0x11e9])rec.w30=player+4;
     Mtx scale;
     scale[0][3]=scale[1][3]=scale[2][3]=lbl_805401F0;
@@ -171,13 +172,13 @@ extern "C" void fn_80264998(char* p) {
         ((u8*)&rec.w10)[0]=c;((u8*)&rec.w10)[1]=c;((u8*)&rec.w10)[2]=c;
     }
     self[0x3d8]=rec.b1c;self[0x3d9]=rec.b1d;
-    if(!fn_802413F0(p) || alpha<32)return;
+    if(!fn_802413F0(p) || (u8)alpha<32)return;
     if(Player_IsLinked(p)&&fn_802486A0(p)!=4&&!fn_8023188C(Player_GetLinkTargetIndex(p)))return;
     s32 sprite=*(u16*)(self+0x3c4);
     if(sprite==0x121)return;
     JGeometry::TVec3<f32> draw=*(JGeometry::TVec3<f32>*)(self+8)+*(JGeometry::TVec3<f32>*)(self+0x2b8);
     draw.x=(s32)draw.x;draw.y=(s32)draw.y;draw.z=(s32)draw.z;
-    if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),&draw,table+0x14,sprite,&rec);
+    if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),(void*)&draw,table+0x14,sprite,&rec);
     DrawRec water;
     if(self[0x458]==1&&*(s32*)(self+0x3dc)==2)((u8*)&water.w10)[3]=128;
     u16 tile=fn_8022461C(self+8,*(s32*)(self+0x3b4));
