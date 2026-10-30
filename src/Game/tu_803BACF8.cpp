@@ -92,7 +92,6 @@ struct CardSaveRecord {
     u32 sum;
     u32 inv;
 };
-#pragma opt_common_subs off
 static inline s32 cardBlockValid(const u8* const data) {
     u32 inv = 0;
     u32 sum = 0;
