@@ -47,6 +47,18 @@ extern "C" void fn_801BEDBC(u8* this_) {
 inline void* lnbmMgr() { u8* m = fn_8020D58C(); return m + m[1] * 0x784 + 4; }
 
 
+static inline BOOL lnbmCollision(f32* b, int a, ItemBase* self) {
+    switch ((u16)fn_8022461C(b)) {
+    case 3: case 13: case 14: return FALSE;
+    }
+    BOOL result = TRUE;
+    if (!fn_802265DC(b, (void*)a, 0)) {
+        self = *(ItemBase**)((u8*)self + 0x90);
+        if (!fn_8020D6AC(lnbmMgr(), (void*)a, b, (u32)self, 0)) result = FALSE;
+    }
+    return result;
+}
+
 #pragma opt_lifetimes off
 extern "C" BOOL fn_801BEE6C(ItemBase* this_, int a, f32* b) {
     switch ((u16)fn_8022461C(b)) {
@@ -64,7 +76,7 @@ extern "C" BOOL fn_801BEE6C(ItemBase* this_, int a, f32* b) {
     }
     return result;
 }
-#pragma opt_lifetimes reset
+#pragma opt_propagation off
 extern "C" void fn_801BEF40(u8* this_) {
     if (*(u32*)(this_ + 0x230) & 0x2000) {
         fn_801EE434(*(void**)(this_ + 0x2a8));
@@ -76,9 +88,9 @@ extern "C" void fn_801BEF40(u8* this_) {
     if (*(s32*)(this_ + 0x24c) < 0) {
         *(s32*)(this_ + 0x24c) = 0;
     }
-    if (!(*(u32*)(this_ + 0x230) & 0x400)) {
+    if (!(*(volatile u32*)(this_ + 0x230) & 0x400)) {
         *(u32*)(this_ + 0x230) |= 0x400;
-        (*(void (**)(void*))(*(u32*)this_ + 0x54))(this_);
+        ((ItemBase*)this_)->v19();
         return;
     }
     JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(this_ + 0xc);
@@ -93,40 +105,47 @@ extern "C" void fn_801BEF40(u8* this_) {
         s16 ang = r * lbl_8053ED04;
         fn_8013CAA4(*(void**)(this_ + 0x2a8), lbl_8053ED08 * (lbl_8053ED0C * ang));
     }
-    s32 room = *(s32*)(this_ + 0x4);
-    f32* rb = (f32*)((u8*)fn_802D6A9C() + (room < 8 ? 0xcc : 0xdc));
-    if (pos->x >= rb[0] || pos->y >= rb[1] || pos->x >= rb[2] || pos->y >= rb[3]) {
+    int room = *(s32*)(this_ + 0x4);
+    u8* mgr = (u8*)fn_802D6A9C();
+    f32* rb;
+    if (room < 8) {
+        rb = (f32*)(mgr + 0xcc);
+    } else {
+        rb = (f32*)(mgr + 0xdc);
+    }
+    if (!ItemBase_inArea(rb, &pos->x)) {
         *(u32*)(this_ + 0x230) |= 0x2000;
         return;
     }
     f32* box = (f32*)(this_ + 0x80);
-    JGeometry::TVec3<f32> pt;
-    if ((pt.x = pos->x + box[0], pt.y = pos->y + box[1], pt.z = pos->z, (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt)) ||
-        (pt.x = pos->x + box[2], (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt)) ||
-        (pt.x = pos->x + box[0], pt.y = pos->y + box[3], (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt)) ||
-        (pt.x = pos->x + box[2], (*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, room, &pt))) {
-        JGeometry::TVec3<f32> sp;
+    JGeometry::TVec3<f32> p0, p1, p2, p3;
+    if ((p0.set(pos->x + box[0], pos->y + box[1], pos->z), (u8)((ItemBase*)this_)->v17(*(s32*)(this_ + 4), &p0.x)) ||
+        (p1.set(pos->x + box[2], pos->y + box[1], pos->z), (u8)((ItemBase*)this_)->v17(*(s32*)(this_ + 4), &p1.x)) ||
+        (p2.set(pos->x + box[0], pos->y + box[3], pos->z), (u8)((ItemBase*)this_)->v17(*(s32*)(this_ + 4), &p2.x)) ||
+        (p3.set(pos->x + box[2], pos->y + box[3], pos->z), (u8)((ItemBase*)this_)->v17(*(s32*)(this_ + 4), &p3.x))) {
+        JGeometry::TVec3<f32> sp(*pos);
         sp.x = pos->x + box[0];
-        sp.y = pos->y + box[1];
-        sp.z = pos->z;
-        for (s32 i = 0; i < 2; i++) {
-            for (s32 j = 0; j < 2; j++) {
-                if (fn_801CCC78(&sp, room)) {
-                    fn_802A20F0(lbl_8053AC98, &sp, -1, room, 0, 0);
+        s32 j;
+        s32 i;
+        for (i = 0; i < 2; i++) {
+            sp.y = pos->y + box[1];
+            for (j = 0; j < 2; j++) {
+                if (fn_801CCC78(&sp, *(s32*)(this_ + 4))) {
+                    fn_802A20F0(lbl_8053AC98, &sp, -1, *(s32*)(this_ + 4), 0, 0);
                 }
                 sp.y += box[3] - box[1];
             }
             sp.x += box[2] - box[0];
         }
-        fn_8013CC50(room, this_ + 0xc, 0x1e, 0, -1, 0, 0, 1, lbl_8053ED00);
-        fn_8013CC50(room, this_ + 0xc, 0x1f, 0, 0, 0, 0, 1, lbl_8053ED00);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 0x1e, 0, -1, 0, 0, 1, lbl_8053ED00);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 0x1f, 0, 0, 0, 0, 1, lbl_8053ED00);
         fn_801F0E34(this_, 0x30061, 0);
         *(u32*)(this_ + 0x230) |= 0x2000;
         return;
     }
     fn_801F2B7C(this_, *(s32*)(this_ + 0x114), -1, 1);
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801BF464(u8* this_) {
     fn_801D0ED0(this_);
     f32 a = lbl_8053ED18;
