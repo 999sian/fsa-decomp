@@ -855,6 +855,7 @@ extern "C" void fn_8030C210(void* a, void* b);
 extern "C" s32 fn_8022F340(s32 a);
 extern "C" void fn_801F3604(void* a);
 extern "C" u8 fn_8023F264(s32 a);
+#pragma opt_propagation off
 extern "C" void fn_8032C664(u8* p) {
     RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 i;
