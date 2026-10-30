@@ -293,6 +293,89 @@ extern "C" void fn_801D8A30(char* p) {
 }
 
 extern "C" u8 fn_801CD228(void* p);
+#include "JSystem/JMath/JMath.h"
+#define I(p,o) (*(s32*)((char*)(p)+(o)))
+#define U(p,o) (*(u32*)((char*)(p)+(o)))
+#define H(p,o) (*(u16*)((char*)(p)+(o)))
+#define B(p,o) (*(u8*)((char*)(p)+(o)))
+#define F(p,o) (*(f32*)((char*)(p)+(o)))
+extern "C" s32 fn_801CD664(s32);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F68E0(void*);
+extern "C" void fn_801F6884(void*);
+extern "C" s32 fn_80458FF0(void*,s32,s32,s32);
+extern "C" s32 Actor_CreateByID(void*,u32,s32,JGeometry::TVec3<f32>*,s32,s32,s32);
+extern "C" s32 fn_801D05F8(void*,void*,f32);
+extern "C" void fn_802D79E8(void*,s32,s32,f32,f32);
+extern "C" void fn_80134DE4(void*,s32,s32);
+extern "C" void fn_801E6234(void*);
+extern "C" void fn_801D9960(char*);
+extern "C" BOOL fn_801D95F4(char*);
+extern "C" s32 fn_801D0338(void*,JGeometry::TVec3<f32>*,s16);
+extern char* lbl_8053AAF8;
+extern const f32 lbl_8053F1F0;
+extern const f32 lbl_8053F1F4;
+extern const f32 lbl_8053F1F8;
+extern const f32 lbl_8053F1FC;
+extern const f32 lbl_8053F200;
+extern const f32 lbl_8053F204;
+extern const f32 lbl_8053F208;
+extern const f32 lbl_8053F20C;
+extern const f32 lbl_8053F210;
+extern const f32 lbl_8053F214;
+#pragma auto_inline off
+inline f32 t84Random() { return ((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(); }
+
+static inline void t84PickTarget(char* p) {
+    if (*(u8*)(p + 0x33f) == 3) {
+                                            s32 l[12];
+                  s32 n = 1;
+          l[0] = 1;
+          l[n++] = 2;
+          l[n++] = 5;
+          l[n++] = 6;
+          l[n++] = 9;
+          l[n++] = 10;
+            if (n > 0) {
+              *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+          } else {
+              *(u8*)(p + 0x334) = 0;
+          }
+    } else {
+        *(u8*)(p + 0x334) = fn_801CD664(0xc);
+    }
+    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
+}
+static inline void t84FrontPos(char* p, JGeometry::TVec3<f32>* v) {
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        v->set(*(f32*)(p + 0xc) - lbl_8053F204, lbl_8053F200 + *(f32*)(p + 0x10), lbl_8053F1CC);
+    } else {
+        v->set(lbl_8053F204 + *(f32*)(p + 0xc), lbl_8053F200 + *(f32*)(p + 0x10), lbl_8053F1CC);
+    }
+}
+
+static inline s16 t84FaceAngle(char* p) {
+    return (*(u32*)(p + 0x230) & 0x2000) ? 0x2000 : -0x2000;
+}
+
+static inline s32 t84FindPlayer(char* p) {
+    s32 pl;
+    s32 found = -1;
+    JGeometry::TVec3<f32> v;
+    t84FrontPos(p, &v);
+    s16 ang = t84FaceAngle(p);
+    pl = fn_801D0338(p, &v, ang);
+    if (pl >= 0) {
+        f32 dy = fn_8023E724(pl)->y - v.y;
+        f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
+        s16 d = ang - (s16)(a * lbl_8053F208);
+        if (lbl_8053F20C * JGeometry::TUtilf::abs(d) <= lbl_8053F1F0) {
+            found = pl;
+        }
+    }
+    return found;
+}
 extern "C" void fn_801D8B28(void* this_) {
     s32 state = *(s32*)((char*)this_ + 0x248);
     if (state > 0x14) {
