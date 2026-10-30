@@ -73,6 +73,7 @@ extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
 extern "C" void* lbl_8053AAF8;
 extern "C" u8 lbl_8050EC80[];
+static inline f32 menuFontRatio(f32 fontSize, const f32 baseSize) { return fontSize/baseSize; }
 static inline f32 menuTextWidth(f32 measured, f32 ratio, const f32 padding) {
     f32 width=measured*ratio;
     width+=padding;
