@@ -15,6 +15,7 @@ extern "C" Actor* fn_801F666C(void*,s32);
 extern "C" void fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
 extern "C" char* lbl_8053AAF8;
 extern "C" char* lbl_8053AB10;
+static inline f32 interactionRand() { return ((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1(); }
 
 extern "C" char lbl_804A88E8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -58,6 +59,12 @@ extern "C" void fn_802B8FDC(void)
 
 extern "C" void fn_802B8FE0(Actor* self) {
     char* p = (char*)self;
+    JGeometry::TBox2f bounds;
+    JGeometry::TVec3f spawn;
+    JGeometry::TVec3f keyVelocity;
+    JGeometry::TVec3f heartVelocity;
+    JGeometry::TVec3f otherVelocity;
+    JGeometry::TVec2f hit;
     switch (*(s32*)(p + 0x230)) {
     case 0: {
         if ((*(f32*)(p+0x244)>0.0f || *(f32*)(p+0x248)>0.0f) && *(s32*)(p+4)<8) {
@@ -80,21 +87,20 @@ extern "C" void fn_802B8FE0(Actor* self) {
         if (*(s32*)(p+0x240)<=0) {
             for (s32 i=0;i<4;++i) {
                 f32 scale=fn_8023725C(i);
-                JGeometry::TBox2f bounds;
                 bounds.set(*(f32*)(p+0x60)*scale,*(f32*)(p+0x64)*scale,*(f32*)(p+0x68)*scale,*(f32*)(p+0x6c)*scale);
-                bounds.addPos(*(JGeometry::TVec2f*)(p+0xc));
-                JGeometry::TVec3f hit;
+                bounds.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
                 if (fn_8023AAF8(i,&bounds,*(s32*)(p+4),&hit)==1) {
                     *(s32*)(p+0x240)=5;
                     f32 dx=hit.x-*(f32*)(p+0xc);
                     f32 dy=hit.y-*(f32*)(p+0x10);
-                    f32 dist=JGeometry::TUtilf::sqrt(dx*dx+dy*dy);
-                    if (dist<38.0f || *(f32*)(p+0x244)>0.0f || *(f32*)(p+0x248)>0.0f) {
-                        if (fn_8023A5B8(i)==1 && dist<50.0f*scale) {
-                            s32 kind=*(s32*)(p+0x234);
-                            if (kind>0 && kind<=8) {
-                                JGeometry::TVec3f spawn(*(JGeometry::TVec3f*)(p+0xc));
+                    f32 xSquared=dx*dx;
+                    f32 ySquared=dy*dy;
+                    f32 dist=JGeometry::TUtilf::sqrt(xSquared+ySquared);
+                    if ((dist<38.0f && (*(f32*)(p+0x244)>0.0f || *(f32*)(p+0x248)>0.0f)) || (fn_8023A5B8(i)==1 && dist<50.0f*scale)) {
+                            if (*(s32*)(p+0x234)>0 && *(s32*)(p+0x234)<=8) {
+                                spawn=*(JGeometry::TVec3f*)(p+0xc);
                                 if (((s32*)fn_802D6A9C())[1]==2 && ((s32*)fn_802D6A9C())[2]==1) spawn.x-=8.0f;
+                                s32 kind=*(s32*)(p+0x234);
                                 s32 id;
                                 if (kind<5 || kind==8) {
                                     s32 value=3;
@@ -109,25 +115,16 @@ extern "C" void fn_802B8FE0(Actor* self) {
                                     Actor* item=fn_801F666C(fn_801F856C(),id);
                                     if (item!=0) {
                                         if (item->field_1A0=='KEY0') {
-                                            JGeometry::TVec3f velocity;
-                                            velocity.z=2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f;
-                                            velocity.y=0.35f-0.7f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-                                            velocity.x=0.35f-0.7f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-                                            *(JGeometry::TVec3f*)((char*)item+0x3c)=velocity;
+                                            keyVelocity.set(0.35f-0.7f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),0.35f-0.7f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            *(JGeometry::TVec3f*)((char*)item+0x3c)=keyVelocity;
                                         } else if (item->field_1A0=='BHRT') {
-                                            JGeometry::TVec3f velocity;
                                             s16 angle=65536.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
                                             f32 speed=0.35f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+0.15f;
-                                            velocity.x=speed*JMASinShort(angle);
-                                            velocity.y=speed*JMACosShort(angle);
-                                            velocity.z=2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f;
-                                            *(JGeometry::TVec3f*)((char*)item+0x3c)=velocity;
+                                            heartVelocity.set(speed*JMASinShort(angle),speed*JMACosShort(angle),2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            *(JGeometry::TVec3f*)((char*)item+0x3c)=heartVelocity;
                                         } else {
-                                            JGeometry::TVec3f velocity;
-                                            velocity.z=2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f;
-                                            velocity.y=0.5f-((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-                                            velocity.x=0.5f-((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
-                                            *(JGeometry::TVec3f*)((char*)item+0x3c)=velocity;
+                                            otherVelocity.set(0.5f-((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),0.5f-((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(),2.0f*((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1()+5.0f);
+                                            *(JGeometry::TVec3f*)((char*)item+0x3c)=otherVelocity;
                                         }
                                         fn_8013CC50(*(s32*)(p+4),p+0xc,0x291,0,0,0,0,1,0.4f);
                                         fn_8013CC50(*(s32*)(p+4),p+0xc,0x5c,0,0,0,0,1,0.5f);
@@ -141,8 +138,8 @@ extern "C" void fn_802B8FE0(Actor* self) {
                                 }
                             } else {
                                 s32 value;
-                                if (kind==0) value=4;
-                                else if (kind==9) value=5;
+                                if (*(s32*)(p+0x234)==0) value=4;
+                                else if (*(s32*)(p+0x234)==9) value=5;
                                 Actor_CreateByID(fn_801F856C(),'TKTA',*(s32*)(p+4),p+0xc,value,-1,-1);
                                 fn_8013CC50(*(s32*)(p+4),p+0xc,0x240,0,0,0,0,1,1.0f);
                             }
@@ -152,7 +149,6 @@ extern "C" void fn_802B8FE0(Actor* self) {
                                 self->v10(0xff,1);
                             }
                             return;
-                        }
                     }
                     if (dist<50.0f*scale) {
                         *(s32*)(p+0x23c)=0;
@@ -166,7 +162,9 @@ extern "C" void fn_802B8FE0(Actor* self) {
                 JGeometry::TVec3f* player=fn_8023A478(i);
                 f32 dx=player->x-*(f32*)(p+0xc);
                 f32 dy=player->y-*(f32*)(p+0x10);
-                f32 distance=JGeometry::TUtilf::sqrt(dx*dx+dy*dy);
+                f32 xSquared=dx*dx;
+                f32 ySquared=dy*dy;
+                f32 distance=JGeometry::TUtilf::sqrt(xSquared+ySquared);
                 *(s32*)(p+0x23c)=((s32)distance)>>3;
             }
         }
