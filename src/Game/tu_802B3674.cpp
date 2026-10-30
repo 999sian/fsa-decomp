@@ -212,11 +212,11 @@ extern "C" void* fn_8013CC50(u32, void*, u32, u32, u32, u32, u32, u32, f32);
 extern "C" void fn_8018330C(void*);
 extern "C" void fn_802D7440(void*, s32);
 extern "C" u8 fn_802D75BC(void*, s32);
-extern f32 lbl_80540A20;
-extern f32 lbl_80540A24;
-extern f32 lbl_80540A28;
-extern f32 lbl_80540A2C;
-extern f32 lbl_80540A30;
+extern const f32 lbl_80540A20;
+extern const f32 lbl_80540A24;
+extern const f32 lbl_80540A28;
+extern const f32 lbl_80540A2C;
+extern const f32 lbl_80540A30;
 
 class Actor802B {
 public:
