@@ -54,7 +54,7 @@ extern "C" Actor* fn_802ACEA4(Actor* p, s16 n) {
 extern "C" void fn_802F745C(void* mgr, Vec* pos, void* resource, DrawRec* rec);
 extern "C" void fn_802F6CF4(void* mgr, Vec* pos, void* resource, DrawRec* rec);
 extern "C" void* fn_802D6A9C();
-extern "C" f32 lbl_805408D0;
+extern "C" f64 lbl_805408D0;
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_805408CC;
