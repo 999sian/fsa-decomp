@@ -64,19 +64,7 @@ static inline void ryyaFocus(const JGeometry::TVec3f& pos) {
 static inline f32 ryyaDistance(char* p,char* obj) {
     f32 dy=*(f32*)(obj+0x10)-*(f32*)(p+0x10);
     f32 dx=*(f32*)(obj+0xc)-*(f32*)(p+0xc);
-    f32 mag=dx*dx+dy*dy;
-    if (mag > 0.0f) {
-        f64 estimate=__frsqrte(mag);
-        estimate=0.5*estimate*(3.0-mag*(estimate*estimate));
-        estimate=0.5*estimate*(3.0-mag*(estimate*estimate));
-        estimate=0.5*estimate*(3.0-mag*(estimate*estimate));
-        return mag*estimate;
-    } else if (mag < 0.0) {
-        return NAN;
-    } else if (fpclassify(mag)==1) {
-        return NAN;
-    }
-    return mag;
+    return std::sqrtf(dx*dx+dy*dy);
 }
 static inline void ryyaPlayerDirection(char* p,const JGeometry::TVec3f& delta) {
     f32 radians=JMath::atanTable_.atan2_(-delta.x,-delta.y);
