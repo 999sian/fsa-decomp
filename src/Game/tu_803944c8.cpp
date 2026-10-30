@@ -59,10 +59,14 @@ static inline void msgRenderingSub(u8* sub,void* reference) {
 struct MsgRenderingInit {
     u8 data[0x2dc];
     MsgRenderingInit(u8* owner) {
+        u8* sub;
         void* reference=*(void**)(owner+0xc);
         __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(this,reference);
         *(void**)this=lbl_804AF72C;
-        msgRenderingSub(data+0x38,reference);
+        sub=data+0x38;
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(sub,reference);
+        *(void**)sub=lbl_804AF6E4;
+        *(s32*)(sub+0x1d8)=0;*(s32*)(sub+0x1dc)=0;sub[0x1e8]=0;
     }
 
     MsgRenderingInit(void* ref) {
