@@ -1,6 +1,9 @@
 // Game TU 801B4D0C-801B6634 (TLWP). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void* fn_8013C824(void);
 extern "C" void fn_800EC240(void* a, void* b);
@@ -244,13 +247,19 @@ extern "C" void fn_80230498(s32 player, TlwpVec* pos, s32 id, s32 a, s32 b, s32 
 extern "C" void fn_801F0E34(void* target, u32 effectId, s32 flag);
 
 extern "C" void fn_801B5228(char* p) {
+    char* q9;
+    char* q10;
+    char* q;
     s32 room;
     TlwpData* d = &lbl_804A37E0;
     fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x258), lbl_8053EA28, *(f32*)(p + 0x25c));
     switch (*(s32*)(p + 0x230)) {
     case 8: {
-        *(s32*)(p + 0x98) = d->kind[*(s32*)(p + 0x250) - 1];
-        char* q = p;
+        s32* kinds = d->kind;
+        u32 offset = *(s32*)(p + 0x250) * 4;
+        kinds = (s32*)((u8*)kinds + offset);
+        *(s32*)(p + 0x98) = kinds[-1];
+        q = p;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
                 room = *(s32*)(p + 0x4);
@@ -283,21 +292,23 @@ extern "C" void fn_801B5228(char* p) {
         }
         fn_801F71A4((f32*)(p + 0xc), x, lbl_8053EA28, *(f32*)(p + 0x25c));
         *(f32*)(p + 0x10) = y;
-        f32 dz = fabs(*(f32*)(p + 0x14) - *(f32*)(p + 0x258));
         f32 dx = fabs(*(f32*)(p + 0xc) - x);
+        f32 dz = fabs(*(f32*)(p + 0x14) - *(f32*)(p + 0x258));
         if (std::sqrtf(dx * dx + dz * dz) < lbl_8053EA10) {
             if (--lbl_8053A118 == 0) {
-                for (s32 i = 0; i < 4; i++) {
+                s32 i = 0;
+                q9 = p;
+                for (; i < 4; i++, q9 += 0xc) {
                     if (fn_8023F264(i)) {
                         room = *(s32*)(p + 0x4);
                         if (room == fn_8023DE58(i)) {
-                            fn_80230498(i, (TlwpVec*)(p + i * 0xc + 0x264), 0x3e, 0xff, -0x80, -0x80, 1);
+                            fn_80230498(i, (TlwpVec*)(q9 + 0x264), 0x3e, 0xff, -0x80, -0x80, 1);
                         }
                     }
                 }
                 fn_801F0E34(p, 0x50052, 0);
-                *(s32*)(p + 0x230) = 10;
             }
+            *(s32*)(p + 0x230) = 10;
         }
         break;
     }
@@ -308,12 +319,13 @@ extern "C" void fn_801B5228(char* p) {
                 *(f32*)(p + 0x25c) = lbl_8053EA5C;
             } else if (*(s32*)(p + 0x250) == 2) {
                 f32 z = *(f32*)(p + 0x14);
-                for (s32 i = 0; i < 4; i++) {
+                q10 = p;
+                for (s32 i = 0; i < 4; i++, q10 += 0xc) {
                     if (fn_8023F264(i)) {
                         room = *(s32*)(p + 0x4);
                         if (room == fn_8023DE58(i)) {
-                        fn_801F71A4((f32*)(p + i * 0xc + 0x26c), z, lbl_8053EA28, *(f32*)(p + 0x25c));
-                        fn_80230498(i, (TlwpVec*)(p + i * 0xc + 0x264), 0xb0, 0xff, -0x80, -0x80, 1);
+                        fn_801F71A4((f32*)(q10 + 0x26c), z, lbl_8053EA28, *(f32*)(p + 0x25c));
+                        fn_80230498(i, (TlwpVec*)(q10 + 0x264), 0xb0, 0xff, -0x80, -0x80, 1);
                         }
                     }
                 }
@@ -325,8 +337,27 @@ extern "C" void fn_801B5228(char* p) {
         break;
     }
     if (*(s32*)(p + 0x234) == 0) {
-        *(s32*)(p + 0x24c) = d->model[*(s32*)(p + 0x98)][*(s32*)(p + 0x240)];
-        *(s32*)(p + 0x234) = d->timer[*(s32*)(p + 0x98)][*(s32*)(p + 0x240)];
+        s32 index;
+        s32* model;
+        s32* timer;
+        s32 frame;
+        u32 offset;
+        index = *(s32*)(p + 0x98);
+        frame = *(s32*)(p + 0x240);
+        model = (s32*)d->model;
+        timer = (s32*)d->timer;
+        index *= 4;
+        offset = index + frame;
+        offset *= 4;
+        model = (s32*)((u8*)model + offset);
+        *(s32*)(p + 0x24c) = *model;
+        index = *(s32*)(p + 0x98);
+        frame = *(s32*)(p + 0x240);
+        index *= 4;
+        offset = index + frame;
+        offset *= 4;
+        timer = (s32*)((u8*)timer + offset);
+        *(s32*)(p + 0x234) = *timer;
         (*(s32*)(p + 0x240))++;
         *(s32*)(p + 0x240) &= 3;
     }
