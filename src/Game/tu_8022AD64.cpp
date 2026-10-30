@@ -2024,7 +2024,6 @@ void fn_80232A0C(void)
     }
 }
 
-#pragma opt_common_subs reset
 JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGeometry::TBox2<f32>& source)
 {
     destination.i.x = source.i.x;
