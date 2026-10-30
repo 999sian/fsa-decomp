@@ -182,8 +182,8 @@ static inline bool SmriCheckGround(SmriActor* p) {
     box.set(*(JGeometry::TBox2f*)((u8*)p+0x80));
     box.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
     JGeometry::TVec2<f32> center;
-    center.x=lbl_80541738*(box.i.x-box.f.x)+box.f.x;
-    center.y=lbl_80541738*(box.i.y-box.f.y)+box.f.y;
+    center.x=half*(box.i.x-box.f.x)+box.f.x;
+    center.y=half*(box.i.y-box.f.y)+box.f.y;
     s32 kind=fn_802265FC(&center,p->field_04);
     if(kind==3 || (u32)(kind-13)<=1 || kind==0x3b){
         p->field_3C.x=lbl_8054173C;
