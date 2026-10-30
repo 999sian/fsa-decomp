@@ -6,9 +6,12 @@ extern "C" u16 fn_8022461C(void* pos, s32 room);
 extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" u8* fn_802D6A9C(void);
 
+#pragma opt_propagation off
 extern "C" u8 fn_801B27DC(void* this_, s32 room, void* pos) {
-    s32 kind = fn_8022461C(pos, room);
-    s32 attr = fn_80226850(pos, room);
+    s32 r = room;
+    void* p = pos;
+    s32 kind = (u16)fn_8022461C(p, r);
+    s32 attr = (u16)fn_80226850(p, r);
     if ((u32)(attr - 0x230) <= 1 || attr == 0x234) {
         return 0;
     }
@@ -25,7 +28,7 @@ extern "C" u8 fn_801B27DC(void* this_, s32 room, void* pos) {
     }
     return 0;
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 idx, s32 a, s32 b, f32 x, f32 y);
 extern const char lbl_804690E0[];
 
@@ -34,6 +37,89 @@ extern "C" void fn_801B2998(u8* this_) {
     if (f == 0 || (f & 2)) {
         fn_801F06F0(this_, lbl_804690E0, *(s32*)(this_ + 0x320) + 0x9B, 0, 7, 1.0f, 1.0f);
     }
+}
+
+#include "std/math.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+
+struct LimtTable {
+    s32 dir[4];
+    s32 anim[5];
+    s32 time[5];
+};
+extern LimtTable lbl_804A3660;
+extern u8 lbl_8053ABE8;
+extern s32 lbl_8053ABEC;
+extern u8 lbl_8053ABF0;
+extern u8* lbl_8053AAF8;
+extern void* lbl_8053AF80;
+extern const f32 lbl_8053E930, lbl_8053E934, lbl_8053E938, lbl_8053E93C, lbl_8053E940, lbl_8053E944, lbl_8053E948,
+    lbl_8053E94C, lbl_8053E950, lbl_8053E954, lbl_8053E958, lbl_8053E95C, lbl_8053E960, lbl_8053E964, lbl_8053E968,
+    lbl_8053E96C, lbl_8053E970, lbl_8053E974, lbl_8053E978, lbl_8053E97C, lbl_8053E980, lbl_8053E984, lbl_8053E988,
+    lbl_8053E98C, lbl_8053E9A8, lbl_8053E9AC, lbl_8053E9B0;
+extern const f64 lbl_8053E990, lbl_8053E998, lbl_8053E9A0;
+extern "C" {
+void* fn_801F856C(void);
+u8* fn_801F666C(void* mgr, s32 id);
+void fn_8022ADE4(void);
+void fn_802D79E8(u8*, s32, s32, f32, f32);
+void fn_802D79A4(u8*, s32, f32, f32, f32);
+u8 fn_8023F264(s32);
+void fn_800FDEA0(void*, void*, void*, s32*, void*, s32, f32);
+void fn_801F3D94(void*, s32);
+void fn_801F71A4(void*, f32, f32, f32);
+void fn_801EEC98(void*, s32, s32, s32*, f32*, s32, s32, s32);
+void fn_801F2618(void*, void*, s32);
+s32 fn_801F2718(void*, u32);
+void fn_801F0E34(void*, s32, s32);
+void* fn_8013CC50(void* a, void* pos, s32 kind, s32 b, s32 c, s32 d, void* e, s32 f, f32 scale);
+u8 fn_800FE3EC(void*, s32, void*, s32);
+s32 fn_8023DE58(s32);
+s32 fn_8022EA0C(s32);
+u8 fn_80230188(s32);
+u8 fn_8022DCD8(s32);
+u8 fn_80236B50(s32);
+u8 fn_8022D534(s32);
+Vec* fn_8023E724(s32);
+s32 fn_80138A30(void*);
+void fn_80458FF0(void*, s32, s32, s32);
+void fn_8022ADCC(void);
+u8 fn_802DCD0C(u8*);
+}
+struct LimtState {
+    JGeometry::TVec3<f32> v;
+    u32 box[4];
+};
+static inline f32 limtSqrt(const f32 mag) {
+    if (mag > lbl_8053E934) {
+        f64 xd = mag;
+        f64 tmpd = __frsqrte(xd);
+        tmpd = lbl_8053E990 * tmpd * (lbl_8053E998 - (tmpd * tmpd * xd));
+        tmpd = lbl_8053E990 * tmpd * (lbl_8053E998 - (tmpd * tmpd * xd));
+        tmpd = lbl_8053E990 * tmpd * (lbl_8053E998 - (tmpd * tmpd * xd));
+        return (f32)(xd * tmpd);
+    } else if (mag < lbl_8053E9A0) {
+        return *(f32*)__float_nan;
+    } else if (fpclassify(mag) == 1) {
+        return *(f32*)__float_nan;
+    } else {
+        return mag;
+    }
+}
+static inline f32 limtRandom() {
+    union {
+        f32 f;
+        u32 s;
+    } out;
+    JMath::TRandom_fast_* rnd = (JMath::TRandom_fast_*)(lbl_8053AAF8 + 0xb4);
+    out.s = (rnd->get() >> 9) | 0x3f800000;
+    return out.f - lbl_8053E930;
+}
+
+extern "C" void fn_801B29EC(u8* this_) {
+    s32 state = *(s32*)(this_ + 0x4);
+    fn_802D6A9C();
 }
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
