@@ -1490,7 +1490,7 @@ extern "C" s32 fn_8039D770(MsgProc* p, u32 event, u8* data) {
         return 1;
     case 0x2001e:
         if (p->cur > p->lineTab[p->layout->m15c] && data[0] < 5) {
-            snprintf(buf, 30, lbl_80475DC8, *(u32*)&p->layout->m154 = lbl_80475D64[data[0]]);
+            snprintf(buf, 30, lbl_80475DC8, static_cast<int>(p->layout->m154 = lbl_80475D64[data[0]]));
             strcat(p->str2c0, buf);
             if ((p->layout->font->flags & 0x40) != 0 || *((u8*)p->layout + 0x1a2) == 0) {
                 snprintf(buf, 30, lbl_80475DC8, 0xff);
@@ -2323,6 +2323,13 @@ void fn_8039FE6C(void) {}
 
 int fn_8039FE70(void) { return 1; }
 
+static inline void readMessagePair(s32* out,const u8* data) {
+    s32 a=*(const s32*)(data+1);
+    s32 b=*(const s32*)(data+5);
+    out[0]=a;
+    out[1]=b;
+}
+
 struct MsgCounter {
     u8 pad0[0x4c];
     s32 m4c;
@@ -2407,18 +2414,18 @@ extern "C" void fn_80458FF0(void*,u32,s32,s32);
 extern "C" const u8 lbl_80475D24[];
 extern "C" const u8 lbl_80475D44[];
 extern "C" const u32 lbl_805431D0[2];
-#pragma dont_inline on
+#pragma optimization_level 4
 extern "C" s32 fn_8039FE78(MsgCounter& object,s32 event,u8* payload){
 u8* data=payload;
 MsgCounter* p = &object;
-u32 byte0;
-u32 byte2;
-u32 byte1;
-u32 byte3;
-u32 byte4;
-u32 byte5;
-u32 byte6;
-u32 byte9;
+u8 byte0;
+u8 byte2;
+u8 byte1;
+u8 byte3;
+u8 byte4;
+u8 byte5;
+u8 byte6;
+u8 byte9;
 s32 args[5];
 if(!fn_803A313C(p->m60)){
 switch((int)event){
@@ -3697,7 +3704,6 @@ return 1;
 }
 return 0;
 }
-#pragma dont_inline reset
 }
 
 struct MsgFont {
