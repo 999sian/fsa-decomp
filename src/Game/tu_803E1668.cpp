@@ -848,6 +848,7 @@ extern const f32 lbl_80543690;
 extern const f32 lbl_805436D4;
 extern const f32 lbl_805436D0;
 #include "Game/ItemBase.h"
+#include "JSystem/J2D/J2DAnimation.h"
 extern "C" u8 fn_8030A388(void*, s32);
 extern "C" void fn_8013B490(void*);
 extern "C" void fn_804316EC(void*);
@@ -883,14 +884,9 @@ static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, 
 struct MenuFrameValue803E {s32 frame;};
 struct MenuFrame803E {u8 _00[0x230];MenuFrameValue803E frame230[4];MenuFrameValue803E frame240[4];};
 
-#pragma opt_propagation off
-static inline void MenuIncrement803E(u8* p,s16 index,int offset) {
-    u8* entry=p+index*4;
-    ++*(s32*)(entry+offset);
-}
-#pragma opt_propagation reset
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
+#pragma peephole off
 #pragma opt_common_subs off
 extern "C" void fn_803E51C4(void* param_1) {
     u8* p=(u8*)param_1;
@@ -1055,7 +1051,7 @@ extern "C" void fn_803E51C4(void* param_1) {
             if(v<=10) MenuSprite803E(pos,0xdb,rec,base);
             else if(v<=36) MenuSprite803E(pos,(v-10)/2+0xdb,rec,base);
             else if(v<100) MenuSprite803E(pos,0xe8,rec,base);
-            else MenuSprite803E(pos,((s32*)(base+0x40))[v-100]+0x10,rec,base);
+            else {const s32* sequence=(const s32*)(base+0x40);s32 index=v-100;s32 id=sequence[index]+0x10;MenuSprite803E(pos,id,rec,base);}
         }
     }
     fn_8013B490(lbl_8053AB10);
@@ -1063,6 +1059,7 @@ extern "C" void fn_803E51C4(void* param_1) {
     fn_80440EE8(lbl_8053AED8);
 }
 #pragma opt_common_subs reset
+#pragma peephole reset
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
