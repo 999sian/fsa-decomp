@@ -185,14 +185,15 @@ struct FsaBlock156 {
 };
 extern "C" FsaBlock156 lbl_804B0B40[6];
 
-extern "C" void fn_803F0A54(u8* p) {
+extern "C" void fn_803F0A54(void* self) {
     u8* base = lbl_80478A60;
+    u8* p = (u8*)self;
     JGeometry::TVec3f pos;
     f32 ratio = (f32)(*(J2DPane**)(p + 0xc))->search(*(u64*)(base + 0x708))->getAlpha() / (f32)p[0x335];
     if (*(s32*)(p + 0x210) < 0x64) {
         f32 alpha = lbl_80543718 * ratio;
         s32 i;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xec0);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xec0);
         for (i = 0; i < 4; i++) {
             if (tags[*(s32*)(p + 0x1ac)][i] != 0) {
                 DrawRec rec;
@@ -217,7 +218,7 @@ extern "C" void fn_803F0A54(u8* p) {
         }
     } else if (*(s32*)(p + 0x210) < 0x70) {
         f32 alpha = lbl_80543718 * ratio;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xec0);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xec0);
         for (s32 i = 3; i >= 0; i--) {
             DrawRec rec;
             rec.b26 = 0;
@@ -272,7 +273,7 @@ extern "C" void fn_803F0A54(u8* p) {
         }
     } else if (*(s32*)(p + 0x210) < 0xd4) {
         f32 alpha = lbl_80543718 * ratio;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xec0);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xec0);
         s32* tbl = (s32*)(base + 0x40);
         for (s32 i = 0; i < 4; i++) {
             DrawRec rec;
@@ -300,7 +301,7 @@ extern "C" void fn_803F0A54(u8* p) {
         }
     } else {
         f32 alpha = lbl_80543718 * ratio;
-        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xec0);
+        u64 (*tags)[4] = (u64 (*)[4])(base + 0xec0);
         for (s32 i = 3; i >= 0; i--) {
             DrawRec rec;
             rec.b26 = 0;
@@ -1131,6 +1132,10 @@ extern "C" void fn_803F715C(u8* p) {
     }
 }
 
+extern const f32 lbl_805437B0;
+extern const f32 lbl_805437B4;
+extern const f32 lbl_805437B8;
+extern const f32 lbl_805437BC;
 extern "C" void fn_803F726C(u8* p) {
     s32 t = *(s32*)(p + 0x210);
     if (*(s32*)(p + 0x1ac) == 2) {
