@@ -224,14 +224,6 @@ extern const f32 lbl_80541D4C;
 extern const f32 lbl_80541D50;
 extern const f32 lbl_80541D54;
 
-static inline s32 gnldCostIndex(s32 count, s32 amount) {
-    const s32* cost = lbl_804AB630 + count;
-    for (; count > 0; count--) {
-        if (amount < *cost) cost--;
-        else return count;
-    }
-    return 0;
-}
 extern "C" u32 fn_801F6874(void*);
 extern "C" void fn_80329640(u8* this_) {
  u8* p=this_;
@@ -247,7 +239,8 @@ extern "C" void fn_80329640(u8* this_) {
    heading=fn_801F6874((void*)(*(s32*)(p+0x98)));
    motion.setAll(lbl_80541D10);
    s32 remaining;
-   for(n=0;n<100 && (remaining=*(s32*)(p+0x238))>0;n++){
+   const int maximum=100;
+   for(n=0;n<maximum && (remaining=*(s32*)(p+0x238))>0;n++){
      s32 count=(*(s32*)(p+0x240));
      while(count>0){
        if(remaining>=lbl_804AB630[count])break;
@@ -259,8 +252,9 @@ extern "C" void fn_80329640(u8* this_) {
        if((*(s32*)(p+0x238))>5 && kind==2)kind=1;
        else kind=0;
      }
-     if((*(s32*)(p+0x238))<lbl_804AB630[kind])continue;
-     (*(s32*)(p+0x238))-=lbl_804AB630[kind];
+     s32 cost=lbl_804AB630[kind];
+     if(*(s32*)(p+0x238)<cost)continue;
+     *(s32*)(p+0x238)-=cost;
      id=fn_801F8544(fn_801F856C(),0x52555059,(*(s32*)(p+4)),p+0xc,kind);
      if(id<0)continue;
      obj=(u8*)fn_801F666C(fn_801F856C(),id);
