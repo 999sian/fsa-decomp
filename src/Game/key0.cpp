@@ -720,6 +720,7 @@ extern "C" void fn_802C2C30(char* p) {
         }
     }
 }
+#pragma auto_inline reset
 
 extern const f32 lbl_80540CD4;
 extern const f32 lbl_80540CD8;
