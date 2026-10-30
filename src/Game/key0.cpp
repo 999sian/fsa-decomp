@@ -906,7 +906,6 @@ extern "C" s32 fn_8023BCD4(s32 a);
 extern "C" void fn_801F0E34(char* p, s32 a, s32 b);
 extern "C" void fn_801F0D20(char* p, s32 a);
 extern "C" void fn_801F355C(char* p);
-extern "C" void fn_801F2618(char* p, void* delta, s32 flags);
 extern "C" void fn_8030C210(s32 a, JGeometry::TVec3<f32> b);
 extern "C" void fn_802C2C30(char* p);
 extern "C" void fn_802C3AE4(char* p);
@@ -1052,9 +1051,10 @@ extern "C" void fn_802C4498(char* p) {
         fn_801F355C(p);
         key0LinkHere(p);
         break;
-    case 2:
+    case 2: {
         fn_802C2840((u8*)p);
-        if (key0RoomFlag(*(s32*)(p + 4))) {
+        s32 room = *(s32*)(p + 4);
+        if (key0RoomFlag(room)) {
             if (!*(u8*)(p + 0x2b2)) {
                 vel.y += lbl_80540CD0;
                 if (vel.y > lbl_80540CB8) {
@@ -1071,6 +1071,7 @@ extern "C" void fn_802C4498(char* p) {
         }
         fn_802C3AE4(p);
         break;
+    }
     case 3:
         (*(s32*)(p + 0x284))--;
         if (*(s32*)(p + 0x284) == 0) {
@@ -1114,18 +1115,16 @@ extern "C" void fn_802C4498(char* p) {
             fn_802C2C30(p);
         }
         break;
-    case 5: {
-        f32 zero = lbl_80540C74;
+    case 5:
         vel.z += lbl_80540CC8;
         pos.add(vel);
-        if (pos.z < zero) {
-            pos.z = zero;
-            vel.x = vel.y = vel.z = zero;
+        if (pos.z < lbl_80540C74) {
+            pos.z = lbl_80540C74;
+            vel.x = vel.y = vel.z = lbl_80540C74;
             *(s32*)(p + 0x240) = 2;
             fn_801F0E34(p, 0x30072, 0);
         }
         break;
-    }
     case 6: {
         *(s32*)(p + 0x294) = 0;
         s32 n = *(s32*)((u8*)fn_801F856C() + 0x1008);
@@ -1185,16 +1184,15 @@ extern "C" void fn_802C4498(char* p) {
         if (*(s32*)(p + 0x28c) >= 0) {
             break;
         }
-        f32 zero = lbl_80540C74;
         pos.add(vel);
-        if (pos.z > zero) {
+        if (pos.z > lbl_80540C74) {
             vel.z -= lbl_80540C7C;
             break;
         }
         s32 kind = *(s32*)(p + 0x280);
         if (kind < 0x10) {
-            pos.z = zero;
-            vel.z = zero;
+            pos.z = lbl_80540C74;
+            vel.z = lbl_80540C74;
             *(s32*)(p + 0x27c) = 0;
             *(u8*)(p + 0x2ad) = 0xff;
             *(s32*)(p + 0x240) = 2;
