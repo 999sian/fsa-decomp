@@ -22,37 +22,87 @@ extern "C" const float lbl_8053FAC8;
 extern "C" const double lbl_8053FAD0;
 extern "C" char* lbl_8053AB10;
 
-extern "C" void fn_80210630(char* p, unsigned char flag, unsigned char a, unsigned char b, unsigned char c)
+extern "C" void fn_80210630(Actor* p, unsigned char flag, unsigned char a, unsigned char b, unsigned char c)
 {
-	void* tex;
-
-	tex = fn_804032E8(0x54494D47, lbl_804A61A8[*(int*)(p + 0x98) + (flag ? 4 : 0)]);
-	float v[3];
+	struct Rec {
+		u8 ids[0x10];
+		s32 w10;
+		s32 w14;
+		void* w18;
+		u8 b1c, b1d, b1e, b1f, b20, b21, b22, b23, b24, b25, b26;
+		s32 w28;
+		u8 b2c, b2d, b2e;
+		s32 w30;
+		s32 w34;
+		s32 w38;
+	};
+	void* tex = fn_804032E8(0x54494D47, lbl_804A61A8[p->field_98 + (flag ? 4 : 0)]);
+	Rec rec;
 	float mat[3][4];
-	DrawRec rec;
+	rec.w10 = -1;
+	rec.w14 = -1;
+	for (u32 i = 0; (u8)i < 0x10; i += 8) {
+		rec.ids[(u8)i] = i;
+		rec.ids[(u8)(i + 1)] = i + 1;
+		rec.ids[(u8)(i + 2)] = i + 2;
+		rec.ids[(u8)(i + 3)] = i + 3;
+		rec.ids[(u8)(i + 4)] = i + 4;
+		rec.ids[(u8)(i + 5)] = i + 5;
+		rec.ids[(u8)(i + 6)] = i + 6;
+		rec.ids[(u8)(i + 7)] = i + 7;
+	}
+	float sz = lbl_8053FAC4 * p->field_54.z;
+	float sy = lbl_8053FAC4 * p->field_54.y;
+	float sx = lbl_8053FAC4 * p->field_54.x;
+	rec.w14 = 0;
+	rec.b1c = 0;
+	float pz = p->field_0C.z;
+	rec.b1d = 0;
+	JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)&p->field_0C);
+	float ox = lbl_8046A470[p->field_98];
+	float oy = lbl_8046A480[p->field_98];
+	float vx = v.x;
+	float vy = v.y;
+	s32 room = p->field_04;
+	rec.w18 = 0;
+	rec.w10 = -1;
+	rec.b1e = 0;
+	rec.b1f = 1;
+	rec.b20 = 1;
+	rec.b21 = 0;
+	rec.b22 = 0;
+	rec.b23 = 0;
+	rec.b24 = 0;
+	rec.b25 = 0;
+	rec.b26 = 1;
+	rec.w28 = 3;
+	rec.b2c = 1;
+	rec.b2d = 0;
+	rec.b2e = 0;
+	rec.w30 = -1;
+	rec.w34 = 0;
+	rec.w38 = 2;
 	rec.b1c = a;
 	rec.b1d = b;
 	*(u8*)&rec.w14 = c;
 	mat[0][3] = lbl_8053FAC0;
 	mat[1][3] = lbl_8053FAC0;
 	mat[2][3] = lbl_8053FAC0;
-	mat[0][0] = lbl_8053FAC4 * *(float*)(p + 0x54);
+	mat[0][0] = sx;
 	mat[0][1] = lbl_8053FAC0;
 	mat[0][2] = lbl_8053FAC0;
 	mat[1][0] = lbl_8053FAC0;
-	mat[1][1] = lbl_8053FAC4 * *(float*)(p + 0x58);
+	mat[1][1] = sy;
 	mat[1][2] = lbl_8053FAC0;
 	mat[2][0] = lbl_8053FAC0;
 	mat[2][1] = lbl_8053FAC0;
-	mat[2][2] = lbl_8053FAC4 * *(float*)(p + 0x5c);
+	mat[2][2] = sz;
 	rec.w18 = mat;
-	v[0] = *(float*)(p + 0xc);
-	v[1] = *(float*)(p + 0x10);
-	v[2] = *(float*)(p + 0x14);
-	v[0] = v[0] + mat[0][0] * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 2) - lbl_8046A470[*(int*)(p + 0x98)]);
-	v[1] = v[1] + mat[1][1] * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 4) - lbl_8046A480[*(int*)(p + 0x98)]);
-	if (*(int*)(p + 4) < 8) {
-		fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), v, tex, &rec);
+	v.z = pz;
+	v.x = vx + sx * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 2) - ox);
+	v.y = vy + sy * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 4) - oy);
+	if (room < 8) {
+		fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &v, tex, &rec);
 	}
 }
 
@@ -82,14 +132,22 @@ extern "C" const float lbl_8053FAE4;
 extern "C" void fn_80239914(float* box, unsigned int a, unsigned int b);
 extern "C" unsigned char* fn_8020D58C(void);
 extern "C" void fn_8020D8C0(unsigned char* p, float* box, unsigned int b, unsigned int a);
+static inline void boxProducts108(const char* p,float* box) {
+    float d=lbl_8053FAD8* *(const float*)(p+0x58);
+    float c=lbl_8053FAE4* *(const float*)(p+0x58);
+    float b=lbl_8053FADC* *(const float*)(p+0x54);
+    float a=lbl_8053FAE0* *(const float*)(p+0x54);
+    box[0]=a;box[1]=c;box[2]=b;box[3]=d;
+}
 extern "C" void fn_802108BC(int param_1) {
 float box[4];
 float c,d,b2,a0;
 fn_801CE0A4();
 d=lbl_8053FAD8 * *(float*)(param_1+0x58);
 c=lbl_8053FAE4 * *(float*)(param_1+0x58);
-b2=lbl_8053FADC * *(float*)(param_1+0x54);
-a0=lbl_8053FAE0 * *(float*)(param_1+0x54);
+const float& x=*(float*)(param_1+0x54);
+b2=lbl_8053FADC * x;
+a0=lbl_8053FAE0 * x;
 box[0] = a0; box[1] = c; box[2] = b2; box[3] = d;
 box[0] += *(float*)(param_1+0xc); box[1] += *(float*)(param_1+0x10); box[2] += *(float*)(param_1+0xc); box[3] += *(float*)(param_1+0x10);
 fn_80239914(box,*(unsigned int*)(param_1+4),*(unsigned int*)(param_1+0x198));
