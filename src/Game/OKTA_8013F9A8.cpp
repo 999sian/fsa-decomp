@@ -4,6 +4,8 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/HitRect.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 // ---- from Game/fn_8013F9A8_dtor.cpp
 
