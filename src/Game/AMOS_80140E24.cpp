@@ -97,6 +97,7 @@ extern "C" void fn_801BEDBC(void*);
 extern f32 lbl_8053CEC4, lbl_8053CECC, lbl_8053CEE8;
 extern JGeometry::TVec3f lbl_80465A98[4];
 static inline void AMOSnormalize(JGeometry::TVec3f* v) { v->normalize(); }
+static inline f32 AMOSsquared(const JGeometry::TVec3f* v) { return v->squared(); }
 extern "C" void fn_80141064(u8* this_) {
     s32 room;
     s32 i;
@@ -185,7 +186,7 @@ extern "C" void fn_80141064(u8* this_) {
         (*(f32*)(this_+0x44)) += lbl_8053CEB4;
         (*(JGeometry::TVec3f*)(this_+0xc)).add((*(JGeometry::TVec3f*)(this_+0x3c)));
         if ((*(f32*)(this_+0x14)) <= 0.0f) {
-            pos.x=(*(f32*)(this_+0xc)); pos.y=(*(f32*)(this_+0x10)); pos.z=(*(f32*)(this_+0x14));
+            pos.set(*(JGeometry::TVec3f*)(this_+0xc));
             pos.y += lbl_8053CEB8;
             if ((*(s32*)(this_+0x304))) {
                 if ((*(u16*)(this_+0x94)) == 3 || (*(u16*)(this_+0x94)) == 4)
@@ -215,18 +216,19 @@ extern "C" void fn_80141064(u8* this_) {
                 }
             }
             fn_801EE8F4(this_, &pos, 0, 0);
+            f32 z = lbl_8053CEBC;
             pos.scale(lbl_8053CEA8);
             (*(f32*)(this_+0x3c)) = pos.x;
             (*(f32*)(this_+0x40)) = pos.y;
-            (*(f32*)(this_+0x44)) = lbl_8053CEBC;
+            (*(f32*)(this_+0x44)) = z;
         }
         fn_801F2B7C(this_, -100, -1, 1);
         fn_801F2618(this_, 0, 0);
         break;
     case 3: {
-        s32 handle = (*(s32*)(this_+0x198));
+        room = (*(s32*)(this_+0x198));
         u8* manager = fn_8020D58C();
-        fn_8020D7D0(manager + manager[0]*0x784 + 4, handle);
+        fn_8020D7D0(manager + manager[0]*0x784 + 4, room);
         fn_801EF510(this_);
         if ((int)(*(u16*)(this_+0x94)) == 6 || (int)(*(u16*)(this_+0x94)) == 7) {
             box = (*(JGeometry::TBox2f*)(this_+0x60));
@@ -262,11 +264,7 @@ b.set(*(JGeometry::TBox2f*)(this_+0x60));
         } else {
             JGeometry::TVec3f oldPos((*(JGeometry::TVec3f*)(this_+0xc)));
             JGeometry::TVec3f oldVel((*(JGeometry::TVec3f*)(this_+0x3c)));
-            f32 sq = (*(JGeometry::TVec3f*)(this_+0x3c)).squared();
-            if (!(sq <= JGeometry::TUtilf::epsilon())) {
-                f32 inv = JGeometry::TUtilf::inv_sqrt(sq);
-                (*(JGeometry::TVec3f*)(this_+0x3c)).scale(inv);
-            }
+            AMOSnormalize(&(*(JGeometry::TVec3f*)(this_+0x3c)));
             if ((*(s32*)(this_+0x314)) >= 0) (*(JGeometry::TVec3f*)(this_+0x3c)).scale(lbl_8053CECC);
             else if ((*(s32*)(this_+0x310)) >= 0) (*(JGeometry::TVec3f*)(this_+0x3c)).scale(lbl_8053CEB8);
             else (*(JGeometry::TVec3f*)(this_+0x3c)).zero();
