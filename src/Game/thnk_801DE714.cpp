@@ -8,7 +8,7 @@ extern "C" void fn_801E002C(void*, void*);
 extern "C" void fn_801E1AB4(void*, u8);
 extern "C" void fn_801E2D88(void*);
 extern "C" s32 fn_802375B0(s32);
-extern "C" u8 fn_801CCFE4(s32);
+extern "C" s32 fn_801CCFE4(s32);
 extern "C" s32 fn_80138A30(void*);
 extern void* lbl_8053AAF8;
 extern "C" s32 fn_8022FD8C(s32);
