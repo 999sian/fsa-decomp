@@ -251,19 +251,55 @@ static inline BOOL gbaReadPacket(GbaChan* c) {
 }
 
 static inline BOOL gbaHandshake(GbaChan* c, u32 expected) {
-    if (gbaReadId(c) != 0) {
-        return TRUE;
+    if (gbaReadId(c) == 0 && (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) == 0 || *(u32*)((u8*)c + 0x64) == expected)) {
+        if (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) == 0) {
+            *(s32*)((u8*)c + 0x5c) = 0;
+        }
+        if (gbaWriteId(c) == 0) {
+            return gbaReadPacket(c);
+        }
     }
-    if (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) != 0 && *(u32*)((u8*)c + 0x64) != expected) {
-        return TRUE;
+    return TRUE;
+}
+
+// Same CRC as fn_803006E8, used inline by the link thread.
+static inline u8 gbaCrc(u32 data) {
+    u32 crc = 0;
+    u32 i;
+
+    for (u32 mask = 0x80; mask != 0; mask >>= 1) {
+        crc <<= 1;
+        if (data & mask) {
+            if (crc & 0x100) {
+                crc ^= 0xcc;
+            } else {
+                crc += 1;
+            }
+        } else if (crc & 0x100) {
+            crc ^= 0xcd;
+        }
     }
-    if (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) == 0) {
-        *(s32*)((u8*)c + 0x5c) = 0;
+    data >>= 8;
+    for (u32 mask = 0x80; mask != 0; mask >>= 1) {
+        crc <<= 1;
+        if (data & mask) {
+            if (crc & 0x100) {
+                crc ^= 0xcc;
+            } else {
+                crc += 1;
+            }
+        } else if (crc & 0x100) {
+            crc ^= 0xcd;
+        }
     }
-    if (gbaWriteId(c) != 0) {
-        return TRUE;
-    }
-    return gbaReadPacket(c);
+    i = 0;
+    do {
+        crc <<= 1;
+        if (crc & 0x100) {
+            crc ^= 0xcd;
+        }
+    } while (++i < 8);
+    return crc;
 }
 
 extern "C" void fn_80300A8C(GbaChan* c) {
@@ -346,6 +382,330 @@ extern "C" void fn_80300A8C(GbaChan* c) {
                     }
                 }
             }
+        }
+    }
+}
+
+extern "C" void* fn_80300E1C(void* arg) {
+    GbaChan* c = (GbaChan*)arg;
+    void* msg;
+    s32 err;
+    s32 count;
+    s32 writeOff;
+    s32 readOff;
+    OSTime timeout;
+    OSTime start;
+    u32 cmd;
+    u32 dummy;
+    u32 alarm[11];
+
+    for (;;) {
+        err = OSReceiveMessage(c, &msg, 0);
+        if (err == 0) {
+            c->f_d1 = 0;
+            OSReceiveMessage(c, &msg, 1);
+            c->f_d2 = 0;
+        }
+        if (msg == (void*)1) {
+            return NULL;
+        }
+        if (msg == (void*)7 && *(u8**)((u8*)c + 0x4c) == NULL) {
+            msg = (void*)8;
+        }
+        c->msg = (u32)msg;
+        writeOff = 0;
+        readOff = 0;
+        count = 0;
+        c->f_d1 = 1;
+        c->status[2] = 0;
+        switch ((s32)msg) {
+        case 3:
+            timeout = (*(u32*)0x800000F8 / 4 / 1000) * 500;
+            break;
+        case 5:
+        case 10:
+            timeout = (*(u32*)0x800000F8 / 4 / 1000) * 500;
+            break;
+        default:
+            timeout = (*(u32*)0x800000F8 / 4 / 1000) * 1000;
+            break;
+        }
+        start = OSGetTime();
+        goto check;
+
+    wait:
+        {
+            u32 ticks = (*(u32*)0x800000F8 / 4 / 1000) * 15;
+            OSCreateAlarm(alarm);
+            alarm[10] = (u32)OSGetCurrentThread();
+            s32 level = OSDisableInterrupts();
+            OSSetAlarm(alarm, ticks, fn_80301A88);
+            OSSuspendThread((void*)alarm[10]);
+            OSRestoreInterrupts(level);
+        }
+    check:
+        if (c->f_d2 != 0) {
+            c->f_d3 = 3;
+            c->f_d8 = 0;
+            c->f_d9 = 0;
+            continue;
+        }
+        if (OSGetTime() - start > timeout) {
+            if (err != 3) {
+                err = 1;
+            }
+            c->f_d3 = err;
+            c->f_d8 = 0;
+            c->f_d9 = 0;
+            continue;
+        }
+        switch ((s32)msg) {
+        case 2:
+            c->f_d8 = 0;
+            c->f_d9 = 0;
+            c->f_d3 = GBAReset(c->chan, c->status);
+            continue;
+        case 3:
+            c->f_d8 = 0;
+            c->f_d9 = 0;
+            if (GBAReset(c->chan, c->status) == 0) {
+                err = 3;
+                goto wait;
+            }
+            c->f_d3 = 0;
+            continue;
+        case 4:
+            c->f_d8 = 0;
+            c->f_d9 = 0;
+            if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+                goto fail;
+            }
+            if (c->status[0] & 2) {
+                goto check;
+            }
+            if (count == 1) {
+                c->f_d3 = 0;
+                continue;
+            }
+            cmd = 0x03000000;
+            if ((err = GBAWrite(c->chan, (u8*)&cmd, c->status)) != 0) {
+                goto fail;
+            }
+            count++;
+            writeOff += 4;
+            goto check;
+        case 5:
+        {
+            u8 s;
+            if ((err = GBAGetStatus(c->chan, c->status)) != 0 || ((s = c->status[0]) & 0x30) != 0x30) {
+            fail:
+                if (err == 0) {
+                    err = 3;
+                }
+                c->f_d3 = err;
+                c->f_d8 = 0;
+                c->f_d9 = 0;
+                continue;
+            }
+            if (count < 9) {
+                u8* buf;
+                if (s & 2) {
+                    goto check;
+                }
+                if (count == 0) {
+                    cmd = 0x02000000;
+                    buf = (u8*)&cmd;
+                } else {
+                    buf = (u8*)&lbl_804D6AB8[c->chan] + (count - 1) * 4;
+                }
+                if ((err = GBAWrite(c->chan, buf, c->status)) != 0) {
+                    goto fail;
+                }
+                if ((c->status[0] & 0x30) != 0x30) {
+                    goto fail;
+                }
+                count++;
+                writeOff += 4;
+                goto check;
+            }
+            if (!(s & 8)) {
+                goto check;
+            }
+            if ((err = GBARead(c->chan, (u8*)c + (readOff + 0x28), c->status)) != 0) {
+                goto fail;
+            }
+            if ((c->status[0] & 0x30) != 0x30) {
+                goto fail;
+            }
+            readOff += 4;
+            if (readOff != 0x20) {
+                goto check;
+            }
+            ((void (*)(GbaChan*, void*))c->cb)(c, msg);
+            continue;
+        }
+        case 6:
+        {
+            u32 type;
+            c->f_d8 = 0;
+            err = 1;
+            c->f_d9 = 0;
+            *(s32*)((u8*)c + 0x5c) = err;
+            c->status[3] = 0;
+            type = SIProbe(c->chan);
+            *(u32*)((u8*)c + 0x58) = type;
+            if (type == 0x80) {
+                goto wait;
+            }
+            if (type == 0x40000) {
+                *(u32*)((u8*)c + 0x54) = type;
+                c->f_d3 = 0;
+                continue;
+            }
+            if (type != 8 && type != 0x40) {
+                *(u32*)((u8*)c + 0x54) = type;
+            }
+            c->f_d3 = 1;
+            continue;
+        }
+        case 7:
+        {
+            u32 expected;
+            c->f_d8 = 0;
+            c->f_d9 = 1;
+            *(s32*)((u8*)c + 0x5c) = 1;
+            c->status[3] = 0;
+            err = GBAJoyBoot(c->chan, lbl_8054161C[c->chan], 2, *(u8**)((u8*)c + 0x4c), *(u32*)((u8*)c + 0x50), c->status);
+            if (err == 0) {
+                GbaPkt* pkt = &lbl_804D6AB8[c->chan];
+                memset(pkt, 0, sizeof(GbaPkt));
+                pkt->f00 = 1;
+                pkt->f01 = c->chan;
+                pkt->f03 = 1;
+                pkt->f04 = lbl_8053ACC8;
+                c->f_dc = 1;
+                c->f_dd = 0;
+                msg = (void*)8;
+                start = OSGetTime();
+                goto check;
+            }
+            if (err != 3) {
+                goto wait;
+            }
+            {
+                u8 s = c->status[0];
+                if ((s & 0xa) == 0xa) {
+                    if ((s & 0x30) == 0x10) {
+                        goto wait;
+                    }
+                    GBARead(c->chan, (u8*)&dummy, c->status);
+                    goto wait;
+                }
+            }
+            if (fn_801365A8() == 0) {
+                expected = lbl_80541620;
+            } else {
+                expected = lbl_80541628;
+            }
+            if (gbaHandshake(c, expected)) {
+                goto wait;
+            }
+            ((void (*)(GbaChan*, void*))c->cb)(c, msg);
+            continue;
+        }
+        case 8:
+        {
+            u32 expected;
+            c->f_d8 = 0;
+            c->f_d9 = 1;
+            *(s32*)((u8*)c + 0x5c) = 1;
+            c->status[3] = 0;
+            if ((err = GBAReset(c->chan, c->status)) != 0) {
+                goto wait;
+            }
+            if (fn_801365A8() == 0) {
+                expected = lbl_80541620;
+            } else {
+                expected = lbl_80541628;
+            }
+            if (gbaHandshake(c, expected)) {
+                goto wait;
+            }
+            ((void (*)(GbaChan*, void*))c->cb)(c, msg);
+            continue;
+        }
+        case 10:
+        {
+            u8 s;
+            if (count < c->f_da) {
+                if (count == 0) {
+                    if (c->f_d8 == 0) {
+                        c->f_d3 = 1;
+                        continue;
+                    }
+                    c->f_db = ((u8*)c)[0x6b] & 3;
+                    c->f_da = lbl_80541618[c->f_db];
+                    if (c->f_db != 0) {
+                        if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+                            goto fail;
+                        }
+                        s = c->status[0];
+                        if ((s & ~2) != 0x30) {
+                            goto fail;
+                        }
+                        if (s != 0x30) {
+                            goto check;
+                        }
+                    }
+                }
+                if (c->f_db == 0) {
+                    if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+                        goto fail;
+                    }
+                    s = c->status[0];
+                    if ((s & 0x30) != 0x30) {
+                        goto fail;
+                    }
+                    if (s != 0x30) {
+                        goto check;
+                    }
+                }
+                if ((err = GBAWrite(c->chan, (u8*)c + (writeOff + 0x68), c->status)) != 0) {
+                    goto fail;
+                }
+                if ((c->status[0] & ~2) != 0x30) {
+                    goto fail;
+                }
+                count++;
+                writeOff += 4;
+                goto check;
+            }
+            if ((err = GBAGetStatus(c->chan, c->status)) != 0) {
+                goto fail;
+            }
+            s = c->status[0];
+            if ((s & 0x30) != 0x30) {
+                goto fail;
+            }
+            if (s & 2) {
+                goto check;
+            }
+            if ((err = GBARead(c->chan, (u8*)c + 0x60, c->status)) != 0) {
+                goto fail;
+            }
+            if ((c->status[0] & 0x30) != 0x30) {
+                goto fail;
+            }
+            {
+                u32 v = *(u32*)((u8*)c + 0x60);
+                if ((u8)v != fn_803006E8((v & 0xff00) | ((v >> 16) & 0xff))) {
+                    goto fail;
+                }
+            }
+            c->status[2] = 1;
+            c->f_d3 = 0;
+            continue;
+        }
         }
     }
 }
