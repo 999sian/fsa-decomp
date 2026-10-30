@@ -748,7 +748,7 @@ static inline void key0LinkHere2(char* p) {
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
-    key0LinkPoints(Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10)),
+    key0LinkPosKey(Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10)), Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)),
                    packed, *(u32*)(p + 0x238));
 }
 
