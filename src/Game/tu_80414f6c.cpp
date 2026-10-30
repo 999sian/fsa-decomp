@@ -793,6 +793,23 @@ extern "C" void* fn_8041769C(void* this_, s16 how) {
     return this_;
 }
 
+extern void* lbl_804AF86C[];
+extern u8* lbl_8053AD78;
+extern "C" void* __nw__FUl(u32);
+extern "C" void fn_80402F04(void*, void*);
+extern "C" void* fn_804030C4(u32, const char*);
+extern "C" void fn_80440D78(void*, void*);
+extern "C" void fn_80440CE4(void*, void*);
+extern "C" u8 fn_803B9120(s32);
+static inline void dataSelectChild(u8* p, s32 offset, u64 key) {
+    void* child = __nw__FUl(0x2c);
+    if (child) *(void**)child = lbl_804AF86C;
+    *(void**)(p + offset) = child;
+    fn_80402F04(*(void**)(p + offset), (*(J2DScreen**)(p + 0x24))->search(key));
+}
+static inline void dataSelectFont(J2DScreen* screen, u64 key, JUTFont* font) {
+    ((J2DTextBox*)screen->search(key))->setFont(font);
+}
 extern "C" void fn_8041787C(void* this_) {
     u8* p = (u8*)this_;
     *(void**)p = lbl_804B1378;
