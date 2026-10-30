@@ -126,12 +126,13 @@ extern "C" s32 fn_80453AF8(void) {
     return 9;
 }
 
-extern "C" void fn_80453B14(u8* this_) {
+extern "C" s32 fn_80453B14(u8* this_) {
     *(s32*)(this_ + 0x58) = 9;
     switch (*(s16*)(this_ + 0x1e)) {
     default:
         break;
     }
+    return 0;
 }
 
 extern "C" void fn_80454A00(u8* p) {
@@ -153,13 +154,14 @@ extern "C" void fn_80454A6C(void* this_) {
     *(s16*)((u8*)this_ + 0x1c) = 0;
     *(s16*)((u8*)this_ + 0x1e) = 2;
     *(s16*)((u8*)this_ + 0x20) = 0;
-    ((void (*)(void*, s32))(*(void***)*(void**)((u8*)*(void**)((u8*)this_ + 0x8) + 0x4))[9])(*(void**)((u8*)*(void**)((u8*)this_ + 0x8) + 0x4), 0);
+    void* p4 = *(void**)((u8*)*(void**)((u8*)this_ + 0x8) + 0x4);
+    ((FsaVt80454A6C*)p4)->v7(0);
     *(s16*)((u8*)*(void**)((u8*)this_ + 0x8) + 0x26) = 0;
     fn_80402E08(*(void**)((u8*)this_ + 0xc), 0.0f, -480.0f);
     *(s16*)((u8*)*(void**)((u8*)this_ + 0xc) + 0x22) = 0;
     u32 uVar1 = fn_80403084(0x54494d47, lbl_80491488);
-    void* o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0x73630000, 0x50, 0x73633031);
-    ((void (*)(void*, u32, u32))(*(void***)o)[68])(o, uVar1, 0);
+    void* o = ((FsaVt80454A6C*)*(void**)((u8*)this_ + 0x4))->v13(0x73630000, 0x50, 0x73633031);
+    ((FsaVt80454A6C*)o)->v66(uVar1, 0);
 
     u32* p = (u32*)lbl_80491470;
     for (s32 i = 0; i < 3; i++, p += 2) {
@@ -171,8 +173,8 @@ extern "C" void fn_80454A6C(void* this_) {
             col1[2] = 0xa0;
             col1[3] = 0xff;
             c1 = *(u32*)col1;
-            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0xff, p[0], p[1]);
-            ((void (*)(void*, void*))(*(void***)o)[75])(o, &c1);
+            o = ((FsaVt80454A6C*)*(void**)((u8*)this_ + 0x4))->v13(0xff, p[0], p[1]);
+            ((FsaVt80454A6C*)o)->v73(&c1);
             u32 c2;
             u8 col2[4];
             col2[0] = 0x27;
@@ -180,8 +182,8 @@ extern "C" void fn_80454A6C(void* this_) {
             col2[2] = 0;
             col2[3] = 0;
             c2 = *(u32*)col2;
-            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0x27, p[0], p[1]);
-            ((void (*)(void*, void*))(*(void***)o)[74])(o, &c2);
+            o = ((FsaVt80454A6C*)*(void**)((u8*)this_ + 0x4))->v13(0x27, p[0], p[1]);
+            ((FsaVt80454A6C*)o)->v72(&c2);
         } else {
             u32 c3;
             u8 col3[4];
@@ -190,8 +192,8 @@ extern "C" void fn_80454A6C(void* this_) {
             col3[2] = 0x2a;
             col3[3] = 0xff;
             c3 = *(u32*)col3;
-            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0x4c, p[0], p[1]);
-            ((void (*)(void*, void*))(*(void***)o)[74])(o, &c3);
+            o = ((FsaVt80454A6C*)*(void**)((u8*)this_ + 0x4))->v13(0x4c, p[0], p[1]);
+            ((FsaVt80454A6C*)o)->v73(&c3);
             u32 z;
             u8 zero[4];
             zero[0] = 0;
@@ -199,8 +201,8 @@ extern "C" void fn_80454A6C(void* this_) {
             zero[2] = 0;
             zero[3] = 0;
             z = *(u32*)zero;
-            o = ((void* (*)(void*, u32, u32, u32))(*(void***)*(void**)((u8*)this_ + 0x4))[15])(*(void**)((u8*)this_ + 0x4), 0, p[0], p[1]);
-            ((void (*)(void*, void*))(*(void***)o)[74])(o, &z);
+            o = ((FsaVt80454A6C*)*(void**)((u8*)this_ + 0x4))->v13(0, p[0], p[1]);
+            ((FsaVt80454A6C*)o)->v72(&z);
         }
     }
     *(s32*)((u8*)this_ + 0x58) = 9;
