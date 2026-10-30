@@ -76,10 +76,13 @@ extern "C" void fn_800F7CC8(char* this_) {
 extern const f32 lbl_8053BF30;
 struct LplkRandom {
     u32 seed;
+    u32 getBits() {
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        return seed;
+    }
     f32 get() {
         union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
+        out.s = (getBits() >> 9) | 0x3f800000;
         return out.f - lbl_8053BF30;
     }
 };
