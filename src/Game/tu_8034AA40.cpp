@@ -213,6 +213,76 @@ extern "C" void fn_8034AFE8(u8* p) {
     fn_801F06F0(p, str, id, lbl_80542518, lbl_80542518, 0, 0);
 }
 #pragma opt_propagation reset
+#include "JSystem/JMath/JMath.h"
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AF08;
+extern "C" void* lbl_8053AB10;
+extern "C" void fn_80239914(void*,s32,s32);
+extern "C" u8* fn_8020D58C(void);
+extern "C" void fn_8020D8C0(void*,void*,s32,s32);
+extern "C" void fn_8022FEB8(void*,s32,s32,s32,s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" u8 fn_8038AD24(s32,s32,s32,s32,const JGeometry::TVec3f&,s32);
+extern "C" u8 fn_803865B8(s32);
+extern "C" s32 fn_8037EFB4(s32);
+extern "C" u8 fn_8038470C(s32,s32);
+extern "C" void fn_8038938C(s32,s32);
+extern "C" void fn_803894BC(s32,s32);
+extern "C" void fn_80389254(s32,s32);
+extern "C" u8 fn_80388CAC(s32,s32);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_801F6884(void*);
+extern "C" s32 fn_801F68E0(void*);
+extern "C" void fn_801F0D20(void*,s32);
+extern "C" void fn_80458FF0(void*,u32,s32,s32);
+extern "C" void fn_8022ADE4(void);
+extern "C" void fn_8022ADCC(void);
+extern "C" void fn_80138B7C(void*);
+extern "C" s32 fn_80138A30(void*);
+extern "C" void fn_802D7844(void*,s32,s32);
+extern "C" u8 fn_802308E0(s32);
+extern "C" u8 fn_80236B50(s32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern "C" s32 Actor_CreateByID(void*,u32,u32,void*,u32,s32,s32);
+extern "C" void fn_8043D874(void*,s32,s32,s32);
+extern "C" void fn_8030C210(void*,void*);
+extern "C" f32 lbl_80542560;
+extern "C" f32 lbl_80542564;
+extern "C" void fn_8022FF8C(s32,void*,s32,s32,s32,s32);
+#pragma inline_depth(8)
+static inline u8 nwokEnabled(s32 i){u8 mask=1<<i;return (lbl_8053AAF8[0x82]&mask)!=0;}
+static inline bool nwokHasChicken(u8* self){
+JGeometry::TBox2f tmp;JGeometry::TBox2f box;
+tmp.i.x=lbl_80542528;tmp.i.y=lbl_8054252C;tmp.f.x=lbl_80542530;tmp.f.y=lbl_80542534;
+box=tmp;box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
+s32 index=-1;
+for(;;){index=fn_801F78F4(fn_801F856C(),0x4e495741,index);if(index<0)break;
+u8* obj=(u8*)fn_801F666C(fn_801F856C(),index);
+if(obj&&*(s32*)(self+0x4)==*(s32*)(obj+0x4)&&*(f32*)(obj+0x14)<lbl_8054252C){u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1&&obj[0xc4]==0)return true;}
+}return false;
+}
+static inline void nwokTally(u8* self){
+JGeometry::TBox2f tmp;JGeometry::TBox2f box;
+tmp.i.x=lbl_80542528;tmp.i.y=lbl_8054252C;tmp.f.x=lbl_80542530;tmp.f.y=lbl_80542534;
+box=tmp;box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
+*(s32*)(self+0x274)=0;*(s32*)(self+0x278)=0;*(s32*)(self+0x27c)=0;*(s32*)(self+0x280)=0;s32 index=-1;
+for(;;){index=fn_801F78F4(fn_801F856C(),0x4e495741,index);if(index<0)break;
+u8* obj=(u8*)fn_801F666C(fn_801F856C(),index);
+if(obj&&*(s32*)(obj+0x25c)>=0&&*(s32*)(self+0x4)==*(s32*)(obj+0x4)&&*(f32*)(obj+0x14)<lbl_8054252C){
+u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1){if(obj[0x2a3]==1)self[0x284+*(s32*)(obj+0x25c)]=1;*(s32*)(self+0x274);(*(s32*)(self+0x274+*(s32*)(obj+0x25c)*4))+=1;}
+}}
+}
+static inline s32 nwokWinner(u8* self){
+s32 choices[4];s32* next=choices;s32 best=*(s32*)(self+0x274);s32 count=0;
+if(fn_80138A30(lbl_8053AAF8)==1)return 0;
+if(best<*(s32*)(self+0x278))best=*(s32*)(self+0x278);if(best<*(s32*)(self+0x27c))best=*(s32*)(self+0x27c);if(best<*(s32*)(self+0x280))best=*(s32*)(self+0x280);
+if(best==*(s32*)(self+0x274)){*next++=0;count=1;}if(best==*(s32*)(self+0x278)){*next++=1;count++;}if(best==*(s32*)(self+0x27c)){*next++=2;count++;}if(best==*(s32*)(self+0x280)){*next=3;count++;}
+if(count==1)return choices[0];
+return choices[(s32)(count*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1())];
+}
+
 extern "C" void fn_8034B088(u8* self) {
     s32 i;
     s32 st;
