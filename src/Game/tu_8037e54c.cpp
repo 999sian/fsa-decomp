@@ -785,6 +785,16 @@ found:
 }
 extern "C" void fn_8022FBB8(s32, s32);
 extern "C" u8 fn_802308E0(s32);
+static inline u32 messageIndexById(const u32 id) {
+    u32 result;
+    u32 i;
+    Inf1* inf = &lbl_8053AD78->p8->inf;
+    for (i = 0; i < inf->count; i++) {
+        if (inf->entries[i].id == id) { result = i; break; }
+    }
+    if (i >= inf->count) result = 0x12b;
+    return result;
+}
 static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
     typedef u8 (*ShowFn)(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u32);
     u32 index = fn_803846BC(id);
@@ -808,6 +818,7 @@ extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
     return fn_8038A984(a, b, c, id, e, f);
 }
 
+#pragma opt_lifetimes off
 extern "C" u8 fn_8038C678(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u32 flags) {
     f32 out[3];
     s32 i;
@@ -885,7 +896,7 @@ e=(char*)inf+inf->size+8+inf->entries[textIndex].offset;
 fail:
     return 0;
 }
-
+#pragma opt_lifetimes on
 extern "C" void fn_80391678(void* p);
 extern "C" void fn_80390E68(void* p);
 extern "C" void fn_8038D454() {
