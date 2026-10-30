@@ -31,6 +31,30 @@ struct MsgResourceAccess {
 extern void* lbl_804AF5A0[];
 extern u8 lbl_80529DEC[];
 
+
+struct MsgCursorInit {
+    u8 data[0x60];
+    MsgCursorInit(s8 player,void* pos) { fn_8045B46C(this,player,pos,0,8); }
+};
+struct MsgSequenceInit {
+    u8 data[0x64];
+    MsgSequenceInit(void* ref,void* control) {
+        __ct__Q28JMessage18TSequenceProcessorFPCQ28JMessage10TReferencePQ28JMessage8TControl(this,ref,control);
+        *(void**)this=lbl_804AF774;data[0x5c]=1;
+    }
+};
+struct MsgRenderingInit {
+    u8 data[0x2dc];
+    MsgRenderingInit(void* ref) {
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(this,ref);
+        *(void**)this=lbl_804AF72C;
+        u8* sub=data+0x38;
+        __ct__Q28JMessage19TRenderingProcessorFPCQ28JMessage10TReference(sub,ref);
+        *(void**)sub=lbl_804AF6E4;
+        *(s32*)(sub+0x1d8)=0;*(s32*)(sub+0x1dc)=0;sub[0x1e8]=0;
+    }
+};
+
 static inline void* msgNewCursor(s8 player,void* pos) {
     void* cursor=__nw__FUl(0x60);
     if(cursor) fn_8045B46C(cursor,player,pos,0,8);
