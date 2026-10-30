@@ -210,7 +210,14 @@ extern "C" u8 fn_802E9884(char* p, const f32* __restrict pos) {
 extern void* lbl_8053AF30;
 extern void* lbl_8053AEF0;
 extern void* lbl_8053AED0;
-extern const u8 lbl_8046F280[];
+#pragma pool_data on
+const u8 lbl_8046F280[] = {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,2,0,0,0,2,0,0,0,2,0,0,0,3,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,5,0,0,0,5,0,0,0,6,0,0,0,7,0,0,0,7};
+const u32 Endm_layers[] = {0,0,0,1,1,1,1,0,1,3,3,0,0,0,0,3,3};
+const s16 Endm_times[] = {180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180};
+const u16 Endm_paths[] = {13,0,13,1,13,2,13,3,14,0,14,1,14,2,14,3,15,0,15,1,16,3,15,2,15,3,17,0,16,0,16,1,16,2};
+const u8 Endm_fades[] = {0,0,1,1,2,2,2,3,3,3,3,4,5,5,6,7,7,0,0,0};
+const u8 Endm_effects[] = {1,0,1,1,1,0,0,1,1,1,0,1,1,0,1,0,0,0,0,0};
+#pragma pool_data reset
 extern "C" char lbl_804D56A8[];
 extern "C" char lbl_804D5730[];
 extern u8* lbl_804AA0B8[];
@@ -467,12 +474,15 @@ extern "C" void fn_802E9B6C(char* p) {
             --*(s32*)(p+0x27c);
             if(!*(s32*)(p+0x27c)) goto finish;
             JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(*(char**)(p+0x240)+0xc);
-            JGeometry::TBox2<f32> box=*(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10+0x24)+0x164);
+            JGeometry::TBox2<f32> box;
+            box=*(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10+0x24)+0x164);
             if(!(*(u32*)(*(char**)(p+0x240)+0x90)&7)) {
                 box.f.x+=lbl_80541334; box.i.x-=lbl_80541334;
                 box.f.y+=lbl_80541334; box.i.y-=lbl_80541334;
             }
-            if(!(u8)(pos.x>=box.i.x && pos.y>=box.i.y && pos.x<box.f.x && pos.y<box.f.y) || !*(u8*)(*(char**)(p+0x240)+0x11c)) {
+            u8 inside=0;
+            if(pos.x>=box.i.x && pos.y>=box.i.y && pos.x<box.f.x && pos.y<box.f.y) inside=1;
+            if(!inside || !*(u8*)(*(char**)(p+0x240)+0x11c)) {
             finish:
                 *(s32*)(p+0x27c)=60;
                 fn_80119998(fn_80119DD0(),100,0,2,0,0,20,0);
