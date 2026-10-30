@@ -441,25 +441,14 @@ extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* coun
     return TRUE;
 }
 #pragma opt_common_subs reset
-static inline f32 poolCoordinateDelta(const f32 a, const f32 b) {
-    return a - b;
-}
-static inline f32 poolXYDistanceSquared(const f32* pos, const PoolActor* actor) {
-    f32 dx = poolCoordinateDelta(pos[0], actor->mX);
-    f32 dy = poolCoordinateDelta(pos[1], actor->mY);
-    f32 dx2 = dx * dx;
-    f32 dy2 = dy * dy;
-    return dx2 + dy2;
-}
-
 extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     s32 id = -1;
     f32 best = 1000000.0f;
     for (s32 i = 0; i < pool->mCount; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->m1a8 == 1) {
-            f32 dx = poolCoordinateDelta(pos[0], pool->mActors[i]->mX);
-            f32 dy = poolCoordinateDelta(pos[1], pool->mActors[i]->mY);
+            f32 dx = pos[0] - pool->mActors[i]->mX;
             f32 dx2 = dx * dx;
+            f32 dy = pos[1] - pool->mActors[i]->mY;
             f32 dy2 = dy * dy;
             f32 d = dx2 + dy2;
             if (d < best) {
@@ -471,7 +460,7 @@ extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     if (outDist != NULL) *outDist = best;
     return id;
 }
-
+#pragma fp_contract reset
 extern "C" s32 fn_801F778C(ActorPool* pool, u32 type, f32* pos, f32* outDist) {
     s32 id = -1;
     f32 best = 1000000.0f;
