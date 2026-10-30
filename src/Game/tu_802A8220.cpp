@@ -53,6 +53,11 @@ extern "C" const f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_805
 
 #pragma push
 #pragma opt_propagation off
+static inline bool SpawnRadiusZero(f32 value) {
+    u8 nonzero=value!=lbl_80540854;
+    return nonzero==0;
+}
+
 extern "C" void fn_802A8284(u8* this_) {
     ActorExt* a=(ActorExt*)this_;
     s32 room=a->field_04;
