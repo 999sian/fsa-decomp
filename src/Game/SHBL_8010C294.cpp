@@ -298,6 +298,7 @@ static inline void SHBL_updateTrail(u8* p) {
         else U(P(p,0x374),0xf4)&=~1;
     }
 }
+static inline f32 SHBL_getSize(u8* p) { return F(p,0x260); }
 static inline f32 SHBL_cosAt(const f32* table, s16 angle) {
     return table[((u16)angle>>5)*2];
 }
@@ -364,7 +365,7 @@ extern "C" void fn_8010CA44(u8* p) {
             sine=speed*sine;
             F(p,0x3c)=sine;
             f32 cosSpeed=F(p,0x264);
-            f32 cosineValue=cosine[((u16)S(p,0x230)>>5)*2];
+            f32 cosineValue=SHBL_cosAt(cosine,S(p,0x230));
             cosineValue=cosSpeed*cosineValue;
             F(p,0x40)=cosineValue;
             F(p,0x44)=0.0f;
