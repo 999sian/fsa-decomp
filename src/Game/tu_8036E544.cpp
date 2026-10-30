@@ -44,18 +44,27 @@ extern "C" const f32 lbl_80542D58;
 extern u8 lbl_8050C700[0x40];
 
 static inline void spawnBubble(char* p, s32 slot, JGeometry::TVec3f& pos, s32 id) {
-    *(void**)(p + 0x258 + slot * 4) = fn_8013CC50(0, &pos, lbl_80542D58, id, 0, 0, 0, 0, 1);
-    if (*(void**)(p + 0x258 + slot * 4)) {
-        *(u32*)(*(char**)(p + 0x258 + slot * 4) + 0xf4) |= 0x40;
+    *(void**)(p + slot * 4 + 0x258) = fn_8013CC50(0, &pos, lbl_80542D58, id, 0, 0, 0, 0, 1);
+    if (*(void**)(p + slot * 4 + 0x258)) {
+        *(u32*)(*(char**)(p + slot * 4 + 0x258) + 0xf4) |= 0x40;
     }
 }
 
+static inline bool inArea(const JGeometry::TBox2f& area, const JGeometry::TVec3f& v) {
+    bool inside = false;
+    if (v.x >= area.i.x && v.y >= area.i.y && v.x < area.f.x && v.y < area.f.y) inside = true;
+    return inside;
+}
+
 static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
-    s32 slots[3] = {0, 0, 0};
+    s32 slots[3];
+    slots[0] = slots[1] = slots[2] = 0;
     s32 n = 0;
+    s32* out = slots;
     for (s32 i = 0; i < 20; i++) {
         if (*(void**)(p + 0x258 + i * 4) == 0) {
-            slots[n++] = i;
+            n++;
+            *out++ = i;
             if (n == 3) break;
         }
     }
@@ -81,6 +90,22 @@ static inline bool spawnPair(char* p, JGeometry::TVec3f pos, s32 kind) {
     return true;
 }
 
+extern "C" const f32 lbl_80542D5C;
+extern "C" const f32 lbl_80542D60;
+extern "C" const f32 lbl_80542D64;
+extern "C" const f32 lbl_80542D68;
+extern "C" const f32 lbl_80542D6C;
+extern "C" const f32 lbl_80542D70;
+extern "C" const f32 lbl_80542D74;
+extern "C" const f32 lbl_80542D78;
+extern "C" const f32 lbl_80542D7C;
+extern "C" const f32 lbl_80542D80;
+extern "C" const f32 lbl_80542D84;
+extern "C" const f32 lbl_80542D88;
+extern "C" const f32 lbl_80542D8C;
+extern "C" const f32 lbl_80542D90;
+extern "C" const f32 lbl_80542D94;
+extern "C" const f32 lbl_80542D98;
 extern "C" void fn_8036E5E8(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x234)) {
@@ -92,8 +117,143 @@ extern "C" void fn_8036E5E8(void* this_) {
     if (*(s32*)(p + 0x2b0)) {
         *(s32*)(p + 0x2b0) = *(s32*)(p + 0x2b0) - 1;
     }
-    *(f32*)(*(char**)(p + 0x250) + 0xc) = *(f32*)(p + 0xc);
-    *(f32*)(*(char**)(p + 0x250) + 0x14) = *(f32*)(p + 0x14);
+    *(JGeometry::TVec3f*)(*(char**)(p + 0x250) + 0xc) = *(JGeometry::TVec3f*)(p + 0xc);
+    u16* rm = *(u16**)(sManager__8JUTVideo + 4);
+    JGeometry::TVec3f center((f32)rm[2] * lbl_80542D5C, (f32)rm[3] * lbl_80542D5C, lbl_80542D60);
+    JGeometry::TVec3f pos;
+    s32 count = 0;
+    char* q = p;
+    for (s32 i = 0; i < 20; i++, q += 4) {
+        char* em = *(char**)(q + 0x258);
+        if (em) {
+            count++;
+            bool del = false;
+            if (*(u32*)(em + 0xf4) & 8) {
+                if (*(s32*)(em + 0xd0) + *(s32*)(em + 0xdc) == 0) del = true;
+            }
+            if (del) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(q + 0x258));
+                *(void**)(q + 0x258) = 0;
+            }
+        }
+    }
+    if (count >= *(s32*)(p + 0x2b4)) {
+        *(s32*)(p + 0x2b4) = count;
+    }
+    switch (*(s32*)(p + 0x230)) {
+    case 0: {
+        ((JGeometry::TVec3f*)(p + 0xc))->add(*(JGeometry::TVec3f*)(p + 0x3c));
+        if (*(s32*)(p + 0x23c) == 0) {
+            *(s32*)(p + 0x23c) = *(s32*)(p + 0x240);
+            *(s32*)(p + 0x244) = *(s32*)(p + 0x244) + 1;
+            if (*(s32*)(p + 0x244) >= 8) {
+                *(s32*)(p + 0x244) = 0;
+            }
+        }
+        if (*(s32*)(p + 0x238) < 0) {
+            s32 j = 0;
+            s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
+            for (; j < n; j++) {
+                char* a = *(char**)((char*)fn_801F856C() + j * 4 + 8);
+                if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
+                    s32 s = *(s32*)(a + 0x238);
+                    if (s == 0x26 || s == 0x27 || s == 0x28 || s == 0x29) {
+                        *(s32*)(p + 0x238) = j;
+                        break;
+                    }
+                }
+            }
+        }
+        s32 idx = *(s32*)(p + 0x238);
+        if (idx >= 0) {
+            char* a = *(char**)((char*)fn_801F856C() + idx * 4 + 8);
+            if (*(f32*)(p + 0x10) - *(f32*)(a + 0x10) < lbl_80542D64) {
+                *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+                *(s32*)(p + 0x234) = 0x32;
+                *(s32*)(p + 0x244) = 0;
+            }
+        }
+        break;
+    }
+    case 1:
+        if (*(s32*)(p + 0x234) == 0) {
+            *(s32*)(p + 0x24c) = 0x10;
+            *(s32*)(p + 0x244) = 0;
+            *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+            *(s32*)(p + 0x234) = 0x41;
+            pos = center + JGeometry::TVec3f(lbl_80542D68, lbl_80542D6C, lbl_80542D60);
+            spawnTriple(p, pos);
+        }
+        break;
+    case 2:
+    case 3:
+        if (*(s32*)(p + 0x234) != 0) return;
+        if (*(s32*)(p + 0x230) == 2) {
+            *(s32*)(p + 0x234) = 0x41;
+            pos = center + JGeometry::TVec3f(lbl_80542D70, lbl_80542D60, lbl_80542D60);
+            spawnPair(p, pos, 1);
+        } else {
+            *(s32*)(p + 0x234) = 0x5a;
+            pos = center + JGeometry::TVec3f(lbl_80542D74, lbl_80542D78, lbl_80542D60);
+            spawnTriple(p, pos);
+        }
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+        break;
+    case 4:
+        if (*(s32*)(p + 0x234) != 0) return;
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+        *(s32*)(p + 0x234) = 0x91;
+        *(s32*)(p + 0x2b0) = 0;
+    case 5: {
+        char* e = *(char**)(p + 0x254);
+        if (*(s32*)(e + 0x234) >= 0x4a49) {
+            *(s32*)(*(char**)(p + 0x250) + 0x230) = 3;
+            *(u8*)(e + 0x231) = 1;
+            *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+        }
+    }
+    case 6:
+        if (*(s32*)(p + 0x2b0) == 0) {
+            s32 r;
+            do {
+                r = fn_801CD664(4);
+            } while (r == *(s32*)(p + 0x2ac));
+            static s8 sAreasInit;
+            JGeometry::TBox2f* areas = (JGeometry::TBox2f*)lbl_8050C700;
+            if (!sAreasInit) {
+                areas[0].set(lbl_80542D7C, lbl_80542D7C, lbl_80542D80, lbl_80542D84);
+                areas[1].set(lbl_80542D88, lbl_80542D7C, lbl_80542D8C, lbl_80542D84);
+                areas[2].set(lbl_80542D7C, lbl_80542D90, lbl_80542D80, lbl_80542D94);
+                areas[3].set(lbl_80542D98, lbl_80542D90, lbl_80542D8C, lbl_80542D94);
+                sAreasInit = 1;
+            }
+            JGeometry::TBox2f area = areas[r];
+            JGeometry::TVec3f pt;
+            bool inside;
+            do {
+                f32 y = (f32)fn_801CD664(0x1a2);
+                f32 x = (f32)fn_801CD664(0x242);
+                pt.set(x, y, lbl_80542D60);
+                inside = false;
+                if (pt.x >= area.i.x && pt.y >= area.i.y && pt.x < area.f.x && pt.y < area.f.y) inside = true;
+            } while (!inside);
+            s32 kind = fn_801CD664(8);
+            bool ok;
+            if (kind >= 5) {
+                ok = spawnTriple(p, pt);
+            } else {
+                ok = spawnPair(p, pt, kind);
+            }
+            if (ok == true) {
+                *(s32*)(p + 0x2b0) = fn_801CD664(6) + 30;
+                *(s32*)(p + 0x2ac) = r;
+            } else {
+                *(s32*)(p + 0x2b0) = 0;
+            }
+        }
+        break;
+    }
+    fn_80230498(0, p + 0xc, *(s32*)(p + 0x24c) + *(s32*)(p + 0x244), 0xff, -0x80, -0x80, 1);
 }
 
 extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
