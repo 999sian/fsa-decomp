@@ -198,12 +198,13 @@ if(!*(void**)(p+0x40)){Vec v;v.x=lbl_805432E0;v.y=lbl_805432E0;v.z=lbl_805432E0;
             else {
                 u32* seed=(u32*)(lbl_8053AAF8+0xb4);
                 f32 one=1.0f;
-                f32 scale=lbl_805432F8;
+                f32 scale=200.0f;
                 *seed=*seed*0x19660d+0x3c6ef35f;
                 u32 bits=(*seed>>9)|0x3f800000;
                 s32 frames=*(s16*)((u8*)*(void**)(p+0x24)+6);
                 int r=(int)(scale*(*(f32*)&bits-one));
-                s32 end=r+frames;
+                int end=frames;
+                end=r+end;
                 end+=400;
                 if(t>=end)*(s32*)(p+0x5c)=0;
                 *(f32*)((u8*)*(void**)(p+0x24)+8)=lbl_805432E0;
