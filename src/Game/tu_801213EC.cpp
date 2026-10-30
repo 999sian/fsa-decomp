@@ -458,6 +458,7 @@ extern "C" s32 fn_80121DB0(u8* self) {
 
 #pragma fp_contract off
 #pragma fp_reorder on
+#pragma fp_result_precision single
 extern "C" f32 fn_80121DC8(u8* self, s32 player) {
     GameLowVec pos;
     pos = *fn_8023E724(player);
