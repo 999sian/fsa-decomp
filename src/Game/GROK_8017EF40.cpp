@@ -53,7 +53,7 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     f32 sxcz=sx*cz;
     f32 cycz=cy*cz;
     f32 cysz=cy*sz;
-    m[0][0]=scaleX*(cy*cz);
+    m[0][0]=scaleX*cycz;
     m[1][0]=scaleX*(cy*sz);
     m[2][0]=scaleX*-sy;
     m[0][1]=scaleY*__fmsubs(ss,cz,cs);
