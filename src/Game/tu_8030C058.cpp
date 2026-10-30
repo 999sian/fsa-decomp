@@ -280,11 +280,11 @@ extern "C" void fn_8030C9E4(u8* self, f32* rect) {
 }
 
 extern "C" void fn_8030CB10(u8* p, f32* v, f32 s) {
-    f32* m = (f32*)(p + 0x4);
     f32 hw = 0.5f * (v[2] - v[0]);
     f32 hh = 0.5f * (v[3] - v[1]);
     f32 cx = 0.5f * (v[0] + v[2]);
     f32 cy = 0.5f * (v[1] + v[3]);
+    f32* m = (f32*)(p + 0x4);
     m[0] = 1.0f;
     m[1] = 0.0f;
     m[2] = 0.0f;
@@ -313,6 +313,36 @@ extern "C" void fn_8030CB10(u8* p, f32* v, f32 s) {
     r[3] = v[3];
 }
 
+#include "JSystem/JMath/JMath.h"
+extern f32 lbl_805416F4, lbl_805416F8, lbl_805416FC;
+extern f32 lbl_80541700, lbl_80541704, lbl_80541708, lbl_8054170C;
+extern f32 lbl_80541710, lbl_80541714;
+extern u8* lbl_8053AAF8;
+extern "C" u8 fn_8023F264(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" u8 fn_80234134(s32);
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" f32* fn_8023E3B8(s32);
+extern "C" f32* fn_8023E32C(s32);
+
+static inline f32 cameraCos(f32 x) {
+    if (x < 0.0f) x = -x;
+    return JMath::sincosTable_.mTable[(u16)(lbl_80541708 * x) & 2047].second;
+}
+static inline f32 cameraBlend(s32 timer, f32 speed) {
+    f32 a = speed * (lbl_80541704 * (f32)timer);
+    f32 b = lbl_80541704 * (lbl_805416D8 - (lbl_805416E8 * cameraCos(a) + lbl_805416E8));
+    return lbl_805416E8 * cameraCos(b) + lbl_805416E8;
+}
+static inline f32 cameraClampDelta(f32 value, f32 lower, f32 upper) {
+    if (value < lbl_805416C8) {
+        if (value < lower) value = lower;
+    } else {
+        if (value > upper) value = upper;
+    }
+    return value;
+}
 #pragma dont_inline on
 extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b) {
     f32 scale = *(f32*)(p + 0x1d4);
@@ -336,6 +366,51 @@ extern "C" void fn_8030DD20(u8* param_1, Mtx param_2) {
 
 extern "C" void fn_8030DD68(void) {
     GXSetCurrentMtx(0x18);
+}
+
+extern "C" void fn_8030DD8C(u8* p, f32* rect, u8 flag) {
+    f32 x0 = rect[0];
+    f32 y0 = rect[1];
+    f32 x1 = rect[2];
+    f32 y1 = rect[3];
+    u8 useLight = flag;
+    *(f32*)(p + 0x164) = x0;
+    *(f32*)(p + 0x168) = y0;
+    *(f32*)(p + 0x16c) = x1;
+    *(f32*)(p + 0x170) = y1;
+    f32 hw = 0.5f * (x1 - x0);
+    f32 hh = 0.5f * (y1 - y0);
+    f32 cx = 0.5f * (x0 + x1);
+    f32 cy = 0.5f * (y0 + y1);
+    f32* m = (f32*)(p + 0x74);
+    m[0] = 1.0f;
+    m[1] = 0.0f;
+    m[2] = 0.0f;
+    m[3] = -cx;
+    m[4] = 0.0f;
+    m[5] = 1.0f;
+    m[6] = lbl_805416EC;
+    m[7] = -cy;
+    m[8] = 0.0f;
+    m[9] = 1.0f;
+    m[10] = 0.0f;
+    m[11] = -lbl_80541718;
+    C_MTXOrtho((MtxPtr)(p + 0xa4), -hh, hh, -hw, hw, 0.0f, lbl_8054171C);
+    if (useLight != 0) {
+        PSMTXCopy((MtxPtr)(p + 0x74), (MtxPtr)(p + 0xe4));
+        C_MTXLightOrtho((MtxPtr)(p + 0x114), -hh, hh, -hw, hw, lbl_805416E8, lbl_805416E8, lbl_805416E8, lbl_805416E8);
+    }
+    GXSetProjection((MtxPtr)(p + 0xa4), GX_ORTHOGRAPHIC);
+    GXLoadPosMtxImm((MtxPtr)(p + 0x74), 0x18);
+    GXLoadNrmMtxImm((MtxPtr)(p + 0x74), 0x18);
+    GXSetCurrentMtx(0x18);
+    u32 a = *(u32*)(p + 0x144);
+    u32 b = *(u32*)(p + 0x148);
+    u32 c = *(u32*)(p + 0x14c);
+    u32 d = *(u32*)(p + 0x150);
+    GXSetViewport((f32)a, (f32)b, (f32)(c - a), (f32)(d - b), 0.0f, 1.0f);
+    GXSetScissor(a, b, c - a, d - b);
+    GXSetZScaleOffset(1.0f, 0.0f);
 }
 
 extern "C" void fn_8030DFE8(u8* p, u8 flag) {
