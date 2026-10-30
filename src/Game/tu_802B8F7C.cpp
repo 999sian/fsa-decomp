@@ -4,6 +4,18 @@
 #include "Game/Actor.h"
 
 
+extern "C" void fn_802F601C(void*,void*,s32,s32,f32,f32);
+extern "C" s32 fn_8023725C(s32);
+extern "C" u8 fn_8023AAF8(s32,void*,s32,JGeometry::TVec3f*);
+extern "C" u8 fn_8023A5B8(s32);
+extern "C" u8 fn_8023A51C(s32);
+extern "C" JGeometry::TVec3f* fn_8023A478(s32);
+extern "C" s32 fn_801F8544(void*,u32,s32,void*,s32);
+extern "C" Actor* fn_801F666C(void*,s32);
+extern "C" void fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" char* lbl_8053AAF8;
+extern "C" char* lbl_8053AB10;
+
 extern "C" char lbl_804A88E8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" const f32 lbl_80540B40;
