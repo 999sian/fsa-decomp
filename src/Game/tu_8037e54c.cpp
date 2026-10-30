@@ -210,7 +210,7 @@ static inline f32 fn_8037F580_adv(f32 acc, f32 scale, s32 w, char* buf, s32* idx
     return scale * (f32)(s32)w + acc;
 }
 
-static inline f32 fn_8037F580_skip(f32 acc, f32 scale, u8 w, s32* idx) {
+static inline f32 fn_8037F580_skip(f32 acc, f32 scale, s32 w, s32* idx) {
     *idx += 1;
     return scale * (f32)(s32)w + acc;
 }
