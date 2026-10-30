@@ -2847,8 +2847,8 @@ s32 fn_802527B0(char* p, s32* out) {
 
 #pragma opt_common_subs off
 static inline void resetTrailFrom486(char* p,int start) {
-    int i=start;
     char* q=p;
+    int i=start;
     for(;i<0x31;i++) {
         F32(q,0x38)=F32(p,8);F32(q,0x3c)=F32(p,0xc);F32(q,0x40)=F32(p,0x10);
         if(F32(p,0x10)>0.0f)p[0x284+i]=1;
