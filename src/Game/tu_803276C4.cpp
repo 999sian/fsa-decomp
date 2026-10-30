@@ -4,6 +4,7 @@
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/HitRect.h"
+#include <string.h>
 class Osin : public Actor {
 public:
     s32 state, frame, weight, maxWeight, size, timer, group, animTimer, anim;
@@ -116,26 +117,29 @@ extern const f32 lbl_80541C90;
 extern const f32 lbl_80541C94;
 extern const f32 lbl_80541C98;
 extern const f32 lbl_80541C9C;
-extern "C" void fn_803279D0(Actor* p) {
-    if(OSIN_F32(p,0x25c)<lbl_80541C6C) {
-        if((u8)p->v11()==1 && OSIN_BYTE(p,0x25a)==1) {
-            fn_8013CC50((void*)p->field_04,&p->field_0C,0x503,1,0,0,0,1,(f32)(OSIN_S32(p,0x240)+1));
+#pragma opt_propagation off
+extern "C" void fn_803279D0(Osin* p) {
+    if(p->scale<lbl_80541C6C) {
+        if((u8)p->v11()==1 && p->hidden==1) {
+            fn_8013CC50((void*)p->field_04,&p->field_0C,0x503,1,0,0,0,1,(f32)(p->size+1));
             fn_801F0E34(p,0x30003,0);
-            OSIN_BYTE(p,0x25a)=0;
+            p->hidden=0;
         }
-        if(OSIN_BYTE(p,0x25a)==0) {
-            OSIN_F32(p,0x25c)+=lbl_80541C78;
-            if(OSIN_F32(p,0x25c)>=lbl_80541C6C) OSIN_F32(p,0x25c)=lbl_80541C6C;
+        if(p->hidden==0) {
+            p->scale+=lbl_80541C78;
+            if(p->scale>=lbl_80541C6C) p->scale=lbl_80541C6C;
         }
         return;
     }
     s32 blocked = 0;
     HitBox box;
-    box.i.x=p->field_60;
-    box.i.y=p->field_64;
-    box.f.x=p->field_68;
-    box.f.y=p->field_6C;
-    box.addPos(p->field_0C.x,p->field_0C.y);
+    f32 x=p->field_0C.x;
+    f32 y=p->field_0C.y;
+    box.set(*(HitBox*)&p->field_60);
+    box.i.x+=x;
+    box.i.y+=y;
+    box.f.x+=x;
+    box.f.y+=y;
     HitBox inset = box;
     inset.i.x+=lbl_80541C7C;
     inset.i.y-=lbl_80541C80;
@@ -143,7 +147,7 @@ extern "C" void fn_803279D0(Actor* p) {
     *(JGeometry::TVec3<f32>*)&p->field_0C+=*(JGeometry::TVec3<f32>*)&p->field_3C;
     if(p->field_94==2 || p->field_94==3) {
         for(s32 i=3;i>=0;i--) {
-            if(fn_80230188(i) && OSIN_BYTE(p,0x259)==1) {
+            if(fn_80230188(i) && p->moving==1) {
                 JGeometry::TVec3<f32> pos(*fn_8023E724(i));
                 pos+=*(JGeometry::TVec3<f32>*)&p->field_3C;
                 fn_80230498(i,&pos,fn_80230CFC(i)+60,0xff,-128,-128,1);
@@ -151,86 +155,86 @@ extern "C" void fn_803279D0(Actor* p) {
         }
     }
     if(!fn_801F6758(&p->field_0C.x,p->field_04,lbl_80541C84)) blocked=fn_801F2618(p,0,0);
-    OSIN_S32(p,0x238)=0;
+    p->weight=0;
     fn_80239914(&box,p->field_04,p->field_198);
     switch(p->field_94) {
     case 0: case 1:
-        OSIN_BYTE(p,0x254)=0;
-        OSIN_BYTE(p,0x255)=0;
-        OSIN_BYTE(p,0x256)=0;
-        OSIN_BYTE(p,0x257)=0;
+        p->players[0]=0;
+        p->players[1]=0;
+        p->players[2]=0;
+        p->players[3]=0;
         for(s32 i=0;i<4;i++) {
-            if(fn_8023F264(i) && !fn_8023EA28(i) && OSIN_BYTE(p,0x254+i)==0) {
-                OSIN_BYTE(p,0x254+i)=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
-                if(OSIN_BYTE(p,0x254+i)!=0 && fn_8023E724(i)->y<p->field_0C.y) {
-                    if(fn_8022CAF8(i)==4) OSIN_S32(p,0x238)++;
-                    else OSIN_S32(p,0x238)+=fn_8022E970(i);
+            if(fn_8023F264(i) && !fn_8023EA28(i) && p->players[i]==0) {
+                p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
+                if(p->players[i]!=0 && fn_8023E724(i)->y<p->field_0C.y) {
+                    if(fn_8022CAF8(i)==4) p->weight++;
+                    else p->weight+=fn_8022E970(i);
                     for(s32 j=0;j<4;j++) {
-                        if(OSIN_BYTE(p,0x254+j)==0 && fn_8022CAF8(j)!=4 && i!=j && fn_8022E438(i,j)==1) OSIN_BYTE(p,0x254+j)=1;
+                        if(p->players[j]==0 && fn_8022CAF8(j)!=4 && i!=j && fn_8022E438(i,j)==1) p->players[j]=1;
                     }
                 }
             }
         }
         for(s32 i=0;i<4;i++) {
-            if(OSIN_BYTE(p,0x254+i)==1 && (fn_8023ED8C(i)||fn_8023EBB8(i))) OSIN_S32(p,0x238)++;
+            if(p->players[i]==1 && (fn_8023ED8C(i)||fn_8023EBB8(i))) p->weight++;
         }
-        if(OSIN_BYTE(p,0x258)==1) return;
-        if(OSIN_S32(p,0x23c)!=0 && OSIN_S32(p,0x238)<OSIN_S32(p,0x23c)) OSIN_S32(p,0x238)=OSIN_S32(p,0x23c);
-        if(OSIN_S32(p,0x238)>1) {
-            if(!blocked && lbl_80541C88*(f32)(OSIN_S32(p,0x238)-1)+OSIN_F32(p,0x264)>p->field_0C.y) {
+        if(p->complete==1) return;
+        if(p->maxWeight!=0 && p->weight<p->maxWeight) p->weight=p->maxWeight;
+        if(p->weight>1) {
+            if(!blocked && lbl_80541C88*(f32)(p->weight-1)+p->origin.y>p->field_0C.y) {
                 p->field_3C.y=lbl_80541C8C;
-                OSIN_S32(p,0x234)=1;
-                if(p->field_94!=0 && OSIN_S32(p,0x238)>=OSIN_S32(p,0x23c)) OSIN_S32(p,0x23c)=OSIN_S32(p,0x238);
-            } else if(!blocked && lbl_80541C88*(f32)(OSIN_S32(p,0x238)-1)+OSIN_F32(p,0x264)<p->field_0C.y) {
+                p->frame=1;
+                if(p->field_94!=0 && p->weight>=p->maxWeight) p->maxWeight=p->weight;
+            } else if(!blocked && lbl_80541C88*(f32)(p->weight-1)+p->origin.y<p->field_0C.y) {
                 p->field_3C.y=lbl_80541C90;
-                OSIN_S32(p,0x234)=0;
+                p->frame=0;
             } else {
-                p->field_3C.y=lbl_80541C68; OSIN_S32(p,0x234)=0;
+                p->field_3C.y=lbl_80541C68; p->frame=0;
             }
-        } else if(OSIN_S32(p,0x238)<=1 && OSIN_F32(p,0x264)<p->field_0C.y) {
-            p->field_3C.y=lbl_80541C90; OSIN_S32(p,0x234)=0;
-        } else {p->field_3C.y=lbl_80541C68;OSIN_S32(p,0x234)=0;}
-        if(p->field_94!=0 && OSIN_S32(p,0x238)>=4) {
-            if(lbl_80541C88*(f32)(OSIN_S32(p,0x238)-1)+OSIN_F32(p,0x264)<=p->field_0C.y || blocked) {
-                OSIN_BYTE(p,0x258)=1;
+        } else if(p->weight<=1 && p->origin.y<p->field_0C.y) {
+            p->field_3C.y=lbl_80541C90; p->frame=0;
+        } else {p->field_3C.y=lbl_80541C68;p->frame=0;}
+        if(p->field_94!=0 && p->weight>=4) {
+            if(lbl_80541C88*(f32)(p->weight-1)+p->origin.y<=p->field_0C.y || blocked) {
+                p->complete=1;
                 p->field_3C.y=lbl_80541C68;
-                if(!blocked) OSIN_S32(p,0x234)=0;
-                else OSIN_S32(p,0x234)=1;
+                if(!blocked) p->frame=0;
+                else p->frame=1;
             }
         }
         break;
     case 2: case 3:
-        switch(OSIN_S32(p,0x230)) {
+        switch(p->state) {
         case 0:
             if(!fn_802DCD0C(fn_802D6A9C())) {
                 for(s32 i=0;i<4;i++) {
                     if(fn_80233EDC(i)==1) break;
                     if(fn_8023F264(i) && !fn_8023EA28(i)) {
-                        OSIN_BYTE(p,0x254+i)=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
-                        if(OSIN_BYTE(p,0x254+i)!=0 && fn_8023E724(i)->y<=box.i.y) {
-                            OSIN_S32(p,0x238)++;
-                            if(fn_8023ED8C(i)) OSIN_S32(p,0x238)++;
+                        p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
+                        if(p->players[i]!=0 && fn_8023E724(i)->y<=box.i.y) {
+                            p->weight++;
+                            if(fn_8023ED8C(i)) p->weight++;
                         }
                     }
                 }
-                if(OSIN_S32(p,0x238)<4) break;
+                if(p->weight<4) break;
             }
             for(s32 i=0;i<4;i++) fn_80230AD4(i);
-            OSIN_S32(p,0x230)=1;
-            OSIN_BYTE(p,0x259)=1;
+            p->state=1;
+            p->moving=1;
             p->field_3C.y=lbl_80541C8C;
             break;
         case 1:
-            if(p->field_0C.y-OSIN_F32(p,0x264)>=lbl_80541C94) {
+            if(p->field_0C.y-p->origin.y>=lbl_80541C94) {
                 if(p->field_94==2) p->field_3C.x=lbl_80541C6C;
                 else if(p->field_94==3) p->field_3C.x=lbl_80541C98;
                 p->field_3C.y=lbl_80541C68;
-                OSIN_S32(p,0x230)=2;
-                OSIN_S32(p,0x244)=240;
+                p->state=2;
+                p->timer=240;
             }
             break;
         case 2:
-            OSIN_S32(p,0x244)--;
+            p->timer--;
             if(p->field_94==2) {
                 if(p->field_0C.x-OSIN_F32(fn_802D6A9C(),0xd4)>lbl_80541C9C) {
                     s32 area = OSIN_S32(fn_802D6A9C(),0x18);
@@ -246,16 +250,16 @@ extern "C" void fn_803279D0(Actor* p) {
                     fn_80136798(lbl_8053AAF8,17,0);
                 }
             }
-            if(blocked || OSIN_S32(p,0x244)==0) {
-                *(JGeometry::TVec3<f32>*)((u8*)p+0x260)=p->field_0C;
+            if(blocked || p->timer==0) {
+                JGeometry::setTVec3f(&p->field_0C.x,&p->origin.x);
                 p->field_3C.x=lbl_80541C68;
                 p->field_3C.y=lbl_80541C90;
-                OSIN_S32(p,0x230)=3;
+                p->state=3;
             }
             break;
         case 3:
-            if(OSIN_F32(p,0x264)-p->field_0C.y>=lbl_80541C94) {
-                *(JGeometry::TVec3<f32>*)((u8*)p+0x260)=p->field_0C;
+            if(p->origin.y-p->field_0C.y>=lbl_80541C94) {
+                JGeometry::setTVec3f(&p->field_0C.x,&p->origin.x);
                 p->field_3C.z=lbl_80541C68;
                 p->field_3C.y=lbl_80541C68;
                 p->field_3C.x=lbl_80541C68;
@@ -263,33 +267,33 @@ extern "C" void fn_803279D0(Actor* p) {
                 fn_80231368();
                 if(p->field_94==2) p->field_94=3;
                 else if(p->field_94==3) p->field_94=2;
-                OSIN_S32(p,0x230)=4;
+                p->state=4;
             }
             break;
         case 4:
             for(s32 i=0;i<4;i++) {
                 if(fn_8023F264(i) && !fn_8023EA28(i)) {
-                    OSIN_BYTE(p,0x254+i)=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
-                    if(OSIN_BYTE(p,0x254+i)!=0 && fn_8023E724(i)->y<=box.i.y) {
-                        OSIN_S32(p,0x238)++;
-                        if(fn_8023ED8C(i)) OSIN_S32(p,0x238)++;
+                    p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,lbl_80541C68);
+                    if(p->players[i]!=0 && fn_8023E724(i)->y<=box.i.y) {
+                        p->weight++;
+                        if(fn_8023ED8C(i)) p->weight++;
                     }
                 }
             }
-            if(OSIN_BYTE(p,0x259)==1 && OSIN_S32(p,0x238)>0) OSIN_BYTE(p,0x259)=0;
-            else if(OSIN_BYTE(p,0x259)==0 && OSIN_S32(p,0x238)<=0) OSIN_S32(p,0x230)=0;
+            if(p->moving==1 && p->weight>0) p->moving=0;
+            else if(p->moving==0 && p->weight<=0) p->state=0;
             break;
         }
         break;
     }
-    OSIN_S32(p,0x24c)--;
-    if(OSIN_S32(p,0x24c)<=0) {
-        OSIN_S32(p,0x24c)=10;
-        OSIN_S32(p,0x250)++;
-        OSIN_S32(p,0x250)&=3;
+    p->animTimer--;
+    if(p->animTimer<=0) {
+        p->animTimer=10;
+        p->anim++;
+        p->anim&=3;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
