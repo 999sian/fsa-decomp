@@ -398,6 +398,10 @@ extern "C" void fn_80269574(u8* self)
     self[0x38] = 1;
 }
 
+static inline s32 tileX_8026B81C(u8* p) { return (s32)*(f32*)(p + 0xc) % 16; }
+static inline s32 tileY_8026B81C(u8* p) { return (s32)*(f32*)(p + 0x8) % 16; }
+static inline void setHit_8026B81C(u8* p) { p[*(s32*)(p + 0x1c) + 0x38] = 1; }
+
 extern "C" void fn_8026B81C(u8* p, u16 k) {
     switch (k) {
     case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
