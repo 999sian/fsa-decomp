@@ -1480,8 +1480,10 @@ extern "C" void fn_803F8FBC(u8* p) {
 extern const f32 lbl_805437B0;
 extern const f32 lbl_805437B4;
 extern const f32 lbl_80543748;
-static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fade) {
-    for (s32 i = 0; i < n; i++, tags++) {
+static inline void fadePanes803F(u8* p, const u64* table, s32 n, s32 ofs, f32 fade) {
+    s32 i;
+    const u64* tags = table;
+    for (i = 0; i < n; i++, tags++) {
         J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
         f32 alpha = p[ofs + i];
         alpha *= fade;
@@ -1492,7 +1494,6 @@ static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fad
 #pragma opt_common_subs off
 extern "C" void fn_803F943C(u8* p) {
     u8* base=lbl_80478A60;
-    const u64* tags;
     s32 i;
     int start;
     s32 j;
@@ -1505,46 +1506,18 @@ extern "C" void fn_803F943C(u8* p) {
             *(f32*)(p+0x9c)=lbl_80543764*((f32)(*(s16*)(p+0x240)* *(s16*)(p+0x240))/64.0f);
             *(f32*)(p+0xa8)=lbl_80543768*((f32)(*(s16*)(p+0x240)* *(s16*)(p+0x240))/64.0f);
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
-        if(fade<lbl_8054372C) fade=lbl_8054372C;
-        else if(fade>lbl_80543730) fade=lbl_80543730;
-        tags=(const u64*)(base+0x3c0);
-        for(i=0;i<0x22;i++,tags++) {
-            J2DPane* pane=(*(J2DPane**)(p+8))->search(tags[0]);
-            const f32 sourceAlpha=p[0x2c4+i];
-            f32 alpha=sourceAlpha*fade;
-            pane->setAlpha((u8)alpha);
-        }
-
+            if(fade<lbl_8054372C) fade=lbl_8054372C;
+            else if(fade>lbl_80543730) fade=lbl_80543730;
+            fadePanes803F(p, (const u64*)(base+0x3c0), 0x22, 0x2c4, fade);
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
-        if(fade<lbl_8054372C) fade=lbl_8054372C;
-        else if(fade>lbl_80543730) fade=lbl_80543730;
-        tags=(const u64*)(base+0x338);
-        for(i=0;i<0xb;i++,tags++) {
-            J2DPane* pane=(*(J2DPane**)(p+8))->search(tags[0]);
-            const f32 sourceAlpha=p[0x2af+i];
-            f32 alpha=sourceAlpha*fade;
-            pane->setAlpha((u8)alpha);
-        }
-
+            if(fade<lbl_8054372C) fade=lbl_8054372C;
+            else if(fade>lbl_80543730) fade=lbl_80543730;
+            fadePanes803F(p, (const u64*)(base+0x338), 0xb, 0x2af, fade);
         } else {
             *(f32*)(p+0x9c)=lbl_80543764;
             *(f32*)(p+0xa8)=lbl_80543768;
-        tags=(const u64*)(base+0x3c0);
-        for(i=0;i<0x22;i++,tags++) {
-            J2DPane* pane=(*(J2DPane**)(p+8))->search(tags[0]);
-            const f32 sourceAlpha=p[0x2c4+i];
-            f32 alpha=sourceAlpha*lbl_8054372C;
-            pane->setAlpha((u8)alpha);
-        }
-
-        tags=(const u64*)(base+0x338);
-        for(i=0;i<0xb;i++,tags++) {
-            J2DPane* pane=(*(J2DPane**)(p+8))->search(tags[0]);
-            const f32 sourceAlpha=p[0x2af+i];
-            f32 alpha=sourceAlpha*lbl_8054372C;
-            pane->setAlpha((u8)alpha);
-        }
-
+            fadePanes803F(p, (const u64*)(base+0x3c0), 0x22, 0x2c4, lbl_8054372C);
+            fadePanes803F(p, (const u64*)(base+0x338), 0xb, 0x2af, lbl_8054372C);
         }
     }
     if(*(s16*)(p+0x240)>0) {
@@ -1552,27 +1525,13 @@ extern "C" void fn_803F943C(u8* p) {
             *(f32*)(p+0xb4)=lbl_80543754*((f32)(*(s16*)(p+0x240)* *(s16*)(p+0x240))/64.0f);
             *(f32*)(p+0xb8)=lbl_80543754*((f32)(*(s16*)(p+0x240)* *(s16*)(p+0x240))/64.0f);
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
-        if(fade<lbl_8054372C) fade=lbl_8054372C;
-        else if(fade>lbl_80543730) fade=lbl_80543730;
-        tags=(const u64*)(base+0x390);
-        for(i=0;i<6;i++,tags++) {
-            J2DPane* pane=(*(J2DPane**)(p+8))->search(tags[0]);
-            const f32 sourceAlpha=p[0x2ba+i];
-            f32 alpha=sourceAlpha*fade;
-            pane->setAlpha((u8)alpha);
-        }
-
+            if(fade<lbl_8054372C) fade=lbl_8054372C;
+            else if(fade>lbl_80543730) fade=lbl_80543730;
+            fadePanes803F(p, (const u64*)(base+0x390), 6, 0x2ba, fade);
         } else {
             *(f32*)(p+0xb4)=lbl_80543754;
             *(f32*)(p+0xb8)=lbl_80543754;
-        tags=(const u64*)(base+0x390);
-        for(i=0;i<6;i++,tags++) {
-            J2DPane* pane=(*(J2DPane**)(p+8))->search(tags[0]);
-            const f32 sourceAlpha=p[0x2ba+i];
-            f32 alpha=sourceAlpha*lbl_8054372C;
-            pane->setAlpha((u8)alpha);
-        }
-
+            fadePanes803F(p, (const u64*)(base+0x390), 6, 0x2ba, lbl_8054372C);
         }
     }
     start=0;
@@ -1586,17 +1545,16 @@ extern "C" void fn_803F943C(u8* p) {
                 s32 d=*(s16*)(p+0x240)-offset;
                 *(f32*)(p+0xdc+group*4)=lbl_8054376C*((f32)(d*d)/64.0f);
                 fade=(f32)(8-(*(s16*)(p+0x240)-offset))*lbl_805437B4;
-        if(fade<lbl_8054372C) fade=lbl_8054372C;
-        else if(fade>lbl_80543730) fade=lbl_80543730;
-
+                if(fade<lbl_8054372C) fade=lbl_8054372C;
+                else if(fade>lbl_80543730) fade=lbl_80543730;
                 u8* alphaBase=p+group*9;
                 const u64* groupTags=(const u64*)(base+0x4d0);
                 groupTags+=group*9;
                 for(i=0;i<9;i++,alphaBase++,groupTags++) {
                     J2DPane* pane=(*(J2DPane**)(p+8))->search(groupTags[0]);
-                    const f32 sourceAlpha=alphaBase[0x2ee];
-            f32 alpha=sourceAlpha*fade;
-            pane->setAlpha((u8)alpha);
+                    f32 alpha=alphaBase[0x2ee];
+                    alpha*=fade;
+                    pane->setAlpha((u8)alpha);
                 }
             } else {
                 s32 group=3-j;
@@ -1605,9 +1563,9 @@ extern "C" void fn_803F943C(u8* p) {
                 const u64* groupTags=(const u64*)(base+0x4d0)+group*9;
                 for(i=0;i<9;i++,alphaBase++,groupTags++) {
                     J2DPane* pane=(*(J2DPane**)(p+8))->search(groupTags[0]);
-                    const f32 sourceAlpha=alphaBase[0x2ee];
-            f32 alpha=sourceAlpha*lbl_8054372C;
-            pane->setAlpha((u8)alpha);
+                    f32 alpha=alphaBase[0x2ee];
+                    alpha*=lbl_8054372C;
+                    pane->setAlpha((u8)alpha);
                 }
             }
         }
