@@ -249,12 +249,12 @@ struct EnemyVt_8034 {
     virtual u8 v11();
 };
 static inline f32 tu8034_dist(f32 x) {
-    if (x <= lbl_805425D8) {
-        return x;
+    if (x > lbl_805425D8) {
+        f32 y = __frsqrte(x);
+        y = lbl_80542600 * y * (lbl_80542604 - (x * (y * y)));
+        x = x * y;
     }
-    f32 y = __frsqrte(x);
-    y = lbl_80542600 * y * (lbl_80542604 - (x * (y * y)));
-    return x * y;
+    return x;
 }
 static inline f32 tu8034_sqrt2(f32 x) {
     if (x <= 0.0f) {
@@ -335,38 +335,7 @@ extern "C" void fn_8034F43C(u8* self) {
         }
         *(s32*)(self + 0x24c) = *(s32*)(self + 0x24c) - 1;
         if (*(s32*)(self + 0x24c) <= 0) {
-            fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x97, 0, lbl_805425F0, -3, 0, 0, 1);
-            fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x98, 0, lbl_805425F0, -3, 0, 0, 1);
-            *(s32*)(self + 0x258) = 0xb;
-            self[0x282] = 0;
-            *(s32*)(self + 0x24c) = 0;
-            *(s32*)(self + 0x230) = 7;
-            *(s32*)(self + 0x240) = 0xb;
-            *(s32*)(self + 0x248) = 0xa;
-            *(s32*)(self + 0x274) = -1;
-            *(s32*)(self + 0x268) = *(s32*)(self + 0x264);
-            f32 dy2;
-            f32 dx2;
-            f32 dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
-            f32 dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
-            dx2 = dx * dx;
-            dy2 = dy * dy;
-            if (JGeometry::TUtilf::sqrt(dx2 + dy2) > lbl_80542608) {
-                *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
-                kind = *(s32*)(self + 4);
-                if (kind >= 8) {
-                    Actor_CreateByID(fn_801F856C(), 0x4b4d5249, kind, self + 0xc, 0x83, -1, -1);
-                    *(f32*)(self + 0x28c) = lbl_805425F0;
-                } else {
-                    fn_8013CC50(kind, self + 0xc, 0x503, 1, lbl_805425E8, 0, 0, 0, 1);
-                }
-                fn_801F0E34(self, 0x30003, 0);
-            } else {
-                *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
-            }
-            if (*(s32*)(self + 4) < 8) {
-                *(f32*)(self + 0x28c) = lbl_805425D8;
-            }
+            tu8034_land(self);
             return;
         }
     }
