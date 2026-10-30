@@ -509,7 +509,7 @@ extern "C" void fn_80265E88(char* p)
     case 29:
         if (*(unsigned char*)(p + 0xceb) == 1) {
             int idx = *(int*)(p + 0x3b4);
-            if (((u8(*)[0x10000])fn_802D6A9C())[1][idx + 0x31df] != 0) {
+            if (((StageMgr80264998*)fn_802D6A9C())->flag(idx) != 0) {
                 fn_802670CC(p);
             } else {
                 fn_802671C8(p);
