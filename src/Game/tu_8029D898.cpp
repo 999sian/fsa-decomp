@@ -726,6 +726,7 @@ extern "C" void fn_8029EC84(void* p, u32 p2, u32 p3, u32 p4, u32 p5, u32 p6) {
     }
 }
 
+#pragma opt_propagation off
 extern "C" u32 fn_8029EDB8(u8* self,JGeometry::TVec3<f32>* pos,s32 h,s32 idx,JGeometry::TVec3<f32>* out) {
 s32 result=0;
 if(pos->z<lbl_80540788) {
