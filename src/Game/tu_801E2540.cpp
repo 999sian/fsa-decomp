@@ -67,7 +67,11 @@ extern "C" s32 fn_801E2540(u8* this_) {
 }
 
 static inline void actorApplyRectFrom(const Actor* self, f32 left, f32 top, f32 right, f32 bottom) {
-    JGeometry::TBox2<f32> rect(left, top, right, bottom);
+    JGeometry::TBox2<f32> rect;
+    rect.f.x=right;
+    rect.i.x=left;
+    rect.i.y=top;
+    rect.f.y=bottom;
     fn_802397B4(&rect, self->field_04, self->field_198);
 }
 static inline void actorApplyRect(f32 left, f32 top, f32 right, f32 bottom, u32 room, s32 handle) {
@@ -333,9 +337,9 @@ extern "C" void fn_801E2D88(u8* this_) {
 
 extern "C" void fn_801E2EE4(const Actor* this_) {
     const u8* p=(const u8*)this_;
-    actorApplyRect(*(f32*)(p+0xc)-lbl_8053F4D0, *(f32*)(p+0x10)-lbl_8053F4D0,
-        lbl_8053F4D0+*(f32*)(p+0xc), lbl_8053F4D0+*(f32*)(p+0x10),
-        *(u32*)(p+4), *(s32*)(p+0x198));
+    f32 y=*(f32*)(p+0x10);
+    actorApplyRectFrom(this_, *(f32*)(p+0xc)-lbl_8053F4D0, y-lbl_8053F4D0,
+        lbl_8053F4D0+*(f32*)(p+0xc), lbl_8053F4D0+y);
 }
 
 extern "C" s32 fn_801E2F40(u8* this_) {
