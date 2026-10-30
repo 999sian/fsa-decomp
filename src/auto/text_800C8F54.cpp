@@ -813,6 +813,26 @@ extern "C" s32 lbl_8053BC74;
 extern "C" void fn_800C9D1C(void) {
 }
 
+static inline void* ctorTexGenBlockPatched(void* tg) {
+    *(void**)tg = __vt__14J3DTexGenBlock;
+    *(void**)tg = __vt__21J3DTexGenBlockPatched;
+    __construct_array((u8*)tg + 8, __ct__11J3DTexCoordFv, 0, 6, 8);
+    initialize__21J3DTexGenBlockPatchedFv(tg);
+    return tg;
+}
+
+static inline void* ctorTevBlockPatched(void* tev) {
+    *(void**)tev = __vt__11J3DTevBlock;
+    *(void**)tev = lbl_8049B440;
+    __construct_array((u8*)tev + 0x18, __ct__11J3DTevOrderFv, 0, 4, 8);
+    __construct_array((u8*)tev + 0x38, __ct__11J3DTevStageFv, 0, 8, 8);
+    __construct_array((u8*)tev + 0x78, __ct__14J3DIndTevStageFv, 0, 4, 8);
+    __construct_array((u8*)tev + 0x98, __ct__13J3DGXColorS10Fv, 0, 8, 4);
+    __construct_array((u8*)tev + 0xb8, __ct__10J3DGXColorFv, 0, 4, 4);
+    fn_800D36EC(tev);
+    return tev;
+}
+
 extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags)
 {
     u8 nStages;
