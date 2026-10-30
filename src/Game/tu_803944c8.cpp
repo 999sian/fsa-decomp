@@ -1273,6 +1273,13 @@ static inline void msgMeasureChar2(MsgMeasure* m, int c, f32 ratio, f32 add) {
     m->lineChars[m->line]++;
 }
 
+// Saved line widths in the measure state: tab stops (indexed by +0x282) and spaces (by +0x1fd).
+struct MsgMeasureSave {
+    u8 pad0[0x19c];
+    f32 tabW[3];   // 0x19c
+    f32 spaceW[12]; // 0x1a8
+};
+
 static inline void msgMeasureCharK(MsgMeasure* m, int c, f32 ratio, f32 k, f32 add) {
     JUTFont::TWidth w;
     m->font->getWidthEntry(c, &w);
@@ -2092,10 +2099,10 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     f32 ratio = m->fontW / (f32)m->font->getCellWidth();
     switch (id) {
     case 0:
-        if (((s8*)p)[0x202 + p[0x281]] != (s8)p[0x22c]) {
+        if ((s8)(p + p[0x281])[0x202] != (s8)p[0x22c]) {
             p[0x281]++;
-            p[0x202 + p[0x281]] = p[0x22c];
-            p[0x257 + p[0x281]] = 0;
+            (p + p[0x281])[0x202] = p[0x22c];
+            (p + p[0x281])[0x257] = 0;
         }
         return 1;
     case 0x10000:
@@ -2107,8 +2114,8 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x10009:
     case 0x1000a:
     {
-        *(f32*)(p + 0x1a8 + p[0x1fd] * 4) = m->lineW[m->line];
-        p[0x1f1 + p[0x1fd]] = m->line;
+        *(f32*)(p + p[0x1fd] * 4 + 0x1a8) = m->lineW[m->line];
+        (p + p[0x1fd])[0x1f1] = m->line;
         p[0x1fd]++;
         JUTFont::TWidth w;
         m->font->getWidthEntry(0x20, &w);
@@ -2120,8 +2127,8 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x10004:
     case 0x10005:
     case 0x10006:
-        *(f32*)(p + 0x1a8 + p[0x1fd] * 4) = m->lineW[m->line];
-        p[0x1f1 + p[0x1fd]] = m->line;
+        *(f32*)(p + p[0x1fd] * 4 + 0x1a8) = m->lineW[m->line];
+        (p + p[0x1fd])[0x1f1] = m->line;
         p[0x1fd]++;
         msgMeasureChar2(m, 0x20, ratio, 3.0f);
         return 1;
@@ -2149,23 +2156,17 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x20012:
     case 0x20013:
     case 0x20014:
-    {
-        if (m->line < 32) {
+        if ((s32)m->line < 32) {
             *(u32*)(p + 0x3c) |= 1 << m->line;
-        } else if (m->line < 64) {
+        } else if ((s32)m->line < 64) {
             *(u32*)(p + 0x40) |= 1 << (m->line - 32);
         }
-        *(f32*)(p + 0x19c + p[0x282] * 4) = m->lineW[m->line];
-        p[0x1ee + p[0x282]] = m->line;
-        p[0x1fe + p[0x282]] = m->lineChars[m->line];
-        JUTFont::TWidth w;
-        m->font->getWidthEntry(0x20, &w);
-        m->lineW[m->line] += 5.0f * (ratio * (m->scale * (f32)(s32)w.w1));
-        m->lineX[m->line] += 3.0f;
-        m->lineChars[m->line]++;
+        *(f32*)(p + p[0x282] * 4 + 0x19c) = m->lineW[m->line];
+        (p + p[0x282])[0x1ee] = m->line;
+        (p + p[0x282])[0x1fe] = m->lineChars[m->line];
+        msgMeasureCharK(m, 0x20, ratio, 5.0f, 3.0f);
         p[0x282]++;
         return 1;
-    }
     case 0x20009:
     case 0x2000a:
     case 0x2000b:
@@ -2174,23 +2175,17 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x2001a:
     case 0x2001b:
     case 0x2001c:
-    {
-        if (m->line < 32) {
+        if ((s32)m->line < 32) {
             *(u32*)(p + 0x3c) &= ~(1 << m->line);
-        } else if (m->line < 64) {
+        } else if ((s32)m->line < 64) {
             *(u32*)(p + 0x40) &= ~(1 << m->line);
         }
-        *(f32*)(p + 0x19c + p[0x282] * 4) = m->lineW[m->line];
-        p[0x1ee + p[0x282]] = m->line;
-        p[0x1fe + p[0x282]] = m->lineChars[m->line];
-        JUTFont::TWidth w;
-        m->font->getWidthEntry(0x20, &w);
-        m->lineW[m->line] += (f32)*(s16*)(lbl_8050DB0C + 0x2ee) * (ratio * (m->scale * (f32)(s32)w.w1));
-        m->lineX[m->line] += 3.0f;
-        m->lineChars[m->line]++;
+        *(f32*)(p + p[0x282] * 4 + 0x19c) = m->lineW[m->line];
+        (p + p[0x282])[0x1ee] = m->line;
+        (p + p[0x282])[0x1fe] = m->lineChars[m->line];
+        msgMeasureCharTab(m, 0x20, ratio, 3.0f);
         p[0x282]++;
         return 1;
-    }
     case 0x20004:
     case 0x20005:
     case 0x20006:
@@ -2218,9 +2213,9 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
         }
     case 0x20025:
         if (p[0x1e8] != 0) {
-            p[0x256 + p[0x281]] = 1;
+            (p + p[0x281])[0x256] = 1;
         } else {
-            p[0x257 + p[0x281]] = 1;
+            (p + p[0x281])[0x257] = 1;
         }
         return 1;
     case 0x20026:
