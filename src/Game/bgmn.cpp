@@ -25,11 +25,19 @@ struct BgmnVt {
     virtual void v08(); virtual void v09(); virtual void v10(); virtual u8 v11();
 };
 
-struct BgmnVec {
-    f32 x, y, z;
-};
+extern "C" u8 fn_80230188(s32);
+extern "C" void* fn_801F856C(void);
+extern "C" void fn_80138B7C(void*);
+extern "C" void fn_80458F04(void*, u32);
+extern "C" void fn_80458FF0(void*, u32, s32, s32);
+extern "C" void fn_80458F9C(void*, s32);
+extern "C" void fn_802D7970(void*, s32);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void* lbl_8053AF80;
+extern "C" u32 lbl_8046F1C8[];
+extern const f32 lbl_80541228;
 
-static inline bool bgmnInArea(const BgmnVec& p, f32 x0, f32 y0, f32 x1, f32 y1) {
+static inline bool bgmnInArea(const JGeometry::TVec3<f32>& p, f32 x0, f32 y0, f32 x1, f32 y1) {
     bool r = false;
     if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
         r = true;
