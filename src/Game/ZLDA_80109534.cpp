@@ -10,6 +10,9 @@ extern u8 lbl_8053AA81;
 extern const u16 lbl_804642B0[];
 extern const f32 lbl_8053C404;
 extern const f32 lbl_8053C3E8;
+static inline f32 zeldaScaledSpeed(const f32 distance) {
+    return distance / lbl_8053C404;
+}
 static inline void zeldaMotionRate(f32* rate, const f32 distance) {
     *rate = distance / lbl_8053C404;
     if (*rate >= lbl_8053C3E8) *rate = lbl_8053C3E8;
