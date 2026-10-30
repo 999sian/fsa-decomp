@@ -298,7 +298,6 @@ static inline void SHBL_updateTrail(u8* p) {
         else U(P(p,0x374),0xf4)&=~1;
     }
 }
-static inline f32 SHBL_getSize(u8* p) { return F(p,0x260); }
 static inline f32 SHBL_cosAt(const f32* table, s16 angle) {
     return table[((u16)angle>>5)*2];
 }
