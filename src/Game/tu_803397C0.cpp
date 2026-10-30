@@ -95,8 +95,8 @@ extern const f32 lbl_8054210C;
 extern "C" void fn_802F6CF4(void* obj, JGeometry::TVec3f* pos, void* res, DrawRec* rec);
 extern "C" void fn_801F06F0(u8* a, void* res, s32 id, void* rec, s32 p5, f32 sx, f32 sy);
 static inline void setRotZ_80339AEC(Mtx m, s16 angle) {
-    f32 s = JMASinShort(angle);
     f32 c = JMACosShort(angle);
+    f32 s = JMASinShort(angle);
     m[0][0] = c;
     m[0][1] = -s;
     m[1][0] = s;
@@ -133,8 +133,6 @@ extern "C" void fn_80339AEC(u8* self) {
     DrawRec rec;
     Mtx rot;
     Mtx trans;
-    f32 s;
-    f32 c;
     PSMTXIdentity(rot);
     PSMTXIdentity(trans);
     rec.b1c = 1;
@@ -147,17 +145,7 @@ extern "C" void fn_80339AEC(u8* self) {
         case 0:
         case 8: {
             PSMTXTrans(trans, -8.0f, -8.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            setRotZ_80339AEC(rot, *(s16*)(self + 0x25a));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
@@ -177,34 +165,13 @@ extern "C" void fn_80339AEC(u8* self) {
             }
             break;
         }
-        case 1: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+        case 1:
+            setRotY_80339AEC(rot, *(s16*)(self + 0x25a));
             rec.w18 = rot;
             fn_801F06F0(self, (void*)"enemy_both2_sob.bin", 0x27, &rec, 7, 1.0f, 1.0f);
             break;
-        }
         case 2: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+            setRotY_80339AEC(rot, *(s16*)(self + 0x25a));
             rec.w18 = rot;
             s32 kind = **(s8**)(self + 0x288);
             if (kind == 'r' || kind == 's' || kind == 'y') {
@@ -218,17 +185,7 @@ extern "C" void fn_80339AEC(u8* self) {
         }
         case 3: {
             PSMTXTrans(trans, -48.0f, -48.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            setRotZ_80339AEC(rot, *(s16*)(self + 0x25a));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
@@ -248,52 +205,20 @@ extern "C" void fn_80339AEC(u8* self) {
             }
             break;
         }
-        case 4: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+        case 4:
+            setRotY_80339AEC(rot, *(s16*)(self + 0x25a));
             rec.w18 = rot;
             fn_801F06F0(self, (void*)"enemy_gc_sob.bin", 0x16d, &rec, 7, 1.0f, 1.0f);
             break;
-        }
-        case 5: {
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[1][1] = 1.0f;
-            rot[0][2] = s;
-            rot[2][0] = -s;
-            rot[2][2] = c;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[1][0] = 0.0f;
-            rot[0][1] = 0.0f;
+        case 5:
+            setRotY_80339AEC(rot, *(s16*)(self + 0x25a));
             rec.w18 = rot;
             fn_801F06F0(self, (void*)"enemy_both2_sob.bin", 0x21, &rec, 7, 1.0f, 1.0f);
             break;
-        }
         case 6:
         case 9: {
             PSMTXTrans(trans, -16.0f, -16.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            setRotZ_80339AEC(rot, *(s16*)(self + 0x25a));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             JGeometry::TVec3f pos(*(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
@@ -315,17 +240,7 @@ extern "C" void fn_80339AEC(u8* self) {
         }
         case 7: {
             PSMTXTrans(trans, -8.0f, -8.0f, 0.0f);
-            s = JMASinShort(*(s16*)(self + 0x25a));
-            c = JMACosShort(*(s16*)(self + 0x25a));
-            rot[0][0] = c;
-            rot[0][1] = -s;
-            rot[1][0] = s;
-            rot[1][1] = c;
-            rot[2][2] = 1.0f;
-            rot[2][1] = 0.0f;
-            rot[1][2] = 0.0f;
-            rot[2][0] = 0.0f;
-            rot[0][2] = 0.0f;
+            setRotZ_80339AEC(rot, *(s16*)(self + 0x25a));
             PSMTXConcat(rot, trans, rot);
             rec.w18 = rot;
             if (*(u8*)(self + 0x258) != 0) {
