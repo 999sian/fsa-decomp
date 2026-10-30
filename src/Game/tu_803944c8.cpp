@@ -429,7 +429,7 @@ extern "C" void fn_80395834(MsgPop2* self, J2DPane* pane) {
 
 static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
     MsgPop* self = (MsgPop*)p;
-    s32 next = self->fadeTimer + 1;
+    int next = self->fadeTimer + 1;
     s32 period = *(s16*)(lbl_8050DB0C + 0x284);
     self->fadeTimer = next;
     s32 half = period / 2;
@@ -462,7 +462,7 @@ static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
 }
 
 extern "C" const u64 lbl_80475790[5][4];
-#pragma opt_common_subs off
+#pragma opt_propagation on
 extern "C" void fn_80395BE8(void* this_) {
 u8* p=(u8*)this_;
 s32 n=*(s32*)(p+0x160);
@@ -510,7 +510,7 @@ if(i>=1 && i<=3) continue;
 if(i==n) {if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=true; }
 fn_80395480((MsgPop*)p,((MsgDraw*)p)->screen->search(*tag));
 if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=true; }
-msgRestoreChoice(p,tags,true);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=false; }}
+msgRestoreChoiceTV(p,tags);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tag); pane->mIsVisible=false; }if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((MsgDraw*)p)->screen->search(*tags); pane->mIsVisible=false; }}
 }
 }}
 } else {
@@ -534,7 +534,7 @@ if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((Msg
 }
 }
 }
-#pragma opt_common_subs reset
+#pragma opt_propagation reset
 
 extern "C" void fn_80396884(void* this_) {
     u8* self = (u8*)this_;
