@@ -79,14 +79,14 @@ extern const f32 lbl_805414B8;
 extern const f32 lbl_805414BC;
 extern const f64 lbl_805414A0,lbl_805414B0;
 static inline void tfl2Effect(u8* p,s32 id,s32 mode) {
- JGeometry::TVec3<f32> v;
- v.x=lbl_80541454+*(f32*)(p+0xc);v.y=lbl_80541454+*(f32*)(p+0x10);v.z=lbl_80541440;
+ JGeometry::TVec3<f32> v(lbl_80541454+*(f32*)(p+0xc),
+                         lbl_80541454+*(f32*)(p+0x10),lbl_80541440);
  fn_8013CC50(*(u32*)(p+4),&v,id,mode,0,0,0,1,lbl_80541444);
 }
 extern "C" void fn_802F25C0(u8* p) {
 JGeometry::TVec2<f32> pos2;
-Tfl2Rect box;
-Tfl2Rect region;
+JGeometry::TBox2f region;
+JGeometry::TBox2f box;
 JGeometry::TVec3<f32> saved=*(JGeometry::TVec3<f32>*)(p+0xc);
 const s32* base=lbl_8046F788;
 switch(*(s32*)(p+0x234)){
@@ -96,19 +96,19 @@ case 2:*(f32*)(p+0xc)+=lbl_80541464;*(f32*)(p+0x10)+=lbl_8054146C;break;
 case 3:*(f32*)(p+0xc)+=lbl_80541454;*(f32*)(p+0x10)+=lbl_8054146C;break;
 case 4:case 5:
 *(f32*)(p+0x80)=lbl_80541470;*(f32*)(p+0x84)=lbl_80541470;*(f32*)(p+0x88)=lbl_80541464;*(f32*)(p+0x8c)=lbl_80541464;
-box=*(Tfl2Rect*)(p+0x80);
+box=*(JGeometry::TBox2f*)(p+0x80);
 *(f32*)(p+0xc)+=lbl_80541464;*(f32*)(p+0x10)+=lbl_80541464;
-pos2.x=*(f32*)(p+0xc);pos2.y=*(f32*)(p+0x10);
-box.x0+=pos2.x;box.y0+=pos2.y;box.x1+=pos2.x;box.y1+=pos2.y;
+pos2.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
+box.addPos(pos2);
 fn_80239914(&box,*(s32*)(p+4),*(void**)(p+0x198));
 *(JGeometry::TVec3<f32>*)(p+0xc)=saved;
 *(f32*)(p+0x10)+=lbl_80541464;
 *(f32*)(p+0x60)=lbl_80541474;*(f32*)(p+0x64)=lbl_80541478;*(f32*)(p+0x68)=lbl_8054147C;*(f32*)(p+0x6c)=lbl_80541480;
 break;
 }
-pos2.x=*(f32*)(p+0xc);pos2.y=*(f32*)(p+0x10);
-box=*(Tfl2Rect*)(p+0x60);
-box.x0+=pos2.x;box.y0+=pos2.y;box.x1+=pos2.x;box.y1+=pos2.y;
+pos2.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
+box.set(*(JGeometry::TBox2f*)(p+0x60));
+box.addPos(pos2);
 s32 player=fn_8023AF14(&box,*(s32*)(p+4),0,lbl_80541484);
 if(player>=0 && fn_8022F514(player)==1 && player==fn_8022F478(player))player=-1;
 if(*(s32*)(p+0x23c)==1 && player>=0 && !fn_80234F68(player))player=-1;
@@ -120,8 +120,9 @@ for(s32 i=0;i<4;i++)if(fn_8023A97C(i,&box,*(s32*)(p+4),&pos2))count++;
 switch(*(s32*)(p+0x230)){
 case 0:{
 f32 x=*(f32*)(p+0xc);f32 y=*(f32*)(p+0x10);s32 room=*(s32*)(p+4);
-Tfl2RoomCfg* cfg=fn_802D6A9C();region=room<8?cfg->rectA:cfg->rectB;
-s32 tx=(s32)(x-region.x0);s32 ty=(s32)(y-region.y0);
+Tfl2RoomCfg* cfg=fn_802D6A9C();Tfl2Rect* source=room<8?&cfg->rectA:&cfg->rectB;
+region=*(JGeometry::TBox2f*)source;
+s32 tx=(s32)(x-region.i.x);s32 ty=(s32)(y-region.i.y);
 if(tx<0)tx=0;else if(tx>=512)tx=511;if(ty<0)ty=0;else if(ty>=512)ty=511;
 *(u16*)(p+0x250)=fn_802F9908(lbl_8053AB10->x20,*(u32*)(p+4),((ty<<1)&0x200)|(tx&0x100)|(ty&0xf0)|((tx>>4)&15));
 *(s32*)(p+0x230)=2;break;
@@ -138,11 +139,14 @@ tfl2Effect(p,900,0);
 f32 x=*(f32*)(p+0xc);
 s32 room=*(s32*)(p+4);
 Tfl2RoomCfg* cfg=fn_802D6A9C();
-region=room<8?cfg->rectA:cfg->rectB;
-f32 ry=region.y0;
-for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
-s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
-for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+Tfl2Rect* source=room<8?&cfg->rectA:&cfg->rectB;
+region=*(JGeometry::TBox2f*)source;
+f32 ry=region.i.y;
+const s32* heights=base+7;
+const s32* widths=base;
+for(s32 i=0;i<widths[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.i.x);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<heights[*(s32*)(p+0x234)];j++){
 s32 ty=(s32)(y-ry);
 s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
 if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
@@ -161,11 +165,14 @@ if(count==4){
 f32 x=*(f32*)(p+0xc);
 s32 room=*(s32*)(p+4);
 Tfl2RoomCfg* cfg=fn_802D6A9C();
-region=room<8?cfg->rectA:cfg->rectB;
-f32 ry=region.y0;
-for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
-s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
-for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+Tfl2Rect* source=room<8?&cfg->rectA:&cfg->rectB;
+region=*(JGeometry::TBox2f*)source;
+f32 ry=region.i.y;
+const s32* heights=base+7;
+const s32* widths=base;
+for(s32 i=0;i<widths[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.i.x);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<heights[*(s32*)(p+0x234)];j++){
 s32 ty=(s32)(y-ry);
 s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
 if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
@@ -186,11 +193,14 @@ if(*(f32*)(p+0x248)>=lbl_80541494){
 f32 x=*(f32*)(p+0xc);
 s32 room=*(s32*)(p+4);
 Tfl2RoomCfg* cfg=fn_802D6A9C();
-region=room<8?cfg->rectA:cfg->rectB;
-f32 ry=region.y0;
-for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
-s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
-for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+Tfl2Rect* source=room<8?&cfg->rectA:&cfg->rectB;
+region=*(JGeometry::TBox2f*)source;
+f32 ry=region.i.y;
+const s32* heights=base+7;
+const s32* widths=base;
+for(s32 i=0;i<widths[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.i.x);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<heights[*(s32*)(p+0x234)];j++){
 s32 ty=(s32)(y-ry);
 s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
 if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
@@ -218,11 +228,14 @@ if(*(f32*)(p+0x248)<lbl_80541440){
 f32 x=*(f32*)(p+0xc);
 s32 room=*(s32*)(p+4);
 Tfl2RoomCfg* cfg=fn_802D6A9C();
-region=room<8?cfg->rectA:cfg->rectB;
-f32 ry=region.y0;
-for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
-s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
-for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+Tfl2Rect* source=room<8?&cfg->rectA:&cfg->rectB;
+region=*(JGeometry::TBox2f*)source;
+f32 ry=region.i.y;
+const s32* heights=base+7;
+const s32* widths=base;
+for(s32 i=0;i<widths[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.i.x);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<heights[*(s32*)(p+0x234)];j++){
 s32 ty=(s32)(y-ry);
 s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
 if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
@@ -264,11 +277,14 @@ fn_801F0E34(p,0x30001,0);
 f32 x=lbl_80541468+*(f32*)(p+0xc);
 s32 room=*(s32*)(p+4);
 Tfl2RoomCfg* cfg=fn_802D6A9C();
-region=room<8?cfg->rectA:cfg->rectB;
-f32 ry=region.y0;
-for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
-s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
-for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+Tfl2Rect* source=room<8?&cfg->rectA:&cfg->rectB;
+region=*(JGeometry::TBox2f*)source;
+f32 ry=region.i.y;
+const s32* heights=base+7;
+const s32* widths=base;
+for(s32 i=0;i<widths[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.i.x);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<heights[*(s32*)(p+0x234)];j++){
 s32 ty=(s32)(y-ry);
 s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
 if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
@@ -283,7 +299,7 @@ p[0x11c]=0;
 }else --*(s32*)(p+0x244);
 {u8* mgr=*(u8**)((u8*)lbl_8053AB10+0x24);if(!mgr[0x7f4])mgr[0x7f5]=1;}
 break;
-case 1:p[0x11c]=0;break;
+default:case 1:p[0x11c]=0;break;
 case 8:break;
 }
 }
