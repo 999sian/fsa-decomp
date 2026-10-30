@@ -460,6 +460,7 @@ static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
     }
 }
 
+#pragma opt_strength_reduction off
 static inline void msgRestoreChoiceTV(const u8* p, const u64* tags) {
     int j = 0;
     const u64* child = tags;
@@ -468,6 +469,7 @@ static inline void msgRestoreChoiceTV(const u8* p, const u64* tags) {
         ((MsgDraw*)p)->screen->search(*child)->setAlpha(((const MsgPop*)p)->childAlpha[j]);
     }
 }
+#pragma opt_strength_reduction reset
 
 #pragma opt_common_subs reset
 extern "C" const u64 lbl_80475790[5][4];
