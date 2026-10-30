@@ -1,4 +1,7 @@
 #include "types.h"
+#define Vec SDKVec
+#include "JSystem/JGeometry/Vec.h"
+#undef Vec
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 extern const f32 lbl_805423A0;
@@ -7,16 +10,6 @@ extern const f32 lbl_805423A8;
 extern const char lbl_80471FF8[];
 extern "C" void fn_801F06F0(void*, const char*, s32, DrawRec*, s32, f32, f32);
 #include <math.h>
-
-/* JSystem/JMath/JMath.h cannot be included here (its Vec clashes with Actor.h). */
-namespace JMath {
-template <int length, typename T>
-struct TAtanTable {
-    T mTable[length];
-    T atan2_(T, T) const;
-};
-extern TAtanTable<1024, f32> atanTable_;
-}
 
 
 extern "C" s16 fn_8022461C(s32);
