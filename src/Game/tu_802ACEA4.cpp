@@ -16,14 +16,14 @@ struct Box4 {
     f32 a, b, c, d;
 };
 
-extern "C" f32 lbl_805408C8;
-extern "C" f32 lbl_805408DC;
-extern "C" f32 lbl_805408F4;
-extern "C" f32 lbl_805408FC;
-extern "C" f32 lbl_80540900;
-extern "C" f32 lbl_80540904;
-extern "C" f32 lbl_80540908;
-extern "C" f32 lbl_8054090C;
+extern "C" const f32 lbl_805408C8;
+extern "C" const f32 lbl_805408DC;
+extern "C" const f32 lbl_805408F4;
+extern "C" const f32 lbl_805408FC;
+extern "C" const f32 lbl_80540900;
+extern "C" const f32 lbl_80540904;
+extern "C" const f32 lbl_80540908;
+extern "C" const f32 lbl_8054090C;
 extern "C" f32 lbl_80540948;
 extern "C" f32 lbl_8054094C;
 extern "C" f32 lbl_80540950;
@@ -250,8 +250,17 @@ extern "C" f64 lbl_80540938;
 extern "C" f32 lbl_80540940;
 extern "C" f32 lbl_80540944;
 extern "C" void fn_802ADC18(Actor* a) {
+    struct Pt { f32 x, y; };
     u8* p = (u8*)a;
+    Pt pt;
+    Vec v;
     Vec pos = a->field_0C;
+    Box4 box;
+    s32 i;
+    s32 j;
+    s32 hit;
+    s32 sbal;
+    s32 count;
 
     switch (*(s32*)(p + 0x234)) {
     case 2:
@@ -268,12 +277,360 @@ extern "C" void fn_802ADC18(Actor* a) {
         *(f32*)(p + 0x84) = lbl_805408F8;
         *(f32*)(p + 0x88) = lbl_805408EC;
         *(f32*)(p + 0x8c) = lbl_805408EC;
+        box = *(Box4*)(p + 0x80);
         a->field_0C.x += lbl_805408EC;
         a->field_0C.y += lbl_805408EC;
+        pt.x = a->field_0C.x;
+        pt.y = a->field_0C.y;
+        box.a += pt.x;
+        box.b += pt.y;
+        box.c += pt.x;
+        box.d += pt.y;
+        fn_80239914(&box, a->field_04, *(void**)(p + 0x198));
+        a->field_0C = pos;
+        a->field_0C.y += lbl_805408EC;
+        a->field_60 = lbl_805408FC;
+        a->field_64 = lbl_80540900;
+        a->field_68 = lbl_80540904;
+        a->field_6C = lbl_80540908;
         break;
     default:
         a->field_0C.x += lbl_805408DC;
         a->field_0C.y += lbl_805408DC;
+        break;
+    }
+
+    hit = -1;
+    pt.x = a->field_0C.x;
+    pt.y = a->field_0C.y;
+    box = *(Box4*)&a->field_60;
+    box.a += pt.x;
+    box.b += pt.y;
+    box.c += pt.x;
+    box.d += pt.y;
+    for (i = 0; i < 4; i++) {
+        v = *fn_8023E724(i);
+        u8 inside = 0;
+        if (v.x >= box.a && v.y >= box.b && v.x < box.c && v.y < box.d) inside = 1;
+        if (inside) {
+            hit = i;
+            if (!fn_8022F478(i)) break;
+            hit = -1;
+        }
+    }
+    if (*(s32*)(p + 0x23c) == 1 && hit >= 0 && !fn_80234F68(hit)) hit = -1;
+    sbal = fn_801F2718(a, 'SBAL');
+    fn_8023A89C(&box, a->field_04, &pt);
+    count = 0;
+    for (i = 0; i < 4; i++) {
+        if (fn_8023A97C(i, &box, a->field_04, &pt)) count++;
+    }
+    a->field_0C = pos;
+
+    switch (*(s32*)(p + 0x230)) {
+    case 0: {
+        f32 px = a->field_0C.x;
+        f32 py = a->field_0C.y;
+        s32 room = a->field_04;
+        u8* mgr = (u8*)fn_802D6A9C();
+        Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+        s32 x = clampTileCoordinate((s32)(px - b.a));
+        s32 y = clampTileCoordinate((s32)(py - b.b));
+        *(u16*)(p + 0x250) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
+            ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf));
+        *(s32*)(p + 0x230) = 1;
+        break;
+    }
+    case 1: {
+        s32 n = *(s32*)(p + 0x238);
+        if (n != 0) {
+            if (fn_802D800C(fn_802D6A9C(), n)) *(s32*)(p + 0x230) = 2;
+        } else {
+            *(s32*)(p + 0x230) = 2;
+        }
+        s32 type = *(s32*)(p + 0x234);
+        if (type == 4 || type == 5) {
+            *(s32*)(p + 0x230) = 2;
+        } else if (*(s32*)(p + 0x230) == 2 && type >= 2) {
+            *(s32*)(p + 0x230) = 3;
+            fn_801F0E34(a, 0x3001b, 0);
+        }
+        break;
+    }
+    case 2:
+        switch (*(s32*)(p + 0x234)) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 6: {
+            s32 mode = *(s32*)(p + 0x23c);
+            if (!((mode == 0 || mode == 2) && (hit >= 0 || sbal >= 0))) {
+                if (mode == 0) break;
+                if (!(*(u8 (**)(Actor*))(*(u8**)a + 0x34))(a)) break;
+            }
+            Vec v0;
+            v0.z = lbl_805408C8;
+            v0.x = lbl_805408DC + a->field_0C.x;
+            v0.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v0, 0x381, 0, 0, 0, 0, 1, lbl_805408CC);
+            Vec v1;
+            v1.z = lbl_805408C8;
+            v1.x = lbl_805408DC + a->field_0C.x;
+            v1.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v1, 0x382, 0, 0, 0, 0, 1, lbl_805408CC);
+            Vec v2;
+            v2.z = lbl_805408C8;
+            v2.x = lbl_805408DC + a->field_0C.x;
+            v2.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v2, 0x383, 0, 0, 0, 0, 1, lbl_805408CC);
+            Vec v3;
+            v3.z = lbl_805408C8;
+            v3.x = lbl_805408DC + a->field_0C.x;
+            v3.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v3, 0x384, 0, 0, 0, 0, 1, lbl_805408CC);
+            if (hit >= 0) {
+                (*(void (**)(Actor*, s32, s32))(*(u8**)a + 0x30))(a, 0xff, 1);
+                fn_801F0E34(a, 0x30009, 0);
+            }
+            {
+                f32 px = a->field_0C.x;
+                s32 room = a->field_04;
+                u8* mgr = (u8*)fn_802D6A9C();
+                Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                s32* ta = lbl_8046C8CC;
+                s32* tb = lbl_8046C8B0;
+                f32 by = b.b;
+                f32 one = lbl_8054090C;
+                f32 bx = b.a;
+                for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                    s32 xi = (s32)(px - bx);
+                    f32 py = a->field_0C.y;
+                    for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                        s32 yi = (s32)(py - by);
+                        s32 x = clampTileCoordinate(xi);
+                        s32 y = clampTileCoordinate(yi);
+                        fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
+                            ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf), 6);
+                        py += one;
+                    }
+                    px += one;
+                }
+            }
+            *(s32*)(p + 0x230) = 3;
+            fn_801F0E34(a, 0x3001b, 0);
+            break;
+        }
+        case 4:
+        case 5:
+            if (count == 4) {
+                (*(void (**)(Actor*, s32, s32))(*(u8**)a + 0x30))(a, 0xff, 1);
+                fn_801F0E34(a, 0x30009, 0);
+                f32 px = a->field_0C.x;
+                s32 room = a->field_04;
+                u8* mgr = (u8*)fn_802D6A9C();
+                Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                s32* ta = lbl_8046C8CC;
+                s32* tb = lbl_8046C8B0;
+                f32 by = b.b;
+                f32 one = lbl_8054090C;
+                f32 bx = b.a;
+                for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                    s32 xi = (s32)(px - bx);
+                    f32 py = a->field_0C.y;
+                    for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                        s32 yi = (s32)(py - by);
+                        s32 x = clampTileCoordinate(xi);
+                        s32 y = clampTileCoordinate(yi);
+                        fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
+                            ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf), 0x7c);
+                        py += one;
+                    }
+                    px += one;
+                }
+                *(f32*)(p + 0x24c) = lbl_80540910;
+                *(s32*)(p + 0x230) = 6;
+                fn_801F0E34(a, 0x3001b, 0);
+            }
+            break;
+        }
+        break;
+    case 3:
+        *(f32*)(p + 0x248) += lbl_80540914;
+        if (*(f32*)(p + 0x248) >= lbl_80540918) {
+            *(f32*)(p + 0x248) = lbl_8054091C;
+            f32 px = a->field_0C.x;
+            s32 room = a->field_04;
+            u8* mgr = (u8*)fn_802D6A9C();
+            Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+            s32* ta = lbl_8046C8CC;
+            s32* tb = lbl_8046C8B0;
+            f32 by = b.b;
+            f32 one = lbl_8054090C;
+            f32 bx = b.a;
+            for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                s32 xi = (s32)(px - bx);
+                f32 py = a->field_0C.y;
+                for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                    s32 yi = (s32)(py - by);
+                    s32 x = clampTileCoordinate(xi);
+                    s32 y = clampTileCoordinate(yi);
+                    fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
+                        ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf), *(u16*)(p + 0x252));
+                    py += one;
+                }
+                px += one;
+            }
+            *(s32*)(p + 0x244) = 0x28;
+            if (*(s32*)(p + 0x23c) == 2) {
+                *(s32*)(p + 0x230) = 8;
+            } else {
+                *(s32*)(p + 0x230) = 4;
+            }
+        }
+        break;
+    case 4:
+        if (*(s32*)(p + 0x244) == 0 && hit < 0 && sbal < 0) {
+            fn_801F0E34(a, 0x3001c, 0);
+            *(s32*)(p + 0x230) = 5;
+        } else if (*(s32*)(p + 0x244) != 0) {
+            *(s32*)(p + 0x244) -= 1;
+            if (*(s32*)(p + 0x244) == 0 && *(s32*)(p + 0x23c) != 0
+                && (*(u8 (**)(Actor*))(*(u8**)a + 0x34))(a) == 1) {
+                *(s32*)(p + 0x244) = 1;
+            }
+        }
+        break;
+    case 5:
+        *(f32*)(p + 0x248) -= lbl_80540920;
+        if (*(f32*)(p + 0x248) < lbl_805408C8) {
+            *(f32*)(p + 0x248) = lbl_805408C8;
+            f32 px = a->field_0C.x;
+            s32 room = a->field_04;
+            u8* mgr = (u8*)fn_802D6A9C();
+            Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+            u16* tiles = (u16*)(lbl_8046C8B0 + 0xe);
+            s32* ta = lbl_8046C8CC;
+            s32* tb = lbl_8046C8B0;
+            f32 by = b.b;
+            f32 one = lbl_8054090C;
+            f32 bx = b.a;
+            for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                s32 xi = (s32)(px - bx);
+                f32 py = a->field_0C.y;
+                u16* row = tiles;
+                for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                    s32 yi = (s32)(py - by);
+                    s32 x = clampTileCoordinate(xi);
+                    s32 y = clampTileCoordinate(yi);
+                    u32 key = ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf);
+                    if (*(s32*)(p + 0x234) != 1) {
+                        fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04, key, *(u16*)(p + 0x250));
+                    } else {
+                        fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04, key, *row);
+                    }
+                    py += one;
+                    row++;
+                }
+                px += one;
+                tiles += 4;
+            }
+            *(s32*)(p + 0x230) = 2;
+            Vec v0;
+            v0.z = lbl_805408C8;
+            v0.x = lbl_805408DC + a->field_0C.x;
+            v0.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v0, 0x381, 1, 0, 0, 0, 1, lbl_805408CC);
+            Vec v1;
+            v1.z = lbl_805408C8;
+            v1.x = lbl_805408DC + a->field_0C.x;
+            v1.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v1, 0x382, 1, 0, 0, 0, 1, lbl_805408CC);
+            Vec v2;
+            v2.z = lbl_805408C8;
+            v2.x = lbl_805408DC + a->field_0C.x;
+            v2.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v2, 0x383, 1, 0, 0, 0, 1, lbl_805408CC);
+            Vec v3;
+            v3.z = lbl_805408C8;
+            v3.x = lbl_805408DC + a->field_0C.x;
+            v3.y = lbl_805408DC + a->field_0C.y;
+            fn_8013CC50(a->field_04, &v3, 0x384, 1, 0, 0, 0, 1, lbl_805408CC);
+        }
+        break;
+    case 6: {
+        *(f32*)(p + 0x248) -= *(f32*)(p + 0x24c);
+        *(f32*)(p + 0x24c) = *(f32*)(p + 0x24c) - lbl_80540928;
+        if (*(f32*)(p + 0x248) <= lbl_80540930) {
+            *(f32*)(p + 0x248) = lbl_80540930;
+            *(s32*)(p + 0x244) = 4;
+            *(s32*)(p + 0x230) = 7;
+        }
+        u8* game = *(u8**)((u8*)lbl_8053AB10 + 0x24);
+        if (game[0x7f4] == 0) game[0x7f5] = 1;
+        break;
+    }
+    case 7: {
+        if (*(s32*)(p + 0x244) == 0) {
+            *(f32*)(p + 0x248) -= *(f32*)(p + 0x24c);
+            *(f32*)(p + 0x24c) = *(f32*)(p + 0x24c) + lbl_80540938;
+            if (*(f32*)(p + 0x248) <= lbl_80540940) {
+                *(f32*)(p + 0x248) = lbl_80540940;
+                *(s32*)(p + 0x230) = 8;
+                fn_802D79E8(fn_802D6A9C(), a->field_04, 1, lbl_80540944, lbl_805408C8);
+                Vec v4;
+                v4.x = lbl_805408EC + (lbl_805408F0 + a->field_0C.x);
+                v4.y = lbl_805408EC + a->field_0C.y;
+                v4.z = lbl_805408C8;
+                fn_8013CC50(a->field_04, &v4, 0x263, 0, 0, 0, 0, 1, lbl_805408CC);
+                if (*(s32*)(p + 0x234) == 4) {
+                    char* name = fn_802D9C4C(fn_802D6A9C());
+                    fn_8013CC50(a->field_04, &v4, 0x82, 1, 0, 0, 0, 1, lbl_805408CC);
+                    fn_8013CC50(a->field_04, &v4, 0x83, 1, 0, 0, 0, 1, lbl_805408CC);
+                    fn_8013CC50(a->field_04, &v4, 0x84, 1, 0, 0, 0, 1, lbl_805408CC);
+                    if (name[0] == 'r' || name[0] == 's' || name[0] == 'y') {
+                        fn_8013CC50(a->field_04, &v4, 0x80, 1, 0, 0, 0, 1, lbl_805408CC);
+                    } else {
+                        fn_8013CC50(a->field_04, &v4, 0x81, 1, 0, 0, 0, 1, lbl_805408CC);
+                    }
+                    fn_801F0E34(a, 0x30001, 0);
+                } else {
+                    f32 px = lbl_805408F0 + a->field_0C.x;
+                    s32 room = a->field_04;
+                    u8* mgr = (u8*)fn_802D6A9C();
+                    Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                    s32* ta = lbl_8046C8CC;
+                    s32* tb = lbl_8046C8B0;
+                    f32 by = b.b;
+                    f32 one = lbl_8054090C;
+                    f32 bx = b.a;
+                    for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                        s32 xi = (s32)(px - bx);
+                        f32 py = a->field_0C.y;
+                        for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                            s32 yi = (s32)(py - by);
+                            s32 x = clampTileCoordinate(xi);
+                            s32 y = clampTileCoordinate(yi);
+                            fn_802F9974(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
+                                ((y << 1) & 0x200) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf), (u16)*(s32*)(p + 0x240));
+                            py += one;
+                        }
+                        px += one;
+                    }
+                }
+                *(u8*)(p + 0x11c) = 0;
+            }
+        } else {
+            *(s32*)(p + 0x244) -= 1;
+        }
+        u8* game = *(u8**)((u8*)lbl_8053AB10 + 0x24);
+        if (game[0x7f4] == 0) game[0x7f5] = 1;
+        break;
+    }
+    case 8:
+        break;
+    default:
+        *(u8*)(p + 0x11c) = 0;
         break;
     }
 }
