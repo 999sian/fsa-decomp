@@ -51,7 +51,8 @@ struct T804170EC_Color {
     u8 r, g, b, a;
 };
 extern s32 lbl_8053AE00;
-extern const u64 lbl_8048CD50[];
+struct T80416BD0_Tags;
+extern const T80416BD0_Tags lbl_8048CD50;
 struct T80416BD0_Tags {
     u64 first[11];
     u64 second[11];
@@ -330,7 +331,7 @@ void TU80414F6C::fn_80416038() {
     f32 full;
     f32 raw;
     u8* p = (u8*)this;
-    const T80416BD0_Tags* t = (const T80416BD0_Tags*)lbl_8048CD50;
+    const T80416BD0_Tags* t = &lbl_8048CD50;
     u8 done0 = 0;
     u8 done1 = 0;
     u8 done2 = 0;
@@ -530,7 +531,7 @@ extern "C" void fn_80416BD0(u8* p) {
     int k;
     int i;
     const u64* first;
-    const u64* t = lbl_8048CD50;
+    const u64* t = (const u64*)&lbl_8048CD50;
     first = t;
 
     fn_8042EB24(lbl_8053AEC4);
@@ -817,32 +818,36 @@ static inline void dataSelectChild(u8* p, s32 offset, u64 key) {
 static inline void dataSelectFont(J2DScreen* screen, u64 key, JUTFont* font) {
     ((J2DTextBox*)screen->search(key))->setFont(font);
 }
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void* fn_8041787C(void* this_) {
-    f32 x; f32 y;
+    f32 y; f32 x;
     u8* p = (u8*)this_;
-    const u8* t = (const u8*)lbl_8048CD50;
-    const u64* a;
+    const T80416BD0_Tags* t;
+    int i;
+    u8* slot;
     const u64* b;
-    s32 i;
+    const u64* a;
     *(void**)p = lbl_804B1378;
+    t = &lbl_8048CD50;
     lbl_8053AE00 = (s32)p;
     p[0xe4] = 0;
     *(J2DScreen**)(p + 0x24) = new J2DScreen();
-    (*(J2DScreen**)(p + 0x24))->setPriority((const char*)t+0x590,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x34));
+    (*(J2DScreen**)(p + 0x24))->setPriority(t->layout,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x34));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x546f6d3031ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x546f6d3032ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x54736e3031ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     dataSelectFont(*(J2DScreen**)(p+0x24),0x54736e3032ULL,*(JUTFont**)(lbl_8053AD78+0x154));
     fn_803832BC(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x546f6d3031ULL)),0x100,0,0,0);
     fn_803832BC(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x546f6d3032ULL)),0x100,0,0,0);
-    for(a=(const u64*)t,b=(const u64*)(t+0x58),i=0;i<11;i++,a++,b++){
-        p[0x123+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*a))[0xb2];
-        p[0x12e+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(a=t->first,b=t->second,i=0;i<11;i++,a++,b++){
+        u8 alpha=((u8*)(*(J2DScreen**)(p+0x24))->search(*a))[0xb2];
+        slot=p+i;
+        slot[0x123]=alpha;
+        slot[0x12e]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
     }
-    for(i=0,b=(const u64*)(t+176);i<9;i++,b++) p[313+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
-    for(i=0,b=(const u64*)(t+248);i<6;i++,b++) p[322+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
-    for(i=0,b=(const u64*)(t+296);i<10;i++,b++) p[328+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=t->third;i<9;i++,b++) p[313+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=t->fourth;i<6;i++,b++) p[322+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=t->grid[0];i<10;i++,b++) p[328+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
     dataSelectChild(p,40,0x506273626b3032ULL);
     dataSelectChild(p,44,0x506273626b3031ULL);
     dataSelectChild(p,48,0x506273623039ULL);
@@ -869,16 +874,20 @@ extern "C" void* fn_8041787C(void* this_) {
     dataSelectChild(p,96,0x4e646174613135ULL);
     dataSelectChild(p,144,0x50627371623130ULL);
     dataSelectChild(p,0x9c,0x4e646174613035ULL);
-    for(i=0,a=(const u64*)(t+0x4e8);i<15;i++,a++){
-        dataSelectChild(p,0xa4+i*4,*a);
-        ((T80416BD0_Child*)*(void**)((u8*)*(void**)(p+0xa4+i*4)+4))->slot9(0);
+    for(i=0,a=t->wrappers;i<15;i++,a++){
+        slot=p+i*4;
+        void* child = __nw__FUl(0x2c);
+        if(child) *(void**)child = lbl_804AF86C;
+        *(void**)(slot+0xa4)=child;
+        fn_80402F04(*(void**)(slot+0xa4),(*(J2DScreen**)(p+0x24))->search(*a));
+        ((T80416BD0_Child*)*(void**)((u8*)*(void**)(slot+0xa4)+4))->slot9(0);
     }
     *(void**)(p+0xa0)=*(void**)((u8*)lbl_8053AED8+8);
-    fn_80440D78(lbl_8053AED8,fn_804030C4(0x54494d47,(const char*)t+0x5a8));
-    fn_80440CE4(lbl_8053AED8,fn_804030C4(0x54494d47,(const char*)t+0x5bc));
+    fn_80440D78(lbl_8053AED8,fn_804030C4(0x54494d47,t->confirm));
+    fn_80440CE4(lbl_8053AED8,fn_804030C4(0x54494d47,t->back));
     *(u16*)(p+0x106)=3;
-    ((u8*)(*(J2DScreen**)(p+0x24))->search(*(const u64*)(t+0x498)))[0xb0]=0;
-    ((u8*)(*(J2DScreen**)(p+0x24))->search(*(const u64*)(t+0x4a0)))[0xb0]=0;
+    ((u8*)(*(J2DScreen**)(p+0x24))->search(*t->locked))[0xb0]=0;
+    ((u8*)(*(J2DScreen**)(p+0x24))->search(t->locked[1]))[0xb0]=0;
     for(i=0,b=(const u64*)(t+0x498);i<8;i++,b++){
         if(fn_803B9120(i)){
             ((u8*)(*(J2DScreen**)(p+0x24))->search(b[2]))[0xb0]=0;
@@ -887,7 +896,7 @@ extern "C" void* fn_8041787C(void* this_) {
     }
     *(s16*)(p+0x104)=0;
     for(s32 j=0;j<10;j++){
-        p[0x10b+j]=0;p[0x117+j]=0;
+        (p+j)[0x10b]=0;(p+j)[0x117]=0;
         if(*(u16*)(p+0x106)&(u16)(1<<j)){
             p[0x117+*(s16*)(p+0x104)]=j;
             p[0x10b+*(s16*)(p+0x104)]=j;
@@ -910,12 +919,12 @@ strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e30
 
 }else{
 if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
-if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,((const s32*)(t+0x560))[selected],0,0,0);else p[0xe4]=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,t->message[selected],0,0,0);else p[0xe4]=0;
 strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
 strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
 
 
-const u64* tag = &((const u64*)(t+0x448))[selected];
+const u64* tag = &t->selected[selected];
 x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
 y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
 (*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
