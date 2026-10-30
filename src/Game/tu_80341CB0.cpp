@@ -82,6 +82,11 @@ static inline void bombSetSoundArea(JGeometry::TVec3f lo, JGeometry::TVec3f hi) 
     JGeometry::TVec3f b(hi);
     fn_8043E398(lbl_8053AED0, (Vec*)&a, (Vec*)&b);
 }
+extern const f32 lbl_80542308;
+extern const f32 lbl_8054230C;
+static inline void bombScaleHitBox(u8* p, f32 sx, f32 sy) {
+    ((JGeometry::TBox2<f32>*)(p + 0x60))->set(lbl_8054230C * sx, lbl_8054230C * sy, lbl_80542308 * sx, lbl_80542308 * sy);
+}
 extern "C" void fn_8030C210(void* cam, void* pos);
 static inline void bombNotifyCamera(void* cam, const JGeometry::TVec3f& pos) {
     fn_8030C210(cam, (void*)&pos);
@@ -305,16 +310,18 @@ extern "C" void fn_80342850(Actor* a) {
     }
     switch (*(u32*)(p + 0x230)) {
     case 0: {
-        *(f32*)(p + 0x254) += lbl_805422F8 / *(s32*)(p + 0x244);
+        f32 one = lbl_805422F8;
+        *(f32*)(p + 0x254) += one / *(s32*)(p + 0x244);
         *(f32*)(p + 0x258) = *(f32*)(p + 0x254);
         *(f32*)(p + 0x25c) = *(f32*)(p + 0x254);
-        f32 sx = *(f32*)(p + 0x254);
-        f32 sy = *(f32*)(p + 0x258);
-        ((HitBox*)(p + 0x60))->set(lbl_8054230C * sx, lbl_8054230C * sy, lbl_80542308 * sx, lbl_80542308 * sy);
-        if (*(f32*)(p + 0x254) >= lbl_805422F8) {
-            *(f32*)(p + 0x254) = lbl_805422F8;
-            *(f32*)(p + 0x258) = lbl_805422F8;
-            *(f32*)(p + 0x25c) = lbl_805422F8;
+        f32 lo = lbl_8054230C;
+        f32 hi = lbl_80542308;
+        ((HitBox*)(p + 0x60))->set(lo * *(f32*)(p + 0x254), lo * *(f32*)(p + 0x258),
+                                   hi * *(f32*)(p + 0x254), hi * *(f32*)(p + 0x258));
+        if (*(f32*)(p + 0x254) >= one) {
+            *(f32*)(p + 0x254) = one;
+            *(f32*)(p + 0x258) = one;
+            *(f32*)(p + 0x25c) = one;
             *(f32*)(p + 0x60) = lbl_80542310;
             *(f32*)(p + 0x64) = lbl_80542310;
             *(f32*)(p + 0x68) = lbl_80542314;
@@ -448,8 +455,8 @@ extern "C" void fn_80342850(Actor* a) {
     }
     }
     if (*(s32*)(p + 0x230) != 2) {
-        JGeometry::TVec3f v(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14), 0.0f);
-        fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), &v);
+        bombNotifyCamera(*(void**)((u8*)lbl_8053AB10 + 0x24),
+                         JGeometry::TVec3f(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14), 0.0f));
     }
     if (*(s32*)(p + 0x234) < 300 && *(s32*)(p + 0x230) == 6) {
         *(s32*)(p + 0x240) += 1;
