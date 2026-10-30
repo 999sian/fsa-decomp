@@ -141,14 +141,8 @@ static inline void boxProducts108(const char* p,float* box) {
 }
 extern "C" void fn_802108BC(int param_1) {
 float box[4];
-float c,d,b2,a0;
 fn_801CE0A4();
-d=lbl_8053FAD8 * *(float*)(param_1+0x58);
-c=lbl_8053FAE4 * *(float*)(param_1+0x58);
-const float& x=*(float*)(param_1+0x54);
-b2=lbl_8053FADC * x;
-a0=lbl_8053FAE0 * x;
-box[0] = a0; box[1] = c; box[2] = b2; box[3] = d;
+boxProducts108((const char*)param_1,box);
 box[0] += *(float*)(param_1+0xc); box[1] += *(float*)(param_1+0x10); box[2] += *(float*)(param_1+0xc); box[3] += *(float*)(param_1+0x10);
 fn_80239914(box,*(unsigned int*)(param_1+4),*(unsigned int*)(param_1+0x198));
 unsigned int a = *(unsigned int*)(param_1+0x198);
