@@ -375,7 +375,7 @@ void fn_801EEC98(void*, s32, void*, void*, void*, void*, s32, s32);
 void fn_8022FEB8(void*, s32, s32, s32, s32);
 s32 fn_8022FD8C(s32);
 u8 fn_802300EC(s32);
-u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
+u8 fn_8038AD24(s32, s32, s32, s32, JGeometry::TVec3f, s32);
 void fn_8022FE80(s32, s32, s32, s32, s32);
 u8 fn_803865B8(s32);
 void fn_80384C58(s32, s32);
@@ -404,7 +404,6 @@ extern "C" void fn_801B56A0(char* p) {
     TlwpVec target;
     JGeometry::TBox2f box;
     JGeometry::TVec3f pos;
-    JGeometry::TVec3f arg;
     s32 collisionFlags;
     s32 extra;
     f32 collisionFloat;
@@ -435,8 +434,7 @@ extern "C" void fn_801B56A0(char* p) {
         if (*(s32*)(p+0x244)<0) break;
         if (!fn_802300EC(*(s32*)(p+0x244))) break;
         pos.y -= lbl_8053EA64;
-        arg = pos;
-        if (!fn_8038AD24(*(s32*)(p+0x244),((s32*)((char*)d+0x68))[*(s32*)(p+0x254)],*(s32*)(p+0x198),*(s32*)(p+4),&arg,0x100)) break;
+        if (!fn_8038AD24(*(s32*)(p+0x244),d->unk_0x68[*(s32*)(p+0x254)],*(s32*)(p+0x198),*(s32*)(p+4),pos,0x100)) break;
         *(s32*)(p+0x230)=2;
     case 2:
         fn_8022FE80(*(s32*)(p+0x244),*(s32*)(p+4),*(s32*)(p+0x198),0,0);
@@ -469,9 +467,9 @@ else if (isnan(dist)) { dist=NAN; }
         break;
     }
     case 4: {
-        s32 i;
         s32 room;
         char* q;
+        s32 i;
         if (!fn_801F68E0(fn_801F856C())) break;
         i=0;
         q=p;
@@ -494,7 +492,7 @@ else if (isnan(dist)) { dist=NAN; }
     }
     case 5: {
         char* q;
-        s32 i;
+        int i;
         s32 count;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
         i=0;
@@ -505,9 +503,12 @@ else if (isnan(dist)) { dist=NAN; }
                 if(i!=0) target.y-=lbl_8053EA6C;
                 fn_801F71A4((f32*)(q+0x264),target.x,lbl_8053EA28,lbl_8053EA10);
                 fn_801F71A4((f32*)(q+0x268),target.y,lbl_8053EA28,lbl_8053EA10);
-                f32 dy=*(f32*)(q+0x268)-target.y;
-                f32 dx=*(f32*)(q+0x264)-target.x;
-                f32 dist=dx*dx+dy*dy;
+                f32 dist;
+                f32 dx;
+                f32 dy;
+                dy=*(f32*)(q+0x268)-target.y;
+                dx=*(f32*)(q+0x264)-target.x;
+                dist=dx*dx+dy*dy;
                 if (dist>0.0f) {
 f64 g=__frsqrte(dist);
 g=0.5*g*(3.0-g*g*dist);
@@ -530,9 +531,9 @@ else if (isnan(dist)) { dist=NAN; }
         break;
     }
     case 6: {
-        s32 i;
         s32 room;
         char* q;
+        s32 i;
         if(*(s32*)(p+0x234)!=0) break;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
         q=p;
@@ -543,10 +544,12 @@ else if (isnan(dist)) { dist=NAN; }
                     if(i!=0) target.y-=lbl_8053EA6C;
                     fn_801F71A4((f32*)(q+0x264),target.x,lbl_8053EA28,lbl_8053EA10);
                     fn_801F71A4((f32*)(q+0x268),target.y,lbl_8053EA28,lbl_8053EA10);
+                    f32 dist;
                     f32 dy=*(f32*)(q+0x268)-target.y;
                     f32 dx=*(f32*)(q+0x264)-target.x;
-                    dy=(f32)fabs(dy); dx=(f32)fabs(dx);
-                    f32 dist=dx*dx+dy*dy;
+                    f32 ay=(f32)fabs(dy);
+                    f32 ax=(f32)fabs(dx);
+                    dist=ax*ax+ay*ay;
                     if (dist>0.0f) {
 f64 g=__frsqrte(dist);
 g=0.5*g*(3.0-g*g*dist);
@@ -578,7 +581,7 @@ else if (isnan(dist)) { dist=NAN; }
     case 7:
         if(lbl_8053A118==0x309) {
             s32 index=*(s32*)(p+0x254);
-            fn_801365E8(lbl_8053AAF8,((s32*)((char*)d+0x28))[index],((s32*)((char*)d+0x48))[index],0);
+            fn_801365E8(lbl_8053AAF8,d->unk_0x28[index],d->unk_0x48[index],0);
         }
         break;
     }
