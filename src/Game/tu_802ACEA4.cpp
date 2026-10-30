@@ -243,6 +243,10 @@ static inline Box4 platformRoomBox(s32 room) {
     u8* mgr = (u8*)fn_802D6A9C();
     return *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
 }
+static inline JGeometry::TBox2f& platformRoomTBox(s32 room) {
+    u8* mgr = (u8*)fn_802D6A9C();
+    return *(JGeometry::TBox2f*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+}
 static inline void platformGetRoomBox(Box4& out, s32 room) {
     u8* mgr = (u8*)fn_802D6A9C();
     out = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
@@ -261,10 +265,9 @@ extern "C" const f64 lbl_80540938;
 extern "C" const f32 lbl_80540940;
 extern "C" const f32 lbl_80540944;
 extern "C" void fn_802ADC18(Actor* a) {
-    struct Pt { f32 x, y; };
     u8* p = (u8*)a;
-    Pt pt;
-    Box4 box;
+    JGeometry::TVec2<f32> pt;
+    JGeometry::TBox2f box;
     JGeometry::TVec3<f32> pos(a->field_0C);
     s32 i;
     s32 j;
@@ -292,15 +295,11 @@ extern "C" void fn_802ADC18(Actor* a) {
         *(f32*)(p + 0x84) = lbl_805408F8;
         *(f32*)(p + 0x88) = lbl_805408EC;
         *(f32*)(p + 0x8c) = lbl_805408EC;
-        box = *(Box4*)(p + 0x80);
+        box = *(JGeometry::TBox2f*)(p + 0x80);
         a->field_0C.x += lbl_805408EC;
         a->field_0C.y += lbl_805408EC;
-        pt.x = a->field_0C.x;
-        pt.y = a->field_0C.y;
-        box.a += pt.x;
-        box.b += pt.y;
-        box.c += pt.x;
-        box.d += pt.y;
+        pt = JGeometry::TVec2<f32>(a->field_0C.x, a->field_0C.y);
+        box.addPos(pt);
         fn_80239914(&box, a->field_04, *(void**)(p + 0x198));
         *(JGeometry::TVec3<f32>*)&a->field_0C = pos;
         a->field_0C.y += lbl_805408EC;
@@ -312,17 +311,13 @@ extern "C" void fn_802ADC18(Actor* a) {
     }
 
     hit = -1;
-    pt.x = a->field_0C.x;
-    pt.y = a->field_0C.y;
-    box = *(Box4*)&a->field_60;
-    box.a += pt.x;
-    box.b += pt.y;
-    box.c += pt.x;
-    box.d += pt.y;
+    pt = JGeometry::TVec2<f32>(a->field_0C.x, a->field_0C.y);
+    box = *(JGeometry::TBox2f*)&a->field_60;
+    box.addPos(pt);
     for (i = 0; i < 4; i++) {
         JGeometry::TVec3<f32> v(*fn_8023E724(i));
         u8 inside = 0;
-        if (v.x >= box.a && v.y >= box.b && v.x < box.c && v.y < box.d) inside = 1;
+        if (v.x >= box.i.x && v.y >= box.i.y && v.x < box.f.x && v.y < box.f.y) inside = 1;
         if (inside) {
             hit = i;
             if (!fn_8022F478(i)) break;
