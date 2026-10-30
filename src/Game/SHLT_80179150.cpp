@@ -1,5 +1,9 @@
 #include "types.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 #include "Game/ItemBase.h"
 
 extern "C" char lbl_804A0FF8[];
