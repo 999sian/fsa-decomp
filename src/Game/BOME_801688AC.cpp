@@ -266,6 +266,7 @@ extern "C" u8 fn_8022F478(s32 idx);
 extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
 extern "C" s32 fn_8022F3DC(s32 idx);
 extern "C" u8 fn_8022BC38(s32, s32, void*);
+static inline u8 bomePathCheck(JGeometry::TVec3<f32>* point, s32 room, s32 index) { return fn_8022BC38(index, room, point); }
 extern "C" u8 fn_8022C274(s32);
 extern "C" u8 fn_8022D75C(s32);
 extern "C" s32 fn_802373EC(s32);
@@ -283,13 +284,13 @@ static inline u8 bomeOutside(const Vec* point, const f32 margin, const f32* box)
 
 extern "C" void fn_80169030(u8* p) {
 BomeMovement* a=(BomeMovement*)p;
-s32 idx=*(s32*)(p+0x90);
+u32 idx=*(u32*)(p+0x90);
 if(fn_8022F478(idx)==1&&fn_8022F514(*(s32*)(p+0x90))==1)idx=fn_8022F3DC(*(s32*)(p+0x90));
 if(*(s32*)(p+0x23c)==0){
 if((f32)__fabs(*(f32*)(p+0x3c)-*(f32*)(p+0x364))>0.01f)fn_801F71A4(p+0x3c,*(f32*)(p+0x364),0.1f,0.2f);else *(f32*)(p+0x364)=*(f32*)(p+0x3c);
 if((f32)__fabs(*(f32*)(p+0x40)-*(f32*)(p+0x368))>0.01f)fn_801F71A4(p+0x40,*(f32*)(p+0x368),0.1f,0.2f);else *(f32*)(p+0x368)=*(f32*)(p+0x40);
 }
-if(fn_801F6758(p+0xc,*(s32*)(p+4),300.0f))p[0x11c]=0;
+if(((u8(*)(void*,f32,s32))fn_801F6758)(p+0xc,300.0f,*(s32*)(p+4)))p[0x11c]=0;
 if(*(s32*)(p+0x268)<5){
 JGeometry::TVec3<f32> probe;probe.zero();
 ((JGeometry::TVec2<f32>*)&probe)->set(a->targetPath[a->targetCount].end);
@@ -345,8 +346,8 @@ a->path[a->pathCount].startRoom=*(s32*)(p+4);
 }
 }
 fn_8016890C(p,p+0xc,*(s32*)(p+4),p+0x370);
-if((*(s32*)(p+4)==0&&fn_801F6758(p+0xc,*(s32*)(p+4),-16.0f)==1)||(*(s32*)(p+4)>=8&&
-(bool)((*(f32*)(p+0xc))<=*(f32*)(p+0x370)-(-9.0f)||(*(f32*)(p+0xc))>=*(f32*)(p+0x378)+(-9.0f)||(*(f32*)(p+0x10))<=*(f32*)(p+0x374)-(-9.0f)||(*(f32*)(p+0x10))>=*(f32*)(p+0x37c)+(-9.0f))==1)){
+if((*(s32*)(p+4)==0&&((u8(*)(void*,f32,s32))fn_801F6758)(p+0xc,-16.0f,*(s32*)(p+4))==1)||(*(s32*)(p+4)>=8&&
+bomeOutside((Vec*)(p+0xc),-9.0f,(f32*)(p+0x370))==1)){
 vel.zero();((JGeometry::TVec3<f32>*)(p+0x364))->zero();
 }
 if(!fn_8022C274(idx))*(s32*)(p+0x244)=1;
@@ -407,7 +408,7 @@ if(*(s32*)(p+0x23c)>0)--*(s32*)(p+0x23c);
 if(*(s32*)(p+0x240)>0)--*(s32*)(p+0x240);
 if(*(s32*)(p+0x244)!=0){--*(s32*)(p+0x258);if(*(s32*)(p+0x258)<=0)p[0x11c]=0;}
 if(*(s32*)(p+0x234)==0){++*(s32*)(p+0x250);*(s32*)(p+0x250)&=3;*(s32*)(p+0x234)=2;if(*(s32*)(p+0x250)==0)fn_801F0E34(p,0x3008d,0);}
-if(!fn_801F6758(p+0xc,*(s32*)(p+4),0.0f))fn_802A20F0(lbl_8053AC98,p+0xc,*(s32*)(p+0x90),*(s32*)(p+4),0,0);
+if(!((u8(*)(void*,f32,s32))fn_801F6758)(p+0xc,0.0f,*(s32*)(p+4)))fn_802A20F0(lbl_8053AC98,p+0xc,*(s32*)(p+0x90),*(s32*)(p+4),0,0);
 }
 
 extern "C" void fn_80169DCC(char* this_) {
