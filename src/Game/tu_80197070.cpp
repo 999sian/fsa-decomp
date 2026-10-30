@@ -823,7 +823,7 @@ next:
 }
 #pragma opt_propagation reset
 #else
-extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
+extern "C" void fn_8019C500(const Pos_8019* this_, s32 flag) {
     for (int i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
             s32 id = this_->id;
