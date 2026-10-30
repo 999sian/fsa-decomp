@@ -81,6 +81,12 @@ extern "C" s32 ClassifyBamAngleToQuadrant(u32);
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 extern s32 lbl_804A0C10[];
+static inline void stalAnimate(char* p, const s32* frames, const s32* ticks, s32 stride) {
+    *(s32*)(p+0x258)=frames[*(s32*)(p+0x98)*stride+*(s32*)(p+0x24c)];
+    *(s32*)(p+0x238)=ticks[*(s32*)(p+0x24c)];
+    ++*(s32*)(p+0x24c);
+}
+
 static inline u8 stalRoomFlag(const char* p) {
     u32 room = *(const u32*)(p+4);
     return ((StalMgr*)fn_802D6A9C())->flag(room);
@@ -113,8 +119,8 @@ extern "C" void fn_801757D4(char* this_) {
     const s32* table=lbl_804A0C10;
     f32 probe[3];
     u8 hit;
-    s32 i;
     s32 roomForPlayer;
+    s32 i;
     f32 z;
 
     if (*(u32*)(this_ + 0x90) == 4 || (*(u32*)(this_ + 0x90) == 5 && *(s32*)(this_ + 0x108) == 1000)) {
@@ -173,8 +179,8 @@ extern "C" void fn_801757D4(char* this_) {
         }
     }
     {
-        u32 room = *(u32*)(this_ + 4);
-        if (((StalMgr*)fn_802D6A9C())->flag(room) != 0) {
+        
+        if (stalRoomFlag(this_) != 0) {
             *(f32*)(this_ + 0x270) = 3.0f;
         }
         fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x26c), 0.3f, 1.0f);
@@ -199,11 +205,11 @@ case 0: {
 void* list[0x400];
 if(*(u32*)(this_ + 0x90)==5 && fn_801F7818(fn_801F856C(),'WIZR',*(u32*)(this_ + 0x4),list,-1)==0) {*(s32*)(this_ + 0x230)=7;break;}
 if(*(s32*)(this_ + 0x23c)==0) *(s32*)(this_ + 0x23c)=(s32)(30.0f*lbl_8053AAF8->rnd.get_ufloat_1())+30;
-{u32 room = *(u32*)(this_ + 0x4); if(((StalMgr*)fn_802D6A9C())->flag(room) && hit && (z=probe[1],z!=0.0f))hit=0;}
+{ if(stalRoomFlag(this_) && hit && (z=probe[1],z!=0.0f))hit=0;}
 if(hit || lbl_8053AAF8->rnd.get_ufloat_1()<0.3f || quad<0) {
-{u32 room = *(u32*)(this_ + 0x4);if(!((StalMgr*)fn_802D6A9C())->flag(room))*(s32*)(this_ + 0x98)^=2;}
+{if(!stalRoomFlag(this_))*(s32*)(this_ + 0x98)^=2;}
 if(lbl_8053AAF8->rnd.get_ufloat_1()<0.5f)*(s32*)(this_ + 0x98)^=1;
-} else {u32 room = *(u32*)(this_ + 0x4); if(!((StalMgr*)fn_802D6A9C())->flag(room)) *(s32*)(this_ + 0x98)=quad; else if(!(quad&2)) *(s32*)(this_ + 0x98)=quad; else if(ang<0x8000) *(s32*)(this_ + 0x98)=0; else *(s32*)(this_ + 0x98)=1;}
+} else { if(!stalRoomFlag(this_)) *(s32*)(this_ + 0x98)=quad; else if(!(quad&2)) *(s32*)(this_ + 0x98)=quad; else if(ang<0x8000) *(s32*)(this_ + 0x98)=0; else *(s32*)(this_ + 0x98)=1;}
 if(*(s32*)(this_ + 0x250)!=*(s32*)(this_ + 0x98)) {*(s32*)(this_ + 0x238)=0;*(s32*)(this_ + 0x24c)=0;}
 *(s32*)(this_ + 0x250)=*(s32*)(this_ + 0x98);
 switch(*(s32*)(this_ + 0x98)) {
@@ -229,22 +235,22 @@ case 2:
 if(*(s32*)(this_ + 0x23c)==0)*(s32*)(this_ + 0x230)=0;
 break;
 case 3:
-if(quad>=0){u32 room = *(u32*)(this_ + 0x4); if(!((StalMgr*)fn_802D6A9C())->flag(room)) *(s32*)(this_ + 0x98)=quad; else if(!(quad&2)) *(s32*)(this_ + 0x98)=quad; else if(ang<0x8000) *(s32*)(this_ + 0x98)=0; else *(s32*)(this_ + 0x98)=1;}
+if(quad>=0){ if(!stalRoomFlag(this_)) *(s32*)(this_ + 0x98)=quad; else if(!(quad&2)) *(s32*)(this_ + 0x98)=quad; else if(ang<0x8000) *(s32*)(this_ + 0x98)=0; else *(s32*)(this_ + 0x98)=1;}
 *(f32*)(this_ + 0x26c)=2.0f*JMath::sincosTable_.mTable[(u16)((u32)ang+0x8000)>>5].first;
-{u32 room = *(u32*)(this_ + 0x4);if(!((StalMgr*)fn_802D6A9C())->flag(room)) {
+{if(!stalRoomFlag(this_)) {
 *(f32*)(this_ + 0x44)=5.0f;
 *(f32*)(this_ + 0x270)=2.0f*JMath::sincosTable_.mTable[(u16)(ang+0x8000)>>5].second;
 }else *(f32*)(this_ + 0x40)=-7.0f;}
 *(s32*)(this_ + 0x238)=0;*(s32*)(this_ + 0x24c)=0;fn_801F0E34(this_,0x4009c,0);*(s32*)(this_ + 0x230)=4;break;
 case 4:
-{u32 room = *(u32*)(this_ + 0x4);if(!((StalMgr*)fn_802D6A9C())->flag(room))*(f32*)(this_ + 0x44)-=0.4f;}
+{if(!stalRoomFlag(this_))*(f32*)(this_ + 0x44)-=0.4f;}
 if(*(s32*)(this_ + 0x24c)<4){if(*(s32*)(this_ + 0x238)==0) {
 *(s32*)(this_ + 0x258)=(table+30)[*(s32*)(this_ + 0x98)*4+*(s32*)(this_ + 0x24c)];
 *(s32*)(this_ + 0x238)=(table+46)[*(s32*)(this_ + 0x24c)];
 ++*(s32*)(this_ + 0x24c);
 }}
-{u32 room=*(u32*)(this_+4); if(!((StalMgr*)fn_802D6A9C())->flag(room) && *(f32*)(this_+0x14)<0.0f)goto landed;}
-{u32 room=*(u32*)(this_+4); if(!((StalMgr*)fn_802D6A9C())->flag(room) || probe[1]>=0.0f)break;}
+{ if(!stalRoomFlag(this_) && *(f32*)(this_+0x14)<0.0f)goto landed;}
+{ if(!stalRoomFlag(this_) || !(probe[1]<0.0f))break;}
 landed:
 {
 if(*(u32*)(this_ + 0x90)==2) {
@@ -314,7 +320,7 @@ case 8:
 if(*(f32*)(this_ + 0x14)>0.0f) {
 *(f32*)(this_ + 0x44)-=1.0f;if(*(f32*)(this_ + 0x44) < -10.0f)*(f32*)(this_ + 0x44)=-10.0f;
 } else {*(f32*)(this_ + 0x14)=0.0f;*(f32*)(this_ + 0x44)=0.0f;}
-if(*(s32*)(this_ + 0x248)==0) ((void(*)(void*))(*(void***)this_)[9])(this_);
+if(*(s32*)(this_ + 0x248)==0) ((Actor*)this_)->v09();
 break;
 }
 
