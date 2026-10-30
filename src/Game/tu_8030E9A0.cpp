@@ -135,6 +135,74 @@ extern "C" void fn_8030EC18(Actor* p) {
 
 extern "C" u8* fn_801F856C(void);
 extern "C" void fn_801F31C4(void* a, f32* box);
+#include "JSystem/JGeometry.h"
+struct SmriActor : Actor {
+    s32 state;
+    s32 direction;
+    s32 timer;
+    s32 tile;
+    s32 handle;
+    u8 tick;
+    u8 unk245;
+    u8 players[4];
+};
+extern "C" const f32 lbl_80541738, lbl_80541740, lbl_80541748, lbl_8054174C, lbl_80541750, lbl_80541754, lbl_80541758, lbl_8054175C, lbl_80541760, lbl_80541764;
+extern "C" f32 lbl_80471368[];
+extern "C" s32 lbl_80471398[];
+extern "C" s32 fn_801F78F4(void*,u32,s32);
+extern "C" Actor* fn_801F666C(void*,s32);
+extern "C" void fn_803513C0(void*);
+extern "C" void fn_803511F0(void*);
+extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void fn_801F0E34(void*,u32,s32);
+extern "C" u16 fn_802265FC(void*,s32);
+extern "C" s32 fn_801F2618(void*,s32,s32);
+extern "C" u8 fn_8022DB04(s32);
+extern "C" s32 fn_80238CB4(s32);
+extern "C" void fn_80239878(s32,void*,s32,s32);
+extern "C" u8 fn_8023B0F4(s32,void*,s32,s32,f32);
+extern "C" s32 fn_80238BC4(s32);
+extern "C" s32 fn_80239558(void*,s32,s32);
+extern "C" s32 fn_80239040(s32);
+extern "C" u8 fn_80233DA4(s32);
+extern "C" u8 fn_8023F264(s32);
+extern "C" u8 fn_80239C00(s32,void*,s32);
+extern "C" u8 fn_8022F9E4(s32,s32,s32,s32);
+extern "C" u8 fn_80230188(s32);
+extern "C" u8 fn_8022D75C(s32);
+extern "C" void* fn_8022C52C(s32,s32);
+extern "C" Vec* fn_8023E7B0(void*);
+extern "C" s32 fn_8023DE58(void*);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" u8 fn_802DEB58(void);
+extern "C" void* Actor_CreateByID(void*,u32,s32,void*,u32,s32,s32);
+static inline bool SmriCheckGround(SmriActor* p) {
+    JGeometry::TBox2f box;
+    box.set(*(JGeometry::TBox2f*)((u8*)p+0x80));
+    box.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
+    JGeometry::TVec2<f32> center;
+    center.x=lbl_80541738*(box.i.x-box.f.x)+box.f.x;
+    center.y=lbl_80541738*(box.i.y-box.f.y)+box.f.y;
+    s32 kind=fn_802265FC(&center,p->field_04);
+    if(kind==3 || (u32)(kind-13)<=1 || kind==0x3b){
+        p->field_3C.x=lbl_8054173C;
+        p->field_3C.y=lbl_8054173C;
+        p->field_3C.z=lbl_8054173C;
+        p->state=6;
+        p->tile=kind;
+        return false;
+    }
+    return true;
+}
+static inline void SmriPlayerBox(SmriActor* p, JGeometry::TBox2f& box) {
+    for(s32 i=0;i<4;i++){
+        if(p->players[i]==1){
+            if(!fn_8022DB04(i) || fn_80238CB4(i)==(s32)p->field_198)
+                fn_80239878(i,&box,p->field_04,(s32)p->field_198);
+        } else if(!fn_8023B0F4(i,&box,p->field_04,0,lbl_80541740)) p->players[i]=1;
+    }
+}
+
 extern "C" void fn_8030EDBC(u8* this_) {
     f32 box[4];
     f32 pb[4];
