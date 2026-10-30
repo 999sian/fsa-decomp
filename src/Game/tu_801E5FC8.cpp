@@ -19,34 +19,34 @@ extern "C" const f32 lbl_8053F5A0;
 extern "C" const f32 lbl_8053F5A4;
 extern "C" const f32 lbl_8053F5A8;
 extern "C" void fn_801E5FC8(u8* this_) {
+    volatile struct {
+        s32 a;
+        u8 b[4];
+        f32* m;
+        u8 c[11];
+        s32 d;
+        u8 e[4];
+        s32 f;
+        s32 g;
+        s32 h;
+    } req;
+    f32 mtx[12];
+    u8 buf[16];
     void* p;
     u32 id = fn_801DA938(this_ + 0x2a8);
     p = fn_804032E8(0x49434542, id);
     if (p != 0) {
-        u8 buf[16];
-        volatile struct {
-            s32 a;
-            u8 b[4];
-            f32* m;
-            u8 c[11];
-            s32 d;
-            u8 e[4];
-            s32 f;
-            s32 g;
-            s32 h;
-        } req;
-        f32 mtx[12];
         req.a = -1;
         *(s32*)req.b = -1;
         for (u8 i = 0; i < 16; i += 8) {
             buf[(u8)i] = i;
-            buf[(u8)(i + 1)] = i + 1;
-            buf[(u8)(i + 2)] = i + 2;
-            buf[(u8)(i + 3)] = i + 3;
-            buf[(u8)(i + 4)] = i + 4;
-            buf[(u8)(i + 5)] = i + 5;
-            buf[(u8)(i + 6)] = i + 6;
-            buf[(u8)(i + 7)] = i + 7;
+            buf[(u8)(i + 1)] = (u8)(i + 1);
+            buf[(u8)(i + 2)] = (u8)(i + 2);
+            buf[(u8)(i + 3)] = (u8)(i + 3);
+            buf[(u8)(i + 4)] = (u8)(i + 4);
+            buf[(u8)(i + 5)] = (u8)(i + 5);
+            buf[(u8)(i + 6)] = (u8)(i + 6);
+            buf[(u8)(i + 7)] = (u8)(i + 7);
         }
         req.a = -1;
         *(s32*)req.b = 0;
@@ -121,9 +121,9 @@ extern "C" void fn_801E6234(char* this_) {
 extern "C" void fn_801E62D4(Actor* this_) {
     fn_8013CC50(this_->field_04, &this_->field_0C, 1.0f, 0x259, 0, 0, 0, 0, 1);
 }
-extern "C" void fn_801E631C(void* this_) {
-    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 1.0f, 0x25a, 0, 0, 0, 0, 1);
-    fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, 1.0f, 0x25b, 0, 0, 0, 0, 1);
+extern "C" void fn_801E631C(const Actor* this_) {
+    fn_8013CC50(this_->field_04, (void*)&this_->field_0C, lbl_8053F5A8, 0x25a, 0, 0, 0, 0, 1);
+    fn_8013CC50(this_->field_04, (void*)&this_->field_0C, lbl_8053F5A8, 0x25b, 0, 0, 0, 0, 1);
 }
 
 extern "C" void fn_801E6394(char* this_) {
