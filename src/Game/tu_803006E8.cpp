@@ -285,7 +285,7 @@ static inline BOOL gbaReadPacketBuf(GbaChan* c, u32* cmd) {
         if (GBAGetStatus(c->chan, c->status) != 0 || c->status[0] != 0x38) {
             return TRUE;
         }
-        if (GBARead(c->chan, (u8*)c + (i + 0x28), c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
+        if (GBARead(c->chan, &((GbaChanPktView*)c)->bytes[i], c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
             return TRUE;
         }
     }
