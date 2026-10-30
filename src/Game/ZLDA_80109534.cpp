@@ -388,15 +388,10 @@ extern "C" void fn_80109FA4(u8* p) {
  u16 angle2;
  s16 angle;
  s32 player;
- bool canHit;
+ u8 canHit;
  v03__5ActorFv(p);
  (*(f32*)(p+0x330))=lbl_8053C3E8;
- canHit=(*(bool*)(p+0x339))=true;
- rect.set(*(JGeometry::TBox2<f32>*)(p+0x60));
- rect.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
-
- if((*(s32*)(p+0x328))>=8 || (*(s32*)(p+0x328))<=4) canHit=false;
- else if((*(u8*)(p+0x2f8))!=0) canHit=false;
+ canHit=zeldaPrepareBox(p,rect,1);
  if(canHit && fn_801F26CC(p,lbl_80464204)>=0) {
    (*(s32*)(p+0x108))-=2;
    if((*(s32*)(p+0x108))>0) fn_801096C8(p,11);
