@@ -181,7 +181,7 @@ extern "C" void fn_80172BC8(void* this_) {
 }
 
 extern "C" void fn_8030C210(void* a, void* b);
-extern "C" void fn_8043E7CC(void* a);
+extern "C" void fn_8043E7CC(void* a, ...);
 extern "C" void fn_801752D8(void* this_);
 extern "C" void fn_80175024(void* this_);
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
