@@ -819,7 +819,7 @@ inline void hitInvSqrtRef(f32& x) {
 inline void hitNormalize(JGeometry::TVec3<f32>* v) {
     f32 sq = v->squared();
     if (!(sq <= lbl_80540298 * FLT_EPSILON)) {
-        v->scale(hitInvSqrt(sq));
+        JMathInlineVEC::PSVECScale(v, v, hitInvSqrt(sq));
     }
 }
 inline JGeometry::TVec2<f32>& hitSubEq(JGeometry::TVec2<f32>& v, const Vec2f* pt) {
@@ -1025,43 +1025,43 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
     }
     JGeometry::TVec3<f32> dir(d.x, d.y, lbl_8054028C);
     if (action == 1 || action == 0x19 || action == 0x1c) {
-        dir.scale(lbl_805402A4);
+        dir *= lbl_805402A4;
         if (n > 4) {
             dir.z = lbl_805402A8;
         } else {
             dir.z = lbl_805402A0;
         }
     } else if (action == 2 || action == 0x17) {
-        dir.scale(lbl_805402A0);
+        dir *= lbl_805402A0;
         if (n > 4) {
             dir.z = lbl_805402A8;
         } else {
             dir.z = lbl_805402A0;
         }
     } else if (action == 3) {
-        dir.scale(lbl_80540290);
+        dir *= lbl_80540290;
         if (n > 4) {
             dir.z = lbl_805402A8;
         } else {
             dir.z = lbl_805402A0;
         }
     } else if (action == 4 || action == 7) {
-        dir.scale(lbl_805402AC);
+        dir *= lbl_805402AC;
         dir.z = lbl_805402A8;
     } else if (action == 5 || action == 8) {
-        dir.scale(lbl_80540288);
+        dir *= lbl_80540288;
         dir.z = lbl_805402A8;
     } else if (action == 6 || action == 9 || action == 0x13) {
-        dir.scale(lbl_805402A4);
+        dir *= lbl_805402A4;
         dir.z = lbl_805402A8;
     } else if (action == 0x14 || action == 0x15) {
         dir.set(lbl_8054028C, lbl_8054028C, lbl_8054028C);
     } else if (action == 0x1b) {
-        dir.scale(lbl_80540290);
+        dir *= lbl_80540290;
     } else if (action == 0xb || action == 0xc) {
         dir.set(lbl_8054028C, lbl_8054028C, lbl_8054028C);
     } else if (action == 0x1a) {
-        dir.scale(lbl_8054029C);
+        dir *= lbl_8054029C;
         dir.z = lbl_805402B0;
     }
     if (action == 0xa) {
@@ -1107,7 +1107,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
             fn_80251AEC(p, 2);
         }
     } else if (action == 0x10) {
-        dir.scale(lbl_805402B8);
+        dir *= lbl_805402B8;
         ok = fn_80251AEC(p, 0x37);
     } else if (action == 0x12) {
         S32(p, 0x464) = 0;
