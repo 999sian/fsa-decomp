@@ -74,10 +74,6 @@ static inline u8 gnma_cfgFlagId(s32 id) {
 
 struct Handles_gnma { u8 pad[0x27c]; void* h[2]; };
 
-static inline u8 gnmaAreaFlag(s32 id) {
-    return ((u8*)((char*)fn_802D6A9C() + 0x131df))[id];
-}
-
 // GNMA update (vtable slot 3)
 extern "C" void fn_801AAE88(char* this_) {
     switch (*(s32*)(this_ + 0x254)) {
@@ -331,7 +327,7 @@ extern "C" void fn_801AB6A8(char* p) {
     HitBox box;
     int i;
     int player;
-    int innerRoom;
+    s32 innerRoom;
     s32 room;
     JGeometry::TVec2<f32> offset;
     offset.set(*(f32*)(p+0xc),*(f32*)(p+0x10));
@@ -352,8 +348,7 @@ extern "C" void fn_801AB6A8(char* p) {
     if (*(s32*)(p+0x230)!=6) {
         box.i.x=0.5f*(box.i.x-box.f.x)+box.f.x; box.f.y=0.5f*(box.i.y-box.f.y)+box.f.y;
         for(i=0;i<4;i++) {
-            player=fn_801F285C(p,0,0,0,i);
-            if((s32)player>=0) {
+            if((player=fn_801F285C(p,0,0,0,i))>=0) {
                 s32 index;
                 u16 angle;
                 fn_801EEC98(p,*(void**)(p+0x198),&angle,&index,0,0,player,2);
@@ -426,13 +421,13 @@ case 3: *(f32*)(p+0x264)=0.0f; *(f32*)(p+0x268)=-1.0f; *(f32*)(p+0x26c)=0.0f; br
     case 2:
         if((u8)hit) {
             innerRoom=*(s32*)(p+4);
-            u8 turn=0;
+            u32 turn=0;
             if(!((u8*)((char*)fn_802D6A9C()+0x131df))[innerRoom]) turn=1;
             else if(collision.y!=lbl_8053E744) {
                 if((collision.x>0.0f && *(f32*)(p+0x3c)<0.0f) ||
                    (collision.x<0.0f && *(f32*)(p+0x3c)>0.0f)) turn=1;
             }
-            if(turn==1) {
+            if((u8)turn==1) {
                 if(*(s32*)(p+0x238)<5) *(s32*)(p+0x238)=5;
                 if(*(s32*)(p+0x240)==0) {
                     innerRoom=*(s32*)(p+4);
