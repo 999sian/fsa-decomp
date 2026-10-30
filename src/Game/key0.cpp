@@ -67,9 +67,10 @@ static inline u32 key0PackActorFlags(u8* p) {
     return __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
 }
 static inline u32 key0PackActorFlags2(u8* p) {
-    u32 kind = *(u32*)(p + 0x280);
-    u32 packed = (*(u32*)(p + 0x23c) << 30) | (p[0x2b5] << 29);
-    packed = __rlwimi(packed, kind, 24, 3, 7);
+    u32 flag = p[0x2b5] << 29;
+    u32 mode = *(u32*)(p + 0x23c) << 30;
+    u32 packed = mode | flag;
+    packed = __rlwimi(packed, *(u32*)(p + 0x280), 24, 3, 7);
     return __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
 }
 struct Key0Pt {
@@ -833,12 +834,12 @@ done:
 
 #pragma auto_inline off
 extern "C" void fn_802C2C30(char* p) {
-    JGeometry::TVec3<f32> delta;
     s32 room;
     s32 kind;
     u16 tile;
     u8 moving;
     JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x3c);
+    JGeometry::TVec3<f32> delta;
     fn_802C24A8((u8*)p);
     room = *(s32*)(p + 4);
     if (key0RoomFlag(room) != 0) {
