@@ -249,7 +249,7 @@ extern "C" s32 fn_803A65EC() {
 
 extern f32 lbl_80543370;
 extern f32 lbl_80543374;
-extern "C" u8 fn_80402940(void* a, s32 b, s32 c, f32 d, f32 e);
+extern "C" bool fn_80402940(void* a, s32 b, s32 c, f32 d, f32 e);
 extern "C" u32 fn_80309C4C(void* pad, u32 mask, s32 b);
 extern "C" u32 fn_80309A9C(void* pad, u32 mask, s32 b);
 extern "C" void fn_80458880(void* snd, s32 id, s32 b);
@@ -261,13 +261,174 @@ extern "C" void fn_80134CC0(void* game, s32 a);
 extern void* lbl_8053AD30;
 extern void* lbl_8053AF80;
 extern "C" void fn_803A6608(char* p) {
+    u8 doneB;
+    s32 j;
+    u8 doneA;
+    u8 doneC;
     *(s32*)(p + 0x80) = 5;
     if (*(u8*)(p + 0x76) == 0) {
+        doneA = 0;
+        doneB = 0;
+        doneC = 0;
         *(s16*)(p + 0x68) = *(s16*)(p + 0x68) + 1;
         if (*(s16*)(p + 0x68) > 0) {
-            fn_80402940(*(void**)(p + 0x8), 0x16, 0, lbl_80543374, lbl_80543370);
+            doneA = fn_80402940(*(void**)(p + 0x8), 0x16, 0, lbl_80543374, lbl_80543370);
+            for (s32 i = 0; i < 6; i++) {
+                fn_80402940(*(void**)(p + 0xc + i * 4), 0x16, 0, lbl_80543374, lbl_80543370);
+            }
+            for (s32 i = 0; i < 2; i++) {
+                fn_80402940(*(void**)(p + 0x24 + i * 4), 0x16, 0, lbl_80543374, lbl_80543370);
+            }
+            fn_80402940(*(void**)(p + 0x2c), 0x16, 0, lbl_80543374, lbl_80543370);
+        }
+        if (*(s16*)(p + 0x68) > 0) {
+            doneB = fn_80402940(*(void**)(p + 0x30), 0x1a, 0, lbl_80543374, lbl_80543370);
+        }
+        if (*(s16*)(p + 0x68) > 10) {
+            doneC = fn_80402940(*(void**)(p + 0x34), 0x16, 0, lbl_80543374, lbl_80543370);
+        }
+        if (doneA && doneB && doneC) {
+            *(u8*)(p + 0x76) = 1;
+        }
+        return;
+    }
+    if (fn_80309C4C(lbl_8053AD30, 0x1100, 1)) {
+        lbl_80529DEC[0x245] = *(u8*)(p + 0x77);
+        lbl_80529DEC[0x246] = *(u8*)(p + 0x78);
+        *(s32*)(p + 0x80) = 2;
+        fn_80458880(lbl_8053AF80, 0xb, -1);
+    } else if (fn_80309C4C(lbl_8053AD30, 0x200, 1)) {
+        if (lbl_80529DEC[0x245] == 1) {
+            fn_804594E4(lbl_8053AF80, 1);
+            OSSetSoundMode(1);
+        } else {
+            fn_804594E4(lbl_8053AF80, 0);
+            OSSetSoundMode(0);
+        }
+        *(s32*)(p + 0x80) = 2;
+        fn_80458880(lbl_8053AF80, 0xc, -1);
+    } else if (fn_80309A9C(lbl_8053AD30, 4, 1)) {
+        fn_80458880(lbl_8053AF80, 0x26, -1);
+        *(s32*)(p + 0x64) = *(s32*)(p + 0x64) + 1;
+        if (*(s32*)(p + 0x64) > 1) {
+            *(s32*)(p + 0x64) = 0;
+        }
+        for (j = 0; j < 6; j++) {
+            fn_80402E08(*(void**)(p + 0xc + j * 4), lbl_80543370, *(f32*)(p + 0x60) * (f32)*(s32*)(p + 0x64));
+        }
+        j = 0;
+        *(s16*)(p + 0x6e) = j;
+        for (; j < 2; j++) {
+            fn_80402E08(*(void**)(p + 0x24 + j * 4), lbl_80543370, *(f32*)(p + 0x60) * (f32)*(s32*)(p + 0x64));
+        }
+    } else if (fn_80309A9C(lbl_8053AD30, 8, 1)) {
+        fn_80458880(lbl_8053AF80, 0x26, -1);
+        *(s32*)(p + 0x64) = *(s32*)(p + 0x64) - 1;
+        if (*(s32*)(p + 0x64) < 0) {
+            *(s32*)(p + 0x64) = 1;
+        }
+        for (j = 0; j < 6; j++) {
+            fn_80402E08(*(void**)(p + 0xc + j * 4), lbl_80543370, *(f32*)(p + 0x60) * (f32)*(s32*)(p + 0x64));
+        }
+        j = 0;
+        *(s16*)(p + 0x6e) = j;
+        for (; j < 2; j++) {
+            fn_80402E08(*(void**)(p + 0x24 + j * 4), lbl_80543370, *(f32*)(p + 0x60) * (f32)*(s32*)(p + 0x64));
+        }
+    } else if (fn_80309A9C(lbl_8053AD30, 1, 1)) {
+        fn_80458880(lbl_8053AF80, 0x26, -1);
+        *(s16*)(p + 0x6e) = -1;
+        if (*(s32*)(p + 0x64) == 0) {
+            if (*(u8*)(p + 0x77) == 1) {
+                *(u8*)(p + 0x77) = 0;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->getStringPtr(), 0x99, 0, 0, 0);
+                fn_804594E4(lbl_8053AF80, 0);
+                fn_80458880(lbl_8053AF80, 0x43, -1);
+                OSSetSoundMode(0);
+            } else {
+                *(u8*)(p + 0x77) = 1;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->getStringPtr(), 0x98, 0, 0, 0);
+                fn_804594E4(lbl_8053AF80, 1);
+                fn_80458880(lbl_8053AF80, 0x43, -1);
+                OSSetSoundMode(1);
+            }
+        } else {
+            if (*(u8*)(p + 0x78) == 1) {
+                *(u8*)(p + 0x78) = 0;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->getStringPtr(), 0x39, 0, 0, 0);
+                if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) {
+                    fn_80134CC0(lbl_8053AAF8, 0);
+                }
+            } else {
+                *(u8*)(p + 0x78) = 1;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->getStringPtr(), 0x38, 0, 0, 0);
+                if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) {
+                    fn_80134CC0(lbl_8053AAF8, 0x1e);
+                }
+            }
+        }
+    } else if (fn_80309A9C(lbl_8053AD30, 2, 1)) {
+        fn_80458880(lbl_8053AF80, 0x26, -1);
+        *(s16*)(p + 0x6e) = 1;
+        if (*(s32*)(p + 0x64) == 0) {
+            if (*(u8*)(p + 0x77) == 1) {
+                *(u8*)(p + 0x77) = 0;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->getStringPtr(), 0x99, 0, 0, 0);
+                fn_804594E4(lbl_8053AF80, 0);
+                fn_80458880(lbl_8053AF80, 0x43, -1);
+                OSSetSoundMode(0);
+            } else {
+                *(u8*)(p + 0x77) = 1;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x54736f3032ULL))->getStringPtr(), 0x98, 0, 0, 0);
+                fn_804594E4(lbl_8053AF80, 1);
+                fn_80458880(lbl_8053AF80, 0x43, -1);
+                OSSetSoundMode(1);
+            }
+        } else {
+            if (*(u8*)(p + 0x78) == 1) {
+                *(u8*)(p + 0x78) = 0;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->getStringPtr(), 0x39, 0, 0, 0);
+                if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) {
+                    fn_80134CC0(lbl_8053AAF8, 0);
+                }
+            } else {
+                *(u8*)(p + 0x78) = 1;
+                fn_803832BC(((J2DTextBox*)(*(J2DScreen**)(p + 0x4))->search(0x5473693032ULL))->getStringPtr(), 0x38, 0, 0, 0);
+                if (fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) {
+                    fn_80134CC0(lbl_8053AAF8, 0x1e);
+                }
+            }
         }
     }
+    if (--*(s16*)(p + 0x6a) <= 0) {
+        u8* game = (u8*)lbl_8053AAF8;
+        *(u32*)(game + 0xb4) = *(u32*)(game + 0xb4) * 0x19660d + 0x3c6ef35f;
+        u32 bits = (*(u32*)(game + 0xb4) >> 9) | 0x3f800000;
+        *(s16*)(p + 0x6a) = (s32)(11.0f * (*(f32*)&bits - 1.0f)) + 10;
+        if ((*(J2DScreen**)(p + 0x4))->search(0x506f6375723031ULL)->isVisible()) {
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723031ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723032ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723033ULL)->show();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723034ULL)->show();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723035ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723036ULL)->hide();
+        } else if ((*(J2DScreen**)(p + 0x4))->search(0x506f6375723033ULL)->isVisible()) {
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723031ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723032ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723033ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723034ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723035ULL)->show();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723036ULL)->show();
+        } else {
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723031ULL)->show();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723032ULL)->show();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723033ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723034ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723035ULL)->hide();
+            (*(J2DScreen**)(p + 0x4))->search(0x506f6375723036ULL)->hide();
+        }
+    }
+    fn_803A60E4(p);
 }
 
 extern "C" void fn_80402E08(void* a, f32 b, f32 c);
