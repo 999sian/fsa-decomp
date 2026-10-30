@@ -1444,6 +1444,7 @@ extern "C" f32 lbl_80542BF4;
 extern "C" f32 lbl_80542BF8;
 extern "C" f32 lbl_80542BFC;
 
+extern "C" f32 lbl_80542BE0;
 extern "C" void fn_80365B5C(char* self) {
     s32 kind = (s32)(*(u32*)(self + 0x90) & 0x1f);
     *(s32*)(self + 0x234) = kind;
