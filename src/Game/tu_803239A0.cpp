@@ -93,6 +93,10 @@ extern "C" void fn_803239A0(char* this_) {
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, 0xe7, 0, 2, -1, 0, 0, 0);
 }
 
+static inline u8 roomMoveFlag(s32 room) {
+    return ((u8*)fn_802D6A9C() + 0x10000)[room + 0x31df];
+}
+
 extern "C" void fn_80323B68(char* this_) {
     s32 room = *(s32*)(this_ + 4);
     if (*(u8*)(this_ + 0x278) != ((u8*)fn_802D6A9C())[room + 0x131df]) {
