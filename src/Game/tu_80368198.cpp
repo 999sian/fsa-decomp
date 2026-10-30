@@ -474,6 +474,9 @@ extern "C" void Gol2_SetField_0x2f4(void*,s32);
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern f32 lbl_80542CA8;
+struct Rgb8036 {
+    u8 r, g, b;
+};
 extern const f32 lbl_80542C5C;
 extern const f32 lbl_80542C60;
 extern const f32 lbl_80542C8C;
@@ -485,10 +488,10 @@ extern const f32 lbl_80542CAC;
 extern const f32 lbl_80542CB0;
 
 void Unk8036C300::state1() {
+    typedef void* (*EmitFn)(s32, const JGeometry::TVec3f&, f32, s32, s32, s32, s32, s32, s32);
     Vec3f v;
     char* self = (char*)this;
     char* tbl = lbl_80474C38;
-    Obj8036C750* o = (Obj8036C750*)self;
     if (*(s32*)(self + 0x258) != 0) {
         *(s32*)(self + 0x258) = *(s32*)(self + 0x258) - 1;
     }
@@ -631,18 +634,18 @@ void Unk8036C300::state1() {
             }
             break;
         case 0x19: {
+            char* objects = self;
+            char* vertices = self;
             const u8* color = (const u8*)(tbl + 0x14c);
             const u16* idA = (const u16*)(tbl + 0x134);
             const u16* idB = (const u16*)(tbl + 0x140);
-            for (s32 i = 0; i < 5; i++, color += 3, idA++, idB++) {
-                if (o->a294[i] != 0) {
-                    o->a294[i]--;
-                    if (o->a294[i] == 0) {
-                        JGeometry::TVec3f p1 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
-                        o->a3bc[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p1, lbl_80542C58, 0x32c, 0, -1, 0, 0, 1);
-                        JGeometry::TVec3f p2 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
-                        o->a3d4[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p2, lbl_80542C58, 0x184, 0, -1, 0, 0, 1);
-                        u8* e = (u8*)o->a3bc[i];
+            for (s32 i = 0; i < 5; i++, vertices += 0xc, color += 3, idA++, idB++, objects += 4) {
+                if (*(s32*)(objects + 0x294) != 0) {
+                    *(s32*)(objects + 0x294) -= 1;
+                    if (*(s32*)(objects + 0x294) == 0) {
+                        *(void**)(objects + 0x3bc) = ((EmitFn)fn_8013CC50)(*(u32*)(self + 4), *(JGeometry::TVec3f*)(vertices + 0x2a8) + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78), lbl_80542C58, 0x32c, 0, -1, 0, 0, 1);
+                        *(void**)(objects + 0x3d4) = ((EmitFn)fn_8013CC50)(*(u32*)(self + 4), *(JGeometry::TVec3f*)(vertices + 0x2a8) + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78), lbl_80542C58, 0x184, 0, -1, 0, 0, 1);
+                        u8* e = *(u8**)(objects + 0x3bc);
                         if (e != 0) {
                             e[0xbc] = color[0];
                             e[0xbd] = color[1];
@@ -650,15 +653,13 @@ void Unk8036C300::state1() {
                         }
                     }
                 }
-                if (o->a294[i] == 0x28) {
-                    JGeometry::TVec3f p3 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
-                    o->a3ec[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p3, lbl_80542C58, *idA, 1, 0, 0, 0, 1);
-                    JGeometry::TVec3f p4 = o->trail[i] + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78);
-                    o->a400[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &p4, lbl_80542C58, *idB, 1, 0, 0, 0, 1);
+                if (*(s32*)(objects + 0x294) == 0x28) {
+                    *(void**)(objects + 0x3ec) = ((EmitFn)fn_8013CC50)(*(u32*)(self + 4), *(JGeometry::TVec3f*)(vertices + 0x2a8) + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78), lbl_80542C58, *idA, 1, 0, 0, 0, 1);
+                    *(void**)(objects + 0x400) = ((EmitFn)fn_8013CC50)(*(u32*)(self + 4), *(JGeometry::TVec3f*)(vertices + 0x2a8) + JGeometry::TVec3f(lbl_80542C6C, lbl_80542C6C, lbl_80542C78), lbl_80542C58, *idB, 1, 0, 0, 0, 1);
                     fn_801F0E34(self, 0x400d9, 0);
                 }
             }
-            if ((o->a294[0] | o->a294[1] | o->a294[2] | o->a294[3] | o->a294[4]) == 0) {
+            if ((*(s32*)(self + 0x294) | *(s32*)(self + 0x298) | *(s32*)(self + 0x29c) | *(s32*)(self + 0x2a0) | *(s32*)(self + 0x2a4)) == 0) {
                 fn_8011921C();
                 fn_801183BC();
             }
@@ -718,7 +719,7 @@ void Unk8036C300::state1() {
                     fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
                     s32 room = *(s32*)(self + 4);
                     JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
-                    fn_8038BD08(0, ((u32*)(tbl + 0x30))[*(s32*)(self + 0x268)], room, &spawnPos, 0x62);
+                    fn_8038BD08(0, cutsceneTable32((s32*)(tbl + 0x30), *(s32*)(self + 0x268)), room, &spawnPos, 0x62);
                     *(s32*)(self + 0x268) += 1;
                 }
             } else {
@@ -755,7 +756,7 @@ void Unk8036C300::state1() {
                     fn_8022FE80(0, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
                     s32 room = *(s32*)(self + 4);
                     JGeometry::TVec3f spawnPos = *(JGeometry::TVec3f*)&v;
-                    fn_8038BD08(0, ((u32*)(tbl + 0x30))[*(s32*)(self + 0x268)], room, &spawnPos, 0x62);
+                    fn_8038BD08(0, cutsceneTable32((s32*)(tbl + 0x30), *(s32*)(self + 0x268)), room, &spawnPos, 0x62);
                     *(s32*)(self + 0x268) += 1;
                 }
             } else {
@@ -767,25 +768,27 @@ void Unk8036C300::state1() {
             }
             break;
         case 0x24: {
+            char* objects = self;
+            char* vertices = self;
             const s32* timing = (const s32*)(tbl + 0x15c);
             const u16* idA = (const u16*)(tbl + 0x1e4);
             const u16* idB = (const u16*)(tbl + 0x1f0);
             const u8* color = (const u8*)(tbl + 0x1fc);
-            for (s32 i = 0; i < 6; i++, timing++, idA++, idB++, color += 3) {
+            for (s32 i = 0; i < 6; i++, objects += 4, vertices += 0xc, idA++, idB++, color += 3, timing++) {
                 if (*(s32*)(self + 0x258) == *timing) {
-                    o->a2f8[i] = 1;
-                    JGeometry::TVec3f pos = o->trail[i];
+                    *(s32*)(objects + 0x2f8) = 1;
+                    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(vertices + 0x2a8);
                     pos.z += lbl_80542C5C;
                     fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idA, 0, 0, 0, 0, 1);
                     pos.z += lbl_80542C60;
                     fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idB, 0, 0, 0, 0, 1);
                     fn_801F0E34(self, 0x400d9, 0);
-                    o->trail[i].z = lbl_80542C80;
+                    *(f32*)(vertices + 0x2b0) = lbl_80542C80;
                 } else if (*(s32*)(self + 0x258) == *timing - 0x28) {
-                    o->a2f8[i] = 2;
-                    o->a3bc[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &o->trail[i], lbl_80542C58, 0x32c, 0, -1, 0, 0, 1);
-                    o->a3d4[i] = (s32)fn_8013CC50(*(u32*)(self + 4), &o->trail[i], lbl_80542C58, 0x184, 0, -1, 0, 0, 1);
-                    u8* e = (u8*)o->a3bc[i];
+                    *(s32*)(objects + 0x2f8) = 2;
+                    *(void**)(objects + 0x3bc) = fn_8013CC50(*(u32*)(self + 4), vertices + 0x2a8, lbl_80542C58, 0x32c, 0, -1, 0, 0, 1);
+                    *(void**)(objects + 0x3d4) = fn_8013CC50(*(u32*)(self + 4), vertices + 0x2a8, lbl_80542C58, 0x184, 0, -1, 0, 0, 1);
+                    u8* e = *(u8**)(objects + 0x3bc);
                     if (e != 0) {
                         e[0xbc] = color[0];
                         e[0xbd] = color[1];
@@ -797,21 +800,23 @@ void Unk8036C300::state1() {
             break;
         }
         case 0x25: {
+            char* objects = self;
+            char* vertices = self;
             const s32* timing = (const s32*)(tbl + 0x174);
             s32 done = 0;
-            for (s32 i = 0; i < 6; i++, timing++) {
-                if (*(s32*)(self + 0x258) == *timing) o->a2f8[i] = 3;
-                if (o->a2f8[i] == 3) o->trail[i].z += lbl_80542CB0;
-                if (o->a3bc[i] != 0) fn_8013CB44((void*)o->a3bc[i], (Vec3f*)&o->trail[i], 0, -1, 1);
-                if (o->a3d4[i] != 0) fn_8013CB44((void*)o->a3d4[i], (Vec3f*)&o->trail[i], 0, -1, 1);
-                if (o->a2f8[i] != 4 && o->trail[i].z >= lbl_80542C68) {
-                    o->a2f8[i] = 4;
-                    if (o->a3bc[i] != 0) {
-                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)o->a3bc[i]);
-                        o->a3bc[i] = 0;
+            for (s32 i = 0; i < 6; i++, objects += 4, vertices += 0xc, timing++) {
+                if (*(s32*)(self + 0x258) == *timing) *(s32*)(objects + 0x2f8) = 3;
+                if (*(s32*)(objects + 0x2f8) == 3) *(f32*)(vertices + 0x2b0) += lbl_80542CB0;
+                if (*(void**)(objects + 0x3bc) != 0) fn_8013CB44(*(void**)(objects + 0x3bc), (Vec3f*)(vertices + 0x2a8), 0, -1, 1);
+                if (*(void**)(objects + 0x3d4) != 0) fn_8013CB44(*(void**)(objects + 0x3d4), (Vec3f*)(vertices + 0x2a8), 0, -1, 1);
+                if (*(s32*)(objects + 0x2f8) != 4 && *(f32*)(vertices + 0x2b0) >= lbl_80542C68) {
+                    *(s32*)(objects + 0x2f8) = 4;
+                    if (*(void**)(objects + 0x3bc) != 0) {
+                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(objects + 0x3bc));
+                        *(void**)(objects + 0x3bc) = 0;
                     }
                 }
-                if (o->a2f8[i] == 4) done++;
+                if (*(s32*)(objects + 0x2f8) == 4) done++;
             }
             if (done >= 6) {
                 fn_8011921C();
