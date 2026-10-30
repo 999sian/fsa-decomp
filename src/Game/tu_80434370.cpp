@@ -376,7 +376,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x20);
-        menuMovePane(rec,f31);
+        rec->pane->move(rec->centerX-f31,rec->y);
         rec=*(PaneState**)(this_+0x20);
         rec->pane->resize(width1,rec->height);
     }
@@ -387,13 +387,13 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         half2=width2*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x24);
-        menuMovePane(rec,half2);
+        rec->pane->move(rec->centerX-half2,rec->y);
         rec=*(PaneState**)(this_+0x24);
         rec->pane->resize(width2,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x28);
-        menuMovePane(rec,half2);
+        rec->pane->move(rec->centerX-half2,rec->y);
         rec=*(PaneState**)(this_+0x28);
         rec->pane->resize(width2,rec->height);
     }
@@ -412,7 +412,7 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x20);
-        menuMovePane(rec,f30);
+        rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x20);
         rec->pane->resize(width1,rec->height);
     }
@@ -423,13 +423,13 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f30=width2*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x24);
-        menuMovePane(rec,f30);
+        rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x24);
         rec->pane->resize(width2,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x28);
-        menuMovePane(rec,f30);
+        rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x28);
         rec->pane->resize(width2,rec->height);
     }
@@ -440,13 +440,13 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f30=f31*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x2c);
-        menuMovePane(rec,f30);
+        rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x2c);
         rec->pane->resize(f31,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x30);
-        menuMovePane(rec,f30);
+        rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x30);
         rec->pane->resize(f31,rec->height);
     }
