@@ -2,6 +2,7 @@
 #include "Game/SinitPoolChain.h"
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
+#define JGEOMETRY_VEC2_EXPLICIT_COPY
 #include "JSystem/JGeometry/Vec.h"
 #include "sdk/stl/float.h"
 
@@ -257,29 +258,138 @@ extern "C" void fn_802A20F0(void*, void*, s32, s32, s32, s32);
 extern u8* lbl_8053AC98;
 
 extern "C" void fn_80169030(Actor* this_) {
-    u8* self = (u8*)this_;
-    s32 idx = *(s32*)(self + 0x90);
-    u8 r;
-    f32 d;
-    f32* vel;
-
-    r = fn_8022F478(idx);
-    if (r != 1) {
-        return;
-    }
-    r = fn_8022F514(*(s32*)(self + 0x90));
-    if (r != 1) {
-        return;
-    }
-    idx = fn_8022F3DC(*(s32*)(self + 0x90));
-    if (*(s32*)(self + 0x23c) == 0) {
-        d = *(f32*)(self + 0x3c) - *(f32*)(self + 0x364);
-        if (__fabs(d) > 0.0f) {
-            fn_801F71A4(self + 0x3c, *(f32*)(self + 0x364), 0.0f, 0.0f);
-        } else {
-            *(f32*)(self + 0x364) = 0.0f;
-        }
-    }
+u8* p=(u8*)this_;
+s32 idx=*(s32*)(p+0x90);
+if(fn_8022F478(idx)==1&&fn_8022F514(*(s32*)(p+0x90))==1)idx=fn_8022F3DC(*(s32*)(p+0x90));
+if(*(s32*)(p+0x23c)==0){
+if(__fabsf(*(f32*)(p+0x3c)-*(f32*)(p+0x364))>0.01f)fn_801F71A4(p+0x3c,*(f32*)(p+0x364),0.1f,0.2f);else *(f32*)(p+0x364)=*(f32*)(p+0x3c);
+if(__fabsf(*(f32*)(p+0x40)-*(f32*)(p+0x368))>0.01f)fn_801F71A4(p+0x40,*(f32*)(p+0x368),0.1f,0.2f);else *(f32*)(p+0x368)=*(f32*)(p+0x40);
+}
+if(fn_801F6758(p+0xc,*(s32*)(p+4),300.0f))p[0x11c]=0;
+if(*(s32*)(p+0x268)<5){
+JGeometry::TVec3<f32> probe(0.0f,0.0f,0.0f);
+probe.x=*(f32*)(p+*(s32*)(p+0x268)*0x18+0x2f4);
+probe.y=*(f32*)(p+*(s32*)(p+0x268)*0x18+0x2f8);
+if(fn_8022BC38(idx,*(s32*)(p+*(s32*)(p+0x268)*0x18+0x300),&probe)==1){
+f32* v=(f32*)fn_8023E724(idx);
+((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x268)*0x18+0x2f4))->set(v[0],v[1]);
+}else{
+*(s32*)(p+*(s32*)(p+0x268)*0x18+0x2fc)=fn_8023DE58(idx);
+f32* v=(f32*)fn_8023E724(idx);
+((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x268)*0x18+0x2ec))->set(v[0],v[1]);
+++*(s32*)(p+0x268);
+if(*(s32*)(p+0x268)<5){
+*(s32*)(p+*(s32*)(p+0x268)*0x18+0x300)=fn_8023DE58(idx);
+f32* v=(f32*)fn_8023E724(idx);
+((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x268)*0x18+0x2f4))->set(v[0],v[1]);
+}}}
+JGeometry::TVec3<f32>& pos=*(JGeometry::TVec3<f32>*)(p+0xc);
+JGeometry::TVec3<f32>& vel=*(JGeometry::TVec3<f32>*)(p+0x3c);
+pos.add(vel);
+switch(*(s32*)(p+0x230)){
+case 0:
+if(__fabsf(*(f32*)(p+0x3c)-*(f32*)(p+0x364))<=1.0f&&__fabsf(*(f32*)(p+0x40)-*(f32*)(p+0x368))<=1.0f){
+*(s32*)(p+0x174)=*(s32*)(p+0x180);
+vel.set(*(JGeometry::TVec3<f32>*)(p+0x364));
+if(*(s32*)(p+0x244)!=0){
+*(s32*)(p+0x26c)=*(s32*)(p+0x264);*(s32*)(p+0x230)=1;*(s32*)(p+0x174)=0;
+if(*(s32*)(p+4)!=fn_8023DE58(*(s32*)(p+0x90))){
+JGeometry::TVec2<f32> dir;
+if(*(s32*)(p+0x264)>0){dir.set(*(JGeometry::TVec2<f32>*)(p+(*(s32*)(p+0x264)-1)*0x18+0x27c));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);}
+else if(*(s32*)(p+0x268)>0){dir.set(*(JGeometry::TVec2<f32>*)(p+0x2f4));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);}
+else{*(s32*)(p+0x26c)=*(s32*)(p+0x264);*(s32*)(p+0x230)=1;*(s32*)(p+0x174)=0;}
+dir.normalize();if(*(s32*)(p+0x25c)!=0){*(f32*)(p+0x3c)=9.0f*dir.x;*(f32*)(p+0x40)=9.0f*dir.y;}else{*(f32*)(p+0x3c)=6.0f*dir.x;*(f32*)(p+0x40)=6.0f*dir.y;}
+}
+break;
+}else{
+JGeometry::TVec2<f32> d;
+f32* v=(f32*)fn_8023E724(*(s32*)(p+0x90));
+d.set(*(JGeometry::TVec2<f32>*)(v));
+d.x-=*(f32*)(p+0xc);d.y-=*(f32*)(p+0x10);
+if(d.squared()<240.0f){pos=*(JGeometry::TVec3<f32>*)fn_8023E724(*(s32*)(p+0x90));pos.z=0.0f;p[0x11c]=0;break;}
+}
+}else{
+if(*(s32*)(p+0x264)<5){
+if(p[0x17d]==0){((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x264)*0x18+0x274))->set(pos.x,pos.y);}
+else{
+*(s32*)(p+*(s32*)(p+0x264)*0x18+0x288)=*(s32*)(p+4);
+((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x264)*0x18+0x27c))->set(pos.x,pos.y);
+++*(s32*)(p+0x264);
+if(*(s32*)(p+0x264)<5){
+*(s32*)(p+*(s32*)(p+0x264)*0x18+0x284)=*(s32*)(p+4);
+((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x264)*0x18+0x274))->set(pos.x,pos.y);
+}}
+}
+}
+fn_8016890C(p,p+0xc,*(s32*)(p+4),p+0x370);
+if((*(s32*)(p+4)==0&&fn_801F6758(p+0xc,*(s32*)(p+4),-16.0f)==1)||(*(s32*)(p+4)>=8&&
+(bool)(pos.x<=*(f32*)(p+0x370)-(-9.0f)||pos.x>=*(f32*)(p+0x378)+(-9.0f)||pos.y<=*(f32*)(p+0x374)-(-9.0f)||pos.y>=*(f32*)(p+0x37c)+(-9.0f))==1)){
+vel.zero();((JGeometry::TVec3<f32>*)(p+0x364))->zero();
+}
+if(!fn_8022C274(idx))*(s32*)(p+0x244)=1;
+if(*(s32*)(p+8)!=fn_8023DE58(*(s32*)(p+0x90))||fn_802373EC(*(s32*)(p+0x90))!=3)*(s32*)(p+0x244)=1;
+if(fn_8022CAF8(*(s32*)(p+0x90))==4&&fn_8022F478(*(s32*)(p+0x90))==1)*(s32*)(p+0x244)=1;
+if((u8)fn_80168C38((char*)p)==1||*(s32*)(p+0x254)!=0){
+vel.scale(-1.0f);
+if(*(s32*)(p+0x254)==0)*(s32*)(p+0x254)=1;
+if(*(s32*)(p+4)!=fn_8023DE58(*(s32*)(p+0x90))){
+JGeometry::TVec2<f32> dir;
+if(*(s32*)(p+0x264)>0){dir.set(*(JGeometry::TVec2<f32>*)(p+(*(s32*)(p+0x264)-1)*0x18+0x27c));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);}
+else if(*(s32*)(p+0x268)>0){dir.set(*(JGeometry::TVec2<f32>*)(p+0x2f4));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);}
+else{*(s32*)(p+0x174)=0;*(s32*)(p+0x26c)=*(s32*)(p+0x264);*(s32*)(p+0x230)=1;break;}
+dir.normalize();if(*(s32*)(p+0x25c)!=0){*(f32*)(p+0x3c)=9.0f*dir.x;*(f32*)(p+0x40)=9.0f*dir.y;}else{*(f32*)(p+0x3c)=6.0f*dir.x;*(f32*)(p+0x40)=6.0f*dir.y;}
+}
+*(s32*)(p+0x174)=0;*(s32*)(p+0x26c)=*(s32*)(p+0x264);*(s32*)(p+0x230)=1;
+}
+break;
+case 1:
+if(fn_8022BC38(*(s32*)(p+0x90),*(s32*)(p+4),&pos)==1&&(fn_8022D75C(idx)!=1||(fn_8022CAF8(*(s32*)(p+0x90))==4&&idx!=*(s32*)(p+0x90)))){
+JGeometry::TVec2<f32> dir;
+f32* v=(f32*)fn_8023E724(*(s32*)(p+0x90));dir.set(*(JGeometry::TVec2<f32>*)(v));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);
+if(p[0x260]==1){p[0x11c]=0;}
+else if(dir.squared()<240.0f){pos=*(JGeometry::TVec3<f32>*)fn_8023E724(*(s32*)(p+0x90));pos.z=0.0f;p[0x260]=1;}
+else{dir.normalize();if(*(s32*)(p+0x25c)!=0&&p[0x261]==0){*(f32*)(p+0x3c)=9.0f*dir.x;*(f32*)(p+0x40)=9.0f*dir.y;}else{*(f32*)(p+0x3c)=6.0f*dir.x;*(f32*)(p+0x40)=6.0f*dir.y;}}
+}else{
+JGeometry::TVec2<f32> dir;
+if(*(s32*)(p+0x26c)>0){dir.set(*(JGeometry::TVec2<f32>*)(p+(*(s32*)(p+0x26c)-1)*0x18+0x27c));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);}
+else if(*(s32*)(p+0x270)<*(s32*)(p+0x268)){dir.set(*(JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x270)*0x18+0x2f4));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);}
+else{
+if(*(s32*)(p+4)!=fn_8023DE58(idx))break;
+f32* v=(f32*)fn_8023E724(idx);dir.set(*(JGeometry::TVec2<f32>*)(v));
+dir.x-=*(f32*)(p+0xc);dir.y-=*(f32*)(p+0x10);
+}
+dir.normalize();if(*(s32*)(p+0x25c)>0&&p[0x261]==0){*(f32*)(p+0x3c)=9.0f*dir.x;*(f32*)(p+0x40)=9.0f*dir.y;}else{*(f32*)(p+0x3c)=6.0f*dir.x;*(f32*)(p+0x40)=6.0f*dir.y;}
+if((*(s32*)(p+0x264)>0&&*(s32*)(p+0x26c)>0)||(*(s32*)(p+0x268)>0&&*(s32*)(p+0x270)<*(s32*)(p+0x268))){
+u8 used=1;
+u8* rec;
+if(*(s32*)(p+0x264)>0&&*(s32*)(p+0x26c)>0)rec=p+(*(s32*)(p+0x26c)-1)*0x18+0x274;
+else{used=0;rec=p+*(s32*)(p+0x270)*0x18+0x2ec;}
+if(__fabsf(*(f32*)(rec+8)-pos.x)<=16.0f&&__fabsf(*(f32*)(rec+12)-pos.y)<=16.0f){
+JGeometry::TVec3<f32> target(0.0f,0.0f,0.0f);target.x=*(f32*)rec;target.y=*(f32*)(rec+4);
+*(s32*)(p+4)=*(s32*)(rec+16);pos=target;
+if(used==1)--*(s32*)(p+0x26c);else++*(s32*)(p+0x270);
+}
+}
+}
+fn_80168C38((char*)p);
+break;
+}
+JGeometry::TVec3<f32> draw(pos.x,pos.y-pos.z,0.0f);
+fn_8030C210(*(void**)(lbl_8053AB10+0x24),&draw);
+if(*(s32*)(p+0x234)>0)--*(s32*)(p+0x234);
+if(*(s32*)(p+0x238)>0)--*(s32*)(p+0x238);
+if(*(s32*)(p+0x23c)>0)--*(s32*)(p+0x23c);
+if(*(s32*)(p+0x240)>0)--*(s32*)(p+0x240);
+if(*(s32*)(p+0x244)!=0){--*(s32*)(p+0x258);if(*(s32*)(p+0x258)<=0)p[0x11c]=0;}
+if(*(s32*)(p+0x234)==0){++*(s32*)(p+0x250);*(s32*)(p+0x250)&=3;*(s32*)(p+0x234)=2;if(*(s32*)(p+0x250)==0)fn_801F0E34(p,0x3008d,0);}
+if(!fn_801F6758(p+0xc,*(s32*)(p+4),0.0f))fn_802A20F0(lbl_8053AC98,p+0xc,*(s32*)(p+0x90),*(s32*)(p+4),0,0);
 }
 
 extern "C" void fn_80169DCC(char* this_) {
