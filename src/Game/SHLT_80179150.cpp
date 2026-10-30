@@ -82,6 +82,11 @@ extern "C" void fn_802D9FF4(void*,s32,s32);
 extern "C" void fn_80136798(void*,s32,s32);
 extern "C" u8 fn_8022B7C4(s32);
 extern "C" void fn_80458F9C(void*,s32);
+static inline s16 shltAngle(f32 y, f32 x) {
+    f32 radians = JMath::atanTable_.atan2_(y, x);
+    return radians * lbl_8053DC54;
+}
+
 extern "C" void fn_80179388(Actor* this_) {
  u8* p=(u8*)this_;
  s32 player=0;
@@ -96,8 +101,8 @@ extern "C" void fn_80179388(Actor* this_) {
  case 0: if((*(s32*)(p+0x300))==0){(*(s32*)(p+0x300))=300;(*(f32*)(p+0x370))*=lbl_8053DC30;(*(f32*)(p+0x374))*=lbl_8053DC30;} break;
  case 1:
   (*(u16*)(p+0x340))+=(u16)(*(s32*)(p+0x30c));
-  (*(f32*)(p+0xc))=(*(f32*)(p+0x348))*JMath::sincosTable_.mTable[(*(u16*)(p+0x340))>>5].first+(*(f32*)(p+0x34c));
-  (*(f32*)(p+0x10))=(*(f32*)(p+0x348))*JMath::sincosTable_.mTable[(*(u16*)(p+0x340))>>5].second+(*(f32*)(p+0x350)); break;
+  (*(f32*)(p+0xc))=(*(f32*)(p+0x348))*JMath::sincosTable_.sinShort((*(u16*)(p+0x340)))+(*(f32*)(p+0x34c));
+  (*(f32*)(p+0x10))=(*(f32*)(p+0x348))*JMath::sincosTable_.cosShort((*(u16*)(p+0x340)))+(*(f32*)(p+0x350)); break;
  case 2:
   if(fn_800FE3EC(p+0x230,(*(s32*)(p+0x334)),*(JGeometry::TVec3<f32>*)(p+0xc),(*(s32*)(p+0x4)))){
    (*(s32*)(p+0x338))=fn_800FE21C(p+0x230,0xff); (*(s32*)(p+0x338))*=60;
@@ -121,12 +126,14 @@ extern "C" void fn_80179388(Actor* this_) {
  case 5: break;
  case 6:
   if((*(s32*)(p+0x328))!=0)fn_80458880(lbl_8053AF80,0x36,-1);
-  if(lbl_80539F80>=0 && (*(s32*)(p+0x4))==fn_8023DE58(lbl_80539F80)) {
+  if(lbl_80539F80<0) goto releasePlayer;
+  {s32 room=(*(s32*)(p+0x4));
+   if(room!=fn_8023DE58(lbl_80539F80)) goto releasePlayer;
    f32 dx=fn_8023E724(lbl_80539F80)->x-(*(f32*)(p+0xc));
    f32 dy=fn_8023E724(lbl_80539F80)->y-(*(f32*)(p+0x10));
    if(std::sqrtf(dx*dx+dy*dy)>lbl_8053DC50) {
-    (*(f32*)(p+0x370))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)(s32)(JMath::atanTable_.atan2_(dx,dy)*lbl_8053DC54)>>5].first;
-    (*(f32*)(p+0x374))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)(s32)(JMath::atanTable_.atan2_(dx,dy)*lbl_8053DC54)>>5].second;
+    (*(f32*)(p+0x370))=JMath::sincosTable_.sinShort((s16)(JMath::atanTable_.atan2_(dx,dy)*(65536.0f / 6.2831855f)))*lbl_8053DC50;
+    (*(f32*)(p+0x374))=JMath::sincosTable_.cosShort((s16)(JMath::atanTable_.atan2_(dx,dy)*(65536.0f / 6.2831855f)))*lbl_8053DC50;
    } else {
     Vec* v=fn_8023E724(lbl_80539F80);
     (*(f32*)(p+0xc))=v->x;(*(f32*)(p+0x10))=v->y;(*(f32*)(p+0x14))=v->z;
@@ -148,13 +155,15 @@ extern "C" void fn_80179388(Actor* this_) {
      (*(s32*)(p+0x310))=0;
     }
    }
-  } else fn_801F6884(fn_801F856C());
+  }
   break;
+ releasePlayer:
+  fn_801F6884(fn_801F856C());break;
  case 7:
   if(lbl_80539F84>=0 && lbl_8053AB68==(*(s32*)(p+0x4))) {
    f32 dx=(*(f32*)(p+0xc))-lbl_804C0EA0.x;
    f32 dy=(*(f32*)(p+0x10))-lbl_804C0EA0.y;
-   s16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*lbl_8053DC54);
+   s16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*(65536.0f / 6.2831855f));
    (*(f32*)(p+0x370))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].first;
    (*(f32*)(p+0x374))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].second;
    if(std::sqrtf(dx*dx+dy*dy)<lbl_8053DC5C) {(*(f32*)(p+0x378))=lbl_8053DC28;(*(f32*)(p+0x374))=lbl_8053DC28;(*(f32*)(p+0x370))=lbl_8053DC28;(*(f32*)(p+0x44))=lbl_8053DC28;(*(f32*)(p+0x40))=lbl_8053DC28;(*(f32*)(p+0x3c))=lbl_8053DC28; (*(s32*)(p+0x31c))++;}
@@ -166,7 +175,7 @@ extern "C" void fn_80179388(Actor* this_) {
   break;
  case 8: {
   f32 dx=(*(f32*)(p+0xc))-(*(f32*)(p+0x364));f32 dy=(*(f32*)(p+0x10))-(*(f32*)(p+0x368));
-  s16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*lbl_8053DC54);
+  s16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*(65536.0f / 6.2831855f));
   (*(f32*)(p+0x370))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].first;
   (*(f32*)(p+0x374))=lbl_8053DC50*JMath::sincosTable_.mTable[(u16)angle>>5].second;
   if(std::sqrtf(dx*dx+dy*dy)<lbl_8053DC5C){(*(f32*)(p+0x378))=lbl_8053DC28;(*(f32*)(p+0x374))=lbl_8053DC28;(*(f32*)(p+0x370))=lbl_8053DC28;(*(s32*)(p+0x2f8))=(*(s32*)(p+0x2fc));}
