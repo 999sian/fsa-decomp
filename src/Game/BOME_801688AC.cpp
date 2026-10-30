@@ -275,6 +275,7 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" void fn_802A20F0(void*, void*, s32, s32, s32, s32);
 extern u8* lbl_8053AC98;
+static inline s32 bomeIndex(const u8* p) { return *(const s32*)(p + 0x90); }
 static inline u8 bomeOutside(const Vec* point, const f32 margin, const f32* box) {
     if (point->x <= box[0] - margin || point->x >= box[2] + margin ||
         point->y <= box[1] - margin || point->y >= box[3] + margin) return 1;
