@@ -7,6 +7,7 @@
 extern void* lbl_8053AAF8;
 #include "JSystem/JMath/JMath.h"
 extern void* lbl_8053AB10;
+extern void* lbl_8053AF80;
 extern f32 lbl_804A3108[];
 extern u16 lbl_8053A110[];
 extern f32 lbl_8053E7D8, lbl_8053E7E8, lbl_8053E7EC, lbl_8053E7F0, lbl_8053E7F4;
