@@ -1422,7 +1422,7 @@ struct Tu8025Data {
 
 
 #pragma pool_data on
-static const u8 fireTablePrefix[0x250] = {
+static const u8 fireTablePrefix[0x190] = {
     0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x20, 0x00, 0x00, 0x41, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0xc1, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00,
     0xc1, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x20, 0x00, 0x00,
@@ -1448,18 +1448,28 @@ static const u8 fireTablePrefix[0x250] = {
     0x41, 0xa0, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x41, 0xa0, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x07,
     0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x07,
-    0xc1, 0x80, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x41, 0x80, 0x00, 0x00, 0x41, 0x80, 0x00, 0x00,
-    0xc0, 0x00, 0x00, 0x00, 0x41, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0xc0, 0x00, 0x00,
-    0x41, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x80, 0x00, 0x00, 0x41, 0x80, 0x00, 0x00,
-    0x41, 0xa0, 0x00, 0x00, 0x40, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0xa0, 0x00, 0x00,
-    0x40, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x41, 0x40, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x41, 0xc0, 0x00, 0x00, 0x40, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0xc0, 0x00, 0x00,
-    0x40, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x41, 0x30, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x41, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x80, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x41, 0x80, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+};
+static const Vec blastStartPositions[4] = {
+    { -16.0f, -2.0f, 16.0f },
+    { 16.0f, -2.0f, 16.0f },
+    { 0.0f, -6.0f, 16.0f },
+    { 0.0f, -4.0f, 16.0f },
+};
+static const Vec blastHitPositions[8] = {
+    { 20.0f, 7.0f, 0.0f },
+    { -20.0f, 7.0f, 0.0f },
+    { 0.0f, 12.0f, 0.0f },
+    { 0.0f, -8.0f, 0.0f },
+    { 24.0f, 7.0f, 0.0f },
+    { -24.0f, 7.0f, 0.0f },
+    { 0.0f, 11.0f, 0.0f },
+    { 0.0f, -6.0f, 0.0f },
+};
+static const Vec blastTerrainPositions[4] = {
+    { 16.0f, 0.0f, 0.0f },
+    { -16.0f, 0.0f, 0.0f },
+    { 0.0f, 16.0f, 0.0f },
+    { 0.0f, -16.0f, 0.0f },
 };
 static const u8 fireAnimationFrames[4][8] = {
     {0,1,2,3,0,1,2,3}, {0,1,2,3,0,1,2,3},
@@ -2071,91 +2081,196 @@ struct PlayerPcdmParam {
 extern const PlayerPcdmParam lbl_8046B070[];
 
 extern "C" void fn_8025BEB0(u8* p) {
-    u8 st = U8(p, 0x3fa);
-    if (st < 3) {
-        U8(p, 0x3fa) = st + 1;
+    s32 spread;
+    s32 i;
+    PlayerPcdmPosition* arrow = (PlayerPcdmPosition*)p;
+    s32 actorID;
+    u8 state = U8(p, 0x3fa);
+    if (state < 3) {
+        U8(p, 0x3fa) = state + 1;
         U8(p, 0x3fb) = 0;
-        return;
-    }
-    if (st < 6) {
-        U8(p, 0x3fa) = st + 1;
+    } else if (state < 6) {
+        U8(p, 0x3fa) = state + 1;
         U8(p, 0x3fb) = 1;
-        return;
-    }
-    if (st != 6) {
-        return;
-    }
-    if (U8(p, 0x3fc) < 0x30) {
-        U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
-        if (U8(p, 0x3fc) != 0x30) {
-            return;
-        }
-        const JGeometry::TVec3<f32>& t = lbl_8046B040[U32(p, 0x3dc)];
-        F32(p, 0x12fc) = t.x;
-        F32(p, 0x1300) = t.y;
-        F32(p, 0x1304) = t.z;
-        V3(p, 0x12fc) += V3(p, 0x8);
-        if (PTR(p, 0x12cc) == 0 && S32(p, 0x3b4) < 8) {
-            V3(p, 0x12d4) = V3(p, 0x12fc);
-            *(u8**)(p + 0x12cc) = fn_8013CC50(S32(p, 0x3b4), p + 0x12fc, 0xcb, 0, -1, 0, p + 0x12d0, 1, lbl_805400D4);
-            if (PTR(p, 0x12cc) != 0) {
-                U32(PTR(p, 0x12cc), 0xf4) |= 0x40;
+    } else if (state == 6) {
+        if (U8(p, 0x3fc) < 0x30) {
+            U8(p, 0x3fc) += 1;
+            if (U8(p, 0x3fc) == 0x30) {
+                s32 idx = S32(p, 0x3dc);
+                const f32* src = &lbl_8046B040[idx].x;
+                f32 x = *src++;
+                f32 y = *src++;
+                arrow->pos.x = x;
+                f32 z = *src;
+                arrow->pos.y = y;
+                arrow->pos.z = z;
+                arrow->pos += V3(p, 0x8);
+                if (!PTR(p, 0x12cc) && S32(p, 0x3b4) < 8) {
+                    F32(p,0x12d4) = arrow->pos.x;
+                    F32(p,0x12d8) = arrow->pos.y;
+                    F32(p,0x12dc) = arrow->pos.z;
+                    PTR(p, 0x12cc) = fn_8013CC50(S32(p, 0x3b4), &arrow->pos, 0xcb, 0, -1, 0, p + 0x12d0, 1, lbl_805400D4);
+                    if (PTR(p, 0x12cc)) {
+                        U32(PTR(p, 0x12cc), 0xf4) |= 0x40;
+                    }
+                }
+                if (!PTR(p, 0x12e4) && S32(p, 0x3b4) < 8) {
+                    F32(p,0x12ec) = arrow->pos.x;
+                    F32(p,0x12f0) = arrow->pos.y;
+                    F32(p,0x12f4) = arrow->pos.z;
+                    PTR(p, 0x12e4) = fn_8013CC50(S32(p, 0x3b4), &arrow->pos, 0xcc, 0, -1, 0, p + 0x12e8, 1, lbl_805400D4);
+                    if (PTR(p, 0x12e4)) {
+                        U32(PTR(p, 0x12e4), 0xf4) |= 0x40;
+                    }
+                }
+                if (S32(p, 0x12c0) < 0) {
+                    S32(p, 0x12c0) = Actor_CreateByID(fn_801F856C(), 0x50454646, S32(p, 0x3b4), &arrow->pos, (U32(p, 0x4) & 3) | 8, -1, -1);
+                }
+                fn_8024F0E8(p, 0x2000d);
+            }
+        } else {
+            s32 idx = S32(p, 0x3dc);
+            const f32* src = &lbl_8046B040[idx].x;
+            f32 x = *src++;
+            f32 y = *src++;
+            arrow->pos.x = x;
+            f32 z = *src;
+            arrow->pos.y = y;
+            arrow->pos.z = z;
+            arrow->pos += V3(p, 0x8);
+            if (PTR(p, 0x12cc)) {
+                F32(p,0x12d4) = arrow->pos.x;
+                F32(p,0x12d8) = arrow->pos.y;
+                F32(p,0x12dc) = arrow->pos.z;
+            }
+            if (PTR(p, 0x12e4)) {
+                F32(p,0x12ec) = arrow->pos.x;
+                F32(p,0x12f0) = arrow->pos.y;
+                F32(p,0x12f4) = arrow->pos.z;
+            }
+            i = S32(p, 0x12c0);
+            if (i >= 0) {
+                u8* actor = fn_801F666C(fn_801F856C(), i);
+                if (actor) {
+                    V3(actor, 0xc) = arrow->pos;
+                } else {
+                    S32(p, 0x12c0) = -1;
+                }
             }
         }
-        if (PTR(p, 0x12e4) == 0 && S32(p, 0x3b4) < 8) {
-            V3(p, 0x12ec) = V3(p, 0x12fc);
-            *(u8**)(p + 0x12e4) = fn_8013CC50(S32(p, 0x3b4), p + 0x12fc, 0xcc, 0, -1, 0, p + 0x12e8, 1, lbl_805400D4);
-            if (PTR(p, 0x12e4) != 0) {
-                U32(PTR(p, 0x12e4), 0xf4) |= 0x40;
+        if (!(playerVelocitySquared(V3(p, 0x344)) <= lbl_805400D8 * *(f32*)__float_epsilon) || F32(p, 0x10) > 0.0f) {
+            V3(p, 8) += V3(p, 0x344);
+            F32(p, 0x34c) -= lbl_80540104;
+            if (F32(p, 0x10) <= 0.0f) {
+                F32(p, 0x10) = 0.0f;
+                V3(p, 0x368).set(F32(p, 0x344), F32(p, 0x348), 0.0f);
+                V3(p, 0x344).set(0.0f, 0.0f, 0.0f);
+                U8(p, 0x43d) = 3;
+            }
+        } else if (U8(p, 0x43d)) {
+            --U8(p, 0x43d);
+        } else if (fn_8022C274(U32(p, 4))) {
+            if (fn_80246B10(p, 0x20)) {
+                if (fn_80246F28(p) == 0.0f && U8(PTR(p, 0xbf0), 0xb7)) {
+                    F32(p, 0x344) = F32(p, 0x368);
+                    F32(p, 0x348) = F32(p, 0x36c);
+                } else {
+                    F32(p, 0x344) += lbl_80540140 * fn_80247330(p);
+                    F32(p, 0x348) += lbl_80540140 * -fn_8024712C(p);
+                }
+                F32(p, 0x34c) = lbl_80540144;
+                fn_8024F0E8(p, 0x10002);
+            } else {
+                fn_802808E8(p, lbl_80540124);
+            }
+            bool same = playerNearXY(V2(p,8), V2(p,0x14), lbl_805400D8 * *(f32*)__float_epsilon);
+            if (same) {
+                U8(p, 0x3f8) = 0;
+            } else {
+                ++U8(p, 0x3f8);
+                if (U8(p, 0x3f8) >= 14) U8(p, 0x3f8) = 0;
+            }
+            if (U8(p, 0x3f8) < 4) U8(p, 0x3f9) = 0;
+            else if (U8(p, 0x3f8) < 8) U8(p, 0x3f9) = 1;
+            else if (U8(p, 0x3f8) < 10) U8(p, 0x3f9) = 0;
+            else U8(p, 0x3f9) = 2;
+        } else {
+            spread = 1;
+            ++U8(p, 0x3fa);
+            if (fn_802415CC(p) >= 2 && U8(p, 0x3fc) >= 0x30) {
+                for (i = 0; i < 3; i++) {
+                    if (arrow->ids[i] >= 0) {
+                        spread = 0;
+                        break;
+                    }
+                }
+            } else {
+                spread = 0;
+            }
+            for (i = 0; i < 3; ++i) {
+                if (arrow->ids[i] >= 0) {
+                    continue;
+                }
+                JGeometry::TVec3<f32> pos = V3(p, 8);
+                switch (S32(p, 0x3dc)) {
+                case 0: pos.y -= lbl_805400E0; break;
+                case 1: pos.y -= lbl_805400E0; break;
+                case 2: break;
+                case 3: pos.x -= lbl_805400C8; break;
+                }
+                if (U8(p, 0x3fc) >= 0x30) {
+                    actorID = S32(p,4);
+                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'PCDM', S32(p,0x3b4), &pos, ((U32(p,0x3dc) << 4) & 0x30) | ((u32)actorID & 3), -1, actorID);
+                } else {
+                    actorID = S32(p,4);
+                    arrow->ids[i] = Actor_CreateByID(fn_801F856C(), 'PCDM', S32(p,0x3b4), &pos, ((S32(p,0x3dc)&3)<<4) | 0x100 | (actorID&3), -1, actorID);
+                }
+                if (arrow->ids[i] >= 0) {
+                    arrow->rooms[i] = S32(p,0x3b4);
+                    fn_8024F0E8(p, 0x20004);
+                }
+                if ((u8)spread == 1) {
+                    if (arrow->ids[1] < 0) {
+                        actorID = S32(p,4);
+                        i = ((lbl_8046B070[S32(p,0x3dc)].left & 7) << 4) | (actorID & 3);
+                        arrow->ids[1] = Actor_CreateByID(fn_801F856C(), 'PCDM', S32(p,0x3b4), &pos, i, -1, actorID);
+                        if (arrow->ids[1] >= 0) {
+                            arrow->rooms[1] = S32(p,0x3b4);
+                        }
+                    }
+                    if (arrow->ids[2] < 0) {
+                        actorID = S32(p,4);
+                        arrow->ids[2] = Actor_CreateByID(fn_801F856C(), 'PCDM', S32(p,0x3b4), &pos, ((lbl_8046B070[S32(p,0x3dc)].right & 7) << 4) | (actorID & 3), -1, actorID);
+                        if (arrow->ids[2] >= 0) {
+                            arrow->rooms[2] = S32(p,0x3b4);
+                        }
+                    }
+                }
+                U8(p,0x3fc) = 0;
+                break;
             }
         }
-        if (S32(p, 0x12c0) < 0) {
-            void* mgr = fn_801F856C();
-            S32(p, 0x12c0) = Actor_CreateByID(mgr, 0x50454646, S32(p, 0x3b4), p + 0x12fc, (U32(p, 0x4) & 3) | 8, -1, -1);
+        U8(p, 0x3fb) = 1;
+    } else if (state < 10) {
+        U8(p, 0x3fa) = state + 1;
+        U8(p, 0x3fb) = 2;
+    } else {
+        U8(p, 0x3fa) = state + 1;
+        U8(p, 0x3fb) = 3;
+    }
+    if (U8(p, 0x3fa) >= 14) {
+        if (fn_8022C274(U32(p, 4))) {
+            U8(p, 0x3fa) = 0;
+            U8(p, 0x3fb) = 0;
+        } else {
+            fn_80251AEC(p, 0);
         }
-        fn_8024F0E8(p, 0x2000D);
-        return;
     }
-    const JGeometry::TVec3<f32>& t = lbl_8046B040[U32(p, 0x3dc)];
-    F32(p, 0x12fc) = t.x;
-    F32(p, 0x1300) = t.y;
-    F32(p, 0x1304) = t.z;
-    V3(p, 0x12fc) += V3(p, 0x8);
-    if (PTR(p, 0x12cc) != 0) {
-        V3(p, 0x12d4) = V3(p, 0x12fc);
-    }
-    if (PTR(p, 0x12e4) != 0) {
-        V3(p, 0x12ec) = V3(p, 0x12fc);
-    }
-    s32 idx = S32(p, 0x12c0);
-    if (idx < 0) {
-        return;
-    }
-    void* mgr = fn_801F856C();
-    u8* obj = fn_801F666C(mgr, idx);
-    if (obj != 0) {
-        V3(obj, 0xc) = V3(p, 0x12fc);
-        F32(obj, 0x14) = F32(p, 0x1304);
-        return;
-    }
-    S32(p, 0x12c0) = -1;
-
-    f32 lenSq = F32(p, 0x344) * F32(p, 0x344) + F32(p, 0x348) * F32(p, 0x348) + F32(p, 0x34c) * F32(p, 0x34c);
-    if (lenSq > *(f32*)__float_epsilon * lbl_805400D8) {
-        if (F32(p, 0x10) > lbl_805400C4) {
-            V3(p, 0x8) += V3(p, 0x344);
-            F32(p, 0x10) += F32(p, 0x34c);
-        }
-        F32(p, 0x34c) -= lbl_80540104;
-        if (F32(p, 0x10) == lbl_805400C4) {
-            F32(p, 0x10) = lbl_805400C4;
-            U8(p, 0x43d) = 3;
-        }
-        return;
-    }
-    if (U8(p, 0x43d) != 0) {
-        U8(p, 0x43d) = U8(p, 0x43d) - 1;
-        return;
+    fn_80268B3C(p);
+    if (S32(p, 0x40c) < 0x1e) {
+        S32(p, 0x40c) = S32(p, 0x40c) + 1;
+    } else if (U8(PTR(lbl_8053AB10,0x24),0x7f4) == 0) {
+        U8(PTR(lbl_8053AB10,0x24),0x7f5) = 1;
     }
 }
 
