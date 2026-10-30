@@ -801,6 +801,12 @@ inline f32 hitInvSqrt(f32 x) {
     y = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
     return y;
 }
+inline JGeometry::TVec2<f32> hitDelta(char* p, const Vec2f* pt) {
+    JGeometry::TVec2<f32> v(F32(p, 0x8), F32(p, 0xc));
+    v.x -= pt->x;
+    v.y -= pt->y;
+    return v;
+}
 inline BOOL isHitBusy(char* p) {
     if (fn_80241200(p)) {
         return 1;
@@ -810,13 +816,10 @@ inline BOOL isHitBusy(char* p) {
     }
     return fn_80270ABC(p);
 }
-bool fn_802710C8(char* p_, s32 id_, s32 n_, Vec2f* pt_, s32 action_) {
+bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
     char* p = p_;
     s32 n = n_;
     u8 ok;
-    s32 action = action_;
-    Vec2f* pt = pt_;
-    s32 id = id_;
     if (fn_80240B5C(p)) {
         n = 0;
     }
@@ -851,7 +854,7 @@ bool fn_802710C8(char* p_, s32 id_, s32 n_, Vec2f* pt_, s32 action_) {
             if (fn_80240670(p)) {
                 return false;
             }
-        } else if (isHitBusy(p)) {
+        } else if ((u8)isHitBusy(p)) {
             return false;
         }
     }
