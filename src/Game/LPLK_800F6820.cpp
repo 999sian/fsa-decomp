@@ -282,8 +282,8 @@ u16 angle;
 s32 id,priority,player,amount;
 bool grounded;
 f32 absY,absX,oldV;
-f32 vertical,gravity,zero,dy,speed;
-f32 px,py,height;
+f32 vertical,gravity,zero,dy,py;
+f32 px,speed,height;
 s32 kind;
 angle=0;dist=0.0f;quad=0;target=-1;
 fn_801EEC98(self,(*(s32*)(self+0x198)),&angle,&quad,&dist,&target,0,0);
@@ -325,8 +325,7 @@ pos=*(JGeometry::TVec3<f32>*)(fn_801F666C(fn_801F856C(),id)+0xc);
 f32 ang=JMAAtan2Radian(pos.x-(*(f32*)(self+0xc)),pos.y-(*(f32*)(self+0x10)));ang*=lbl_8053BF6C;*(s16*)(self+0x23e)=ang;
 if(rupeeDist<lbl_8053BF70){
 u8* item=(u8*)fn_801F666C(fn_801F856C(),id);
-kind=-1;
-if(*(u16*)(item+0x94)==0 || *(u16*)(item+0x94)==3)kind=*(u32*)(item+0x90)&255;
+kind=LplkRupeeKind(item);
 if(kind!=-1){
 (*(s32*)(self+0x244))+=lbl_8049C558[kind];
 item=(u8*)fn_801F666C(fn_801F856C(),id);
