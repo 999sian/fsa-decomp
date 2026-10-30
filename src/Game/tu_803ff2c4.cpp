@@ -298,37 +298,7 @@ struct SubB {
 	u8 pad[8];
 };
 
-struct BootLoad {
-    u8 pad0[4];
-    u8 ready;
-    u8 pad5[3];
-    DtorSlot2 dtor;
-    u8 padC[8];
-    void* resource;
-};
-extern "C" void fn_803007D0();
-extern "C" void fn_8030AC4C(void*);
-extern "C" void fn_8030905C(void*);
-extern "C" void fn_8030AB38(void*);
-extern "C" void fn_80308E90(void*);
-extern "C" bool fn_802B1DCC(void*);
-extern "C" void fn_802B1BE0(void*,int,int,int);
-extern "C" void fn_80442810(void*);
-extern "C" void fn_8030A43C(void*);
-extern "C" void fn_80304FB0(void*);
-extern "C" bool fn_804580DC(void*,int);
-extern "C" void* fn_80401BA4(void*,int,int,u32);
-extern "C" const ResTIMG* fn_80403244(u32,const char*);
-extern "C" u32 SIProbe(s32);
-extern "C" u32 fn_8030AAF4(int);
-extern "C" u32 fn_80309D24(void*,u32,u32);
-extern "C" u32 fn_80309D6C(void*,u32,u32);
-extern "C" void fn_803B9B3C(void*);
-extern "C" int fn_803B9A24(void*);
-extern "C" void OSReport(const char*,...);
-extern u8 lbl_80479AC0[];
-extern u8 lbl_8051C1A0[];
-extern void* lbl_8053AD30;
+
 
 // fn_804009CC - constructor of the game object at lbl_804B0F50.
 extern "C" void* fn_804009CC(void* this_) {
