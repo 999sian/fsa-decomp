@@ -295,6 +295,28 @@ extern f32 lbl_8053C99C;
 extern f32 lbl_8053C9A0;
 extern f32 lbl_8053C9A4;
 
+static inline bool EZZR_IsNearBarrier(EZZR* p) {
+    if (*(s32*)fn_80131F0C() <= 1) {
+        return false;
+    }
+    f32 dist = lbl_8053C980;
+    s32 id = fn_801F778C(fn_801F856C(), 0x42415249, &p->field_0C, &dist);
+    if (id < 0) {
+        return false;
+    }
+    if (dist > lbl_8053C984) {
+        return false;
+    }
+    Actor* a = (Actor*)fn_801F666C(fn_801F856C(), id);
+    if (a == 0) {
+        return false;
+    }
+    if (*((u8*)a + 0x11c) == 0) {
+        return false;
+    }
+    return true;
+}
+
 static inline bool EZZR_MoveToGate(EZZR* p) {
     JGeometry::TVec3f t = *fn_8023E724(*(s32*)((u8*)p + 0x3cc));
     t.z = lbl_8053C964;
