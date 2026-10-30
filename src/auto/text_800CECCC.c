@@ -28,7 +28,7 @@ extern void* __vt__15J3DAnmTransform[];
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_800CFE2C(void*, void*, void*);
 extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
-extern "C" void fn_800CF828(void*, void*, void*);
+extern "C" void fn_800CF828(void*, J3DAnmTexPattern*, const J3DAnmTexPatternFullData*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800D00F0(void*, J3DAnmColorKey*, const J3DAnmColorKeyData*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
@@ -274,7 +274,7 @@ extern "C" void fn_800CF510(void* param_1, unsigned char* param_2, unsigned char
             fn_800CF734(param_1, param_2, chunk);
             break;
         case 0x54505431:
-            fn_800CF828(param_1, param_2, chunk);
+            fn_800CF828(param_1, (J3DAnmTexPattern*)param_2, (const J3DAnmTexPatternFullData*)chunk);
             break;
         case 0x434c4631:
             fn_800CF998(param_1, param_2, chunk);
@@ -330,15 +330,13 @@ extern "C" void fn_800CF734(void* param_1, unsigned char* anm, const unsigned ch
 
 extern "C" void fn_800CF800(void** self, void* data)
 {
-    fn_800CF828(self, self[1], data);
+    fn_800CF828(self, (J3DAnmTexPattern*)self[1], (const J3DAnmTexPatternFullData*)data);
 }
 
 #pragma opt_propagation off
-extern "C" void fn_800CF828(void*, void* anm_, void* data_) {
+extern "C" void fn_800CF828(void*, J3DAnmTexPattern* anm, const J3DAnmTexPatternFullData* data) {
     f32 zero = lbl_8053BC80;
-    int attr = ((const J3DAnmTexPatternFullData*)data_)->mAttribute;
-    const J3DAnmTexPatternFullData* data = (const J3DAnmTexPatternFullData*)data_;
-    J3DAnmTexPattern* anm = (J3DAnmTexPattern*)anm_;
+    int attr = data->mAttribute;
     int frame = data->mTotalFrameCount;
     anm->mMaxFrame = frame;
     u32 count = data->mExtraInfo1;
@@ -492,25 +490,25 @@ extern "C" void fn_800CFE04(void** self, void* data)
 
 #pragma optimization_level 3
 extern "C" void fn_800CFE2C(void* self, void* anm, void* src) {
-    J3DAnmTransformKey* a = (J3DAnmTransformKey*)anm;
-    const J3DAnmTransformKeyData* s = (const J3DAnmTransformKeyData*)src;
+    u8* a = (u8*)anm;
+    u8* s = (u8*)src;
     f32 f = lbl_8053BC80;
     int h;
     int w;
-    h = s->mTotalFrameCount;
-    w = s->mExtraInfo1;
-    a->_1E = w;
-    w = s->mAttribute;
-    a->mMaxFrame = h;
-    h = s->mRotationScale;
-    a->mAttribute = w;
-    void* p = (void*)s->mTableOffset;
-    a->_20 = h;
-    a->mCurrentFrame = f;
-    a->mTable = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, p);
-    a->mScaleVals = JSUConvertOffsetToPtr<f32>(s, (void*)s->mScaleOffset);
-    a->mRotationVals = JSUConvertOffsetToPtr<s16>(s, (void*)s->mRotationOffset);
-    a->mTranslationVals = JSUConvertOffsetToPtr<f32>(s, (void*)s->mTranslateOffset);
+    h = *(s16*)(s + 0xa);
+    w = *(u16*)(s + 0xc);
+    *(u16*)(a + 0x1e) = w;
+    w = s[8];
+    *(s16*)(a + 6) = h;
+    h = s[9];
+    a[4] = w;
+    void* p = *(void**)(s + 0x14);
+    *(u32*)(a + 0x20) = h;
+    *(f32*)(a + 8) = f;
+    *(void**)(a + 0x24) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, p);
+    *(void**)(a + 0xc) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x18));
+    *(void**)(a + 0x10) = JSUConvertOffsetToPtr<s16>(s, *(void**)(s + 0x1c));
+    *(void**)(a + 0x14) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x20));
 }
 #pragma optimization_level 4
 extern "C" void fn_800CFEC8(void** self, void* data)
