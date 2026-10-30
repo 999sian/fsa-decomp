@@ -2376,7 +2376,7 @@ static inline void WarpBounds802F(s32* dst, u8* pane, s32 off, s32 tx, s32 ty, f
 extern "C" void fn_802FCE74(u8* this_) {
     u8* p=this_;
     const u8* table=lbl_8046F940;
-    for(s32 i=0;i<4;i++) {
+    for(int i=0;i<4;i++) {
         s32* timer=(s32*)(p+0x138+i*4);
         if(p[0x12c+i] && !p[0x216] && *(s32*)(p+0x230)==*(s32*)(p+0x22c)) {
             if(*timer<40) {
@@ -2398,18 +2398,18 @@ extern "C" void fn_802FCE74(u8* this_) {
         p[0x12c+i]=0;
     }
     p[0x216]=0;
-    s32 current=*(s32*)(p+0x230);
-    s32 next=*(s32*)(p+0x22c);
-    if(current==-1 && next!=-1 && ((*(u8*)((u8*)lbl_8053AAF8+0x83)>>(next*2))&3)==1)
+    int current=*(s32*)(p+0x230);
+    int next=*(s32*)(p+0x22c);
+    if(*(s32*)(p+0x230)==-1 && next!=-1 && ((*(u8*)((u8*)lbl_8053AAF8+0x83)>>(next*2))&3)==1)
         *(s32*)(p+0x138+next*4)=0;
-    if(current==-1 || *(s32*)(p+0x138+current*4)<=0) {
+    if(*(s32*)(p+0x230)==-1 || *(s32*)(p+0x138+*(s32*)(p+0x230)*4)<=0) {
         if(next==-1 || *(s32*)(p+0x138+next*4)<=0) *(s32*)(p+0x230)=next;
     }
     *(s32*)(p+0x22c)=-1;
     p[0x248]=0;
     p[0x214]=0;
     f32 scale[4],other[4];
-    for(s32 i=0;i<4;i++) {
+    for(int i=0;i<4;i++) {
         f32 t=lbl_8054159C*(f32)(*(s32*)(p+0x138+i*4)-20);
         if(lbl_805414F8>=t) t=lbl_805414F8;
         f32 angle=lbl_805415A8*t;
@@ -2421,16 +2421,15 @@ extern "C" void fn_802FCE74(u8* this_) {
     }
     if(*(u8*)((u8*)lbl_8053AAF8+0x7e)) {
         s32 width=lbl_80541584, height=lbl_8054158C;
-        for(s32 i=0;i<4;i++) {
+        for(int i=0;i<4;i++) {
             if(*(s32*)(p+0x138+i*4)>0) {
                 if(*(s32*)(p+0x230)==i) {
                     s32 actor=fn_8022EA0C(i);
                     Vec pos;
                     Vec out;
                     Vec* src;
-                    if(fn_8023E10C(actor)<8) src=fn_8023E214(actor);
-                    else src=fn_8023E32C(actor);
-                    pos.x=src->x;pos.y=src->y;pos.z=src->z;
+                    if(fn_8023E10C(actor)<8) {src=fn_8023E214(actor);pos.x=src->x;pos.y=src->y;pos.z=src->z;}
+                    else {src=fn_8023E32C(actor);pos.x=src->x;pos.y=src->y;pos.z=src->z;}
                     fn_8030C5F0(*(void**)((u8*)lbl_8053AB10+0x24),&pos,0,0,&out);
                     f32 x=pos.x-lbl_80541580*(f32)(s32)(lbl_80541530*pos.x)<lbl_805415AC ? lbl_80541574 : lbl_805414F8;
                     f32 y=pos.y-lbl_805415B0*(f32)(s32)(lbl_805415B4*pos.y)<lbl_805414FC ? lbl_80541574 : lbl_805414F8;
@@ -2438,19 +2437,39 @@ extern "C" void fn_802FCE74(u8* this_) {
                     s32 tx=((s16*)(table+0x40))[*(s32*)(p+0x234)];
                     s32 ty=((s16*)(table+0x54))[*(s32*)(p+0x234)];
                     p[0x214]=1;
-                    WarpBounds802F((s32*)(p+0x21c),pane,0x70+pane[0xa4]*4,tx,ty,x,y,scale[i],other[i],out);
+                    {
+    s32 w = *(f32*)((pane)+(0x70+pane[0xa4]*4)) * (scale[i]);
+    s32 h = *(f32*)((pane)+(0x70+pane[0xa4]*4)+8) * (other[i]);
+    s32 cx = ((s32)*(f32*)((pane)+(0x70+pane[0xa4]*4))-w)>>1;
+    s32 cy = ((s32)*(f32*)((pane)+(0x70+pane[0xa4]*4)+8)-h)>>1;
+    u8* point = (pane) + 0x40 + (pane)[0xa4]*12 + ((0x70+pane[0xa4]*4)<0x80 ? 0 : 0x18);
+    ((s32*)(p+0x21c))[0] = ((out).x+(f32)w*(x))*(lbl_80541518-(scale[i])) + (scale[i])*((f32)(tx)+((f32)cx+*(f32*)point));
+    ((s32*)(p+0x21c))[1] = ((out).y+(f32)h*(y))*(lbl_80541518-(other[i])) + (other[i])*((f32)(ty)+((f32)cy+*(f32*)(point+4)));
+    ((s32*)(p+0x21c))[2] = w;
+    ((s32*)(p+0x21c))[3] = h;
+}
                     p[0x148+i]=1;
                     *(s32*)(p+0x150+i*16)=0;*(s32*)(p+0x154+i*16)=0;
                     *(s32*)(p+0x158+i*16)=width;*(s32*)(p+0x15c+i*16)=height;
-                    WarpBounds802F((s32*)(p+0x190+i*16),pane,0x80+pane[0xa4]*4,tx,ty,x,y,scale[i],other[i],out);
+                    {
+    s32 w = *(f32*)((pane)+(0x80+pane[0xa4]*4)) * (scale[i]);
+    s32 h = *(f32*)((pane)+(0x80+pane[0xa4]*4)+8) * (other[i]);
+    s32 cx = ((s32)*(f32*)((pane)+(0x80+pane[0xa4]*4))-w)>>1;
+    s32 cy = ((s32)*(f32*)((pane)+(0x80+pane[0xa4]*4)+8)-h)>>1;
+    u8* point = (pane) + 0x40 + (pane)[0xa4]*12 + ((0x80+pane[0xa4]*4)<0x80 ? 0 : 0x18);
+    ((s32*)(p+0x190+i*16))[0] = ((out).x+(f32)w*(x))*(lbl_80541518-(scale[i])) + (scale[i])*((f32)(tx)+((f32)cx+*(f32*)point));
+    ((s32*)(p+0x190+i*16))[1] = ((out).y+(f32)h*(y))*(lbl_80541518-(other[i])) + (other[i])*((f32)(ty)+((f32)cy+*(f32*)(point+4)));
+    ((s32*)(p+0x190+i*16))[2] = w;
+    ((s32*)(p+0x190+i*16))[3] = h;
+}
                     p[0x210+i]=1;
                 } else if(!p[0x217+i]) {
                     u8* data=*(u8**)(p+0x11c+i*4)+8+((s32*)lbl_80506DD8)[i]*4;
                     s32 x=((s32)data[2]|((data[3]&1)<<8))-24;
                     s32 y=(s32)data[1]-32;
-                    if(x<0)x=0;if(y<0)y=0;
+                    x=x>0?x:0;y=y>0?y:0;
                     x+=48;y+=40;
-                    if(x>240)x=240;if(y>160)y=160;
+                    x=x>240?240:x;y=y>160?160:y;
                     x-=48;y-=40;
                     s32 h=*(s32*)(p+0x1dc+i*16);
                     s32 w=*(s32*)(p+0x1d8+i*16);
@@ -2469,8 +2488,7 @@ extern "C" void fn_802FCE74(u8* this_) {
         s32 actor=fn_8022EA0C(0);
         Vec pos,out;
         Vec* src;
-        if(fn_8023E10C(actor)<8)src=fn_8023E214(actor);else src=fn_8023E32C(actor);
-        pos.x=src->x;pos.y=src->y;pos.z=src->z;
+        if(fn_8023E10C(actor)<8){src=fn_8023E214(actor);pos.x=src->x;pos.y=src->y;pos.z=src->z;}else {src=fn_8023E32C(actor);pos.x=src->x;pos.y=src->y;pos.z=src->z;}
         fn_8030C5F0(*(void**)((u8*)lbl_8053AB10+0x24),&pos,0,0,&out);
         f32 x=pos.x-lbl_80541580*(f32)(s32)(lbl_80541530*pos.x)<lbl_805415AC ? lbl_80541574 : lbl_805414F8;
         f32 y=pos.y-lbl_805415B0*(f32)(s32)(lbl_805415B4*pos.y)<lbl_805414FC ? lbl_80541574 : lbl_805414F8;
@@ -2487,10 +2505,30 @@ extern "C" void fn_802FCE74(u8* this_) {
         if(!camera[0x7f4])camera[0x7f5]=1;
         s32 tx=*(s16*)(table+0x68+pane[0xa4]*18+tag*2);
         s32 ty=*(s16*)(table+0x8c+pane[0xa4]*18+tag*2);
-        WarpBounds802F((s32*)(p+0x21c),pane,0x70+pane[0xa4]*4,tx,ty,x,y,scale[0],other[0],out);
+        {
+    s32 w = *(f32*)((pane)+(0x70+pane[0xa4]*4)) * (scale[0]);
+    s32 h = *(f32*)((pane)+(0x70+pane[0xa4]*4)+8) * (other[0]);
+    s32 cx = ((s32)*(f32*)((pane)+(0x70+pane[0xa4]*4))-w)>>1;
+    s32 cy = ((s32)*(f32*)((pane)+(0x70+pane[0xa4]*4)+8)-h)>>1;
+    u8* point = (pane) + 0x40 + (pane)[0xa4]*12 + ((0x70+pane[0xa4]*4)<0x80 ? 0 : 0x18);
+    ((s32*)(p+0x21c))[0] = ((out).x+(f32)w*(x))*(lbl_80541518-(scale[0])) + (scale[0])*((f32)(tx)+((f32)cx+*(f32*)point));
+    ((s32*)(p+0x21c))[1] = ((out).y+(f32)h*(y))*(lbl_80541518-(other[0])) + (other[0])*((f32)(ty)+((f32)cy+*(f32*)(point+4)));
+    ((s32*)(p+0x21c))[2] = w;
+    ((s32*)(p+0x21c))[3] = h;
+}
         p[0x148]=1;*(s32*)(p+0x150)=0;*(s32*)(p+0x154)=0;
         *(s32*)(p+0x158)=(s32)lbl_80541584;*(s32*)(p+0x15c)=(s32)lbl_8054158C;
-        WarpBounds802F((s32*)(p+0x190),pane,0x80+pane[0xa4]*4,tx,ty,x,y,scale[0],other[0],out);
+        {
+    s32 w = *(f32*)((pane)+(0x80+pane[0xa4]*4)) * (scale[0]);
+    s32 h = *(f32*)((pane)+(0x80+pane[0xa4]*4)+8) * (other[0]);
+    s32 cx = ((s32)*(f32*)((pane)+(0x80+pane[0xa4]*4))-w)>>1;
+    s32 cy = ((s32)*(f32*)((pane)+(0x80+pane[0xa4]*4)+8)-h)>>1;
+    u8* point = (pane) + 0x40 + (pane)[0xa4]*12 + ((0x80+pane[0xa4]*4)<0x80 ? 0 : 0x18);
+    ((s32*)(p+0x190))[0] = ((out).x+(f32)w*(x))*(lbl_80541518-(scale[0])) + (scale[0])*((f32)(tx)+((f32)cx+*(f32*)point));
+    ((s32*)(p+0x190))[1] = ((out).y+(f32)h*(y))*(lbl_80541518-(other[0])) + (other[0])*((f32)(ty)+((f32)cy+*(f32*)(point+4)));
+    ((s32*)(p+0x190))[2] = w;
+    ((s32*)(p+0x190))[3] = h;
+}
         p[0x210]=1;
     }
     if(p[0x214])fn_80432AF8(*(void**)(p+0xfc));
@@ -2500,9 +2538,34 @@ extern "C" void fn_802FCE74(u8* this_) {
         if(++*(s32*)(p+0x2390)>=4)*(s32*)(p+0x2390)=0;
         u8* dest=*(u8**)(p+8)+0x200;
         u8* src=*(u8**)(p+0x238c)+*(s32*)(p+0x2390)*64;
-        for(s32 i=0;i<64;i++)*dest++=*src++;
+        for(int i=0;i<64;i++)*dest++=*src++;
     }
 }
+#pragma dont_inline reset
+static inline f32 WarpSqrt802F(f32 x) {
+    if(x>0.0f) {
+        f32 estimate=__frsqrte(x);
+        f32 product=estimate*x;
+        estimate=3.0f-product*estimate;
+        estimate=estimate*product;
+        return estimate*0.5f;
+    }
+    return x;
+}
+static inline f32 WarpCos802F(f32 angle) {
+    if(angle<0.0f) angle=-angle;
+    return sincosTable___5JMath[(((s32)(lbl_805415A4*angle))&0x7ff)*2+1];
+}
+static inline f32 WarpSin802F(f32 angle) {
+    if(angle<lbl_805414F8) return -sincosTable___5JMath[(((s32)(lbl_805415A0*angle))&0x7ff)*2];
+    return sincosTable___5JMath[(((s32)(lbl_805415A4*angle))&0x7ff)*2];
+}
+static inline f32 WarpLineDistance802F(const JGeometry::TVec3<f32>& point,const JGeometry::TVec3<f32>& start,const JGeometry::TVec3<f32>& dir) {
+    JGeometry::TVec3<f32> delta;delta.sub(point,start);
+    f32 length=dir.squared(), projection=dir.dot(delta), distance=delta.squared();
+    return JGeometry::TUtilf::sqrt((length*distance-projection*projection)/length);
+}
+#pragma dont_inline on
 extern "C" void fn_802FDDD4(u8* this_) {
     s32 counter;
     s32 i;
