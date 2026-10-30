@@ -241,7 +241,7 @@ char* obj;s32 i;s32 found;i=0;found=0;for(;i<count && found<7;i++){obj=sayas[i];
 positions[found].x=*(f32*)(obj+0xc);positions[found].y=*(f32*)(obj+0x10);positions[found].z=*(f32*)(obj+0x14);found++;
 }}
 if(found>0){
-f32 random=((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+f32 random=ryyaRandom();
 s32 index=(s32)(found*random);fishPos.x=positions[index].x;fishPos.y=positions[index].y;fishPos.z=positions[index].z;
 }
 u32 kind=0x80000;if(*(s32*)(p+0x25c)>40)kind+=3;else if(*(s32*)(p+0x25c)>30)kind+=2;else if(*(s32*)(p+0x25c)>20)kind+=1;
