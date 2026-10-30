@@ -487,6 +487,14 @@ extern const f32 lbl_80542C9C;
 extern const f32 lbl_80542CAC;
 extern const f32 lbl_80542CB0;
 
+static inline void cutsceneBurst(char* self, const JGeometry::TVec3f* at, u16 idA, u16 idB) {
+    JGeometry::TVec3f pos = *at;
+    pos.z += lbl_80542C5C;
+    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, idA, 0, 0, 0, 0, 1);
+    pos.z += lbl_80542C60;
+    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, idB, 0, 0, 0, 0, 1);
+}
+
 void Unk8036C300::state1() {
     typedef void* (*EmitFn)(s32, const JGeometry::TVec3f&, f32, s32, s32, s32, s32, s32, s32);
     Vec3f v;
@@ -605,9 +613,9 @@ void Unk8036C300::state1() {
             break;
         case 0x16:
             for (s32 i = 0; i < 4; i++) {
-                JGeometry::TVec3f loopPos = *fn_8023E724(i);
+                *(JGeometry::TVec3f*)&v = *fn_8023E724(i);
                 u16 angle = fn_8023CBC0(i);
-                fn_80230498(i, &loopPos, angle, 0, -128, -128, 1);
+                fn_80230498(i, &v, angle, 0, -128, -128, 1);
             }
             if (*(s32*)((char*)fn_8011921C() + 8) == 0x1b8) fn_80458F9C(lbl_8053AF80, 60);
             break;
@@ -812,7 +820,8 @@ void Unk8036C300::state1() {
                 if (*(s32*)(objects + 0x2f8) != 4 && *(f32*)(vertices + 0x2b0) >= lbl_80542C68) {
                     *(s32*)(objects + 0x2f8) = 4;
                     if (*(void**)(objects + 0x3bc) != 0) {
-                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(objects + 0x3bc));
+                        void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(objects + 0x3bc));
                         *(void**)(objects + 0x3bc) = 0;
                     }
                 }
