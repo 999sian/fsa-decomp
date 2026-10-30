@@ -29,6 +29,49 @@ extern "C" {
 
 void Swt4_Draw(void) {}
 
+extern "C" void* fn_802D6A9C(...);
+extern "C" u8 fn_802D800C(...);
+extern "C" s32 fn_802D7E1C(...);
+extern "C" void fn_802D8050(void*, u32, s32, s32);
+extern "C" void fn_8022E2D8(s32);
+extern "C" void fn_801F0D20(void*, s32);
+extern "C" u8 fn_8023077C();
+extern "C" void* fn_8023E724(s32);
+extern "C" void fn_80230498(s32, void*, s32, s32, s32, s32, s32);
+extern "C" void fn_8030C210(void*, void*);
+extern "C" void fn_80230FD0(s32, s32);
+extern "C" void fn_80230E1C(s32, s32);
+extern "C" u8 fn_80230534(s32);
+extern "C" u8* fn_801F856C();
+extern u8* lbl_8053AAF8;
+extern u8* lbl_8053AB10;
+#define SWT4_S32(p, o) (*(s32*)((u8*)(p) + (o)))
+#define SWT4_U32(p, o) (*(u32*)((u8*)(p) + (o)))
+#define SWT4_PTR(p, o) (*(u8**)((u8*)(p) + (o)))
+static inline void swt4Set(void* p, s32 value) {
+    ((void (*)(void*, s32, s32))(*(void***)p)[12])(p, 0xff, value);
+}
+extern "C" void fn_802A96B0(u8* this_) {
+    u32 slots[4];
+    s32 i;
+    s32 n = 0;
+    u8* p = this_;
+
+    *(u32*)this_ = *(u32*)this_;
+    for (i = 0; i < 4; i++) {
+        slots[i] = 0xff;
+        fn_802D6A9C(p);
+        if (fn_802D800C(*(u32*)(p + 0x244), 0) != 0) {
+            fn_802D6A9C(p);
+            slots[i] = fn_802D7E1C(p, *(u32*)(p + 0x244));
+            n++;
+        }
+    }
+    if (n != 4) {
+        return;
+    }
+}
+
 }
 
 // ---- fn_802AA0B8 ----
