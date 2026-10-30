@@ -317,6 +317,11 @@ static inline bool EZZR_IsNearBarrier(EZZR* p) {
     return true;
 }
 
+static inline u16 EZZR_AngleTo(EZZR* p, f32 x, f32 y) {
+    f32 rad = JMath::atanTable_.atan2_(x - p->field_0C.x, y - p->field_0C.y);
+    return (s32)(rad * lbl_8053C96C);
+}
+
 static inline bool EZZR_MoveToGate(EZZR* p) {
     JGeometry::TVec3f t = *fn_8023E724(*(s32*)((u8*)p + 0x3cc));
     t.z = lbl_8053C964;
@@ -325,8 +330,7 @@ static inline bool EZZR_MoveToGate(EZZR* p) {
     } else {
         t.y -= lbl_8053C968;
     }
-    f32 rad = JMath::atanTable_.atan2Radian(t.x - p->field_0C.x, t.y - p->field_0C.y);
-    u16 ang = (s32)(rad * lbl_8053C96C);
+    u16 ang = EZZR_AngleTo(p, t.x, t.y);
     p->field_98 = ClassifyBamAngleToQuadrant(ang);
     f32 sx;
     f32 sy;
