@@ -361,31 +361,27 @@ static inline bool EZZR_IsNearBarrier(EZZR* p) {
     return true;
 }
 
-static inline u16 EZZR_AngleTo(f32 dy, f32 dx) {
-    f32 rad = JMath::atanTable_.atan2_(dx, dy);
-    return (s32)(rad * lbl_8053C96C);
-}
-
 static inline bool EZZR_MoveToGate(EZZR* p) {
     JGeometry::TVec3f t = *fn_8023E724(*(s32*)((u8*)p + 0x3cc));
-    t.z = lbl_8053C964;
+    t.z = 0.0f;
     if (((EzzrMgr*)fn_802D6A9C())->flag(p->field_04) != 0) {
-        t.x += lbl_8053C968;
+        t.x += 20.0f;
     } else {
-        t.y -= lbl_8053C968;
+        t.y -= 20.0f;
     }
-    u16 ang = EZZR_AngleTo(t.y - p->field_0C.y, t.x - p->field_0C.x);
+    f32 rad = JMath::atanTable_.atan2_(t.x - p->field_0C.x, t.y - p->field_0C.y);
+    u16 ang = (s32)(rad * 10430.378f);
     p->field_98 = ClassifyBamAngleToQuadrant(ang);
     f32 sx;
     f32 sy;
-    sx = lbl_8053C970 * JMath::sincosTable_.mTable[ang >> 5].first;
-    sy = lbl_8053C970 * JMath::sincosTable_.mTable[ang >> 5].second;
+    sx = 0.7f * JMath::sincosTable_.mTable[ang >> 5].first;
+    sy = 0.7f * JMath::sincosTable_.mTable[ang >> 5].second;
     bool done = true;
-    if (fn_801CD950(&p->field_0C.x, t.x, sx) != 0 && lbl_8053C964 != sx) {
+    if (fn_801CD950(&p->field_0C.x, t.x, sx) != 0 && 0.0f != sx) {
         done = false;
     }
     if (((EzzrMgr*)fn_802D6A9C())->flag(p->field_04) == 0) {
-        if (fn_801CD950(&p->field_0C.y, t.y, sy) != 0 && lbl_8053C964 != sy) {
+        if (fn_801CD950(&p->field_0C.y, t.y, sy) != 0 && 0.0f != sy) {
             done = false;
         }
     }
@@ -602,9 +598,9 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(7);
             break;
         }
-        *(f32*)((u8*)p + 0x37c) = lbl_8053C9A4;
-        *(f32*)((u8*)p + 0x380) = lbl_8053C970;
-        if (p->v48((Vec*)&(const JGeometry::TVec3f&)JGeometry::TVec3f(lbl_8053C964, lbl_8053C964, lbl_8053C964), *(f32*)((u8*)p + 0x380))) {
+        *(f32*)((u8*)p + 0x380) = 0.7f;
+        *(f32*)((u8*)p + 0x37c) = 1.0f;
+        if (p->v48((Vec*)&(const JGeometry::TVec3f&)JGeometry::TVec3f(0.0f, 0.0f, 0.0f), *(f32*)((u8*)p + 0x380))) {
             p->v25(15);
         }
         break;
