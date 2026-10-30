@@ -1,3 +1,6 @@
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 
 
