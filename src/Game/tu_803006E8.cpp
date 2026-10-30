@@ -214,7 +214,7 @@ static inline s32 gbaReadId(GbaChan* c) {
     if ((err = GBARead(c->chan, (u8*)&id, c->status)) != 0) {
         return err;
     }
-    *(u32*)((u8*)c + 0x64) = id;
+    *(u32*)c->gameId = id;
     c->status[3] = 1;
     return 0;
 }
