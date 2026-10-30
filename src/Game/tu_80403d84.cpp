@@ -2028,6 +2028,7 @@ static inline u32 menuInputText(register u32* table, const int index) { return t
 #pragma opt_propagation on
 #pragma opt_propagation off
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_8040D3D0(u8* self){
 Tbl8048C1F8* tbl=&lbl_8048C1F8;
 register const ResTIMG* resource;
@@ -2109,6 +2110,7 @@ strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746
 *(s16*)(self+0x426)=0;*(s32*)(self+0x350)=13;fn_80458880(lbl_8053AF80,38,-1);}
 }
 }
+#pragma opt_strength_reduction reset
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
 
