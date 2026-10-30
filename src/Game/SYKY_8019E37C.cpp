@@ -50,7 +50,7 @@ extern const f32 lbl_8053E4B8;
 extern void* lbl_8053AED0;
 extern "C" s32 fn_801A6108(s32 handle, JGeometry::TBox2<f32>* box, JGeometry::TVec2<f32>* ofs);
 extern "C" void* fn_801F856C(void);
-extern "C" void Actor_CreateByID(void* mgr, u32 name, s32 room, void* pos, s32 flags, s32 c, s32 d);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, s32 room, void* pos, s32 flags, s32 c, s32 d);
 extern "C" s32 fn_8023AE34(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* out);
 extern "C" void fn_8043D874(void* mgr, s32 idx, s32 id, s32 flag);
 extern "C" void fn_801F0D20(void* this_, s32 a);
