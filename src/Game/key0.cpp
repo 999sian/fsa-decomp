@@ -87,6 +87,20 @@ static inline void key0Register(char* p) {
     fn_802D6C10(fn_802D6A9C(), Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), id);
 }
 
+static inline void key0RegisterPt(char* p) {
+    u32 id = *(u32*)(p + 0x238);
+    Key0Pt pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
+    fn_802D6C10(fn_802D6A9C(), pt, id);
+}
+
+extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
+static inline void key0LinkSelf(char* p, u32 packed) {
+    Key0Pt key = key0Point(p + 0x230);
+    Key0Pt pos = key0Point(p + 0xc);
+    u32 id = *(u32*)(p + 0x238);
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+}
+
 // fn_802C18BC - KEY0: can the key be dropped at pos?
 extern "C" u8* fn_8020D58C();
 extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, void* ext);
@@ -722,12 +736,12 @@ extern "C" void fn_802C3AE4(char* p) {
     if (*(s32*)(p + 0x280) == 6) {
         JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
         pos.add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
-        if (*(f32*)(p+0x3c) > lbl_80540CD4) *(f32*)(p+0x3c) -= lbl_80540CD4;
-        else if (*(f32*)(p+0x3c) < lbl_80540CD8) *(f32*)(p+0x3c) += lbl_80540CD4;
-        else *(f32*)(p+0x3c) = lbl_80540C74;
-        if (*(f32*)(p+0x40) > lbl_80540CD4) *(f32*)(p+0x40) -= lbl_80540CD4;
-        else if (*(f32*)(p+0x40) < lbl_80540CD8) *(f32*)(p+0x40) += lbl_80540CD4;
-        else *(f32*)(p+0x40) = lbl_80540C74;
+        if (*(f32*)(p+0x3c) > 0.05f) *(f32*)(p+0x3c) -= 0.05f;
+        else if (*(f32*)(p+0x3c) < -0.05f) *(f32*)(p+0x3c) += 0.05f;
+        else *(f32*)(p+0x3c) = 0.0f;
+        if (*(f32*)(p+0x40) > 0.05f) *(f32*)(p+0x40) -= 0.05f;
+        else if (*(f32*)(p+0x40) < -0.05f) *(f32*)(p+0x40) += 0.05f;
+        else *(f32*)(p+0x40) = 0.0f;
     }
     JGeometry::TBox2<f32> rect(*(JGeometry::TBox2<f32>*)(p+0x60));
     rect.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
@@ -998,6 +1012,7 @@ extern "C" void fn_802D7584(void* mgr, s32 index, s32 value);
 extern "C" u8 fn_8022F9E4(s32 index, void* a, s32 b, s32 c);
 extern "C" u8 fn_802D800C(void* mgr, s32 index);
 extern "C" u8 fn_802DCD0C(void* mgr);
+#pragma opt_lifetimes off
 extern "C" void fn_802C52DC(u8* p) {
     u32 packed;
     s32 x18;
@@ -1142,7 +1157,7 @@ extern "C" void fn_802C52DC(u8* p) {
         *(s32*)(p + 0x2a4) = -1;
     }
 }
-
+#pragma opt_lifetimes reset
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
