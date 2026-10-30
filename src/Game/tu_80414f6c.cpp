@@ -138,7 +138,8 @@ void TU80414F6C::fn_80415028() {
     }
 }
 
-extern "C" f32 fn_80402940(void* obj, s32 idx, f32 a, s32 b, f32 c);
+extern "C" u8 fn_80402940(void* obj, s32 idx, f32 a, f32 b, s32 c);
+extern const f32 lbl_805439D0;
 void TU80414F6C::fn_80416038() {
     s16* cnt = (s16*)((char*)this + 0x102);
     *cnt = *cnt + 1;
