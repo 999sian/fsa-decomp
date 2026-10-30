@@ -14,7 +14,7 @@ static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
 
 static inline bool gateVelocitySame(u8* actor) {
     extern const f32 lbl_8053FF60;
-    f32 eps = 32.0f * FLT_EPSILON;
+    const f32 eps = 32.0f * FLT_EPSILON;
     bool equal = false;
     bool xy = false;
     if (JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x3c), *(f32*)(actor+0x364), eps) &&
@@ -414,10 +414,21 @@ extern "C" void* fn_801902C0();
 extern "C" s32 fn_801F26CC(void*,const u32*);
 extern "C" void fn_801F349C(void*,s32,void*);
 extern "C" void fn_80227F50(void* this_) {
+    const u32* types;
+    types=lbl_8046ABE8;
     u8* p=(u8*)this_;
-    u8* cursor=p;
     s32 i;
-    const u32* types=lbl_8046ABE8;
+    u8* cursor=p;
+    JGeometry::TVec3f delta;
+    JGeometry::TVec3f dest;
+    GateBox boxA;
+    GateBox boxB;
+    JGeometry::TVec3f push0,push1,push2,push3;
+    JGeometry::TVec3f nearPos;
+    JGeometry::TVec3f e3,e2,e1,e0;
+    JGeometry::TVec3f attackPos;
+    GateBox playerBox;
+    JGeometry::TVec2f xy;
     for(i=0;i<4;i++) {
         *(f32*)(cursor+0x258)=fn_8022C76C(i);
         *(f32*)(cursor+0x268)=*(f32*)(cursor+0x258);
@@ -425,8 +436,8 @@ extern "C" void fn_80227F50(void* this_) {
     }
     p[0x256]=0;
     for(i=0;i<4;i++) {
-        JGeometry::TVec3f v=*(JGeometry::TVec3f*)fn_8023E724(i);
-        if(__fabs((*(f32*)(p+0xc))-v.x)<lbl_8053FF60 && __fabs((*(f32*)(p+0x10))-v.y)<lbl_8053FF60) {
+        nearPos=*(JGeometry::TVec3f*)fn_8023E724(i);
+        if(__fabsf((*(f32*)(p+0xc))-nearPos.x)<lbl_8053FF60 && __fabsf((*(f32*)(p+0x10))-nearPos.y)<lbl_8053FF60) {
             p[0x256]=1; break;
         }
     }
@@ -439,12 +450,12 @@ extern "C" void fn_80227F50(void* this_) {
     if(((*(s32*)(p+0x90))&0x7f)==0x20) {
         for(i=0;i<4;i++) {
             if(fn_802373EC(i)==1 && fn_8023A51C(i)) {
-                JGeometry::TVec3f v=*(JGeometry::TVec3f*)fn_8023A478(i);
-                if(__fabs((*(f32*)(p+0xc))-v.x)<lbl_8053FF80 && __fabs((*(f32*)(p+0x10))-v.y)<lbl_8053FF80) {
-                    gateEffect(JGeometry::TVec3f((*(f32*)(p+0xc))-lbl_8053FF70,(*(f32*)(p+0x10))-lbl_8053FF70,lbl_8053FF74),i,(*(u32*)(p+0x4)));
-gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),(*(f32*)(p+0x10))-lbl_8053FF70,lbl_8053FF74),i,(*(u32*)(p+0x4)));
-gateEffect(JGeometry::TVec3f((*(f32*)(p+0xc))-lbl_8053FF70,lbl_8053FF70+(*(f32*)(p+0x10)),lbl_8053FF74),i,(*(u32*)(p+0x4)));
-gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),lbl_8053FF70+(*(f32*)(p+0x10)),lbl_8053FF74),i,(*(u32*)(p+0x4)));
+                attackPos=*(JGeometry::TVec3f*)fn_8023A478(i);
+                if(__fabsf((*(f32*)(p+0xc))-attackPos.x)<64.0f && __fabsf((*(f32*)(p+0x10))-attackPos.y)<64.0f) {
+                    { u32 room=(*(u32*)(p+0x4)); e0.set((*(f32*)(p+0xc))-8.0f,(*(f32*)(p+0x10))-8.0f,0.0f); gateEffect(e0,i,room); }
+{ u32 room=(*(u32*)(p+0x4)); e1.set(8.0f+(*(f32*)(p+0xc)),(*(f32*)(p+0x10))-8.0f,0.0f); gateEffect(e1,i,room); }
+{ u32 room=(*(u32*)(p+0x4)); e2.set((*(f32*)(p+0xc))-8.0f,8.0f+(*(f32*)(p+0x10)),0.0f); gateEffect(e2,i,room); }
+{ u32 room=(*(u32*)(p+0x4)); e3.set(8.0f+(*(f32*)(p+0xc)),8.0f+(*(f32*)(p+0x10)),0.0f); gateEffect(e3,i,room); }
                     if(p[0x255]==0) {
                         fn_8013CC50((*(u32*)(p+0x4)),p+0xc,lbl_8053FF78,0x3e3,0,-2,0,0,1);
                         p[0x255]=1;
@@ -454,9 +465,8 @@ gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),lbl_8053FF70+(*(f32*)
             }
         }
     }
-    if((*(u32*)(p+0x90))>>27) { if(!(u8)((u8(*)(void*))(*(void***)p)[13])(p)) return; }
+    if((*(u32*)(p+0x90))>>27) { if(!(u8)((Actor*)p)->v11()) return; }
     f32 x0=(*(f32*)(p+0x60)), y0=(*(f32*)(p+0x64)), x1=(*(f32*)(p+0x68)), y1=(*(f32*)(p+0x6c));
-    JGeometry::TVec2f xy;
     xy.set((*(f32*)(p+0xc)),(*(f32*)(p+0x10)));
     u16 tile=fn_802265FC(&xy,(*(u32*)(p+0x4)));
     if(tile==1 || tile==0x21) return;
@@ -471,22 +481,22 @@ gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),lbl_8053FF70+(*(f32*)
     }
     x0+=xy.x; y0+=xy.y; x1+=xy.x; y1+=xy.y;
     if(((*(s32*)(p+0x90))&0x7f)==0x20) {
-        GateBox box; box.x0=x0; box.y0=y0; box.x1=x1; box.y1=y1; fn_80227530(p,(f32*)&box);
+        boxA.x0=x0; boxA.y0=y0; boxA.x1=x1; boxA.y1=y1; fn_80227530(p,(f32*)&boxA);
     } else if(((*(s32*)(p+0x90))&0x7f)==0x24) {
         for(s32 j=0;j<4;j++) {
             if(*((u8*)lbl_8053AAF8+0x7e) && !fn_8022C8EC(j)) {
                 if(fn_8023DE58(j)!=gateRoom((*(u32*)(p+0x90)))) continue;
             }
-            GateBox box; box.x0=x0; box.y0=y0; box.x1=x1; box.y1=y1;
+            playerBox.x0=x0; playerBox.y0=y0; playerBox.x1=x1; playerBox.y1=y1;
             if(((f32*)fn_8023E724(j))[1]>(*(f32*)(p+0x10))) {
                 f32 dy=((f32*)fn_8023E724(j))[1]-(*(f32*)(p+0x10));
-                box.translate(lbl_8053FF74,dy);
+                playerBox.translate(0.0f,dy);
             }
-            if(fn_8023B0F4(j,(f32*)&box,(*(u32*)(p+0x4)),0,lbl_8053FF70))
+            if(fn_8023B0F4(j,(f32*)&playerBox,(*(u32*)(p+0x4)),0,8.0f))
                 fn_802317F0(j,gateRoom((*(u32*)(p+0x90))),p+0xc,p+0x238,(*(u32*)(p+0x90))&0x7f);
         }
     } else {
-        GateBox box; box.x0=x0; box.y0=y0; box.x1=x1; box.y1=y1; fn_802278A8(p,(f32*)&box);
+        boxB.x0=x0; boxB.y0=y0; boxB.x1=x1; boxB.y1=y1; fn_802278A8(p,(f32*)&boxB);
     }
     s32 t=(u16)fn_80226850(p+0x238,gateRoom((*(u32*)(p+0x90))));
     if(t==0x19c || t==0x19d) return;
@@ -499,10 +509,10 @@ gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),lbl_8053FF70+(*(f32*)
     u8* actor=(u8*)fn_801F666C(fn_801F856C(),id);
     if(!actor) return;
     kind=(*(u32*)(p+0x90))&0x7f;
-    if((kind==0 || kind==3 || kind==0x15 || kind==0x23) && (*(f32*)(actor+0x40))>=lbl_8053FF74) return;
-    if((kind==1 || kind==2) && (*(f32*)(actor+0x40))<=lbl_8053FF74) return;
-    if(kind==0x17 && (*(f32*)(actor+0x3c))<=lbl_8053FF74) return;
-    if(kind==0x18 && (*(f32*)(actor+0x3c))>=lbl_8053FF74) return;
+    if((kind==0 || kind==3 || kind==0x15 || kind==0x23) && (*(f32*)(actor+0x40))>=0.0f) return;
+    if((kind==1 || kind==2) && (*(f32*)(actor+0x40))<=0.0f) return;
+    if(kind==0x17 && (*(f32*)(actor+0x3c))<=0.0f) return;
+    if(kind==0x18) { if((*(f32*)(actor+0x3c))>=0.0f) return; }
     if((*(u32*)(actor+0x1a0))==0x424f4d45) {
         fn_8023DE58((*(u32*)(actor+0x90))&15);
         u8 same;
@@ -524,9 +534,9 @@ gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),lbl_8053FF70+(*(f32*)
     if((*(u32*)(actor+0x1a0))==0x484e5259 || (*(u32*)(actor+0x1a0))==0x424f4d45 || (*(u32*)(actor+0x1a0))==0x5043444d ||
        (*(u32*)(actor+0x1a0))==0x5357424d || ((*(u32*)(actor+0x1a0))==0x46495245 && (((*(u32*)(actor+0x90))>>6)&7)!=1)) {
         kind=(*(u32*)(p+0x90))&0x7f;
-        if((kind==4 || kind==0x20 || kind==0x24) && (*(f32*)(actor+0x14))>lbl_8053FF74) return;
-        JGeometry::TVec3f delta=*(JGeometry::TVec3f*)(actor+0xc);
-        JGeometry::TVec3f dest=*(JGeometry::TVec3f*)(p+0x238);
+        if((kind==4 || kind==0x20 || kind==0x24) && (*(f32*)(actor+0x14))>0.0f) return;
+        delta=*(JGeometry::TVec3f*)(actor+0xc);
+        dest=*(JGeometry::TVec3f*)(p+0x238);
         delta.x-=(*(f32*)(p+0xc)); delta.y-=(*(f32*)(p+0x10));
         dest.add(delta);
         fn_801F349C(actor,gateRoom((*(u32*)(p+0x90))),&dest);
@@ -534,17 +544,17 @@ gateEffect(JGeometry::TVec3f(lbl_8053FF70+(*(f32*)(p+0xc)),lbl_8053FF70+(*(f32*)
         if((*(u32*)(actor+0x1a0))==0x45535259) {
             kind=(*(u32*)(p+0x90))&0x7f;
             if(kind==0 || kind==3 || kind==0x15 || kind==0x23) {
-                JGeometry::TVec3f v(lbl_8053FF74,lbl_8053FF8C,lbl_8053FF74);
-                *(JGeometry::TVec3f*)(actor+0x3c)=v;
+                push0.set(0.0f,lbl_8053FF8C,0.0f);
+                *(JGeometry::TVec3f*)(actor+0x3c)=push0;
             } else if(kind==1 || kind==2) {
-                JGeometry::TVec3f v(lbl_8053FF74,lbl_8053FF90,lbl_8053FF74);
-                *(JGeometry::TVec3f*)(actor+0x3c)=v;
+                push1.set(0.0f,lbl_8053FF90,0.0f);
+                *(JGeometry::TVec3f*)(actor+0x3c)=push1;
             } else if(kind==0x17) {
-                JGeometry::TVec3f v(lbl_8053FF90,lbl_8053FF74,lbl_8053FF74);
-                *(JGeometry::TVec3f*)(actor+0x3c)=v;
+                push2.set(lbl_8053FF90,0.0f,0.0f);
+                *(JGeometry::TVec3f*)(actor+0x3c)=push2;
             } else if(kind==0x18) {
-                JGeometry::TVec3f v(lbl_8053FF8C,lbl_8053FF74,lbl_8053FF74);
-                *(JGeometry::TVec3f*)(actor+0x3c)=v;
+                push3.set(lbl_8053FF8C,0.0f,0.0f);
+                *(JGeometry::TVec3f*)(actor+0x3c)=push3;
             }
         }
         if((*(u32*)(actor+0x1a0))==0x46495245 && (((*(u32*)(actor+0x90))>>6)&3)==1) return;
