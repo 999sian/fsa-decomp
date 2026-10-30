@@ -3237,7 +3237,7 @@ extern "C" void fn_803B38E8(void* this_) {
     }
 }
 
-extern "C" void fn_803B38E8(void* this_);
+
 extern "C" void fn_803B42C0(void* this_);
 extern "C" void fn_803B5378(void* this_);
 extern "C" void fn_80458F9C(void* mgr, s32 handle);
