@@ -316,6 +316,12 @@ extern const f32 lbl_805427A8;
 extern const f32 lbl_805427AC;
 extern const f32 lbl_805427B0;
 
+static inline u8 mrtaInside(const JGeometry::TBox2f& box, f32 x, f32 y) {
+    u8 inside = 0;
+    if (x >= box.i.x && y >= box.i.y && x < box.f.x && y < box.f.y) inside = 1;
+    return inside;
+}
+
 extern "C" void fn_803558A4(void* this_) {
     u8* p = (u8*)this_;
     f32 box[4];
