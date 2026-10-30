@@ -1498,15 +1498,6 @@ static inline void fadePanesB803F(const u64* tags, u8* p, s32 n, s32 ofs, f32 fa
     }
 }
 
-static inline void fadeGroup803F(u8* p, const u64* tags, u8* alphas, f32 fade) {
-    for (s32 i = 0; i < 9; i++, alphas++, tags++) {
-        J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
-        f32 alpha = alphas[0x2ee];
-        alpha *= fade;
-        pane->setAlpha((u8)alpha);
-    }
-}
-
 #pragma opt_common_subs off
 extern "C" void fn_803F943C(u8* p) {
     u8* base=lbl_80478A60;
@@ -1524,16 +1515,16 @@ extern "C" void fn_803F943C(u8* p) {
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
             if(fade<lbl_8054372C) fade=lbl_8054372C;
             else if(fade>lbl_80543730) fade=lbl_80543730;
-            fadePanes803F(p, (const u64*)(base+0x3c0), 0x22, 0x2c4, fade);
+            fadePanesB803F((const u64*)(base+0x3c0), p, 0x22, 0x2c4, fade);
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
             if(fade<lbl_8054372C) fade=lbl_8054372C;
             else if(fade>lbl_80543730) fade=lbl_80543730;
-            fadePanes803F(p, (const u64*)(base+0x338), 0xb, 0x2af, fade);
+            fadePanesB803F((const u64*)(base+0x338), p, 0xb, 0x2af, fade);
         } else {
             *(f32*)(p+0x9c)=lbl_80543764;
             *(f32*)(p+0xa8)=lbl_80543768;
-            fadePanes803F(p, (const u64*)(base+0x3c0), 0x22, 0x2c4, lbl_8054372C);
-            fadePanes803F(p, (const u64*)(base+0x338), 0xb, 0x2af, lbl_8054372C);
+            fadePanesB803F((const u64*)(base+0x3c0), p, 0x22, 0x2c4, lbl_8054372C);
+            fadePanesB803F((const u64*)(base+0x338), p, 0xb, 0x2af, lbl_8054372C);
         }
     }
     if(*(s16*)(p+0x240)>0) {
@@ -1543,11 +1534,11 @@ extern "C" void fn_803F943C(u8* p) {
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
             if(fade<lbl_8054372C) fade=lbl_8054372C;
             else if(fade>lbl_80543730) fade=lbl_80543730;
-            fadePanes803F(p, (const u64*)(base+0x390), 6, 0x2ba, fade);
+            fadePanesB803F((const u64*)(base+0x390), p, 6, 0x2ba, fade);
         } else {
             *(f32*)(p+0xb4)=lbl_80543754;
             *(f32*)(p+0xb8)=lbl_80543754;
-            fadePanes803F(p, (const u64*)(base+0x390), 6, 0x2ba, lbl_8054372C);
+            fadePanesB803F((const u64*)(base+0x390), p, 6, 0x2ba, lbl_8054372C);
         }
     }
     start=0;
