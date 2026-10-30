@@ -880,10 +880,13 @@ static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, 
     ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(((void**)lbl_8053AB10)[8], &pos, res, id, &rec, lbl_80543668, lbl_80543668);
 }
 
+struct MenuFrame803E {u8 _00[0x230];s32 frame230[4];s32 frame240[4];};
+static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
+
 #pragma opt_common_subs off
-extern "C" void fn_803E51C4(u8* param_1) {
-    u8* p=param_1;
-    u8* base=lbl_80477970;
+extern "C" void fn_803E51C4(void* param_1) {
+    u8* p=(u8*)param_1;
+    const u8* base=lbl_80477970;
     {
     s32 i;
     u8* q=p;
@@ -1035,14 +1038,14 @@ extern "C" void fn_803E51C4(u8* param_1) {
                 ((u8*)&rec.w10)[0]=0x80;((u8*)&rec.w10)[1]=0x80;((u8*)&rec.w10)[2]=0x80;
                 ((u8*)&rec.w10)[3]=(u8)(lbl_805436E0*ratio);
             } else ((u8*)&rec.w10)[3]=(u8)(lbl_80543650*ratio);
-            MenuSprite803E(pos,0x10,rec);
+            MenuSprite803E(pos,0x10,rec,base);
         } else {
             s32 v=*(s32*)(q+0x220);
             ((u8*)&rec.w10)[3]=(u8)(lbl_80543650*ratio);
-            if(v<=10) MenuSprite803E(pos,0xdb,rec);
-            else if(v<=36) MenuSprite803E(pos,(v-10)/2+0xdb,rec);
-            else if(v<100) MenuSprite803E(pos,0xe8,rec);
-            else MenuSprite803E(pos,((s32*)(base+0x40))[v-100]+0x10,rec);
+            if(v<=10) MenuSprite803E(pos,0xdb,rec,base);
+            else if(v<=36) MenuSprite803E(pos,(v-10)/2+0xdb,rec,base);
+            else if(v<100) MenuSprite803E(pos,0xe8,rec,base);
+            else MenuSprite803E(pos,((s32*)(base+0x40))[v-100]+0x10,rec,base);
         }
     }
     fn_8013B490(lbl_8053AB10);
