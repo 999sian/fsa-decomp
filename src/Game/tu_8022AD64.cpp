@@ -1718,9 +1718,7 @@ void fn_80231DE4(void) {
     if(best.x*best.x+best.y*best.y<=(s32)(lbl_8054000C*FLT_EPSILON)) return;
     if(!(u8)fn_802DD3D4(fn_802D6A9C(),&best.x)) return;
     fn_80457F60(lbl_8053AF80);
-    if(lbl_8053AC90!=NULL) {
-        for(i=0;i<4;i++) if(isPlayerEnabled(i)) fn_80241E64(lbl_8053AC90->players[i]);
-    }
+    clearTransitionPlayers();
     fn_802DCE5C(fn_802D6A9C(),&best.x);
     for(int i=0;i<4;i++) {
         Player* p=lbl_8053AC90->players[i];
