@@ -2876,6 +2876,20 @@ extern const f32 lbl_80476368[];
 extern const f32 lbl_80476378[];
 extern const f32 lbl_80543434;
 extern const f32 lbl_80543438;
+extern const f32 lbl_8054343C;
+static inline s32 findMenuEmitter(Menu_Main* self) {
+    for(s32 i=0;i<30;++i) if(self->emitters[i]==0) return i;
+    return -1;
+}
+static inline void spawnMenuEmitter(Menu_Main* self,u32 kind,f32 scale) {
+    s32 slot=findMenuEmitter(self);
+    if(slot!=-1) {
+        u8* p=(u8*)self;
+        FVec3 pos(lbl_8054343C+*(f32*)(p+0x244),lbl_8054343C+*(f32*)(p+0x248),lbl_805433C8);
+        self->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,kind,0,0,0,0,1,scale);
+        self->emitters[slot]->flags |= 0x40;
+    }
+}
 extern "C" void fn_803B236C(void* this_) {
     u8* self = (u8*)this_;
     s32 arr[6];
