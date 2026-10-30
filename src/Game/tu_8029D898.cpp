@@ -1461,7 +1461,7 @@ extern "C" s32 fn_802A1D44(char* self, const volatile JGeometry::TVec2<f32>* pos
 #pragma opt_common_subs off
 static inline void WaveCutTile(const JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
     JGeometry::TVec2<f32> t;
-    f32 x,y;
+    f32 y,x;
     y=pos->y;x=pos->x;t.y=y;t.x=x;
     void* mgr=lbl_8053AC98;
     *(s32*)((u8*)mgr+0x20)=fn_80226BC4(&t,room&0xfe);
@@ -1482,13 +1482,10 @@ extern "C" void fn_802CEC10(void*);
 extern "C" u8 fn_802353AC(s32);
 extern f32 lbl_8054078C;
 #pragma opt_propagation off
-#pragma opt_common_subs off
-#pragma opt_lifetimes off
+#pragma opt_common_subs on
 extern "C" void fn_802A20F0(char* self, const volatile JGeometry::TVec2<f32>* pos_, s32 who, s32 room, s32 param, s32 extra) {
     JGeometry::TVec2<f32>* pos=(JGeometry::TVec2<f32>*)pos_;
     JGeometry::TVec3<f32> center;
-    void* id;
-    ActorVt* actor;
     u32 r=room;
     f32 x,y;
     y=pos_->y;x=pos_->x;
@@ -1497,32 +1494,32 @@ extern "C" void fn_802A20F0(char* self, const volatile JGeometry::TVec2<f32>* po
     *(s32*)(self+0x20)=fn_80226BC4(&p,r);
     *(u16*)(self+0x24)=fn_802F9908(*(void**)(lbl_8053AB10+0x20),r,*(s32*)(self+0x20));
     s32 handle=fn_80226AE0(pos,r);
-if(*(u16*)(self+0x24)==105){fn_802A3164_sub(pos,r,122,1);
+if(*(u16*)(self+0x24)==105){void* id;WaveCutTile(pos,r,122);
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 fn_80458880(lbl_8053AF80,3,-1);}
-else if(*(u16*)(self+0x24)==104){fn_802A3164_sub(pos,r,18,1);
+else if(*(u16*)(self+0x24)==104){void* id;WaveCutTile(pos,r,18);
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 }
-else if(*(u16*)(self+0x24)==106){fn_802A3164_sub(pos,r,80,1);
+else if(*(u16*)(self+0x24)==106){void* id;WaveCutTile(pos,r,80);
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 }
-else if(*(u16*)(self+0x24)==0x70||*(u16*)(self+0x24)==0x75||*(u16*)(self+0x24)==0x6b){
+else if(*(u16*)(self+0x24)==0x70||*(u16*)(self+0x24)==0x75||*(u16*)(self+0x24)==0x6b){void* id;
 if(param==0x10000){
-fn_802A3164_sub(pos,r,90,1);
+WaveCutTile(pos,r,90);
 
 if(!fn_802D6AC4(fn_802D6A9C(),handle)){
 if(*(u16*)(self+0x24)==0x6b){id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+3,-1,-1);
 }else{id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param,-1,-1);
 }
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
 
 fn_802D6B24(fn_802D6A9C(),handle,1);
 }
 }else{
-fn_802A3164_sub(pos,r,121,1);
+WaveCutTile(pos,r,121);
 
 if(*(u16*)(self+0x24)==0x70){id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param,-1,-1);
 }
@@ -1534,47 +1531,47 @@ if(fn_802D6AC4(fn_802D6A9C(),handle)){id=Actor_CreateByID(fn_801F856C(),0x475241
 else{id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+3,-1,-1);
 fn_802D6B24(fn_802D6A9C(),handle,1);}
 }
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 
 }
 }
-else if(*(u16*)(self+0x24)==116){
+else if(*(u16*)(self+0x24)==116){void* id;
 if(param==0x10000){
-fn_802A3164_sub(pos,r,90,1);
+WaveCutTile(pos,r,90);
 
 if(!fn_802D6AC4(fn_802D6A9C(),handle)){
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+1048576,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
 
 fn_802D6B24(fn_802D6A9C(),handle,1);
 }
 }else{
-fn_802A3164_sub(pos,r,125,1);
+WaveCutTile(pos,r,125);
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+1048576,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 }}
-else if(*(u16*)(self+0x24)==326){
+else if(*(u16*)(self+0x24)==326){void* id;
 if(param==0x10000){
-fn_802A3164_sub(pos,r,327,1);
+WaveCutTile(pos,r,327);
 
 if(!fn_802D6AC4(fn_802D6A9C(),handle)){
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+1048576,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
 
 fn_802D6B24(fn_802D6A9C(),handle,1);
 }
 }else{
-fn_802A3164_sub(pos,r,125,1);
+WaveCutTile(pos,r,125);
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+1048576,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 }}
-else if(*(u16*)(self+0x24)==250){
+else if(*(u16*)(self+0x24)==250){void* id;
 if(param==0x10000){
-fn_802A3164_sub(pos,r,90,1);
+WaveCutTile(pos,r,90);
 
 if(!fn_802D6AC4(fn_802D6A9C(),handle)){
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param+2097152,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)fn_802CEC10(actor);
 
 fn_802D6B24(fn_802D6A9C(),handle,1);
 }
@@ -1585,33 +1582,32 @@ fn_80226CA8(handle,room,&center);
 center.x+=lbl_8054078C;center.y+=lbl_8054078C;
 Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&center,param+0x200000,-1,-1);
 }}}
-else if(*(u16*)(self+0x24)==0x71){
+else if(*(u16*)(self+0x24)==0x71){void* id;
 if(param==0){
-if(fn_802353AC(who)==1){fn_802A3164_sub(pos,r,123,1);
-}else{fn_802A3164_sub(pos,r,123,1);
+if(fn_802353AC(who)==1){WaveCutTile(pos,r,123);
+}else{WaveCutTile(pos,r,123);
 }
-}else{fn_802A3164_sub(pos,r,90,1);
+}else{WaveCutTile(pos,r,90);
 }
 id=Actor_CreateByID(fn_801F856C(),0x424f5244,room,pos,0,-1,-1);
-actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
+ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
 
 fn_8013CC50(room,pos,0x24a,1,0,0,0,1,lbl_80540790);
 fn_8013CC50(room,pos,0x24b,1,0,0,0,1,lbl_80540790);
 }
 fn_802A3164(self,pos,who,r);
 if(extra){
-if(*(u16*)(self+0x24)==234){fn_802A3164_sub(pos,r,594,1);
+if(*(u16*)(self+0x24)==234){WaveCutTile(pos,r,594);
 fn_80230FD0(who,0x30006);}
-else if(*(u16*)(self+0x24)==235){fn_802A3164_sub(pos,r,595,1);
+else if(*(u16*)(self+0x24)==235){WaveCutTile(pos,r,595);
 fn_80230FD0(who,0x30006);}
-else if(*(u16*)(self+0x24)==236){fn_802A3164_sub(pos,r,596,1);
+else if(*(u16*)(self+0x24)==236){WaveCutTile(pos,r,596);
 fn_80230FD0(who,0x30006);}
-else if(*(u16*)(self+0x24)==249){fn_802A3164_sub(pos,r,603,1);
+else if(*(u16*)(self+0x24)==249){WaveCutTile(pos,r,603);
 fn_80230FD0(who,0x30006);}
-else if(*(u16*)(self+0x24)==0x159 && param==0x10000){fn_802A3164_sub(pos,r,90,1);
+else if(*(u16*)(self+0x24)==0x159 && param==0x10000){WaveCutTile(pos,r,90);
 }}
 }
-#pragma opt_lifetimes reset
 #pragma opt_common_subs reset
 #pragma opt_propagation reset
 extern "C" u8 fn_802A3164(char* this_, JGeometry::TVec2<f32>* pos, s32 param_3, u32 room_) {
