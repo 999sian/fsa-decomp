@@ -1,15 +1,8 @@
+#define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
-
-namespace JMath {
-    template <int N, typename T>
-    class TAtanTable {
-    public:
-        f32 atan2_(f32, f32) const;
-        f32 mTable[1024];
-        f32 mTable2[8];
-    };
-    extern const TAtanTable<1024, f32> atanTable_;
-}
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 struct Tu8030FEB8Rect { f32 x0, y0, x1, y1; };
 struct Tu8030FEB8Vec3 { f32 x, y; f32 z; };
 
@@ -153,10 +146,12 @@ extern "C" void fn_80310904(char* p) {
         char* g = lbl_8053AAF8;
         f32 scale = lbl_8054178C;
         u32 bits;
+        f32 x;
         s32 sel;
         *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660du + 0x3c6ef35fu;
         bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000u;
-        sel = (s32)(scale * (*(f32*)&bits - one));
+        x = *(f32*)&bits;
+        sel = (s32)(scale * (x - one));
         switch (sel) {
         case 0: {
             s32 t = *(s32*)(p + 0x250);
@@ -235,5 +230,8 @@ extern "C" void fn_80310A9C(char* p)
     *(s32*)(p + 0x23c) = 0x14;
     *(s32*)(p + 0x240) = 0;
     *(s32*)(p + 0x244) = 0;
+}
+
+extern "C" void fn_80310BC4(void) {
 }
 
