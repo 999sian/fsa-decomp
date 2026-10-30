@@ -139,10 +139,12 @@ static inline void WaveCopyPos(JGeometry::TVec2<f32>& dst, const f32 x, const f3
 
 static inline void WaveLiftRetile(const JGeometry::TVec3<f32>* pos, u32 room, u16 value, s32 flag) {
     JGeometry::TVec2<f32> t;
+    s32 tile;
+    void* mgr;
     t.x=pos->x; t.y=pos->y;
-    void* mgr=lbl_8053AC98;
+    mgr=lbl_8053AC98;
     *(s32*)((u8*)mgr+0x20)=fn_80226BC4(&t,room&0xfe);
-    s32 tile=*(s32*)((u8*)mgr+0x20);
+    tile=*(s32*)((u8*)mgr+0x20);
     fn_802D782C(fn_802D6A9C(),1);
     fn_802F9974(*(void**)(lbl_8053AB10+0x20),room,tile,value);
     s32 n=fn_802D4C10(fn_802D6A9C(),room,(u16)*(s32*)((u8*)mgr+0x20));
@@ -736,8 +738,10 @@ JGeometry::TBox2f* src;
 if(idx<8)src=(JGeometry::TBox2f*)((u8*)mgr+0xcc);else src=(JGeometry::TBox2f*)((u8*)mgr+0xdc);
 JGeometry::TVec3<f32> p;
 JGeometry::TBox2f base; base=*src;
-f32 half=lbl_80540780;
-f32 startX=pos->x-half;
+f32 half;
+f32 startX;
+half=lbl_80540780;
+startX=pos->x-half;
 p.y=pos->y-half;p.z=pos->z;
 void* created;
 for(s32 row=0;row<3;row++) {
