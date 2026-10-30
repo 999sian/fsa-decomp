@@ -73,7 +73,7 @@ static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3031ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3032ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
     (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->setAlpha((u32)(self[0x14e] * scale));
-    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727432ULL)->setAlpha(self[0x14f] * scale);
+    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727432ULL)->setAlpha((u32)(self[0x14f] * scale));
     (*(J2DScreen**)(self + 0x4))->draw(0.0f, 0.0f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 #pragma opt_lifetimes on
