@@ -477,6 +477,11 @@ struct DmtwParts {
 static inline void* dmtwSpawn(u32 room, const JGeometry::TVec3<f32>& pos, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
     return fn_8013CC50(room, (void*)&pos, scale, id, a, b, c, d, e);
 }
+static inline void* dmtwSpawnAt(u32 room, f32 x, f32 y, u16 id) {
+    JGeometry::TVec3<f32> pos(x, y, 0.0f);
+    return fn_8013CC50(room, &pos, 1.0f, id, 1, 2, 0, 0, 1);
+}
+
 static inline u8 dmtwDialog(u32 owner, s32 message, JGeometry::TVec3<f32> pos) {
     return fn_8038BD08(0, message, owner, (JGeometry::TVec3<f32>*)&pos, 0x22);
 }
@@ -548,9 +553,9 @@ extern "C" void fn_8012B218(char* p) {
                 {s32 id1; char* records; char* positions; s32 id0; s32 player; s32 id2;
                 positions=p;records=p;player=0;id0=0x3B4;id1=0x3B5;id2=0x3B6;
                 for (;player<4;player++,id0+=3,positions+=12,records+=4,id1+=3,id2+=3) {
-                    *(void**)(records+0x358)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id0,0,0,0,0,1);
-                    *(void**)(records+0x368)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id1,0,0,0,0,1);
-                    *(void**)(records+0x378)=fn_8013CC50(*(u32*)(p+4),positions+0x2C8,1.0f,(u16)id2,0,0,0,0,1);
+                    *(void**)(records+0x358)=dmtwSpawn(*(u32*)(p+4),*(JGeometry::TVec3<f32>*)(positions+0x2C8),(u16)id0,0,0,0,0,1,1.0f);
+                    *(void**)(records+0x368)=dmtwSpawn(*(u32*)(p+4),*(JGeometry::TVec3<f32>*)(positions+0x2C8),(u16)id1,0,0,0,0,1,1.0f);
+                    *(void**)(records+0x378)=dmtwSpawn(*(u32*)(p+4),*(JGeometry::TVec3<f32>*)(positions+0x2C8),(u16)id2,0,0,0,0,1,1.0f);
                                 }}
             }
         }
