@@ -510,11 +510,9 @@ extern "C" s32 fn_801F732C(void* mgr, void* a, f32 f, void* p5, void* p6, s32 c)
 extern f32 lbl_8053F4B4, lbl_8053F4B8, lbl_8053F498, lbl_8053F4A0;
 extern "C" void fn_8020CF7C(void*);
 extern "C" void fn_801E1AB4(void*, u8);
-static inline void* thnkFindTarget(char* p) {
+static inline void* thnkFindTarget(char* p, void* found) {
     s32 idx;
-    void* found;
-    found = 0;
-idx=*(s32*)(p+0x2ac);
+    idx=*(s32*)(p+0x2ac);
 if(idx>=0) found=fn_801F666C(fn_801F856C(),idx);
 if(!found) {
  idx=*(s32*)(p+0x2b0);
@@ -528,7 +526,6 @@ if(!found) {
 }
 
 #pragma opt_common_subs off
-#pragma opt_propagation off
 extern "C" void fn_801E002C(void* this_, void* obj) {
     s32 period;
     s32 timer;
@@ -755,8 +752,8 @@ if(!found) {
             if(timer>=0 && timer%period==0)fn_8020CF7C(this_);
         }
     } else {
-        flag=0;
-        found = (void*)flag;
+        flag=false;
+        found = NULL;
 idx=*(s32*)(p+0x2ac);
 if(idx>=0) found=fn_801F666C(fn_801F856C(),idx);
 if(!found) {
@@ -968,7 +965,6 @@ if(!found) {
     }
 }
 #pragma opt_common_subs reset
-#pragma opt_propagation reset
 static inline s32 thnkCollectRooms(s32* rooms) {
     s32 count=0;
     s32 room;
