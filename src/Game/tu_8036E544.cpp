@@ -41,6 +41,7 @@ extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e)
 extern "C" u8* sManager__8JUTVideo;
 extern "C" const u16 lbl_80474EC0[];
 extern "C" const f32 lbl_80542D58;
+extern u8 lbl_8050C700[0x40];
 
 static inline void spawnBubble(char* p, s32 slot, JGeometry::TVec3f& pos, s32 id) {
     *(void**)(p + 0x258 + slot * 4) = fn_8013CC50(0, &pos, lbl_80542D58, id, 0, 0, 0, 0, 1);
