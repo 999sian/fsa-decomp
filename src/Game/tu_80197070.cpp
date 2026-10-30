@@ -824,18 +824,18 @@ next:
 #pragma opt_propagation reset
 #else
 extern "C" void fn_8019C500(Pos_8019* this_, int flag) {
-    Pos_8019* p;
+    u8* p;
     int id;
     s32 i;
     Vec_8019 pos;
-    p=this_;
-    for(i=0;i<4;i++,p=(Pos_8019*)((char*)p+12)) {
+    p=(u8*)this_;
+    for(i=0;i<4;i++,p+=12) {
         if(fn_8023F264(i)) {
             id=this_->id;
             if(id==fn_8023DE58(i)) {
-                pos.x=p->p[0].x;
-                pos.y=p->p[0].y;
-                pos.z=p->p[0].z;
+                pos.x=*(f32*)(p+0x2a4);
+                pos.y=*(f32*)(p+0x2a8);
+                pos.z=*(f32*)(p+0x2ac);
                 if(flag==0)pos.y=32.0f+*(f32*)((char*)this_+0x10);
                 fn_80230498(i,&pos,0x3f,0xff,-0x80,-0x80,1);
             }
