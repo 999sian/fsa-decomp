@@ -213,7 +213,7 @@ inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::
     bool xy=false;
     if(JGeometry::TUtilf::epsilonEquals(a.x,b.x,epsilon) &&
        JGeometry::TUtilf::epsilonEquals(a.y,b.y,epsilon)) xy=true;
-    if(xy && JGeometry::TUtilf::epsilonEquals(a.z,b.z,epsilon)) equal=true;
+    if(xy && JGeometry::TUtilf::epsilonEquals(height,b.z,epsilon)) equal=true;
     return equal;
 }
 struct PlayerPos {
