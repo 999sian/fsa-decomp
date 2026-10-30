@@ -34,7 +34,7 @@ extern "C" void fn_8017EF40(ActorVt_grok* this_) {
 extern "C" void fn_801F06F0(void*,const char*,s32,DrawRec*,s32,f32,f32);
 extern "C" void fn_803075AC(s32,s32,void*,s32,s32,s32,s32,s32,s32,s32);
 extern "C" void fn_80307AC8(s32,s32,void*,s32,s32,s32,s32);
-extern "C" void* fn_804032E8(u32,const char*);
+extern "C" void* fn_804032E8(int,const char*);
 extern "C" void fn_801EFD34(void*,void*,DrawRec*,s32,f32,f32,f32);
 extern "C" u32 lbl_8053AB70;
 extern "C" s32 lbl_80539F98;
@@ -129,7 +129,7 @@ extern "C" void fn_8017EF98(u8* p) {
         return;
     }
     s32 frame=*(s32*)(p+0x26c);
-    int index=frame;
+    s32 index=frame;
     if(lbl_80539F98<=0) index=frame+14;
     void* texture;
     if(*(s32*)(p+0x230)!=9 && *(s32*)(p+0x230)!=15) {
@@ -137,11 +137,17 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        texture=fn_804032E8(0x47524f43,t->normal[index]);
-        offset=t->normalY[index];
+        s32 byteIndex=index*4;
+        const char* const* names=t->normal;
+        texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));
+        const f32* offsets=t->normalY;
+        offset=*(const f32*)((u32)offsets+byteIndex);
     } else {
-        texture=fn_804032E8(0x47524f43,t->special[index]);
-        offset=t->specialY[index];
+        s32 byteIndex=index*4;
+        const char* const* names=t->special;
+        texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));
+        const f32* offsets=t->specialY;
+        offset=*(const f32*)((u32)offsets+byteIndex);
     }
     grokRotation(m,1.0f,1.0f,1.0f);
     if(*(s32*)(p+0x98)==0) grokRotation(m,-1.0f,1.0f,1.0f);
@@ -160,8 +166,14 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        texture=fn_804032E8(0x47524f43,t->normal[index]);offset=t->normalY[index];
-    } else { texture=fn_804032E8(0x47524f43,t->special[index]);offset=t->specialY[index]; }
+        s32 byteIndex=index*4;
+        const char* const* names=t->normal;
+        texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));const f32* offsets=t->normalY;
+        offset=*(const f32*)((u32)offsets+byteIndex);
+    } else { s32 byteIndex=index*4;
+        const char* const* names=t->special;
+        texture=fn_804032E8(0x47524f43,*(const char**)((u32)names+byteIndex));const f32* offsets=t->specialY;
+        offset=*(const f32*)((u32)offsets+byteIndex); }
     rec.b1d=1;
     if(*(s32*)(p+0x230)!=15) rec.b1f=0;
     else rec.b1d=0;
