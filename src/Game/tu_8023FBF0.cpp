@@ -4504,27 +4504,6 @@ extern "C" u8 fn_8022DA68(s32);
 extern "C" s32 fn_80238CB4(s32);
 extern "C" char lbl_8046AE08[];
 
-inline s32 countSharing50090I(const char* p, s32& linked, int& me) {
-    s32 c = 0;
-    for (s32 i = 0; i < 4; i++) {
-        if (i == S32(p,4)) c++;
-        else if (fn_8022F514(i)) {
-            if ((linked = S32(p,0xd60)) >= 0) {
-                if (linked == fn_8022F3DC(i)) c++;
-            } else {
-                me = S32(p,4);
-                if (me == fn_8022F3DC(i)) c++;
-            }
-        } else if (i == S32(p,0xd60)) c++;
-    }
-    return c;
-}
-inline s32 sharingMode50090I(const char* p, s32& linked, int& me) {
-    if (countSharing50090I(p,linked,me) <= 1) return 5;
-    s32 index = S32(p,0xd60);
-    if (index >= 0) return fn_8022CAF8(index);
-    return S32(p,0x120c);
-}
 inline s32 sharingMode50090R(const char* p, s32& linked, s32& me) {
     if (countSharing50090R(p,linked,me) <= 1) return 5;
     s32 index = S32(p,0xd60);
@@ -4533,7 +4512,8 @@ inline s32 sharingMode50090R(const char* p, s32& linked, s32& me) {
 }
 
 #pragma opt_strength_reduction off
-u8 fn_80250090(char* p) {
+u8 fn_80250090(char* self) {
+    char* p = self;
     s32 linked;
     s32 me;
     if (F32(p, 0x10) > 0.0f) {
