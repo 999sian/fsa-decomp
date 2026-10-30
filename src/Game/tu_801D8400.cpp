@@ -334,9 +334,11 @@ static inline void t84PickTarget(char* p) {
                   s32 n = 1;
           l[0] = 1;
           l[n++] = 2;
-          l[n++] = 5;
+          l[2] = 5;
+        ++n;
           l[n++] = 6;
-          l[n++] = 9;
+          l[4] = 9;
+        ++n;
           l[n++] = 10;
             if (n > 0) {
               *(u8*)(p + 0x334) = l[fn_801CD664(n)];
@@ -378,21 +380,161 @@ static inline s32 t84FindPlayer(char* p) {
     return found;
 }
 extern "C" void fn_801D8B28(void* this_) {
-    s32 state = *(s32*)((char*)this_ + 0x248);
-    if (state > 0x14) {
-        return;
-    }
-    switch (state) {
+    char* p=(char*)this_;
+    switch(I(p,0x248)) {
     case 0:
-        if (fn_801CD228(*(void**)((char*)this_ + 0x4)) == 0) {
-            return;
+        if(fn_801CD228((void*)I(p,4))) {
+            s32 i;
+            for(i=0;i<4;i++) {
+                if(JGeometry::TUtilf::abs(fn_8023E724(i)->x-F(p,0xc))<=lbl_8053F1F4) break;
+                if(JGeometry::TUtilf::abs(fn_8023E724(i)->y-F(p,0x10))<=lbl_8053F1F4) break;
+            }
+            if(i<4 && fn_801F68E0(fn_801F856C())!=0) fn_801D9C58(p,1);
         }
         break;
     case 1:
-        fn_801D9C58((char*)this_, 1);
-        return;
-    default:
-        return;
+        if(I(p,0x24c)>=180) fn_801D9C58(p,2);
+        break;
+    case 2:
+        if(U(p,0x2bc)&1) fn_801D9C58(p,3);
+        break;
+    case 3:
+        if(U(p,0x2bc)&1) {
+            fn_801F6884(fn_801F856C());
+            fn_80458FF0(lbl_8053AF80,0x1000004,1,0);
+            H(p,0x33a)=fn_801CD664(481)+600;
+            fn_801D9C58(p,4);
+        } else if(I(p,0x24c)==6) {
+            U(p,0x230)&=~0x4000;
+            if(!(U(p,0x230)&0x4000) && !(H(fn_801DAC6C(),0x84)&1)) {
+                s32 n=10;
+                s32 remaining=30-I(fn_801DAC6C(),0x80);
+                if(remaining<10) n=remaining;
+                if(n>0) {
+                    JGeometry::TVec3<f32> pos(F(p,0xc),lbl_8053F1F8+F(p,0x10),F(p,0x14));
+                    for(s32 i=0;i<n;i++) Actor_CreateByID(fn_801F856C(),0x4943484c,I(p,4),&pos,0,-1,-1);
+                    fn_801F0E34(p,0x40053,0);
+                }
+            }
+        }
+        break;
+    case 4:
+        H(p,0x33a)--;
+        if(H(p,0x33a)==0) {
+            H(p,0x33a)=fn_801CD664(481)+600;
+            u8 can=false;
+            if(fn_801D05F8(p,p+0xc,lbl_8053F1CC)>=0 && I(fn_801DAC6C(),0x80)<30
+                && !(H(fn_801DAC6C(),0x84)&1)) can=true;
+            if(can) fn_801D9C58(p,6);
+        }
+        break;
+    case 5:case 6:
+        if(U(p,0x2bc)&1) fn_801D9C58(p,7);
+        break;
+    case 7:
+        if(U(p,0x2bc)&1) fn_801D9C58(p,4);
+        else if(I(p,0x24c)==6) {
+            if(!(U(p,0x230)&0x4000) && !(H(fn_801DAC6C(),0x84)&1)) {
+                s32 n=10;
+                s32 remaining=30-I(fn_801DAC6C(),0x80);
+                if(remaining<10) n=remaining;
+                if(n>0) {
+                    JGeometry::TVec3<f32> pos(F(p,0xc),lbl_8053F1F8+F(p,0x10),F(p,0x14));
+                    for(s32 i=0;i<n;i++) Actor_CreateByID(fn_801F856C(),0x4943484c,I(p,4),&pos,0,-1,-1);
+                    fn_801F0E34(p,0x40053,0);
+                }
+            }
+        }
+        break;
+    case 8:
+        if(F(p,0x10)>=F(p,0x2d0)) {
+            F(p,0x10)=F(p,0x2d0);
+            fn_802D79E8(fn_802D6A9C(),I(p,4),0,lbl_8053F1FC,lbl_8053F1CC);
+            fn_80134DE4(lbl_8053AAF8,2,0);
+            fn_801D9C58(p,9);
+        }
+        break;
+    case 9:
+        if(I(p,0x24c)>=180) {
+            t84PickTarget(p);
+            bool left=false;
+            f32 tx=((JGeometry::TVec2<f32>*)(p+0x2d4))[B(p,0x334)].x;
+            f32 x=F(p,0xc);
+            if(x<tx || (x==tx && (U(p,0x230)&0x2000))) left=true;
+            if(left) U(p,0x230)|=0x2000;
+            else U(p,0x230)&=~0x2000;
+            fn_801D9C58(p,10);
+        }
+        break;
+    case 10:
+        if(U(p,0x2bc)&1) {fn_801E6234(p);fn_801D9C58(p,11);}
+        break;
+    case 11: fn_801D9960(p);break;
+    case 12:
+        if(U(p,0x2bc)&1) {U(p,0x230)^=0x2000;fn_801D9C58(p,11);}
+        break;
+    case 13:
+        if(U(p,0x2bc)&1) fn_801D9C58(p,14);
+        break;
+    case 14:
+        if(U(p,0x2bc)&1) {
+            s32 player=t84FindPlayer(p);
+            if(player>=0) {
+                if(B(p,0x33e)<2) {fn_801D9C58(p,14);break;}
+                else if(B(p,0x33e)<3 && t84Random()<lbl_8053F210) {fn_801D9C58(p,14);break;}
+            }
+            t84PickTarget(p);
+            bool turn=false;
+            bool left=turn;
+            f32 tx=((JGeometry::TVec2<f32>*)(p+0x2d4))[B(p,0x334)].x;
+            f32 x=F(p,0xc);
+            if(x<tx || (x==tx && (U(p,0x230)&0x2000))) left=true;
+            if(left) {if(!(U(p,0x230)&0x2000)) turn=true;}
+            else {if(U(p,0x230)&0x2000) turn=true;}
+            if(turn) fn_801D9C58(p,12);else fn_801D9C58(p,11);
+            B(p,0x33e)=0;
+        } else if(I(p,0x24c)==10 && fn_801D95F4(p)) {
+            B(p,0x33e)++;
+            fn_801F0E34(p,0x30035,0);
+        }
+        break;
+    case 15:
+        if(U(p,0x2bc)&1) fn_801D9C58(p,16);
+        break;
+    case 16:
+        fn_801F0E34(p,0x40059,0);
+        if(F(p,0x10)>=F(p,0x2d0)) {
+            F(p,0x10)=F(p,0x2d0);
+            fn_802D79E8(fn_802D6A9C(),I(p,4),0,lbl_8053F214,lbl_8053F1CC);
+            fn_80134DE4(lbl_8053AAF8,2,0);
+            fn_801D9C58(p,17);
+        }
+        break;
+    case 17:
+        if(H(p,0x336)==0) fn_801D9C58(p,18);
+        break;
+    case 18:
+        if(U(p,0x2bc)&1) {
+            t84PickTarget(p);
+            bool turn=false;
+            bool left=turn;
+            f32 tx=((JGeometry::TVec2<f32>*)(p+0x2d4))[B(p,0x334)].x;
+            f32 x=F(p,0xc);
+            if(x<tx || (x==tx && (U(p,0x230)&0x2000))) left=true;
+            if(left) {if(!(U(p,0x230)&0x2000)) turn=true;}
+            else {if(U(p,0x230)&0x2000) turn=true;}
+            if(turn) fn_801D9C58(p,12);else fn_801D9C58(p,11);
+        }
+        break;
+    case 19:
+        if(fn_801F68E0(fn_801F856C())!=0) {
+            fn_801EE434(*(void**)(p+0x2c8));fn_801EE434(*(void**)(p+0x2cc));
+            *(void**)(p+0x2c8)=0;*(void**)(p+0x2cc)=0;
+            ((Slot11*)p)->slot10(0,lbl_8053F1CC,lbl_8053F1D0);
+            fn_801D9C58(p,20);
+        }
+        break;
+    case 20:break;
     }
 }
 
