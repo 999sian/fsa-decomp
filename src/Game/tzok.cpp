@@ -491,25 +491,29 @@ extern "C" void fn_801CD930(void*,s16,s32);
 extern "C" u32 lbl_8046A288[];
 extern "C" s32 ClassifyBamAngleToQuadrant(u32);
 extern "C" void fn_802055A4(u8* this_, u8 flag) {
+    u8* obj;
+    s32 id;
+    bool replace;
     s32 work;
     u8* p=this_;
     if (flag) fn_801F11B4();
-    else if (*(s32*)(p+0x248) < 3 && *(s32*)(p+0x248) >= 1) {
+    else switch (*(s32*)(p+0x248)) { case 1:case 2:
         if ((*(u8 (**)(u8*,s32,void*))(*(u8**)p+0x4c))(p,*(s32*)(p+4),p+0xc)) {
             *(f32*)(p+0xc)=*(f32*)(p+0x18);
             *(f32*)(p+0x10)=*(f32*)(p+0x1c);
             fn_80205E0C(p,0);
         }
+        break;
     }
     if (p[0x348]) *(s32*)(p+0x340)=-1;
     else {
         switch (*(s32*)(p+0x248)) {
         case 3: case 4: case 5: case 7: case 9: *(s32*)(p+0x340)=-1; break;
         default: {
-            s32 id=*(s32*)(p+0x340);
-            bool replace=true;
+            id=*(s32*)(p+0x340);
+            replace=true;
             if(id>=0) {
-                u8* obj=(u8*)fn_801F666C(fn_801F856C(),id);
+                obj=(u8*)fn_801F666C(fn_801F856C(),id);
                 if(obj && fn_801CC9B0(obj) && !fn_801CF888(p,p+0xc,obj+0xc,*(s32*)(p+4))) replace=false;
             }
             if(replace) *(s32*)(p+0x340)=fn_802063FC(p);
@@ -527,9 +531,16 @@ extern "C" void fn_802055A4(u8* this_, u8 flag) {
     case 0:case 8:
         if(*(s32*)(p+0x340)>=0) fn_80205E0C(p,1);
         else if(*(s32*)(p+0x338)>=0) {
-            if(fn_801CCF34(*(s32*)(p+0x338))<=0 && (work=*(s32*)(p+4), !fn_801CF888(p,p+0xc,fn_8023E724((void*)*(s32*)(p+0x338)),work))) fn_80205E0C(p,6);
-            else if(fn_801D183C(p,0.0f)) fn_80205E0C(p,2);
+            if(fn_801CCF34(*(s32*)(p+0x338))<=0) {
+                work=*(s32*)(p+4);
+                if(!fn_801CF888(p,p+0xc,fn_8023E724((void*)*(s32*)(p+0x338)),work)) {
+                    fn_80205E0C(p,6);
+                    goto idleDone;
+                }
+            }
+            if(fn_801D183C(p,0.0f)) fn_80205E0C(p,2);
         }
+        idleDone:
         if(*(s32*)(p+0x248)==0) {
             if(*(u16*)(p+0x94)==1) fn_80205E0C(p,8);
             else *(s16*)(p+0x33c)=fn_80217374(p+0x368,*(s16*)(p+0x33c));
@@ -539,30 +550,33 @@ extern "C" void fn_802055A4(u8* this_, u8 flag) {
         }
         break;
     case 1: {
-        work=*(s32*)(p+0x340);
-        if(work<0) {fn_80205E0C(p,0);break;}
-        u8* obj=(u8*)fn_801F666C(fn_801F856C(),work);
-        *(TzokVec3*)(p+0x32c)=*(TzokVec3*)(obj+0xc);
+        s32 actorID=*(s32*)(p+0x340);
+        if(actorID<0) {fn_80205E0C(p,0);break;}
+        u8* actor=(u8*)fn_801F666C(fn_801F856C(),actorID);
+        *(TzokVec3*)(p+0x32c)=*(TzokVec3*)(actor+0xc);
         f32 dx=*(f32*)(p+0x32c)-*(f32*)(p+0xc);
         f32 dy=*(f32*)(p+0x330)-*(f32*)(p+0x10);
         f32 dx2=dx*dx; f32 dy2=dy*dy;
         if(dx2+dy2<=100.0f) {
             fn_801F0E34(p,0x4009f,0);
-            s32 amount=fn_8032D564(obj,*(u32*)(obj+0x90)&255);
-            s32 value=amount>3000?3000:amount<1?1:amount;
+            s32 amount=fn_8032D564(actor,*(u32*)(actor+0x90)&255);
+            s32 value=amount;
+            if(amount>3000)value=3000;else if(amount<1)value=1;
             *(s32*)(p+0x344)+=value;
             u32 handle=*(u32*)(p+0x198);
-            *(u16*)(obj+0x94)=1;
-            *(u32*)(obj+0x264)=handle;
-            obj[0x282]=1;
-            *(s32*)(obj+0x230)=3;
+            *(u16*)(actor+0x94)=1;
+            *(u32*)(actor+0x264)=handle;
+            actor[0x282]=1;
+            *(s32*)(actor+0x230)=3;
             *(s32*)(p+0x340)=fn_802063FC(p);
         }
         break;
     }
     case 2:
         if(*(s32*)(p+0x340)>=0) {fn_80205E0C(p,1);break;}
-        if(!(*(s32*)(p+0x338)>=0 && fn_801CCF34(*(s32*)(p+0x338))>0 && fn_801D0B44(p,*(s32*)(p+0x338)) && !(!fn_801D08B4(p,*(s32*)(p+0x338),p+0xc,16.0f*p[0x34c])))) {fn_80205E0C(p,0);break;}
+        replace=true;
+        if(*(s32*)(p+0x338)>=0 && fn_801CCF34(*(s32*)(p+0x338))>0 && fn_801D0B44(p,*(s32*)(p+0x338))) replace=!fn_801D08B4(p,*(s32*)(p+0x338),p+0xc,16.0f*p[0x34c]);
+        if(replace) {fn_80205E0C(p,0);break;}
         if(!fn_801D12CC(p)) {fn_80205E0C(p,0);break;}
         *(s16*)(p+0x33c)=fn_801D02E0(p,p+0x32c);
         break;
@@ -582,10 +596,10 @@ extern "C" void fn_802055A4(u8* this_, u8 flag) {
                 pos.set(*(f32*)(p+0xc),*(f32*)(p+0x10),24.0f+*(f32*)(p+0x14));
                 s32 id=fn_801F8544(fn_801F856C(),0x52555059,*(s32*)(p+4),&pos,kind);
                 if(id>=0) {
-                    u8* obj=(u8*)fn_801F666C(fn_801F856C(),id);
+                    obj=(u8*)fn_801F666C(fn_801F856C(),id);
                     if(obj) {
                         f32 one=1.0f; f32 two=2.0f; f32 scale=1.2f; f32 six=6.0f; f32 three=3.0f;
-                        v.set(scale*(two*tzokRand01()-one),scale*(two*tzokRand01()-one),three*tzokRand01()+six);
+                        v.set((tzokRand01()*two-one)*scale,(tzokRand01()*two-one)*scale,tzokRand01()*three+six);
                         *(JGeometry::TVec3f*)(obj+0x3c)=v;
                     }
                 }
@@ -596,7 +610,13 @@ extern "C" void fn_802055A4(u8* this_, u8 flag) {
     case 5: if(fn_801D2918(p+0x35c))fn_80205E0C(p,7); break;
     case 6:
         if(*(s32*)(p+0x340)>=0) {fn_80205E0C(p,1);break;}
-        if(!(*(s32*)(p+0x338)>=0 && fn_801CCF34(*(s32*)(p+0x338))<=0 && fn_801D0B44(p,*(s32*)(p+0x338)) && fn_801D08B4(p,*(s32*)(p+0x338),p+0xc,16.0f*p[0x34c]) && (work=*(s32*)(p+4), !fn_801CF888(p,p+0xc,fn_8023E724((void*)*(s32*)(p+0x338)),work)))) {fn_80205E0C(p,0);break;}
+        replace=true;
+        if(*(s32*)(p+0x338)>=0 && fn_801CCF34(*(s32*)(p+0x338))<=0 && fn_801D0B44(p,*(s32*)(p+0x338))) replace=!fn_801D08B4(p,*(s32*)(p+0x338),p+0xc,16.0f*p[0x34c]);
+        if(!replace) {
+            work=*(s32*)(p+4);
+            replace=fn_801CF888(p,p+0xc,fn_8023E724((void*)*(s32*)(p+0x338)),work)!=0;
+        }
+        if(replace) {fn_80205E0C(p,0);break;}
         if(flag) fn_801D11FC(p);
         else fn_801CD930(p+0x33c,(s16)(fn_801D0280(p,*(s32*)(p+0x338))-0x8000),0x200);
         break;
@@ -608,11 +628,11 @@ extern "C" void fn_802055A4(u8* this_, u8 flag) {
     }
     switch(*(s32*)(p+0x248)) {
     case 0:case 6:case 8:case 9:
-        *(s32*)(p+0x98)=ClassifyBamAngleToQuadrant(*(u16*)(p+0x33c));break;
+        *(s32*)(p+0x98)=ClassifyBamAngleToQuadrant((u16)*(s16*)(p+0x33c));break;
     case 3:case 4:case 5:case 7: break;
     default:
         *(s16*)(p+0x33c)=fn_801D02E0(p,p+0x32c);
-        *(s32*)(p+0x98)=ClassifyBamAngleToQuadrant(*(u16*)(p+0x33c));break;
+        *(s32*)(p+0x98)=ClassifyBamAngleToQuadrant((u16)*(s16*)(p+0x33c));break;
     }
 }
 
@@ -773,11 +793,11 @@ static inline TzokRect* tzokRoomRect(s32 room) {
 }
 
 #pragma opt_propagation off
-extern "C" BOOL fn_8020609C(TzokActor* self) {
+extern "C" BOOL fn_8020609C(const TzokActor* self) {
     s32 room;
     u16 state = self->m94;
     BOOL r;
-    TzokActor* actor = self;
+    const TzokActor* actor = self;
     r = FALSE;
     if (state == 1) {
         if (!fn_801CD2F8(actor->mRoom)) {
