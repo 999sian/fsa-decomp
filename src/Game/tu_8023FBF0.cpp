@@ -4506,8 +4506,8 @@ extern "C" char lbl_8046AE08[];
 
 inline s32 sharingMode50090R(const char* p, s32& linked, s32& me) {
     if (countSharing50090R(p,linked,me) <= 1) return 5;
-    linked = S32(p,0xd60);
-    if (linked >= 0) return fn_8022CAF8(linked);
+    s32 index = S32(p,0xd60);
+    if (index >= 0) return fn_8022CAF8(index);
     return S32(p,0x120c);
 }
 
