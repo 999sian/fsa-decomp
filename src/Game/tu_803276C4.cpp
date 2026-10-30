@@ -158,7 +158,10 @@ extern "C" void fn_803279D0(Osin* p) {
             }
         }
     }
-    if(!osinRoomCheck(p,-40.0f)) blocked=fn_801F2618(p,0,0);
+    f32 margin=-40.0f;
+    f32* pos=&p->field_0C.x;
+    s32 room=p->field_04;
+    if(!fn_801F6758(pos,room,margin)) blocked=fn_801F2618(p,0,0);
     p->weight=0;
     fn_80239914(&box,p->field_04,p->field_198);
     switch(p->field_94) {
@@ -168,9 +171,9 @@ extern "C" void fn_803279D0(Osin* p) {
         p->players[2]=0;
         p->players[3]=0;
         for(s32 i=0;i<4;i++) {
-            if(fn_8023F264(i) && !fn_8023EA28(i) && p->players[i]==0) {
-                p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,0.0f);
-                if(p->players[i]!=0 && fn_8023E724(i)->y<p->field_0C.y) {
+            if(fn_8023F264(i) && !fn_8023EA28(i) && (offset=i+0x254, OSIN_BYTE(p,offset)==0)) {
+                OSIN_BYTE(p,offset)=fn_8023B0F4(i,&inset,p->field_04,0,0.0f);
+                if(OSIN_BYTE(p,offset)!=0 && fn_8023E724(i)->y<p->field_0C.y) {
                     if(fn_8022CAF8(i)==4) p->weight++;
                     else p->weight+=fn_8022E970(i);
                     for(s32 j=0;j<4;j++) {
@@ -189,7 +192,10 @@ extern "C" void fn_803279D0(Osin* p) {
             if(!blocked && 48.0f*(f32)(weight-1)+p->origin.y>p->field_0C.y) {
                 p->field_3C.y=0.5f;
                 OSIN_S32(p,0x234)=1;
-                if(p->field_94!=0 && weight>=p->maxWeight) p->maxWeight=weight;
+                if(p->field_94!=0) {
+                    s32 current=osinWeight(p);
+                    if(current>=p->maxWeight) p->maxWeight=current;
+                }
             } else if(!blocked && 48.0f*(f32)(weight-1)+p->origin.y<p->field_0C.y) {
                 p->field_3C.y=-0.5f;
                 p->frame=0;
@@ -213,7 +219,7 @@ extern "C" void fn_803279D0(Osin* p) {
         case 0:
             if(!fn_802DCD0C(fn_802D6A9C())) {
                 for(s32 i=0;i<4;i++) {
-                    if(fn_80233EDC(i)==1) goto osinActivate;
+                    if(fn_80233EDC(i)==1) break;
                     if(fn_8023F264(i) && !fn_8023EA28(i)) {
                         p->players[i]=fn_8023B0F4(i,&inset,p->field_04,0,0.0f);
                         if(p->players[i]!=0 && fn_8023E724(i)->y<=box.i.y) {
@@ -222,9 +228,8 @@ extern "C" void fn_803279D0(Osin* p) {
                         }
                     }
                 }
-                if(p->weight<4) break;
             }
-        osinActivate:
+            if(p->weight<4) break;
             for(s32 i=0;i<4;i++) fn_80230AD4(i);
             p->state=1;
             p->moving=1;
