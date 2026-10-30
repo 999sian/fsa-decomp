@@ -59,7 +59,7 @@ struct OktaRandom {
     u32 seed;
     f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
+        seed = 0x19660d * seed + 0x3c6ef35f;
         out.s = (seed >> 9) | 0x3f800000;
         return out.f - lbl_8053CE2C;
     }
@@ -165,11 +165,12 @@ extern const f64 lbl_8053CE68;
 extern s32 lbl_8049F1F8[];
 extern f32 lbl_8049F1A0[];
 extern "C" double fabs(double);
+#pragma peephole off
 extern "C" void fn_8013FD50(u8* p) {
-    f32 size;
-    f32 newScale;
     f32 negSize;
-    JGeometry::TVec3<f32> oldPos(*(Vec*)(p+0xc));
+    f32 size;
+    JGeometry::TVec3<f32> oldPos;
+    JGeometry::setTVec3f((f32*)(p+0xc), &oldPos.x);
     JGeometry::TVec3<f32> velocity;
     JGeometry::TVec3<f32> pos;
     s32 quad = -1;
@@ -181,11 +182,10 @@ extern "C" void fn_8013FD50(u8* p) {
     flag=1;
     if ((*(u32*)(p+0x90))==1 && (*(s32*)(p+0x108))>0) flag=0;
     if ((*(u32*)(p+0x90))==1) {
-        newScale=lbl_8053CE34+(f32)(48-(*(s32*)(p+0x108)))/lbl_8053CE38;
-        (*(f32*)(p+0x268))=newScale;
-        size=lbl_8053CE3C+(f32)(48-(*(s32*)(p+0x108)))/lbl_8053CE40;
+        (*(f32*)(p+0x268))=0.7f+(f32)(48-(*(s32*)(p+0x108)))/80.0f;
+        size=4.0f+(f32)(48-(*(s32*)(p+0x108)))/6.0f;
         negSize=-size; (*(f32*)(p+0x60))=negSize; (*(f32*)(p+0x64))=negSize; (*(f32*)(p+0x68))=size; (*(f32*)(p+0x6c))=size;
-        if((*(f32*)(p+0x268))>lbl_8053CE2C) (*(f32*)(p+0x268))=lbl_8053CE2C;
+        if((*(f32*)(p+0x268))>1.0f) (*(f32*)(p+0x268))=1.0f;
         if((*(s32*)(p+0x230))!=1) {
             (*(f32*)(p+0x264))=(*(f32*)(p+0x268));
             if((*(s32*)(p+0xd8))==0) {
@@ -303,8 +303,8 @@ case 3: { f32 speed=-(*(f32*)(p+0x25c)); (*(f32*)(p+0x27c))=lbl_8053CE28; (*(f32
             } else {
                 if((*(u32*)(p+0x90))!=2) (*(s32*)(p+0x98))=lbl_8049F1F8[(*(s32*)(p+0x254))];
                 switch((*(s32*)(p+0x98))) {
-                case 0:{f32 zero=lbl_8053CE28; f32 speed=lbl_8053CE70; velocity.y=zero; velocity.x=speed; velocity.z=zero;}break;
-                case 1:{f32 zero=lbl_8053CE28; f32 speed=lbl_8053CE74; velocity.y=zero; velocity.x=speed; velocity.z=zero;}break;
+                case 0:velocity.set(3.0f,0.0f,0.0f);break;
+                case 1:velocity.set(-3.0f,0.0f,0.0f);break;
                 case 2:velocity.set(lbl_8053CE28,lbl_8053CE70,lbl_8053CE28);break;
                 case 3:velocity.set(lbl_8053CE28,lbl_8053CE74,lbl_8053CE28);break;
                 }
@@ -331,8 +331,7 @@ case 3: { f32 speed=-(*(f32*)(p+0x25c)); (*(f32*)(p+0x27c))=lbl_8053CE28; (*(f32
         break;
     }
 }
-
-#pragma opt_common_subs off
+#pragma peephole reset
 extern "C" void fn_80140920(u8* this_) {
     f32 random;
     *(f32*)(this_ + 0x60) = lbl_8053CE80;
