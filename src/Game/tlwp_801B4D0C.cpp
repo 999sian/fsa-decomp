@@ -396,6 +396,13 @@ void fn_801365E8(void*, s32, s32, s32);
 }
 extern const f32 lbl_8053EA64, lbl_8053EA68, lbl_8053EA6C, lbl_8053EA70, lbl_8053EA74, lbl_8053EA78;
 
+static inline u8 tlwpSendPosition(char* p, s32* table, const JGeometry::TVec3f& pos) {
+    s32 handle=*(s32*)(p+0x198);
+    s32 room=*(s32*)(p+4);
+    return fn_8038AD24(*(s32*)(p+0x244), table[*(s32*)(p+0x254)], handle, room, pos, 0x100);
+}
+
+
 #pragma opt_common_subs off
 #pragma opt_propagation on
 #pragma opt_dead_assignments off
