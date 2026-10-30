@@ -1262,7 +1262,7 @@ extern "C" void fn_80123D30(u8* self) {
 }
 
 #pragma opt_propagation off
-extern "C" s32 fn_80123D88(u8* self) {
+extern "C" s32 fn_80123D88(const u8* self) {
     if (self[0x333]) {
         return 0;
     }
