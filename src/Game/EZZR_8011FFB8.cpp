@@ -309,6 +309,28 @@ static inline void EZZR_SetAllState(s32 state) {
     }
 }
 
+static inline bool EZZR_IsBarrierNear(Vec* pos) {
+    if (*(s32*)fn_80131F0C() <= 1) {
+        return false;
+    }
+    f32 dist = lbl_8053C980;
+    s32 id = fn_801F778C(fn_801F856C(), 0x42415249, pos, &dist);
+    if (id < 0) {
+        return false;
+    }
+    if (dist > lbl_8053C984) {
+        return false;
+    }
+    Actor* a = (Actor*)fn_801F666C(fn_801F856C(), id);
+    if (a == 0) {
+        return false;
+    }
+    if (*((u8*)a + 0x11c) == 0) {
+        return false;
+    }
+    return true;
+}
+
 static inline bool EZZR_IsNearBarrier(EZZR* p) {
     s32 id;
     if (*(s32*)fn_80131F0C() <= 1) {
@@ -486,15 +508,11 @@ extern "C" void fn_80120570(EZZR* p) {
             break;
         }
         if (EZZR_IsNearBarrier(p) && !fn_802DCD0C(fn_802D6A9C()) && fn_801186B0(fn_8011921C(), 0xe)) {
-            fn_8011921C()[2] = true;
+            u8* ctx = fn_8011921C();
+            ctx[2] = 1;
             fn_80118454(fn_8011921C());
             fn_8037AE00(lbl_8053AD70);
-            for (s32 i = 0; i < *(s32*)fn_80131F0C(); i++) {
-                EZZR* a = (EZZR*)fn_80131E30(fn_80131F0C(), i);
-                if (a != 0) {
-                    a->v25(13);
-                }
-            }
+            EZZR_SetAllState(13);
             break;
         }
         if (fn_80138A30(lbl_8053AAF8) > 1) {
@@ -544,20 +562,16 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(14);
         }
         break;
-    case 14: {
+    case 14:
         if (p->v13() == 0) {
             p->v25(7);
             break;
         }
-        f32 accel = lbl_8053C9A4;
-        f32 speed = lbl_8053C970;
-        *(f32*)((u8*)p + 0x380) = speed;
-        *(f32*)((u8*)p + 0x37c) = accel;
+        EZZR_SetMove(p, lbl_8053C970, lbl_8053C9A4);
         if (p->v48((Vec*)&(const JGeometry::TVec3f&)JGeometry::TVec3f(lbl_8053C964, lbl_8053C964, lbl_8053C964), *(f32*)((u8*)p + 0x380))) {
             p->v25(15);
         }
         break;
-    }
     case 15:
         break;
     }
