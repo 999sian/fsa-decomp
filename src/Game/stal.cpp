@@ -56,6 +56,29 @@ extern "C" void fn_801756E4(char* this_) {
     *(f32*)(this_ + 0x14) = z;
 }
 
+struct StalRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct StalGame { u8 pad[0xb4]; StalRandom rnd; };
+extern StalGame* lbl_8053AAF8;
+struct StalMgr { u8 flag(u32 i) { return mFlags[i]; } u8 pad[0x131df]; u8 mFlags[1]; };
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7818(void* mgr, u32 id, u32 owner, void** out, s32 max);
+
+#include "JSystem/JMath/JMath.h"
+extern "C" s32 Actor_CreateByID(void*, u32, u32, void*, s32, s32, s32);
+extern "C" char* fn_801F666C(void*, s32);
+extern "C" void fn_801EE4F0(void*);
+extern "C" void fn_8013CC50(u32, void*, s32, s32, s32, s32, s32, s32);
+extern "C" s32 ClassifyBamAngleToQuadrant(u32);
+extern s32 lbl_804A0C10[];
 extern "C" void fn_801757D4(char* this_) {
     f32 dist = 0.0f;
     s32 idxOut = -1;
@@ -144,22 +167,6 @@ extern "C" void fn_801757D4(char* this_) {
     }
     fn_801F2618(this_, 0, 0);
 }
-
-struct StalRandom {
-    u32 seed;
-    f32 get_ufloat_1() {
-        union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
-        return out.f - 1.0f;
-    }
-};
-struct StalGame { u8 pad[0xb4]; StalRandom rnd; };
-extern StalGame* lbl_8053AAF8;
-struct StalMgr { u8 flag(u32 i) { return mFlags[i]; } u8 pad[0x131df]; u8 mFlags[1]; };
-extern "C" u8* fn_802D6A9C(void);
-extern "C" void* fn_801F856C(void);
-extern "C" s32 fn_801F7818(void* mgr, u32 id, u32 owner, void** out, s32 max);
 
 extern "C" void fn_80176538(char* this_) {
     *(f32*)(this_ + 0x60) = -8.0f;
