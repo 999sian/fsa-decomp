@@ -195,7 +195,7 @@ struct GnldRandom {
 };
 
 
-extern "C" void fn_801F6874(void*);
+extern "C" u32 fn_801F6874(void*);
 extern "C" void fn_80329640(u8* this_) {
     u8* p = this_;
     s32 state = *(s32*)(p + 0x230);
