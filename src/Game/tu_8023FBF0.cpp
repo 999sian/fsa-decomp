@@ -1934,9 +1934,6 @@ inline bool padActive(char* p) {
 }
 
 
-#pragma push
-#pragma opt_common_subs off
-#pragma opt_loop_invariants off
 s32 fn_80243234(char* p) {
     int room=S32(p,0x3b4);
     if(U8(fn_802D6A9C()+0x131df,room)==0) return 0;
@@ -1956,7 +1953,6 @@ ready:
 fail:
     return 0;
 }
-#pragma pop
 
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
