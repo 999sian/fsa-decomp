@@ -71,6 +71,10 @@ extern "C" s32 fn_802D4C10(void* mgr, u32 room, u16 v);
 extern "C" void fn_802D7D00(void* mgr, u32 room, s32 idx, s32 v);
 extern "C" u16 fn_802F9908(void* mgr, u32 room, s32 idx);
 extern "C" void fn_802D7970(void* p, s32 v);
+extern "C" void fn_80226CA8(s32, u32, JGeometry::TVec3<f32>*);
+extern "C" u8 fn_802D6AC4(void*, s32);
+extern "C" void fn_802D6B24(void*, s32, s32);
+extern f32 lbl_80540784, lbl_80540788, lbl_8054078C, lbl_80540794;
 extern "C" void fn_80138B7C(void* p);
 extern "C" void* fn_8023E724(void* p);
 extern "C" u32 fn_802A0800(char* self, void* p3, u32 room);
@@ -1486,7 +1490,7 @@ extern "C" u8 fn_802353AC(s32);
 extern f32 lbl_8054078C;
 #pragma opt_propagation off
 #pragma opt_common_subs on
-extern "C" void fn_802A20F0(char* self, const volatile JGeometry::TVec2<f32>* pos_, s32 who, s32 room, s32 param, s32 extra) {
+extern "C" void fn_802A20F0(char* self, const volatile JGeometry::TVec2<f32>* pos_, int who, int room, s32 param, s32 extra) {
     JGeometry::TVec2<f32>* pos=(JGeometry::TVec2<f32>*)pos_;
     JGeometry::TVec3<f32> center;
     u32 r=room;
