@@ -59,6 +59,42 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_805408CC;
 extern "C" f32 lbl_805408D8;
+
+extern "C" double cos(double);
+extern "C" double sin(double);
+extern "C" const f32 sincosTable___5JMath[];
+static inline void platformRotation(f32 m[3][4], f32 ry) {
+    f32 sz, sy, sx, cz, cy, cx;
+    cx=cos(0.0);
+    cy=cos(ry);
+    cz=cos(0.0);
+    sx=sin(0.0);
+    sy=sin(ry);
+    sz=sin(0.0);
+    m[0][0]=cy*cx;
+    m[1][0]=cy*sx;
+    m[2][0]=-sy;
+    f32 szsy=sz*sy;
+    f32 czcx=cz*cx;
+    f32 czsx=cz*sx;
+    f32 szsx=sz*sx;
+    f32 szcx=sz*cx;
+    m[0][1]=szsy*cx-czsx;
+    m[1][1]=szsy*sx+czcx;
+    m[2][1]=sz*cy;
+    m[0][2]=czcx*sy+szsx;
+    m[1][2]=czsx*sy-szcx;
+    m[2][2]=cz*cy;
+}
+static inline f32 platformSin(f32 angle) {
+    if(angle<0.0f) return -sincosTable___5JMath[((u16)(s32)(-325.9493f*angle)&0x7ff)*2];
+    return sincosTable___5JMath[((u16)(s32)(325.9493f*angle)&0x7ff)*2];
+}
+static inline f32 platformCos(f32 angle) {
+    if(angle<0.0f)angle=-angle;
+    return sincosTable___5JMath[((u16)(s32)(325.9493f*angle)&0x7ff)*2+1];
+}
+
 extern "C" void fn_802ACF04(Actor* a) {
     u8 tbl[0x10];
     f32 vec[3];
