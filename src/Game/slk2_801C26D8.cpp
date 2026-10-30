@@ -334,6 +334,61 @@ extern "C" u8 fn_801D0DD4(u8* this_);
 extern "C" void fn_802188B0(void* p);
 extern "C" void fn_801C71BC(u8* this_);
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 ang);
+extern "C" u8 fn_801C0FEC(void* rec, void* pos, f32* out);
+extern "C" u8 fn_801CD228(void* room);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F68E0(void* p);
+extern "C" void fn_80458F9C(void* p, s32 x);
+extern void* lbl_8053AF80;
+extern "C" void fn_80214E50(void* p);
+extern "C" void fn_801C8BC4(u8* this_, s32 a);
+extern "C" s16 fn_80217374(void* p, s16 ang);
+extern "C" void fn_801C7370(u8* this_, u8 flag);
+extern "C" u8 fn_802189AC(void* p);
+extern "C" void fn_802144F0(void* p);
+extern "C" void fn_801C5B08(u8* this_, u8 flag);
+extern "C" void fn_802146A4(void* p);
+extern "C" void fn_801C6C7C(u8* this_);
+extern "C" void fn_801C6BA8(u8* this_);
+extern "C" void fn_801C6A4C(u8* this_);
+extern u8* lbl_8053AAF8;
+extern "C" u8 fn_801D183C(u8* this_, f32 r);
+extern "C" void fn_801C1224(void* rec, void* p);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D79E8(void* mgr, s32 room, s32 a, f32 x, f32 y);
+extern "C" void fn_801C6784(u8* this_);
+extern "C" u8 fn_802153A8(void* p);
+extern s32 lbl_80469450[];
+extern "C" u8 fn_8021CFF8(void* this_);
+extern f32 lbl_8053EE18;
+extern f32 lbl_8053EE1C;
+extern f32 lbl_8053EE24;
+extern f32 lbl_8053EE2C;
+extern f32 lbl_8053EE30;
+extern f32 lbl_8053EE34;
+extern f32 lbl_8053EE38;
+
+static inline void slk2ResetHitRect(u8* this_) {
+    if (*(u8*)(this_ + 0x34d) == 7) {
+        *(u32*)(this_ + 0x230) &= ~0x100;
+        s32 room = *(s32*)(this_ + 4);
+        if (((u8*)fn_802D6A9C())[room + 0x131df] == 0) {
+            f32 b;
+            f32 a;
+            a = lbl_8053EE20;
+            b = lbl_8053EE14;
+            *(f32*)(this_ + 0x60) = a;
+            *(f32*)(this_ + 0x64) = a;
+            *(f32*)(this_ + 0x68) = b;
+            *(f32*)(this_ + 0x6c) = b;
+            *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+            *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+            *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+            *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+        }
+    }
+}
+
 extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
     if (flag) {
         if (((u8 (*)(u8*))(*(void***)this_)[0x4c / 4])(this_)) {
