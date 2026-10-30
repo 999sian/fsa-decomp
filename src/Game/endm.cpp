@@ -295,56 +295,6 @@ static inline void Endm_updateView(char* p) {
     }
     fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &pos.x, (f32)(s32)*(f32*)(p + 0x270));
 }
-static inline void Endm_updateView(char* p, JGeometry::TVec2<f32>& pos) {
-    JGeometry::TBox2<f32> bounds;
-    JGeometry::TVec2<f32> tmp;
-    {
-        f32* dummy = &tmp.x;
-        f32 x0;
-        f32 y0;
-        x0 = *(f32*)(p + 0x250);
-        y0 = *(f32*)(p + 0x254);
-        JGeometry::TVec2<f32> off(0.0f, -30.0f);
-        tmp.x = x0;
-        tmp.y = y0;
-        pos.x = x0 + off.x;
-        f64 d = pos.x;
-        f32 px = (f32)d;
-        pos.y = y0 + off.y;
-        bounds = *(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10 + 0x24) + 0x164);
-        tmp.x = pos.x;
-        tmp.y = pos.y;
-        f32 half = 0.5f;
-        f32 w = bounds.f.x - bounds.i.x;
-        f32 hw = w * half;
-        f32 h = bounds.f.y - bounds.i.y;
-        f32 hh = h * half;
-        f32 hh2 = h * half;
-        if (px + hw >= *(f32*)(p + 0x268)) {
-            pos.x = *(f32*)(p + 0x268) - hw;
-        } else if (px - hw <= *(f32*)(p + 0x260)) {
-            pos.x = *(f32*)(p + 0x260) + hw;
-        }
-        if (pos.y + hh >= *(f32*)(p + 0x26c)) {
-            pos.y = *(f32*)(p + 0x26c) - hh2;
-        } else if (pos.y - h * half <= *(f32*)(p + 0x264)) {
-            pos.y = *(f32*)(p + 0x264) + h * half;
-        }
-    }
-    if (*(f32*)(p + 0x270) != *(f32*)(p + 0x274)) {
-        *(f32*)(p + 0x270) = *(f32*)(p + 0x270) + *(f32*)(p + 0x278);
-        if (*(f32*)(p + 0x278) < 0.0f) {
-            if (*(f32*)(p + 0x270) < *(f32*)(p + 0x274)) {
-                *(f32*)(p + 0x270) = *(f32*)(p + 0x274);
-            }
-        } else {
-            if (*(f32*)(p + 0x270) > *(f32*)(p + 0x274)) {
-                *(f32*)(p + 0x270) = *(f32*)(p + 0x274);
-            }
-        }
-    }
-    fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &pos.x, (f32)(s32)*(f32*)(p + 0x270));
-}
 static inline u8 Endm_tick(s32* timer) {
     if (*timer) --*timer;
     return (u32)__cntlzw(*timer) >> 5;
