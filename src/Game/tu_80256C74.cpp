@@ -1825,8 +1825,8 @@ extern "C" void fn_8025B368(u8* p) {
     S32(p, 0x40c) = 0;
 }
 
+#pragma pool_data on
 extern "C" void fn_8025B3F0(u8* p) {
-    const Tu80256Tables* tbl = (const Tu80256Tables*)lbl_8046AF00;
     s32 limit = 0x30;
     if (fn_8022B244()) {
         limit = 0x19;
@@ -1836,7 +1836,7 @@ extern "C" void fn_8025B3F0(u8* p) {
         U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
         if (U8(p, 0x3fc) == limit) {
             U8(p, 0xb9b) = 1;
-            tu8025_copyVec(&V3(p, 0x12a4), tbl->a, S32(p, 0x3dc));
+            tu8025_copyVec(&V3(p, 0x12a4), (const JGeometry::TVec3<f32>*)blastStartPositions, S32(p, 0x3dc));
             V3(p, 0x12a4) += V3(p, 0x8);
             s32 room = S32(p, 0x3b4);
             if (room < 8) {
@@ -1932,9 +1932,9 @@ extern "C" void fn_8025B3F0(u8* p) {
         }
     }
     if (U8(p, 0xb9b) == 1) {
-        tu8025_copyVec(&V3(p, 0x5c0), tbl->b, S32(p, 0x3dc) + 4);
+        tu8025_copyVec(&V3(p, 0x5c0), (const JGeometry::TVec3<f32>*)blastHitPositions, S32(p, 0x3dc) + 4);
     } else {
-        tu8025_copyVec(&V3(p, 0x5c0), tbl->b, S32(p, 0x3dc));
+        tu8025_copyVec(&V3(p, 0x5c0), (const JGeometry::TVec3<f32>*)blastHitPositions, S32(p, 0x3dc));
     }
     V3(p, 0x5c0) += V3(p, 0x8);
     F32(p, 0x5c8) = lbl_805400C4;
@@ -1969,7 +1969,7 @@ extern "C" void fn_8025B3F0(u8* p) {
         F32(p, 0x5b8) += F32(p, 0x5c0);
         F32(p, 0x5bc) += F32(p, 0x5c4);
         JGeometry::TVec3<f32> v;
-        tu8025_copyVec(&v, tbl->c, S32(p, 0x3dc));
+        tu8025_copyVec(&v, (const JGeometry::TVec3<f32>*)blastTerrainPositions, S32(p, 0x3dc));
         v += V3(p, 0x8);
         fn_802A1D44(lbl_8053AC98, &v, U32(p, 0x4), S32(p, 0x3b4));
         f32 scale = lbl_805400D4;
@@ -2031,7 +2031,7 @@ extern "C" void fn_8025B3F0(u8* p) {
         }
     }
 }
-
+#pragma pool_data reset
 extern "C" void fn_8025BDC8(u8* p) {
     U8(p, 0x458) = 0;
     S32(p, 0x40c) = 0;
