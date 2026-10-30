@@ -39,6 +39,7 @@ static inline f32 msgRandomUnit() {
     return *(f32*)&bits-1.0f;
 }
 static inline f32 msgRandom() { return msgRandomUnit(); }
+static inline f32 msgRandomScaled(f32 range) { return range*msgRandomUnit(); }
 struct MsgCursorInit {
     u8 data[0x60];
     MsgCursorInit(s8 player,void* pos) { fn_8045B46C(this,player,pos,0,8); }
@@ -995,14 +996,14 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     (*(f32*)(p+0x110))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getWidth();
     (*(f32*)(p+0x114))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getHeight();
     (*(u8*)(p+0x1a3))=(*(J2DScreen**)(p+0x2c))->search('P1ar')->getAlpha();
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x24))->search('Tm01'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x28))->search('Tm01'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x2c))->search('Tm01'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x2c))->search('Tm02'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x24))->search('Tm02'))->setFont(font); }
-    { JUTFont* font=*(JUTFont**)((u8*)lbl_8053AD78+0x154); ((J2DTextBox*)(*(J2DScreen**)(p+0x28))->search('Tm02'))->setFont(font); }
+    msgFont((*(J2DScreen**)(p+0x20)),'Tm01',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x24)),'Tm01',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x28)),'Tm01',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x2c)),'Tm01',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x2c)),'Tm02',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x20)),'Tm02',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x24)),'Tm02',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
+    msgFont((*(J2DScreen**)(p+0x28)),'Tm02',*(JUTFont**)((u8*)lbl_8053AD78+0x154));
     ((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm02'))->setBlackWhite(
         JUtility::TColor(lbl_8050DB0C[0x307],lbl_8050DB0C[0x308],lbl_8050DB0C[0x309],0),
         JUtility::TColor(lbl_8050DB0C[0x304],lbl_8050DB0C[0x305],lbl_8050DB0C[0x306],255));
