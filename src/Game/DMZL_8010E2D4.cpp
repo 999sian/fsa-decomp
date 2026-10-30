@@ -2,7 +2,7 @@
 #include "JSystem/JMath/JMath.h"
 extern const f32 lbl_8053C580;
 static inline f32 DMZLAngle(f32 x, f32 y) {
-    return JMath::atanTable_.atan2_(x,y)*lbl_8053C580;
+    return lbl_8053C580*JMath::atanTable_.atan2_(x,y);
 }
 static inline s32 DMZLElapsed(void* manager,const char* table) {
     return *(s32*)((u8*)manager+8)-*(const s32*)(table+0x84);
@@ -748,6 +748,7 @@ f32 dist;
 s32 out,quad;
 u16 angle;
 f32 zero,dz;
+f32 sine,speed;
 s32 result,kind;
 u8* p=(u8*)this_;
 box.set(*(JGeometry::TBox2<f32>*)(p+0x60));box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
@@ -813,7 +814,7 @@ case 35:
 *(f32*)(p+0x268)+=lbl_8053C578;
 fn_801CD950((f32*)(p+0x26c),lbl_8053C560,lbl_8053C57C);
 s16 ang=DMZLAngle(*(f32*)(p+0x27c)-*(f32*)(p+0xc),*(f32*)(p+0x280)-*(f32*)(p+0x10));
-*(f32*)(p+0x3c)=*(f32*)(p+0x26c)*JMASSin(ang);
+sine=JMASSin(ang);speed=*(f32*)(p+0x26c);*(f32*)(p+0x3c)=speed*sine;
 *(f32*)(p+0x40)=*(f32*)(p+0x26c)*JMASCos(ang);
 s32 x=fn_801CD950((f32*)(p+0xc),*(f32*)(p+0x27c),*(f32*)(p+0x3c));
 s32 y=fn_801CD950((f32*)(p+0x10),*(f32*)(p+0x280),*(f32*)(p+0x40));
