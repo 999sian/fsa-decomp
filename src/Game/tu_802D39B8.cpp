@@ -1161,9 +1161,11 @@ extern const u32 lbl_8046E178[6];
 extern const char lbl_8046E820[];
 extern const f32 lbl_8054112C;
 extern const f32 lbl_80541130;
-static inline u32 roomRecordWord8328(const u8* rec) {
-    return (u32)rec[0]<<24 | (u32)rec[1]<<16 | (u32)rec[2]<<8 | (u32)rec[3];
-}
+struct RoomActorRecord8328 {
+    u8 id[4];
+    u8 layer, x, y;
+    u8 param[4];
+};
 inline bool roomSpecial8328() {
     if (*(u8*)(lbl_8053AAF8+0x7f)==0) return false;
     char* g = *(char**)(lbl_8053AAF8+4);
@@ -1257,6 +1259,7 @@ extern "C" char* fn_801F666C(void*, s32);
 extern "C" u32 fn_801F620C(void*, u32, u32);
 extern "C" void fn_801EA594(char*);
 extern "C" u8 lbl_8053AC30;
+#pragma opt_lifetimes off
 extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     u8* data;
     s32* out;
@@ -1269,6 +1272,8 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     s32 room;
     u32 id;
     u32 param;
+    u16 y;
+    u16 x;
     *(u8*)(p+0x131f6) = flag;
     if (*(s32*)(p+0x14)>=0 && *(s32*)(p+0x14)<10
         && *(s32*)(p+0x18)>=0 && *(s32*)(p+0x18)<10) {
@@ -1314,8 +1319,6 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
                 if (id==0x20202020) break;
                 param=(u32)rec[7]<<24|(u32)rec[8]<<16|(u32)rec[9]<<8|(u32)rec[10];
                 u8 layer=rec[4];
-                u16 y;
-                u16 x;
                 x=rec[5];y=rec[6];
                 offset+=11;
                 bool first=false;
@@ -1416,7 +1419,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     fn_801F6204(fn_801F856C(),0);
     *(s32*)(p+0xec)=50;
 }
-
+#pragma opt_lifetimes reset
 static inline char* RoomExtraPath802D(char* p, s32 index, const char* format, s32 offset) {
     s32 col;
     s32 row;
