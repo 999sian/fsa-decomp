@@ -27,6 +27,24 @@ static f32 fnDist(char* p, Vec* dst) {
 
 extern "C" u8 fn_8023FC5C(u8* p);
 extern "C" void* GetPtrField_0x4(void* p);
+#include "Game/ItemBase.h"
+struct PlayerSpriteRes64998 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(u32,const char*);
+};
+extern "C" char* lbl_8053AAF8;
+extern "C" u8* lbl_8053AB10;
+extern char lbl_8046B960[];
+extern "C" void fn_802F86CC(void*,void*,void*,s32,f32,f32,DrawRec*);
+static inline void playerSprite64998(s32 room,void* pos,const char* name,s32 index,DrawRec* rec) {
+    if(room<8) {
+        void* res=(*(PlayerSpriteRes64998**)(lbl_8053AAF8+0xa4))->get('SOB ',name);
+        fn_802F86CC(*(void**)(lbl_8053AB10+0x20),pos,res,index,lbl_805401F4,lbl_805401F4,rec);
+    }
+}
 extern "C" void fn_80264998(char* p)
 {
     u8 r28;
