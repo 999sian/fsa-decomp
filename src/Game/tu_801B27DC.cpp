@@ -54,7 +54,7 @@ extern s32 lbl_8053ABEC;
 extern u8 lbl_8053ABF0;
 extern u8* lbl_8053AAF8;
 extern void* lbl_8053AF80;
-extern f32 lbl_8053E930, lbl_8053E934, lbl_8053E938, lbl_8053E93C, lbl_8053E940, lbl_8053E944, lbl_8053E948,
+extern const f32 lbl_8053E930, lbl_8053E934, lbl_8053E938, lbl_8053E93C, lbl_8053E940, lbl_8053E944, lbl_8053E948,
     lbl_8053E94C, lbl_8053E950, lbl_8053E954, lbl_8053E958, lbl_8053E95C, lbl_8053E960, lbl_8053E964, lbl_8053E968,
     lbl_8053E96C, lbl_8053E970, lbl_8053E974, lbl_8053E978, lbl_8053E97C, lbl_8053E980, lbl_8053E984, lbl_8053E988,
     lbl_8053E98C, lbl_8053E9A8, lbl_8053E9AC, lbl_8053E9B0;
