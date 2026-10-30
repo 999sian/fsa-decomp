@@ -25,7 +25,7 @@ static f32 fnDist(char* p, Vec* dst) {
     return PSVECMag(dst);
 }
 
-extern "C" u8 fn_8023FC5C(u8* p);
+extern "C" u32 fn_8023FC5C(u8* p);
 extern "C" s32 GetPtrField_0x4(void* p);
 #include "Game/ItemBase.h"
 struct PlayerSpriteRes64998 {
