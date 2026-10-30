@@ -53,13 +53,25 @@ extern "C" void fn_8013A884(u32*);
 inline f32 turtleRand() {
     return ((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
 }
+extern const f32 lbl_805426AC;
+extern const f32 lbl_805426B0;
 inline s32 createTurtle52870(char* p,u32 param,f32 offset) {
     JGeometry::TVec3<f32> pos;
     pos.set(32.0f+F(p,0x288),(F(p,0x280)+F(p,0x28c))*0.5f+offset,32.0f);
     return Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param,-1,-1);
 }
-extern "C" void fn_80352870(char* p)
+#pragma opt_common_subs on
+extern "C" u32 __cvt_fp2unsigned(f64);
+#pragma opt_lifetimes off
+#pragma opt_propagation on
+extern "C" void fn_80352870(char* self)
 {
+    char* const p=self;
+    s32 id;
+    u32 param;
+    s32 count;
+    s32 i;
+    s32 offset;
     char* sub;
     s32 state = I(p,0x230);
     if (state != 0 && state != 7) {
@@ -87,7 +99,7 @@ extern "C" void fn_80352870(char* p)
         if(I(p,0x234)<=0) {
             JGeometry::TVec3<f32> pos;
             pos.set(32.0f+F(p,0x288),(F(p,0x280)+F(p,0x28c))*0.5f+32.0f,32.0f);
-            s32 id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,0x40,-1,-1);
+            id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,0x40,-1,-1);
             if(id>=0) {
                 char* actor=(char*)fn_801F666C(fn_801F856C(),id);
                 if(actor) {
@@ -110,10 +122,10 @@ extern "C" void fn_80352870(char* p)
         break;
     case 3:
         if(I(p,0x234)<=0) {
-            u32 param=((u32)(8.0f*turtleRand())<<4)|1;
+            param=(__cvt_fp2unsigned(8.0f*turtleRand())<<4)|1;
             JGeometry::TVec3<f32> pos;
             pos.set(32.0f+F(p,0x288),(F(p,0x280)+F(p,0x28c))*0.5f+54.0f,32.0f);
-            s32 id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param,-1,-1);
+            id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param,-1,-1);
             if(id>=0) {
                 char* actor=(char*)fn_801F666C(fn_801F856C(),id);
                 if(actor) {
@@ -129,10 +141,10 @@ extern "C" void fn_80352870(char* p)
         break;
     case 4:
         if(I(p,0x234)<=0) {
-            u32 param=((u32)(8.0f*turtleRand())<<4)|2;
+            param=(__cvt_fp2unsigned(8.0f*turtleRand())<<4)|2;
             JGeometry::TVec3<f32> pos;
             pos.set(32.0f+F(p,0x288),(F(p,0x280)+F(p,0x28c))*0.5f+8.0f,32.0f);
-            s32 id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param,-1,-1);
+            id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param,-1,-1);
             if(id>=0) {
                 char* actor=(char*)fn_801F666C(fn_801F856C(),id);
                 if(actor) {
@@ -149,34 +161,36 @@ extern "C" void fn_80352870(char* p)
     case 2:
         if(I(p,0x234)<=0) {
             I(p,0x234)=150;I(p,0x230)=5;
-            s32 count=I(fn_801F856C(),0x1008);
-            s32 offset=0;
-            for(s32 i=0;i<count;i++,offset+=4) {
+            count=I(fn_801F856C(),0x1008);
+            i=0;
+            offset=i;
+            for(;i<count;offset+=4,i++) {
                 Actor* actor=*(Actor**)((char*)fn_801F856C()+offset+8);
                 if(actor) {
                     u32 kind=actor->field_1A0;
-                    s32 s=I(actor,0x230);
                     if(kind==0x52555059) {
+                        s32 s=I(actor,0x230);
                         if(s==0 || (u32)(s-15)<=1 || (u32)(s-1)<=1 || s==9 || s==13) actor->detach();
                     } else if(kind==0x45535259) {
+                        s32 s=I(actor,0x230);
                         if(s==0 || (u32)(s-3)<=1 || s==10) actor->detach();
                     } else if(kind==0x484e5259) {
-                        if((s==0 || s==3 || s==4) && !B(actor,0x281)) actor->detach();
+                        if((I(actor,0x230)==0 || I(actor,0x230)==3 || I(actor,0x230)==4) && !B(actor,0x281)) actor->detach();
                     } else if(kind==0x57445259) actor->detach();
-                    else if(kind==0x42525259 && s==0) actor->detach();
+                    else if(kind==0x42525259 && I(actor,0x230)==0) actor->detach();
                 }
             }
         }
         break;
     case 5: {
         if(I(p,0x234)<=0) {I(p,0x234)=250;I(p,0x230)=6;}
-        u32 param=3;
-        if(turtleRand()>0.8f) param=((u32)(8.0f*turtleRand())<<4)|3;
+        param=3;
+        if(turtleRand()>0.8f) param=(__cvt_fp2unsigned(8.0f*turtleRand())<<4)|3;
         else param|=0x80;
         f32 rnd=turtleRand();
         JGeometry::TVec3<f32> pos;
         pos.set(32.0f+F(p,0x288),64.0f+F(p,0x270)+(s32)((F(p,0x278)-F(p,0x270)-48.0f)*rnd),32.0f);
-        s32 id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param|0x100,-1,-1);
+        id=Actor_CreateByID(fn_801F856C(),0x5455544c,0,(f32*)&pos,param|0x100,-1,-1);
         I(p,0x238)++;
         if(id>=0) {
             char* actor=(char*)fn_801F666C(fn_801F856C(),id);
@@ -196,7 +210,7 @@ extern "C" void fn_80352870(char* p)
             fn_80134FC4(lbl_8053AAF8,0);
             fn_8037AE30(lbl_8053AD70);
             fn_8043D67C(lbl_8053AED0,0x148,0,0);
-            for(s32 i=0;i<4;i++) {
+            for(i=0;i<4;i++) {
                 u8 enabled=(B(lbl_8053AAF8,0x82)&(u8)(1<<i))!=0;
                 if(enabled==1 && !fn_8022F514(i))
                     fn_8043D874(lbl_8053AED0,i,-300,1);
@@ -227,7 +241,6 @@ extern "C" void fn_80352870(char* p)
     }
     if(I(p,0x234)>0) I(p,0x234)--;
 }
-
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_8018330C(u32* out);
 #pragma peephole reset
