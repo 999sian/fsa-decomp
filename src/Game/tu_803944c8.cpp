@@ -2,6 +2,8 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+struct MsgRodata;
+extern "C" const MsgRodata lbl_80475768;
 #include "JSystem/J2D/J2DPicture.h"
 extern void* lbl_8053AAF8;
 #include "JSystem/J2D/J2DScreen.h"
