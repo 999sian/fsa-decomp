@@ -91,6 +91,11 @@ extern "C" u32 lbl_8046FA30[16];
 extern "C" const f32 lbl_8054157C;
 extern "C" const f32 lbl_80541580;
 extern "C" const f32 lbl_80541584;
+static inline GXColor TileShade802F(u8 shade,u8 alpha) {
+    JUtility::TColor color(*(u32*)&lbl_80543F50);
+    color.r=shade;color.g=shade;color.b=shade;color.a=alpha;
+    return color;
+}
 static inline void WarpTileQuad802F(u16 tile, f32 x, f32 y, f32 top, f32 bottom) {
     u16 index=tile&0xfff;
     GXWGFifo.f32=x+top;GXWGFifo.f32=y;GXWGFifo.f32=lbl_805414F8;GXWGFifo.u16=index;
@@ -1102,7 +1107,6 @@ extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr) {
 }
 
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, void* ptr, f32 scaleX, f32 scaleY) {
-    SpriteTables802F* tables = (SpriteTables802F*)lbl_8046F940;
     u8* data=(u8*)a;
     u8* ent=(u8*)ptr;
     u8* self=(u8*)base;
@@ -1112,6 +1116,7 @@ extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 frame, v
     u8* resolved;
     SpriteOam802F object;
     u8 transformed;
+    SpriteTables802F* tables = (SpriteTables802F*)lbl_8046F940;
     if (!self[0x2364]) return;
     if (ent && ent[0x21]) {
         if (fn_802F654C(self,pos,(s32)data,frame,0,0,ent)) return;
@@ -1889,9 +1894,9 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
     GXSetBlendMode(GX_BM_BLEND,GX_BL_ONE,GX_BL_SRCALPHA,(GXLogicOp)5);
     GXSetZMode(GX_FALSE,GX_LEQUAL,GX_FALSE);
     GXSetCullMode(GX_CULL_NONE);
-    const u16* map=((u16**)(self+0x48))[plane];
+    u16* map=((u16**)(self+0x48))[plane];
     s32 palette;
-    if ((plane&7)==0) {
+    if ((plane&7)!=0) {
         if (paletteFlag) palette=1;else palette=2;
     } else palette=1;
     s32 paletteOffset=palette*4+0x18;
@@ -1899,8 +1904,22 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
         GXInitTlutObj(&tluts[i],*(u8**)(self+paletteOffset)+i*0x20,GX_TL_RGB5A3,16);
         GXLoadTlut(&tluts[i],lbl_8046FA30[i]);
     }
-    s32 clear=0;
-    do {counts[clear]=0;} while (++clear<16);
+    counts[0]=0;
+    counts[1]=0;
+    counts[2]=0;
+    counts[3]=0;
+    counts[4]=0;
+    counts[5]=0;
+    counts[6]=0;
+    counts[7]=0;
+    counts[8]=0;
+    counts[9]=0;
+    counts[10]=0;
+    counts[11]=0;
+    counts[12]=0;
+    counts[13]=0;
+    counts[14]=0;
+    counts[15]=0;
     for (s32 sy=0;sy<2;sy++) {
         for (s32 sx=0;sx<2;sx++) {
             for (s32 row=0;row<16;row++) {
@@ -1911,7 +1930,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                     if (wave || (px>-16 && px<240)) {
                         u16 tile=map[((sy*2+sx)*16+row)*16+col];
                         if (tile) {
-                            const u16* list=*(u16**)(self+0x24);
+                            u16* list=*(u16**)(self+0x24);
                             for (s32 dy=0;dy<2;dy++) {
                                 for (s32 dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++;
                             }
@@ -1943,15 +1962,19 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                             }
                             shifts[j]*=lbl_80541514;
                         }
+                        f32 shiftTop=shifts[0];
+                        f32 shiftMiddle=shifts[1];
+                        f32 shiftBottom=shifts[2];
                         for (s32 col=0;col<16;col++) {
                             u16 tile=map[((sy*2+sx)*16+row)*16+col];
                             if (!tile) continue;
                             s32 tx=sx*32+col*2;
                             f32 x=ox+(f32)(tx*8);
-                            if (x+shifts[0]<lbl_8054157C && x+shifts[1]<lbl_8054157C && x+shifts[2]<lbl_8054157C) x+=lbl_80541580;
-                            else if (x+shifts[0]>lbl_80541584 && x+shifts[1]>lbl_80541584 && x+shifts[2]>lbl_80541584) x-=lbl_80541580;
-                            for (s32 dy=0;dy<2;dy++) {
-                                f32 y=oy+(f32)((ty+dy)*8);
+                            if (x+shiftTop<lbl_8054157C && x+shiftMiddle<lbl_8054157C && x+shiftBottom<lbl_8054157C) x+=lbl_80541580;
+                            else if (x+shiftTop>lbl_80541584 && x+shiftMiddle>lbl_80541584 && x+shiftBottom>lbl_80541584) x-=lbl_80541580;
+                            s32 subY=ty;
+                            for (s32 dy=0;dy<2;dy++,subY++) {
+                                f32 y=oy+(f32)(subY*8);
                                 for (s32 dx=0;dx<2;dx++) {
                                     u16 t=(*(u16**)(self+0x24))[tile*4+dy*2+dx];
                                     if (((t>>12)&15)==pal) {
@@ -1967,11 +1990,13 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                             if (px<=-16 || px>=240) continue;
                             u16 tile=map[((sy*2+sx)*16+row)*16+col];
                             if (!tile) continue;
-                            for (s32 dy=0;dy<2;dy++) {
-                                f32 y=oy+(f32)((ty+dy)*8);
-                                for (s32 dx=0;dx<2;dx++) {
+                            s32 subY=ty;
+                            for (s32 dy=0;dy<2;dy++,subY++) {
+                                f32 y=oy+(f32)(subY*8);
+                                s32 subX=tx;
+                                for (s32 dx=0;dx<2;dx++,subX++) {
                                     u16 t=(*(u16**)(self+0x24))[tile*4+dy*2+dx];
-                                    if (((t>>12)&15)==pal) PlainTileQuad802F(t,ox+(f32)((tx+dx)*8),y);
+                                    if (((t>>12)&15)==pal) PlainTileQuad802F(t,ox+(f32)(subX*8),y);
                                 }
                             }
                         }
