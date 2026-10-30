@@ -325,9 +325,7 @@ static inline bool EZZR_MoveToGate(EZZR* p) {
     } else {
         t.y -= lbl_8053C968;
     }
-    f32 dy = t.y - p->field_0C.y;
-    f32 dx = t.x - p->field_0C.x;
-    f32 rad = JMath::atanTable_.atan2_(dx, dy);
+    f32 rad = JMath::atanTable_.atan2Radian(t.x - p->field_0C.x, t.y - p->field_0C.y);
     u16 ang = (s32)(rad * lbl_8053C96C);
     p->field_98 = ClassifyBamAngleToQuadrant(ang);
     f32 sx;
@@ -463,33 +461,12 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(8);
         }
         break;
-    case 7: {
+    case 7:
         if (fn_8012285C(p) < 0) {
             p->v25(0);
             break;
         }
-        bool near;
-        if (*(s32*)fn_80131F0C() <= 1) {
-            near = false;
-        } else {
-            f32 dist = lbl_8053C980;
-            s32 id = fn_801F778C(fn_801F856C(), 0x42415249, &p->field_0C, &dist);
-            if (id < 0) {
-                near = false;
-            } else if (dist > lbl_8053C984) {
-                near = false;
-            } else {
-                Actor* a = (Actor*)fn_801F666C(fn_801F856C(), id);
-                if (a == 0) {
-                    near = false;
-                } else if (*((u8*)a + 0x11c) == 0) {
-                    near = false;
-                } else {
-                    near = true;
-                }
-            }
-        }
-        if (near && !fn_802DCD0C(fn_802D6A9C()) && fn_801186B0(fn_8011921C(), 0xe)) {
+        if (EZZR_IsNearBarrier(p) && !fn_802DCD0C(fn_802D6A9C()) && fn_801186B0(fn_8011921C(), 0xe)) {
             fn_8011921C()[2] = true;
             fn_80118454(fn_8011921C());
             fn_8037AE00(lbl_8053AD70);
@@ -507,7 +484,6 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v37(fn_8012285C(p), lbl_8053C98C, lbl_8053C990, lbl_8053C994, lbl_8053C998, lbl_8053C9A0);
         }
         break;
-    }
     case 9:
         if (fn_8012285C(p) < 0) {
             p->v25(0);
@@ -549,17 +525,20 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(14);
         }
         break;
-    case 14:
+    case 14: {
         if (p->v13() == 0) {
             p->v25(7);
             break;
         }
-        *(f32*)((u8*)p + 0x380) = lbl_8053C970;
-        *(f32*)((u8*)p + 0x37c) = lbl_8053C9A4;
+        f32 speed = lbl_8053C970;
+        f32 accel = lbl_8053C9A4;
+        *(f32*)((u8*)p + 0x380) = speed;
+        *(f32*)((u8*)p + 0x37c) = accel;
         if (p->v48((Vec*)&(const JGeometry::TVec3f&)JGeometry::TVec3f(lbl_8053C964, lbl_8053C964, lbl_8053C964), *(f32*)((u8*)p + 0x380))) {
             p->v25(15);
         }
         break;
+    }
     case 15:
         break;
     }
