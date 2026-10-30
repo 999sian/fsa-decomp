@@ -2,6 +2,7 @@
 // Functions: draw (TODO), update (slot 3), state handlers (TODO), hit reaction
 // (TODO), dtor, init (TODO).
 #include "types.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Vec.h"
