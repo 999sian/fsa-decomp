@@ -719,6 +719,35 @@ extern const f32 lbl_80540CD0;
 extern "C" void fn_801F2B20(char* p, s32 a);
 extern "C" void fn_801F0D20(char* p, s32 a);
 
+#define KEY0_LINK_HERE_EARLY
+// KEY0: link the key's home tile to where it is now.
+static inline void key0LinkHere(char* p) {
+    u32 x18;
+    u32 packed = key0PackActorFlags((u8*)p);
+    if (!fn_802DCD0C(fn_802D6A9C())) {
+        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+        packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+    } else {
+        packed = *(u16*)(p + 0x2aa) << 8;
+    }
+    const Key0Pt& key = Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
+    const Key0Pt& pos = Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    u32 id = *(u32*)(p + 0x238);
+    key0LinkPoints(key, pos, packed, id);
+}
+
+// KEY0: collected. Spawns the pickup effect, registers the tile and deactivates.
+static inline void key0Collect(char* p) {
+    s32 room = *(s32*)(p + 0x4);
+    if (room >= 8) {
+        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, room, p + 0xc, 0, -1, -1);
+    } else {
+        fn_8013CC50(room, p + 0xc, lbl_80540C7C, 0x503, 1, 0, 0, 0, 1);
+    }
+    key0Register(p);
+    *(u8*)(p + 0x11c) = 0;
+}
+
 // KEY0: react to the tile the key landed on (pit / special floor).
 static inline u8 key0TileEvent(char* p, u16 tile) {
     u8 handled;
