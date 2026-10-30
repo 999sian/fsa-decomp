@@ -121,15 +121,15 @@ struct GnonDrawTables {
 static inline void gnonSetRotation(f32 (*m)[4], f32 rx, f32 ry, f32 rz, f32 scaleX, f32 scaleY) {
     f32 sx, sy, sz, cx, cy, cz;
     f32 ss, cc, cs;
-    m[0][3] = 0.0f;
-    m[1][3] = 0.0f;
-    m[2][3] = 0.0f;
-    sx = std::sinf(rx);
-    sy = std::sinf(ry);
-    sz = std::sinf(rz);
-    cx = std::cosf(rx);
-    cy = std::cosf(ry);
-    cz = std::cosf(rz);
+    m[0][3] = lbl_8053E278;
+    m[1][3] = lbl_8053E278;
+    m[2][3] = lbl_8053E278;
+    sx = sin(rx);
+    sy = sin(ry);
+    sz = sin(rz);
+    cx = cos(rx);
+    cy = cos(ry);
+    cz = cos(rz);
     ss = sx * sy;
     cc = cx * cz;
     cs = cx * sz;
