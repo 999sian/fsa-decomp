@@ -1556,17 +1556,42 @@ static inline void packetPrimaryFlag(Ctl4_80301CD0* header, s32 owner) {
 static inline void packetSecondaryFlag(Ctl4_80301CD0* header, s32 owner) {
     header->x=fn_8023CD74(owner)>>4;
 }
+static inline void packetSecondarySlots(u8* p,int player) {
+    if((((s32*)lbl_80506D48)[player]&1)==1) {
+        Hi_80301CD0* flags7=(Hi_80301CD0*)(p+7);
+        u8* state6=p+6;
+        for(s32 i=0;i<4;i++) {
+            u32 slot=fn_802340A0(i);
+            s32 mask=fn_8022BECC()<<slot;
+            u8 oldFlags=flags7->y;
+            ((volatile Hi_80301CD0*)flags7)->y=oldFlags|mask;
+            u8 state;
+            u8* game=(u8*)lbl_8053AAF8;
+            bool special;
+            if(*(s32*)(game+0x4c)==11) special=true;
+            else special=game[0x88]==2;
+            if(special) state=3;
+            else if(fn_8023CA88(slot)>0) {
+                s32 room=fn_8023DE58(i);
+                u16 flags=*(u16*)((u8*)fn_802D6A9C()+room*2+0x131b8);
+                if(((flags>>12)&3)==0) state=3;
+                else state=1;
+            } else if(fn_8023EA28(i)) state=1;
+            else state=0;
+            *state6 |=state<<(slot*2);
+            if(fn_8023BCD4(slot)<0xa0) flags7->lo |=1<<slot;
+        }
+    }
+}
+
 extern "C" void fn_80306A94(void* ctx,int player) {
     if(((u8*)lbl_8053AAF8)[0x82] & (u8)(1<<player))
         ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
     else ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=14;
     fn_803085A4((s32)ctx,player);
-    Hi_80301CD0* firstFlags;
-    s32 owner;
-    u8* p;
-    owner=fn_8022EA0C(player);
-    p=lbl_80506DE8+player*0x68;
-    firstFlags=(Hi_80301CD0*)(p+1);
+    s32 owner=fn_8022EA0C(player);
+    u8* p=lbl_80506DE8+player*0x68;
+    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
     for(s32 i=0;i<4;i++) {
         u32 slot=fn_802340A0(i);
         if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
@@ -1634,10 +1659,9 @@ nextPlayer:;
             u8* nextSlot=p+(i+1)*4;
             s32 b=fn_803074A4(((Slot_80301CD0*)(nextSlot+0x18))->type,q[0x1c] | (((Slot_80301CD0*)(nextSlot+0x18))->idHi<<8));
             if(q[0x1d]!=0xe0 && (a<b || (a==b && q[0x19]<q[0x1d]))) {
-                u32 tmp=*(u32*)(q+0x18);
-                u32 other=*(u32*)(nextSlot+0x18);
-                *(u32*)(nextSlot+0x18)=tmp;
-                *(u32*)(q+0x18)=other;
+                u32 tmp=*(u32*)(nextSlot+0x18);
+                *(u32*)(nextSlot+0x18)=*(u32*)(q+0x18);
+                *(u32*)(q+0x18)=tmp;
             }
         }
     }
