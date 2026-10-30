@@ -72,10 +72,11 @@ static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
     (*(J2DScreen**)(self + 0x4))->search(0x506e7464)->setAlpha((u8)*(f32*)(self + 0x4c));
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3031ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3032ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
-    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->setAlpha(self[0x14e] * scale);
+    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->setAlpha((u32)(self[0x14e] * scale));
     (*(J2DScreen**)(self + 0x4))->search(0x7072737374727432ULL)->setAlpha(self[0x14f] * scale);
     (*(J2DScreen**)(self + 0x4))->draw(0.0f, 0.0f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
+#pragma opt_lifetimes on
 extern "C" void fn_803A44D8(u8* this_) {
     f32 scale = 0.0f;
     JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
@@ -207,7 +208,7 @@ extern "C" void fn_803A44D8(u8* this_) {
         }
     }
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_803A5380(u8* this_) {
     char* base = lbl_80475F58;
     if (lbl_80529DEC[0x242] == 0) {
@@ -491,4 +492,5 @@ extern "C" u8* fn_803A59E0(u8* self) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Matrix.h"
 
