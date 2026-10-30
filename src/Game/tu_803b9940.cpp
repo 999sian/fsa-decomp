@@ -327,6 +327,8 @@ static inline bool cardMountResult(char* this_, s32 result) {
                 }
 }
 
+#pragma opt_loop_invariants off
+#pragma opt_common_subs off
 extern "C" void fn_803B9F40(void* obj) {
     s32 r2;
     char* this_ = (char*)obj;
@@ -468,16 +470,7 @@ case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
                 *(s32*)(this_ + 0x1fd0) = 0xb;
             } else {
                 r = CARDMount(*(u8*)(this_ + 0x1ff4), lbl_80512180, 0);
-                switch (r) {
-                case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; ok = false; break;
-                case -3: *(s32*)(this_ + 0x1fd0) = (ok = false); break;
-                case -6: case 0:
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) ok = true;
-                    else { *(s32*)(this_ + 0x1fd0) = 7; ok = false; }
-                    break;
-                case -0xd: *(s32*)(this_ + 0x1fd0) = 6; ok = false; break;
-                default: ok = false; break;
-                }
+                ok = cardMountResult(this_, r);
                 if (ok) {
                     r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fileInfo[0]);
                     if (r == 0) {
