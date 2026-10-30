@@ -752,9 +752,7 @@ static inline u32 key0MgrBits() {
 }
 
 static inline void key0LinkHere2(char* p) {
-    u32 packed = (*(u32*)(p + 0x23c) << 30) | (*(u8*)(p + 0x2b5) << 29);
-    packed = __rlwimi(packed, *(u32*)(p + 0x280), 24, 3, 7);
-    packed = __rlwimi(packed, *(u32*)(p + 4), 0, 24, 31);
+    u32 packed = key0PackActorFlags2((u8*)p);
     if (!fn_802DCD0C(fn_802D6A9C())) {
         packed |= key0MgrBits();
     } else {
