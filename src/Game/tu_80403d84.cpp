@@ -2023,50 +2023,52 @@ extern "C" u32 fn_80309B74(void*,s32,s32);
 static inline void resetMenuFrames(PaneRef* const* slot) {
     (*slot)->frame20=0; (*slot)->frame22=0; (*slot)->frame24=0; (*slot)->frame26=0;
 }
+#pragma opt_propagation off
 static inline u32 menuInputText(u32* table, int index) { return table[index]; }
+#pragma opt_propagation on
 #pragma opt_propagation on
 #pragma opt_common_subs off
 extern "C" void fn_8040D3D0(u8* self){
 Tbl8048C1F8* tbl=&lbl_8048C1F8;
-const ResTIMG* resource;
+register const ResTIMG* resource;
 u8* cursor;
-int j;
 u8* row;
 int i;
+int j;
 if(fn_80309C4C(lbl_8053AD30,0x100,-1) || self[0x657]){
-register int zero=0;*(s32*)(self+0x348)=zero;*(s32*)(self+0x34c)=zero;
-(*(PaneRef**)(self+0xc8))->frame20=zero;
-(*(PaneRef**)(self+0xc8))->frame22=zero;
-(*(PaneRef**)(self+0xc8))->frame24=zero;
-(*(PaneRef**)(self+0xc8))->frame26=zero;
-(*(PaneRef**)(self+0xcc))->frame20=zero;
-(*(PaneRef**)(self+0xcc))->frame22=zero;
-(*(PaneRef**)(self+0xcc))->frame24=zero;
-(*(PaneRef**)(self+0xcc))->frame26=zero;
-(*(PaneRef**)(self+0xd0))->frame20=zero;
-(*(PaneRef**)(self+0xd0))->frame22=zero;
-(*(PaneRef**)(self+0xd0))->frame24=zero;
-(*(PaneRef**)(self+0xd0))->frame26=zero;
-for(int k=0;k<18;k++){(*(PaneRef**)(self+0xd4+k*4))->frame20=zero;(*(PaneRef**)(self+0xd4+k*4))->frame22=zero;(*(PaneRef**)(self+0xd4+k*4))->frame24=zero;(*(PaneRef**)(self+0xd4+k*4))->frame26=zero;}
-(*(PaneRef**)(self+0x228))->frame22=zero;
-(*(PaneRef**)(self+0x22c))->frame22=zero;
-(*(PaneRef**)(self+0x230))->frame22=zero;
-(*(PaneRef**)(self+0x234))->frame22=zero;
-(*(PaneRef**)(self+0x238))->frame22=zero;
-(*(PaneRef**)(self+0x23c))->frame22=zero;
+*(s32*)(self+0x348)=0;*(s32*)(self+0x34c)=0;
+(*(PaneRef**)(self+0xc8))->frame20=0;
+(*(PaneRef**)(self+0xc8))->frame22=0;
+(*(PaneRef**)(self+0xc8))->frame24=0;
+(*(PaneRef**)(self+0xc8))->frame26=0;
+(*(PaneRef**)(self+0xcc))->frame20=0;
+(*(PaneRef**)(self+0xcc))->frame22=0;
+(*(PaneRef**)(self+0xcc))->frame24=0;
+(*(PaneRef**)(self+0xcc))->frame26=0;
+(*(PaneRef**)(self+0xd0))->frame20=0;
+(*(PaneRef**)(self+0xd0))->frame22=0;
+(*(PaneRef**)(self+0xd0))->frame24=0;
+(*(PaneRef**)(self+0xd0))->frame26=0;
+u8* p=self;for(int k=0;k<18;k++,p+=4){resetMenuFrames((PaneRef**)(p+0xd4));}
+(*(PaneRef**)(self+0x228))->frame22=0;
+(*(PaneRef**)(self+0x22c))->frame22=0;
+(*(PaneRef**)(self+0x230))->frame22=0;
+(*(PaneRef**)(self+0x234))->frame22=0;
+(*(PaneRef**)(self+0x238))->frame22=0;
+(*(PaneRef**)(self+0x23c))->frame22=0;
 *(s16*)(self+0x41e)=0;
 if(*(s32*)(self+0x340)!=8&&*(s32*)(self+0x340)!=9&&*(s32*)(self+0x340)!=10&&*(s32*)(self+0x340)!=11&&*(s32*)(self+0x340)!=12){
 char name[11];snprintf(name,11,tbl->pictureFormat,*(s32*)(self+0x340)+1,*(s32*)(self+0x348)+1);
 resource=(ResTIMG*)fn_80403184('TIMG',name);
 ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->remove((u8)0);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->append(resource,lbl_805438BC);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3031ULL))->setBlendRatio(0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
 ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->remove((u8)0);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->append(resource,lbl_805438BC);((J2DPicture*)(*(J2DPane**)(self+0x10))->search(0x0050706c616e3032ULL))->setBlendRatio(0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f);
-fn_803832BC(self+0x564,menuLayoutText(tbl->text[0],*(s32*)(self+0x340)),0,0,0);
-fn_803832BC(self+0x582,menuLayoutText(tbl->text[1],*(s32*)(self+0x340)),0,0,0);
-fn_803832BC(self+0x5a0,menuLayoutText(tbl->text[2],*(s32*)(self+0x340)),0,0,0);
-fn_803832BC(self+0x5be,menuLayoutText(tbl->text[3],*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x564,menuInputText(tbl->text[0],*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x582,menuInputText(tbl->text[1],*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x5a0,menuInputText(tbl->text[2],*(s32*)(self+0x340)),0,0,0);
+fn_803832BC(self+0x5be,menuInputText(tbl->text[3],*(s32*)(self+0x340)),0,0,0);
 }
 if(!self[0x657])fn_80458880(lbl_8053AF80,11,-1);
-else{fn_804083D8(self);{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuLayoutText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
+else{fn_804083D8(self);{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuInputText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
 strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));
 strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
 (*(Screen408**)(self+0x10))->search(0x54746c763131ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_805438BC));
@@ -2077,7 +2079,7 @@ strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746
 if(!self[0x65d]&&!self[0x657]){
 for(int k=0;k<15;k++){(*(Obj240**)(self+0x278+k*4))->f26=0;self[0x65d]=1;}
 }
-row=self;for(i=0;i<8;i++,row+=0x14){fn_80402E08(*(void**)(row+0x28),lbl_80543898,lbl_80543898);(*(PaneRef**)(row+0x28))->frame20=0;
+i=0;row=self;for(;i<8;i++,row+=0x14){fn_80402E08(*(void**)(row+0x28),lbl_80543898,lbl_80543898);(*(PaneRef**)(row+0x28))->frame20=0;
 cursor=row;for(j=0;j<3;j++,cursor+=4){(*(PaneRef**)(cursor+0x28))->pane->setAlpha((*(PaneRef**)(cursor+0x28))->alpha);(*(PaneRef**)(cursor+0x28))->frame26=0;}}
 *(s32*)(self+0x350)=14;
 }else if(fn_80309C4C(lbl_8053AD30,0x1000,-1)){
@@ -2087,7 +2089,7 @@ lbl_80529DEC[0x237]=3;*(s32*)(self+0x668)=4;*(s32*)(lbl_80529DEC+0x118)=*(s32*)(
 *(s32*)(self+0x668)=4;fn_80458880(lbl_8053AF80,11,-1);
 }else if(fn_80309B74(lbl_8053AD30,4,-1)||fn_80309B74(lbl_8053AD30,1,-1)){
 *(s32*)(self+0x344)=*(s32*)(self+0x340);--*(s32*)(self+0x340);if(*(s32*)(self+0x340)<0)*(s32*)(self+0x340)=*(s32*)(self+0x370);
-fn_804083D8(self);if(*(s32*)(self+0x370)>0){{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuLayoutText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
+fn_804083D8(self);if(*(s32*)(self+0x370)>0){{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuInputText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
 strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));
 strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
 (*(Screen408**)(self+0x10))->search(0x54746c763131ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_805438BC));
@@ -2097,7 +2099,7 @@ strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746
 *(s16*)(self+0x426)=0;*(s32*)(self+0x350)=12;fn_80458880(lbl_8053AF80,38,-1);}
 }else if(fn_80309B74(lbl_8053AD30,8,-1)||fn_80309B74(lbl_8053AD30,2,-1)){
 *(s32*)(self+0x344)=*(s32*)(self+0x340);++*(s32*)(self+0x340);if(*(s32*)(self+0x340)>=*(s32*)(self+0x370)+1)*(s32*)(self+0x340)=0;
-fn_804083D8(self);if(*(s32*)(self+0x370)>0){{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuLayoutText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
+fn_804083D8(self);if(*(s32*)(self+0x370)>0){{s32 st=*(s32*)(self+0x340);if(st<8)fn_803832BC(self+0x438,menuInputText((u32*)tbl,st),0,0,0);else if(st==8)strcpy((char*)(self+0x438),lbl_80543920);else if(st==9)strcpy((char*)(self+0x438),lbl_80543928);else if(st==10)strcpy((char*)(self+0x438),lbl_80543930);else if(st==11)strcpy((char*)(self+0x438),lbl_80543934);else if(st==12)strcpy((char*)(self+0x438),lbl_8054393C);else self[0x438]=0;}
 strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763133ULL)),(char*)(self+0x438));
 strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self+0x10))->search(0x54746c763134ULL)),(char*)(self+0x438));
 (*(Screen408**)(self+0x10))->search(0x54746c763131ULL)->setAlpha((s32)((f32)self[0x64b]*lbl_805438BC));
