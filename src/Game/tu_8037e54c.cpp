@@ -768,6 +768,15 @@ extern "C" u32 fn_803846BC(u32 id) {
     return id;
 }
 
+extern "C" u8 fn_8038A42C(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u16);
+static inline u8 canShowMessage(s32);
+extern "C" void fn_8022FBB8(s32, s32);
+extern "C" u8 fn_802308E0(s32);
+static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
+    typedef u8 (*ShowFn)(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u32);
+    u32 index = fn_803846BC(id);
+    return ((ShowFn)fn_8038A42C)(manager, player, source, index, value, &pos, flags);
+}
 extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
     u32 i;
     u32 count;
