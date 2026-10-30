@@ -206,6 +206,7 @@ static inline f32 slr4Random() {
     out.bits=(*seed>>9)|0x3f800000;
     return out.value-1.0f;
 }
+
 extern "C" void fn_80172DC4(void* this_) {
     char* p=(char*)this_;
     s16 angle=0;
