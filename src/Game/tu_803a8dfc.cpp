@@ -3298,6 +3298,12 @@ extern "C" void fn_803B38E8(void* this_) {
 
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 
+static inline void IntroReadAlpha(Menu_Intro* m, u8* dst, const u64* tags, s32 count) {
+    for (s32 i = 0; i < count; i++, tags++) {
+        dst[i] = m->screens[m->cur]->search(*tags)->getAlpha();
+    }
+}
+
 static inline void IntroSetupScores(u8* p, int count) {
     for (int i = 0; i < count; i++) {
         u8* q = p + i * 4;
@@ -3328,13 +3334,12 @@ static inline void IntroSetupScores(u8* p, int count) {
 
 extern "C" void fn_803B42C0(void* this_) {
     IntroTags* tbl = (IntroTags*)lbl_80476208;
-    u8* q;
-    int i;
     u8* p = (u8*)this_;
     Menu_Intro* m;
     f32 f31;
     u8* src;
     u8* dst;
+    int i;
     const u64* t;
 
     *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
@@ -3411,31 +3416,7 @@ extern "C" void fn_803B42C0(void* this_) {
     *(void**)(p + 0x160) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x0050727073743033ULL);
     *(void**)(p + 0x168) = ((Scr_803B1B60**)(p + 4))[*(s32*)(p + 0x450)]->v3C(0x004e646174613035ULL);
     *(void**)(p + 0x16c) = ((Scr_803B1B60*)*(void**)(p + 0x1c))->v3C(0x005072736c746267ULL);
-    for (i = 0; i < 3; i++) {
-        q = p + i * 4;
-        ((PaneVt_803B38E8*)*(void**)(q + 0xa8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0xb8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0xc8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0xd8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0xe8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0xf8))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0x108))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0x118))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0x128))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((PaneVt_803B38E8*)*(void**)(q + 0x138))->v9C(*(s32*)((u8*)lbl_8053AD78 + 0x154));
-        ((u8*)*(void**)(q + 0xa8))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0xb8))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0xc8))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0xd8))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0xf8))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x108))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x118))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x128))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x30))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x50))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x60))[0xb0] = 0;
-        ((u8*)*(void**)(q + 0x148))[0xb0] = 0;
-    }
+    IntroSetupScores(p, 3);
     {
         s32 font = *(s32*)((u8*)lbl_8053AD78 + 0x154);
         ((PaneVt_803B38E8*)((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x0000546d6d743032ULL))->v9C(font);
