@@ -942,8 +942,8 @@ static inline void key0LinkHere(char* p) {
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
-    Key0Pt key = key0Point(p + 0x230);
-    Key0Pt pos = key0Point(p + 0xc);
+    Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
+    Key0Pt pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
     u32 id = *(u32*)(p + 0x238);
     fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
 }
@@ -1056,9 +1056,10 @@ extern "C" void fn_802C4498(char* p) {
         fn_802C2840((u8*)p);
         if (key0RoomFlag(*(s32*)(p + 4))) {
             if (!*(u8*)(p + 0x2b2)) {
+                f32 limit = lbl_80540CB8;
                 vel.y += lbl_80540CD0;
-                if (vel.y > lbl_80540CB8) {
-                    vel.y = lbl_80540CB8;
+                if (vel.y > limit) {
+                    vel.y = limit;
                 }
                 pos.add(vel);
                 if (((u8 (*)(char*, void*, s32))fn_801F2618)(p, 0, 0)) {
@@ -1148,11 +1149,8 @@ extern "C" void fn_802C4498(char* p) {
         *(s32*)(p + 0x294) = 0;
         s32 idx = *(s32*)(p + 0x28c);
         if (idx >= 0) {
-            struct Key0Mgr {
-                u32 hdr[2];
-                u8* obj[1];
-            };
-            *(u8**)(p + 0x244) = ((Key0Mgr*)fn_801F856C())->obj[idx];
+            u8* mgr = (u8*)fn_801F856C() + idx * 4;
+            *(u8**)(p + 0x244) = *(u8**)(mgr + 8);
             if (*(u8**)(p + 0x244) != 0) {
                 u8* o = *(u8**)(p + 0x244);
                 *(f32*)(p + 0x248) = *(f32*)(o + 0xc);
@@ -1309,10 +1307,7 @@ extern "C" void fn_802C4498(char* p) {
     if (*(s32*)(p + 0x294) < 0x2c88) {
         return;
     }
-    *(s32*)(p + 0x294) = 0;
-    *(u8*)(p + 0x2b0) = 1;
-    key0Register(p);
-    key0LinkHere(p);
+    key0ReturnHome(p);
 }
 
 extern "C" void fn_802C5284(char* p) {
