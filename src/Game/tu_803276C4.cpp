@@ -3,6 +3,10 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
+#include "Game/HitRect.h"
+#define OSIN_S32(p,o) (*(s32*)((u8*)(p)+(o)))
+#define OSIN_F32(p,o) (*(f32*)((u8*)(p)+(o)))
+#define OSIN_BYTE(p,o) (*((u8*)(p)+(o)))
 
 class ResMgr {
 public:
