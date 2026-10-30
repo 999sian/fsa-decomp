@@ -38,6 +38,7 @@ static inline f32 msgRandomUnit() {
     u32 bits=(*(u32*)(rng+0xb4)>>9)|0x3f800000;
     return *(f32*)&bits-1.0f;
 }
+static inline f32 msgRandom() { return msgRandomUnit(); }
 struct MsgCursorInit {
     u8 data[0x60];
     MsgCursorInit(s8 player,void* pos) { fn_8045B46C(this,player,pos,0,8); }
@@ -992,12 +993,7 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     (*(J2DPicture**)(p+0x5c))->setBlackWhite(JUtility::TColor(255,255,140,0),JUtility::TColor(255,255,140,255));
     (*(J2DPicture**)(p+0x5c))->rotate(lbl_80543224,lbl_80543228,(J2DRotateAxis)'z',lbl_80543240);
     (*(f32*)(p+0x118))=0.0f;
-    {
-        u8* rng=(u8*)lbl_8053AAF8;
-        *(u32*)(rng+0xb4)=*(u32*)(rng+0xb4)*0x19660d+0x3c6ef35f;
-        u32 bits=(*(u32*)(rng+0xb4)>>9)|0x3f800000;
-        (*(s16*)(p+0x198))=(s32)(lbl_8054322C*(*(f32*)&bits-1.0f))+10;
-    }
+    (*(s16*)(p+0x198))=(s32)(lbl_8054322C*msgRandomUnit())+10;
     (*(s16*)(p+0x19a))=-96;(*(s16*)(p+0x19c))=0;
     *(void**)(p+4)=0;
     *(JMessage::TResourceContainer**)(p+4)=new JMessage::TResourceContainer;
@@ -1030,12 +1026,10 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     *(void**)(*(u8**)(p+8)+4)=*(void**)(p+0x10);
     *(void**)(*(u8**)(p+8)+8)=*(void**)(p+0x14);
     JMessage::TParse parser(*(JMessage::TResourceContainer**)(p+4));
-    const void* data=*(void**)(p+0x18);
-    parser.parse_next(&data,0);
+    parser.parse(*(void**)(p+0x18),0);
     if(*(void**)(p+0x1c)) {
         JMessage::TParse_color colors(*(JMessage::TResourceContainer**)(p+4));
-        const void* col=*(void**)(p+0x1c);
-        colors.parse_next(&col,0);
+        colors.parse(*(void**)(p+0x1c),0);
     }
     (*(JMessage::TControl**)(p+8))->reset();
     u8* ctl=*(u8**)(p+8);
