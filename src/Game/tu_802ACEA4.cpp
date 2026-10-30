@@ -242,6 +242,10 @@ static inline Box4 platformRoomBox(s32 room) {
     u8* mgr = (u8*)fn_802D6A9C();
     return *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
 }
+static inline void platformGetRoomBox(Box4& out, s32 room) {
+    u8* mgr = (u8*)fn_802D6A9C();
+    out = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+}
 extern "C" const f32 lbl_805408EC;
 extern "C" const f32 lbl_805408F0;
 extern "C" const f32 lbl_805408F8;
@@ -337,9 +341,7 @@ extern "C" void fn_802ADC18(Actor* a) {
     case 0: {
         f32 px = a->field_0C.x;
         f32 py = a->field_0C.y;
-        s32 room = a->field_04;
-        u8* mgr = (u8*)fn_802D6A9C();
-        Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+        Box4 b = platformRoomBox(a->field_04);
         s32 x = clampTileCoordinate((s32)(px - b.a));
         s32 y = clampTileCoordinate((s32)(py - b.b));
         *(u16*)(p + 0x250) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), a->field_04,
@@ -389,9 +391,7 @@ extern "C" void fn_802ADC18(Actor* a) {
             }
             {
                 f32 px = a->field_0C.x;
-                s32 room = a->field_04;
-                u8* mgr = (u8*)fn_802D6A9C();
-                Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                Box4 b = platformRoomBox(a->field_04);
                 f32 by = b.b;
                 f32 one = lbl_8054090C;
                 f32 bx = b.a;
@@ -419,9 +419,7 @@ extern "C" void fn_802ADC18(Actor* a) {
                 a->v10(0xff, 1);
                 fn_801F0E34(a, 0x30009, 0);
                 f32 px = a->field_0C.x;
-                s32 room = a->field_04;
-                u8* mgr = (u8*)fn_802D6A9C();
-                Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                Box4 b = platformRoomBox(a->field_04);
                 f32 by = b.b;
                 f32 one = lbl_8054090C;
                 f32 bx = b.a;
@@ -450,9 +448,7 @@ extern "C" void fn_802ADC18(Actor* a) {
         if (*(f32*)(p + 0x248) >= lbl_80540918) {
             *(f32*)(p + 0x248) = lbl_8054091C;
             f32 px = a->field_0C.x;
-            s32 room = a->field_04;
-            u8* mgr = (u8*)fn_802D6A9C();
-            Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+            Box4 b = platformRoomBox(a->field_04);
             f32 by = b.b;
             f32 one = lbl_8054090C;
             f32 bx = b.a;
@@ -493,9 +489,7 @@ extern "C" void fn_802ADC18(Actor* a) {
         if (*(f32*)(p + 0x248) < lbl_805408C8) {
             *(f32*)(p + 0x248) = lbl_805408C8;
             f32 px = a->field_0C.x;
-            s32 room = a->field_04;
-            u8* mgr = (u8*)fn_802D6A9C();
-            Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+            Box4 b = platformRoomBox(a->field_04);
             const u16* tiles = platformTiles;
             f32 by = b.b;
             f32 one = lbl_8054090C;
@@ -569,9 +563,7 @@ extern "C" void fn_802ADC18(Actor* a) {
                     fn_801F0E34(a, 0x30001, 0);
                 } else {
                     f32 px = lbl_805408F0 + a->field_0C.x;
-                    s32 room = a->field_04;
-                    u8* mgr = (u8*)fn_802D6A9C();
-                    Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+                    Box4 b = platformRoomBox(a->field_04);
                     f32 by = b.b;
                     f32 one = lbl_8054090C;
                     f32 bx = b.a;
