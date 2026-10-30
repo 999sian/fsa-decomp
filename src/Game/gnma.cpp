@@ -53,7 +53,7 @@ extern "C" u32 fn_801F2618(void* p, void* a, s32 b);
 extern "C" u8 fn_801F2DB4(void* p, u32 a, u32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
 extern "C" void fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
-extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32* a, void* b, void* c, int d, s32 e);
+extern "C" void fn_801EEC98(void* p, void* h, u16* out, s32* a, void* b, void* c, s32 d, s32 e);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
