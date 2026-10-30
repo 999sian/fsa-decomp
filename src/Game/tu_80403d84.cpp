@@ -2026,7 +2026,7 @@ static inline void resetMenuFrames(PaneRef* const* slot) {
 #pragma opt_propagation off
 static inline u32 menuInputText(register u32* table, const int index) { return table[index]; }
 #pragma opt_propagation on
-#pragma opt_propagation off
+#pragma opt_propagation on
 #pragma opt_common_subs on
 #pragma opt_strength_reduction on
 #pragma peephole off
