@@ -2564,7 +2564,11 @@ static inline f32 WarpSin802F(f32 angle) {
 static inline f32 WarpLineDistance802F(const JGeometry::TVec3<f32>& point,const JGeometry::TVec3<f32>& start,const JGeometry::TVec3<f32>& dir) {
     JGeometry::TVec3<f32> delta;delta.sub(point,start);
     f32 length=dir.squared(), projection=dir.dot(delta), distance=delta.squared();
-    return JGeometry::TUtilf::sqrt((length*distance-projection*projection)/length);
+    f32 squared=(length*distance-projection*projection)/length;
+    if(squared<=lbl_805414F8) return squared;
+    f32 inv=__frsqrte(squared);
+    inv=lbl_80541520*inv*(lbl_80541524-squared*(inv*inv));
+    return squared*inv;
 }
 #pragma dont_inline on
 extern "C" void fn_802FDDD4(u8* this_) {
