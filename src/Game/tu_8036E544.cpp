@@ -105,10 +105,13 @@ static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
 
 static inline bool spawnPair(char* p, JGeometry::TVec3f pos, s32 kind) {
     s32 slots[2];
+    s32* out;
+    s32 i;
+    s32 n;
     slots[0] = slots[1] = 0;
-    s32 n = 0;
-    s32* out = slots;
-    for (s32 i = 0; i < 20; i++) {
+    n = 0;
+    out = slots;
+    for (i = 0; i < 20; i++) {
         if (*(void**)(p + 0x258 + i * 4) == 0) {
             n++;
             *out++ = i;
