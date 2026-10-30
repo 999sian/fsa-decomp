@@ -1282,19 +1282,19 @@ struct MsgMeasureSave {
     f32 spaceW[12]; // 0x1a8
 };
 
-static inline void msgSetLineBit(u8* p, s32 n) {
+static inline void msgSetLineBit(MsgMeasure* m, s32 n) {
     if (n < 32) {
-        *(u32*)(p + 0x3c) |= 1 << n;
+        m->bits[0] |= 1 << n;
     } else if (n < 64) {
-        *(u32*)(p + 0x40) |= 1 << (n - 32);
+        m->bits[1] |= 1 << (n - 32);
     }
 }
 
-static inline void msgClearLineBit(u8* p, s32 n) {
+static inline void msgClearLineBit(MsgMeasure* m, s32 n) {
     if (n < 32) {
-        *(u32*)(p + 0x3c) &= ~(1 << n);
+        m->bits[0] &= ~(1 << n);
     } else if (n < 64) {
-        *(u32*)(p + 0x40) &= ~(1 << n);
+        m->bits[1] &= ~(1 << n);
     }
 }
 
