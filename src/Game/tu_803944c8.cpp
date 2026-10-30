@@ -183,6 +183,8 @@ extern "C" void fn_8039499C(MsgDraw* w, u8 shake) {
  if(!p[0x1aa]) {
  f32 baseX=*(f32*)(p+0xc0),baseY=*(f32*)(p+0xc4);
  f32 line,off,motion;
+ u8* icon;
+ s32 n;
  J2DScreen* screen=w->screens[p[0x1a2]];
  J2DTextBox* tb=(J2DTextBox*)screen->search('Tm01');
  J2DTextBox* shadow=(J2DTextBox*)screen->search('Tm02');
@@ -213,11 +215,11 @@ w->screens[0]->search('P1ar')->show();
  shadow->resize(100.0f+*(f32*)(p+0xe8),*(f32*)(p+0xec));
  fn_8013B490(lbl_8053AB10);
  screen->draw(0.0f,0.0f,*(J2DGrafContext**)((u8*)lbl_8053AB10+0x10));
- for(s32 n=0;n<12;n++) {
+ for(n=0;n<12;n++) {
  if(w->icons[n][8]!=0xff) {
- f32 left=tb->getBounds()->i.x;
- u8* icon=w->icons[n];
- f32 x=*(f32*)icon+((*(f32*)(p+0x98)+baseX)+left);
+ f32 x=(*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x;
+ icon=w->icons[n];
+ x=*(f32*)icon+x;
  f32 y=*(f32*)(icon+4)*tb->mLineSpacing+(off+((*(f32*)(p+0x9c)+baseY)+tb->getBounds()->i.y));
  if(*(s32*)(p+0x164)==1) y-=26.0f;
  else if(*(s32*)(p+0x164)==2)y-=13.0f;
@@ -225,39 +227,41 @@ w->screens[0]->search('P1ar')->show();
  }}
  if(p[0x1a0]) {
  motion=0.0f;
- s32 t=*(s16*)(p+0x19c);
+ s16 t=*(s16*)(p+0x19c);
  if(t<0) {
- if(t>-5)t=-t;else {if(t==-10)*(s16*)(p+0x19c)=0;t+=10;}
- motion=(-5.0f*(f32)(t*t))/25.0f;
+ s32 v;
+ if(t>-5)v=-t;else {v=t+10;if(t==-10)*(s16*)(p+0x19c)=0;}
+ motion=(-5.0f*(f32)(v*v))/25.0f;
  if(*(s16*)(p+0x19c)!=0)--*(s16*)(p+0x19c);
  } else if(t>0) {
- if(t>=5){if(t==10)*(s16*)(p+0x19c)=0;t=10-t;}
- motion=(5.0f*(f32)(t*t))/25.0f;
+ s32 v;
+ if(t<5)v=t;else {v=10-t;if(t==10)*(s16*)(p+0x19c)=0;}
+ motion=(5.0f*(f32)(v*v))/25.0f;
  if(*(s16*)(p+0x19c)!=0)++*(s16*)(p+0x19c);
  }
  if(!p[0x1a1]) {
  if(*(s32*)(p+0x164)==2) {
  f32 y=((w->choicesY[*(s32*)(p+0x168)])*tb->mLineSpacing+(off+((*(f32*)(p+0x9c)+baseY)+tb->getBounds()->i.y)))-13.0f;
- f32 x=0.0f+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x));
+ f32 x=lbl_805431DC+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x));
  (*(J2DPicture**)(p+0x5c))->draw(x,y,19.2f,28.8f,false,false,false);
  } else if(*(s32*)(p+0x164)==3) {
  f32 y=(w->choicesY[*(s32*)(p+0x168)])*tb->mLineSpacing+(off+((*(f32*)(p+0x9c)+baseY)+tb->getBounds()->i.y));
- f32 x=0.0f+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x));
+ f32 x=lbl_805431DC+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x));
  (*(J2DPicture**)(p+0x5c))->draw(x,y,19.2f,28.8f,false,false,false);
  }
  } else {
  line=w->choicesY[*(s32*)(p+0x168)];
  if(0.0f==line) {
  f32 y=line*tb->mLineSpacing+(off+((*(f32*)(p+0x9c)+baseY)+tb->getBounds()->i.y))-30.0f;
- f32 x=0.0f+(motion+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x)));
+ f32 x=lbl_805431DC+(motion+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x)));
  (*(J2DPicture**)(p+0x5c))->draw(x,y,19.2f,28.8f,false,false,false);
  } else if(1.0f==line) {
  f32 y=line*tb->mLineSpacing+(off+((*(f32*)(p+0x9c)+baseY)+tb->getBounds()->i.y))-13.0f;
- f32 x=0.0f+(motion+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x)));
+ f32 x=lbl_805431DC+(motion+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x)));
  (*(J2DPicture**)(p+0x5c))->draw(x,y,19.2f,28.8f,false,false,false);
  } else if(2.0f==line) {
  f32 y=line*tb->mLineSpacing+(off+((*(f32*)(p+0x9c)+baseY)+tb->getBounds()->i.y));
- f32 x=0.0f+(motion+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x)));
+ f32 x=lbl_805431DC+(motion+(w->choicesX[*(s32*)(p+0x168)]+((*(f32*)(p+0x98)+baseX)+tb->getBounds()->i.x)));
  (*(J2DPicture**)(p+0x5c))->draw(x,y,19.2f,28.8f,false,false,false);
  }
  }
