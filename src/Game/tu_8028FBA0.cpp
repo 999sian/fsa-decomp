@@ -195,6 +195,17 @@ extern "C" void fn_803020C8(s32, s32, s32, u8);
 extern "C" void fn_80230E1C(s32, s32);
 extern "C" void fn_80248FF0(char*);
 
+inline void fn_80290070_warpTo(char* p, const JGeometry::TVec3<f32>* b) {
+    S32(p, 0xce0) = S32(p, 0x3b4);
+    VEC(p, 0xcc8) = VEC(p, 0x8);
+    S32(p, 0x3b4) = 0;
+    S32(p, 0xce4) = 0;
+    VEC(p, 0x8) = *b;
+    VEC(p, 0xcd4) = VEC(p, 0x8);
+    VEC(p, 0xcbc) = VEC(p, 0xcd4);
+    F32(p, 0x10) = lbl_805405B4;
+}
+
 // Inlined copies of fn_80290E90 / fn_80290D58, used by fn_80290070.
 inline void fn_80290E90_inline(char* p) {
     if ((u8)fn_80240670(p) == 0) {
@@ -242,6 +253,8 @@ inline void fn_80290D58_inline(char* p) {
 
 bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeometry::TVec3<f32>* b, s32 state) {
     JGeometry::TVec3<f32> dest;
+    JGeometry::TVec3<f32> up;
+    JGeometry::TVec3<f32> side;
     if (state == 0xc) {
         if ((u8)fn_802DE93C() || S32(p, 0x3b4) >= 8) {
             state = 0x26;
@@ -274,44 +287,8 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
         VEC(p, 0xcbc) = VEC(p, 0xcd4);
         F32(p, 0x10) = lbl_805405B4;
         fn_8030BD3C((void*)S32(p, 0xbec), S32(p, 0x4));
-        if ((u8)fn_80240670(p) == 0) {
-            fn_80301D54(S32(p, 0x4));
-        }
-        U8(p, 0x400) = 0;
-        if (U8(lbl_8053AAF8, 0x7e) == 0 && (u8)fn_80240670(p) == 0) {
-            if (S32(p, 0xce4) < 8) {
-                fn_8045815C(lbl_8053AF80, 0);
-            } else if (S32(p, 0xce4) == 8) {
-                fn_8045815C(lbl_8053AF80, 1);
-            }
-        }
-        if (!(u8)fn_80241E28(p, S32(p, 0xce0), &VEC(p, 0xcc8))) {
-            VEC(p, 0xcbc) = VEC(p, 0x8);
-            VEC(p, 0xd1c) = VEC(p, 0xcbc);
-        }
-        if (S32(p, 0xcf4) == 0x14 && S32(p, 0x3b4) >= 8) {
-            S32(p, 0xbd8) = 0x258;
-            U8(p, 0xbdc) = 1;
-        }
-        if ((u8)fn_80240D64(p)) {
-            S32(p, 0x11f0) = 5;
-        }
-        U8(p, 0xce8) = 0;
-        S32(p, 0xcf8) = S32(p, 0xcf4);
-        S32(p, 0xcf4) = 0x29;
-        S32(p, 0x468) = 0x3c;
-        U8(p, 0xced) = 0;
-        fn_80241454(p, 1);
-        U8(p, 0x1216) = 0;
-        fn_8024BAEC(p);
-        fn_8030BD3C((void*)S32(p, 0xbec), S32(p, 0x4));
-        if (fn_802486A0(p) != 4 && fn_802486A0(p) != 5) {
-            fn_80248004(p, 5, 1);
-        }
-        fn_80248604(p);
-        U8(p, 0xceb) = 0;
-        U8(p, 0x400) = 0;
-        U8(p, 0xcec) = 0;
+        fn_80290E90_inline(p);
+        fn_80290D58_inline(p);
         return true;
     }
     if (fn_80270A8C(p)) {
@@ -360,23 +337,22 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
         if (Player_IsLinked(p) && S32(p, 0x1238) > 0) {
             return false;
         }
-        if (!fn_80251AEC(p, 0x1e)) {
+        if (fn_80251AEC(p, 0x1e)) {
+            const JGeometry::TVec3<f32>& d = ((JGeometry::TVec3<f32>&)*a) - VEC(p, 0x8);
+            fn_80252BAC(p, (JGeometry::TVec3<f32>*)&d);
+            if ((u8)fn_80240670(p)) {
+                mode = S32(p, 0x3b4);
+                state = 9;
+                dest.x = F32(p, 0xd1c);
+                dest.y = F32(p, 0xd20);
+                dest.z = F32(p, 0xd24);
+            }
+        } else {
             return false;
-        }
-        JGeometry::TVec3<f32> d = ((JGeometry::TVec3<f32>&)*a) - VEC(p, 0x8);
-        fn_80252BAC(p, &d);
-        if ((u8)fn_80240670(p)) {
-            mode = S32(p, 0x3b4);
-            state = 9;
-            dest.x = F32(p, 0xd1c);
-            dest.y = F32(p, 0xd20);
-            dest.z = F32(p, 0xd24);
         }
     } else if ((u32)(state - 0xc) <= 1 || state == 0x26) {
-        if (!Player_IsLinked(p) && U8(p, 0x1216) == 1) {
-            return false;
-        }
-        if (Player_IsLinked(p) && !fn_8022D75C(Player_GetLinkTargetIndex(p)) && S32(p, 0x1238) > 0) {
+        if ((!Player_IsLinked(p) && U8(p, 0x1216) == 1) ||
+            (Player_IsLinked(p) && !fn_8022D75C(Player_GetLinkTargetIndex(p)) && S32(p, 0x1238) > 0)) {
             return false;
         }
         if (mode != S32(p, 0x3b4)) {
@@ -386,33 +362,37 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
             return false;
         }
     } else if (state == 5) {
-        if (!fn_80251AEC(p, 0x20)) {
-            return false;
-        }
-        U8(p, 0xcf1) = U8(p, 0xcf0);
-        u16 kind = fn_8022461C((s32)&dest, mode);
-        if (kind == 0 || (u16)(kind - 2) <= 1 || kind == 0x21) {
-            U8(p, 0xcf0) = 0;
+        if (fn_80251AEC(p, 0x20)) {
+            U8(p, 0xcf1) = U8(p, 0xcf0);
+            u16 kind = fn_8022461C((s32)&dest, mode);
+            if (kind == 0 || (u16)(kind - 2) <= 1 || kind == 0x21) {
+                U8(p, 0xcf0) = 0;
+            } else {
+                U8(p, 0xcf0) = 1;
+            }
         } else {
-            U8(p, 0xcf0) = 1;
+            return false;
         }
     } else if (state == 6 || state == 0xb || state == 0x14 || state == 0x1f) {
         if (mode >= 8) {
-            if (!fn_80251AEC(p, 0x24)) {
+            if (fn_80251AEC(p, 0x24)) {
+                VEC(p, 0x8) = *a;
+            } else {
                 return false;
             }
-            VEC(p, 0x8) = *a;
         } else {
-            if (!fn_80251AEC(p, 0x22)) {
+            if (fn_80251AEC(p, 0x22)) {
+                VEC(p, 0x8) = *a;
+            } else {
                 return false;
             }
-            VEC(p, 0x8) = *a;
         }
     } else if (state == 0xe || state == 0x25) {
-        if (!fn_80251AEC(p, 0x26)) {
+        if (fn_80251AEC(p, 0x26)) {
+            VEC(p, 0x8) = *a;
+        } else {
             return false;
         }
-        VEC(p, 0x8) = *a;
     } else if (state == 0xf) {
         if (!fn_80251AEC(p, 0x28)) {
             return false;
@@ -422,18 +402,20 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
             return false;
         }
     } else if (state == 0xa) {
-        if (S32(p, 0x3b4) != 8) {
-            return false;
-        }
-        if (!fn_80251AEC(p, 0x2a)) {
-            return false;
-        }
-        U8(p, 0xcf1) = U8(p, 0xcf0);
-        u16 kind = fn_8022461C((s32)&dest, mode);
-        if (kind == 0 || kind == 2 || kind == 0x21) {
-            U8(p, 0xcf0) = 0;
+        if (S32(p, 0x3b4) == 8) {
+            if (fn_80251AEC(p, 0x2a)) {
+                U8(p, 0xcf1) = U8(p, 0xcf0);
+                u16 kind = fn_8022461C((s32)&dest, mode);
+                if (kind == 0 || kind == 2 || kind == 0x21) {
+                    U8(p, 0xcf0) = 0;
+                } else {
+                    U8(p, 0xcf0) = 1;
+                }
+            } else {
+                return false;
+            }
         } else {
-            U8(p, 0xcf0) = 1;
+            return false;
         }
     } else if (state == 0x11) {
         if (!fn_80240818(p)) {
@@ -446,27 +428,35 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
             }
         }
     } else if (state == 0x17 || state == 0x18) {
-        if (!fn_80251AEC(p, 0x1c)) {
+        if (fn_80251AEC(p, 0x1c)) {
+            up.x = 0.0f;
+            up.y = a->y - F32(p, 0xc);
+            up.z = 0.0f;
+            fn_80252BAC(p, &up);
+        } else {
             return false;
         }
-        JGeometry::TVec3<f32> v(lbl_805405B4, a->y - F32(p, 0xc), lbl_805405B4);
-        fn_80252BAC(p, &v);
     } else if (state == 0x1d) {
-        if (!fn_80251AEC(p, 0x2c)) {
+        if (fn_80251AEC(p, 0x2c)) {
+            VEC(p, 0x8) = *a;
+        } else {
             return false;
         }
-        VEC(p, 0x8) = *a;
     } else if (state == 0x1e) {
-        if (!fn_80251AEC(p, 0x2e)) {
+        if (fn_80251AEC(p, 0x2e)) {
+            VEC(p, 0x8) = *a;
+        } else {
             return false;
         }
-        VEC(p, 0x8) = *a;
     } else {
-        if (!fn_80251AEC(p, 0x1c)) {
+        if (fn_80251AEC(p, 0x1c)) {
+            side.x = a->x - F32(p, 0x8);
+            side.y = 0.0f;
+            side.z = 0.0f;
+            fn_80252BAC(p, &side);
+        } else {
             return false;
         }
-        JGeometry::TVec3<f32> v(a->x - F32(p, 0x8), lbl_805405B4, lbl_805405B4);
-        fn_80252BAC(p, &v);
     }
     if (state == 0x12) {
         VEC(p, 0xcd4) = *(JGeometry::TVec3<f32>*)fn_8023E724(Player_GetLinkTargetIndex(p));
@@ -499,22 +489,24 @@ bool fn_80290070(char* p, s32 mode, const JGeometry::TVec3<f32>* a, const JGeome
     }
     state = -1;
     if (!(u8)fn_80240670(p)) {
-        s32 cur = S32(p, 0xcf4);
-        if (cur != 0xc && cur != 0xd && cur != 0x26 && cur != 0x22) {
-            if ((cur == 4 || (u32)(cur - 7) <= 2 || cur == 0x20 || cur == 0x24) && (mode = S32(p, 0x3b4)) > 8 &&
-                S32(p, 0xce4) > 8 && U8((char*)fn_802D6A9C() + 0x10000, mode + 0x31df) != 0 &&
-                U8((char*)fn_802D6A9C() + 0x10000, (mode = S32(p, 0xce4)) + 0x31df) != 0 &&
+        if (S32(p, 0xcf4) != 0xc && S32(p, 0xcf4) != 0xd && S32(p, 0xcf4) != 0x26 && S32(p, 0xcf4) != 0x22) {
+            s32 cur;
+            s32 other;
+            if ((S32(p, 0xcf4) == 4 || (u32)(S32(p, 0xcf4) - 7) <= 2 || S32(p, 0xcf4) == 0x20 || S32(p, 0xcf4) == 0x24) &&
+                (cur = S32(p, 0x3b4)) > 8 && S32(p, 0xce4) > 8 &&
+                U8((char*)fn_802D6A9C() + 0x10000, cur + 0x31df) != 0 &&
+                (other = S32(p, 0xce4), U8((char*)fn_802D6A9C() + 0x10000, other + 0x31df) != 0) &&
                 S32(p, 0xce4) != S32(p, 0x3b4)) {
                 state = 0;
-            } else if (cur == 0x1e) {
+            } else if (S32(p, 0xcf4) == 0x1e) {
                 state = 2;
-            } else if (cur == 0xf) {
+            } else if (S32(p, 0xcf4) == 0xf) {
                 state = 2;
-            } else if (cur == 0x27) {
+            } else if (S32(p, 0xcf4) == 0x27) {
                 state = 1;
-            } else if ((cur == 6 || cur == 0xb) && S32(p, 0xce0) > 8) {
+            } else if ((S32(p, 0xcf4) == 6 || S32(p, 0xcf4) == 0xb) && S32(p, 0xce0) > 8) {
                 state = 2;
-            } else if (cur == 0x13 || cur == 0x16) {
+            } else if (S32(p, 0xcf4) == 0x13 || S32(p, 0xcf4) == 0x16) {
                 if (S32(p, 0xce4) < 8) {
                     state = 0;
                 }
