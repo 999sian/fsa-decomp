@@ -414,7 +414,12 @@ extern "C" void fn_80227CE8(void* this_) {
 
 extern "C" f32 fn_8022C76C(s32);
 extern const f32 lbl_8053FF80,lbl_8053FF8C,lbl_8053FF90;
-extern u32 lbl_8046ABE8[];
+#pragma pool_data on
+const u32 lbl_8046ABE8[] = {
+    'ARRW','FIRE','HBMB','BOME','STON','GRAS','TUBO','YASI','HNRY','ESRY','PCDM','SWBM','SBAL','NULL'
+};
+const u32 gateCarryTypes[] = { 'HNRY','ESRY','NULL' };
+const u32 gateHeavyTypes[] = { 'HBMB','BOME','STON','GRAS','TUBO','YASI','RUPY','HNRY','ESRY','SBAL','NULL' };
 extern "C" u8 fn_8023A51C(s32);
 extern "C" void* fn_8023A478(s32);
 extern "C" u16 fn_802265FC(void*,u32);
@@ -558,7 +563,7 @@ extern "C" void fn_80227F50(void* this_) {
         dest=*(JGeometry::TVec3f*)(p+0x238);
         delta.x-=(*(f32*)(p+0xc)); delta.y-=(*(f32*)(p+0x10));
         dest.add(delta);
-        ((void(*)(Actor*,int,const JGeometry::TVec3f*))fn_801F349C)((Actor*)actor,gateRoom((*(u32*)(p+0x90))),&dest);
+        fn_801F349C(actor,gateRoom((*(u32*)(p+0x90))),&dest);
     } else {
         if((*(u32*)(actor+0x1a0))==0x45535259) {
             kind=(*(u32*)(p+0x90))&0x7f;
@@ -577,7 +582,7 @@ extern "C" void fn_80227F50(void* this_) {
             }
         }
         if((*(u32*)(actor+0x1a0))==0x46495245 && (((*(u32*)(actor+0x90))>>6)&3)==1) return;
-        if(actor[0xc4]==0) ((void(*)(Actor*,int,const JGeometry::TVec3f*))fn_801F349C)((Actor*)actor,gateRoom((*(u32*)(p+0x90))),(JGeometry::TVec3f*)(p+0x238));
+        if(actor[0xc4]==0) fn_801F349C(actor,gateRoom((*(u32*)(p+0x90))),p+0x238);
     }
 }
 #pragma opt_propagation reset
