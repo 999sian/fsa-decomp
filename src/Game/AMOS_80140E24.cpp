@@ -95,7 +95,14 @@ extern "C" void* fn_801F8108(void*, u32, s32, f32);
 extern "C" void* fn_801F666C(void*, void*);
 extern "C" void fn_801BEDBC(void*);
 extern f32 lbl_8053CEC4, lbl_8053CECC, lbl_8053CEE8;
-extern const Vec lbl_80465A98[4];
+extern const JGeometry::TVec3f lbl_80465A98[4];
+static inline void AMOSsetDirection(JGeometry::TVec3f* dst, const JGeometry::TVec3f& src) {
+    dst->x = src.x;
+    f32 y = src.y;
+    f32 z = src.z;
+    dst->y = y;
+    dst->z = z;
+}
 static inline void AMOSnormalize(JGeometry::TVec3f* v) { v->normalize(); }
 static inline f32 AMOSsquared(const JGeometry::TVec3f* v) { return v->squared(); }
 extern "C" void fn_80141064(u8* this_) {
