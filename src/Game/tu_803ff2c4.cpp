@@ -245,9 +245,7 @@ endDraw:
 
 extern "C" void fn_803FFAA8(void* this_) {
  const ResTIMG* img;
- u8* strings;
  u8* p=(u8*)this_;
- strings=lbl_80479AC0;
  if(p[0x79]==0) {
   BootTask* load=*(BootTask**)(p+0x44);
   if(load->ready==1) {
@@ -259,7 +257,7 @@ extern "C" void fn_803FFAA8(void* this_) {
    a=operator new(4); if(a) fn_8030905C(a);
    *(void**)(p+8)=a; *(void**)(lbl_80529DEC+0x60)=*(void**)(p+8);
    fn_8030AB38(*(void**)(p+4)); fn_80308E90(*(void**)(p+8));
-   *(void**)(p+0x34)=fn_80401E10(strings,0,*(u32*)(lbl_80529DEC+8));
+   *(void**)(p+0x34)=fn_80401E10((void*)bootLogoArc,0,*(u32*)(lbl_80529DEC+8));
    p[0x79]=1;
   }
   if(fn_802B1DCC(lbl_8053ACA8)) fn_802B1BE0(lbl_8053ACA8,0,0,0);
@@ -271,15 +269,15 @@ extern "C" void fn_803FFAA8(void* this_) {
    *(void**)(lbl_80529DEC+0x18)=load->resource;
    if(load) load->destroy(1);
    *(J2DScreen**)(p+0x18)=new J2DScreen;
-   (*(J2DScreen**)(p+0x18))->setPriority((char*)strings+0x18,0,*(JKRArchive**)(lbl_80529DEC+0x18));
+   (*(J2DScreen**)(p+0x18))->setPriority(bootLayout,0,*(JKRArchive**)(lbl_80529DEC+0x18));
    ((J2DPicture*)(*(J2DScreen**)(p+0x18))->search(0x4e494e5f4c6f676fULL))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(220,0,0,255));
-   {img=fn_80403244(0x54494d47,(char*)strings+44); *(J2DPicture**)(p+28)=new J2DPicture(img);}
-   {img=fn_80403244(0x54494d47,(char*)strings+68); *(J2DPicture**)(p+32)=new J2DPicture(img);}
-   {img=fn_80403244(0x54494d47,(char*)strings+92); *(J2DPicture**)(p+36)=new J2DPicture(img);}
-   {img=fn_80403244(0x54494d47,(char*)strings+112); *(J2DPicture**)(p+40)=new J2DPicture(img);}
-   {img=fn_80403244(0x54494d47,(char*)strings+132); *(J2DPicture**)(p+44)=new J2DPicture(img);}
-   {img=fn_80403244(0x54494d47,(char*)strings+132); *(J2DPicture**)(p+44)=new J2DPicture(img);}
-   {img=fn_80403244(0x54494d47,(char*)strings+152); *(J2DPicture**)(p+48)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootChoice); *(J2DPicture**)(p+28)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootInter); *(J2DPicture**)(p+32)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootPro); *(J2DPicture**)(p+36)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootYes); *(J2DPicture**)(p+40)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootNo); *(J2DPicture**)(p+44)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootNo); *(J2DPicture**)(p+44)=new J2DPicture(img);}
+   {img=fn_80403244(0x54494d47,(char*)(void*)bootTitleLogo); *(J2DPicture**)(p+48)=new J2DPicture(img);}
    if(!((lbl_80529DEC[0x21a]==0xa7)||(lbl_80529DEC[0x21b]==0xa5))||p[0x7a]!=0) {
     *(s16*)(p+0x6c)=0;
     if(VIGetDTVStatus()!=0) {
@@ -297,14 +295,14 @@ extern "C" void fn_803FFAA8(void* this_) {
  fn_80442810(*(void**)(p+0x14));
  if((*(u8**)(p+0x14))[4]!=0) {fn_8030A43C(*(void**)(p+4));fn_80304FB0(*(void**)(p+8));}
  if((*(u8**)(p+0x14))[4]!=0&&fn_804580DC(*(void**)(lbl_80529DEC+0xc),0)&&fn_804580DC(*(void**)(lbl_80529DEC+0xc),1)&&p[0x79]==2) {
-  OSReport((char*)strings+0xac);
-  *(void**)(p+56)=fn_80401E10(strings+188,0,*(u32*)(lbl_80529DEC+8));
-  *(void**)(p+60)=fn_80401E10(strings+212,0,*(u32*)(lbl_80529DEC+8));
-  *(void**)(p+64)=fn_80401E10(strings+236,0,*(u32*)(lbl_80529DEC+8));
-  *(void**)(p+72)=fn_80401BA4(strings+264,0,0,*(u32*)(lbl_80529DEC+8));
-  *(void**)(p+84)=fn_80401BA4(strings+288,0,0,*(u32*)(lbl_80529DEC+8));
-  *(void**)(p+88)=fn_80401BA4(strings+316,0,0,*(u32*)(lbl_80529DEC+8));
-  *(void**)(p+92)=fn_80401BA4(strings+344,0,0,*(u32*)(lbl_80529DEC+8));
+  OSReport(bootReport);
+  *(void**)(p+56)=fn_80401E10((void*)bootDataArc,0,*(u32*)(lbl_80529DEC+8));
+  *(void**)(p+60)=fn_80401E10((void*)bootMsgArc,0,*(u32*)(lbl_80529DEC+8));
+  *(void**)(p+64)=fn_80401E10((void*)bootMainArc,0,*(u32*)(lbl_80529DEC+8));
+  *(void**)(p+72)=fn_80401BA4((void*)bootTitleArc,0,0,*(u32*)(lbl_80529DEC+8));
+  *(void**)(p+84)=fn_80401BA4((void*)bootResultArc,0,0,*(u32*)(lbl_80529DEC+8));
+  *(void**)(p+88)=fn_80401BA4((void*)bootResult1Arc,0,0,*(u32*)(lbl_80529DEC+8));
+  *(void**)(p+92)=fn_80401BA4((void*)bootResult2Arc,0,0,*(u32*)(lbl_80529DEC+8));
   p[0x79]=3;
  }
  if((*(u8**)(p+0x14))[4]==0) return;
@@ -394,7 +392,7 @@ extern "C" void fn_803FFAA8(void* this_) {
   if(*(f32*)(p+0x68)>=255.0f) {*(f32*)(p+0x68)=255.0f;cfg[0x238]=10;*(s16*)(p+0x70)=0;} break;
  case 10:
   ++*(s16*)(p+0x70);
-  if(*(s16*)(p+0x70)>=120) {*(f32*)(p+0x68)=255.0f;cfg[0x238]=11;} break;
+  if(*(s16*)(p+0x70)>=120) {*(f32*)(p+0x68)=120.0f;cfg[0x238]=11;} break;
  case 11:
   *(f32*)(p+0x68)-=8.5f;
   if(*(f32*)(p+0x68)<=0.0f) {*(f32*)(p+0x68)=0.0f;cfg[0x238]=255;lbl_80529DEC[0x226]=1;} break;
