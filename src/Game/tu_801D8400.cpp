@@ -363,12 +363,11 @@ static inline s16 t84FaceAngle(char* p) {
 }
 
 static inline s32 t84FindPlayer(char* p) {
-    s16 ang;
     s32 pl;
     s32 found = -1;
     JGeometry::TVec3<f32> v;
     t84FrontPos(p, &v);
-    ang = t84FaceAngle(p);
+    s16 ang = t84FaceAngle(p);
     pl = fn_801D0338(p, &v, ang);
     if (pl >= 0) {
         f32 dy = fn_8023E724(pl)->y - v.y;
