@@ -126,6 +126,10 @@ extern "C" s32 fn_80453AF8(void) {
     return 9;
 }
 
+extern "C" const f32 lbl_80543E44;
+extern "C" const f32 lbl_80543E40;
+extern "C" const u32 lbl_80491470[];
+extern "C" void fn_80402E08(void* p, f32 x, f32 y);
 extern "C" s32 fn_80453B14(u8* this_) {
     *(s32*)(this_ + 0x58) = 9;
     switch (*(s16*)(this_ + 0x1e)) {
