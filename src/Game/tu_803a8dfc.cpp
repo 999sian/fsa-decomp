@@ -477,7 +477,8 @@ struct Menu_Main {
     AnmFrame* anms[8];          // 0x24
     u8 pad44[0x1b8 - 0x44];
     EffHandle* handles[4];      // 0x1b8
-    u8 pad1c8[0x2c8 - 0x1c8];
+    EffHandle* emitters[30];
+    u8 pad240[0x2c8 - 0x240];
     s32 countdown[10];           // 0x2c8
     u8 pad2f0[0x440 - 0x2f0];
     s32 timer;                  // 0x440
@@ -3800,12 +3801,12 @@ extern const u16 lbl_80543390[4];
 #pragma push
 #pragma dont_inline on
 extern "C" void fn_803AA8F8(void* this_) {
-    const u64* tbl = (const u64*)lbl_80476208;
     Menu_Intro* ip = (Menu_Intro*)this_;
-    s32 i;
-    s32 j;
-    s32 t;
+    IntroTags* tbl = (IntroTags*)lbl_80476208;
     s32 n;
+    s32 j;
+    s32 i;
+    s32 t;
     f32 off;
     u8* q3;
     u8* v;
@@ -3830,13 +3831,13 @@ extern "C" void fn_803AA8F8(void* this_) {
                 pane_ = ip->screens[ip->cur]->search(0x00506d6d776b3032ULL);
                 pane_->mIsVisible = 1;
                 if (ip->cur < 2) {
-                    const u64* k = tbl;
+                    const u64* k = tbl->title;
                     for (i = 0; i < 13; i++, k++) {
                         ip->screens[ip->cur]->search(*k)->setAlpha((u8)(ip->alphaTitle[i] * lbl_805433C8));
                     }
                 }
-                const u64* k3 = tbl + 13;
-                const u64* k2 = tbl + 25;
+                const u64* k3 = tbl->p3[0];
+                const u64* k2 = tbl->p2[0];
                 for (j = 0; j < ip->count; j++, k3 += 3, k2 += 2) {
                     if (ip->cur < 2) {
                         const u64* k = k3;
