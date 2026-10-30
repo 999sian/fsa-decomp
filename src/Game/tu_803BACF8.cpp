@@ -92,17 +92,16 @@ struct CardSaveRecord {
     u32 sum;
     u32 inv;
 };
-static inline u8 cardBlockValid(const u8* bytes) {
-    const CardSaveRecord* data = (const CardSaveRecord*)bytes;
-    const u8* p = data->data;
+static inline s32 cardBlockValid(const u8* data) {
     u32 inv = 0;
     u32 sum = 0;
+    const u8* p = data;
     for (s32 i = 192; i > 0; i--) {
         u8 b = *p++;
         sum += b;
         inv += ~b;
     }
-    return ((sum ^ data->sum) | (inv ^ data->inv)) == 0;
+    return ((sum ^ *(const u32*)(data + 0xc0)) | (inv ^ *(const u32*)(data + 0xc4))) == 0;
 }
 extern "C" s32 fn_803B933C(void* unused, void* slots, s32 idx);
 extern "C" u8 lbl_8050EC80[];
