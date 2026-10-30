@@ -237,22 +237,20 @@ extern "C" s32 fn_801F7A6C(ActorPool* pool) {
     return n;
 }
 
-#pragma peephole off
-extern "C" s32 fn_801F7AB8(ActorPool* pool, u32 type, s32 exceptId) {
+#pragma opt_common_subs off
+extern "C" s32 fn_801F7AB8(const ActorPool* pool, u32 type, s32 exceptId) {
     s32 n = 0;
-    s32 i;
-    s32 cnt = pool->mCount;
-    for (i = 0; i < cnt; i++) {
-        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType &&
-            exceptId != pool->mActors[i]->mId)
-        {
-            pool->mActors[i]->mActive = 0;
-            n++;
+    s32 count = pool->mCount;
+    for (s32 i=0;i<count;++i) {
+        if(pool->mActors[i] && pool->mActors[i]->mActive &&
+           type==pool->mActors[i]->mType && exceptId!=pool->mActors[i]->mId) {
+            *(bool*)&pool->mActors[i]->mActive=false;
+            ++n;
         }
     }
     return n;
 }
-#pragma peephole reset
+#pragma opt_common_subs reset
 extern "C" void fn_801F7B18(ActorPool* pool) {
     fn_802D6A9C();
     for (s32 i = 0; i < 4; i++) {
@@ -443,6 +441,10 @@ extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* coun
     return TRUE;
 }
 #pragma opt_common_subs reset
+static inline f32 poolCoordinateDelta(const f32 a, const f32 b) {
+    return a - b;
+}
+
 extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     s32 id = -1;
     f32 best = 1000000.0f;
