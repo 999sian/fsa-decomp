@@ -1282,6 +1282,22 @@ struct MsgMeasureSave {
     f32 spaceW[12]; // 0x1a8
 };
 
+static inline void msgSetLineBit(u8* p, s32 n) {
+    if (n < 32) {
+        *(u32*)(p + 0x3c) |= 1 << n;
+    } else if (n < 64) {
+        *(u32*)(p + 0x40) |= 1 << (n - 32);
+    }
+}
+
+static inline void msgClearLineBit(u8* p, s32 n) {
+    if (n < 32) {
+        *(u32*)(p + 0x3c) &= ~(1 << n);
+    } else if (n < 64) {
+        *(u32*)(p + 0x40) &= ~(1 << n);
+    }
+}
+
 static inline void msgMeasureCharK(MsgMeasure* m, int c, f32 ratio, f32 k, f32 add) {
     JUTFont::TWidth w;
     m->font->getWidthEntry(c, &w);
@@ -2116,7 +2132,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x10009:
     case 0x1000a:
     {
-        ((MsgMeasureSave*)m)->spaceW[p[0x1fd]] = m->lineW[m->line];
+        m->spaceW[p[0x1fd]] = m->lineW[m->line];
         (p + p[0x1fd])[0x1f1] = m->line;
         p[0x1fd]++;
         JUTFont::TWidth w;
@@ -2129,7 +2145,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x10004:
     case 0x10005:
     case 0x10006:
-        ((MsgMeasureSave*)m)->spaceW[p[0x1fd]] = m->lineW[m->line];
+        m->spaceW[p[0x1fd]] = m->lineW[m->line];
         (p + p[0x1fd])[0x1f1] = m->line;
         p[0x1fd]++;
         msgMeasureChar2(m, 0x20, ratio, 3.0f);
@@ -2163,7 +2179,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
         } else if ((s32)m->line < 64) {
             *(u32*)(p + 0x40) |= 1 << (m->line - 32);
         }
-        ((MsgMeasureSave*)m)->tabW[p[0x282]] = m->lineW[m->line];
+        m->tabW[p[0x282]] = m->lineW[m->line];
         (p + p[0x282])[0x1ee] = m->line;
         (p + p[0x282])[0x1fe] = m->lineChars[m->line];
         msgMeasureCharK(m, 0x20, ratio, 5.0f, 3.0f);
@@ -2182,7 +2198,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
         } else if ((s32)m->line < 64) {
             *(u32*)(p + 0x40) &= ~(1 << m->line);
         }
-        ((MsgMeasureSave*)m)->tabW[p[0x282]] = m->lineW[m->line];
+        m->tabW[p[0x282]] = m->lineW[m->line];
         (p + p[0x282])[0x1ee] = m->line;
         (p + p[0x282])[0x1fe] = m->lineChars[m->line];
         msgMeasureCharTab(m, 0x20, ratio, 3.0f);
