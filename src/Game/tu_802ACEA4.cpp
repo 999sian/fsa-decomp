@@ -122,7 +122,7 @@ static inline f32 platformSin(f32 angle) {
 }
 static inline f32 platformCos(f32 angle) {
     if(angle<0.0f)angle=-angle;
-    return sincosTable___5JMath[((u16)(s32)(325.9493f*angle)&0x7ff)*2+1];
+    return sincosTable___5JMath[((u16)(s32)(angle * 325.9493f)&0x7ff)*2+1];
 }
 
 extern "C" void fn_802ACF04(void* this_) {
