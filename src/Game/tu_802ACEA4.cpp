@@ -238,6 +238,10 @@ void fn_801F0E34(Actor* a, u32 id, s32 n);
 void fn_802D79E8(void* mgr, s32 room, s32 n, f32 a, f32 b);
 char* fn_802D9C4C(void* mgr);
 }
+static inline Box4 platformRoomBox(s32 room) {
+    u8* mgr = (u8*)fn_802D6A9C();
+    return *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
+}
 extern "C" const f32 lbl_805408EC;
 extern "C" const f32 lbl_805408F0;
 extern "C" const f32 lbl_805408F8;
@@ -255,9 +259,8 @@ extern "C" void fn_802ADC18(Actor* a) {
     struct Pt { f32 x, y; };
     u8* p = (u8*)a;
     Pt pt;
-    Vec v;
-    Vec pos = a->field_0C;
     Box4 box;
+    JGeometry::TVec3<f32> pos(a->field_0C);
     s32 i;
     s32 j;
     s32 hit;
@@ -265,6 +268,11 @@ extern "C" void fn_802ADC18(Actor* a) {
     s32 count;
 
     switch (*(s32*)(p + 0x234)) {
+    case 6:
+    default:
+        a->field_0C.x += lbl_805408DC;
+        a->field_0C.y += lbl_805408DC;
+        break;
     case 2:
         a->field_0C.x += lbl_805408EC;
         a->field_0C.y += lbl_805408F4;
@@ -289,16 +297,12 @@ extern "C" void fn_802ADC18(Actor* a) {
         box.c += pt.x;
         box.d += pt.y;
         fn_80239914(&box, a->field_04, *(void**)(p + 0x198));
-        a->field_0C = pos;
+        *(JGeometry::TVec3<f32>*)&a->field_0C = pos;
         a->field_0C.y += lbl_805408EC;
         a->field_60 = lbl_805408FC;
         a->field_64 = lbl_80540900;
         a->field_68 = lbl_80540904;
         a->field_6C = lbl_80540908;
-        break;
-    default:
-        a->field_0C.x += lbl_805408DC;
-        a->field_0C.y += lbl_805408DC;
         break;
     }
 
@@ -311,7 +315,7 @@ extern "C" void fn_802ADC18(Actor* a) {
     box.c += pt.x;
     box.d += pt.y;
     for (i = 0; i < 4; i++) {
-        v = *fn_8023E724(i);
+        JGeometry::TVec3<f32> v(*fn_8023E724(i));
         u8 inside = 0;
         if (v.x >= box.a && v.y >= box.b && v.x < box.c && v.y < box.d) inside = 1;
         if (inside) {
@@ -327,7 +331,7 @@ extern "C" void fn_802ADC18(Actor* a) {
     for (i = 0; i < 4; i++) {
         if (fn_8023A97C(i, &box, a->field_04, &pt)) count++;
     }
-    a->field_0C = pos;
+    *(JGeometry::TVec3<f32>*)&a->field_0C = pos;
 
     switch (*(s32*)(p + 0x230)) {
     case 0: {
@@ -369,30 +373,18 @@ extern "C" void fn_802ADC18(Actor* a) {
             s32 mode = *(s32*)(p + 0x23c);
             if (!((mode == 0 || mode == 2) && (hit >= 0 || sbal >= 0))) {
                 if (mode == 0) break;
-                if (!(*(u8 (**)(Actor*))(*(u8**)a + 0x34))(a)) break;
+                if (!(u8)a->v11()) break;
             }
-            Vec v0;
-            v0.z = lbl_805408C8;
-            v0.x = lbl_805408DC + a->field_0C.x;
-            v0.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v0(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v0, 0x381, 0, 0, 0, 0, 1, lbl_805408CC);
-            Vec v1;
-            v1.z = lbl_805408C8;
-            v1.x = lbl_805408DC + a->field_0C.x;
-            v1.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v1(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v1, 0x382, 0, 0, 0, 0, 1, lbl_805408CC);
-            Vec v2;
-            v2.z = lbl_805408C8;
-            v2.x = lbl_805408DC + a->field_0C.x;
-            v2.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v2(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v2, 0x383, 0, 0, 0, 0, 1, lbl_805408CC);
-            Vec v3;
-            v3.z = lbl_805408C8;
-            v3.x = lbl_805408DC + a->field_0C.x;
-            v3.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v3(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v3, 0x384, 0, 0, 0, 0, 1, lbl_805408CC);
             if (hit >= 0) {
-                (*(void (**)(Actor*, s32, s32))(*(u8**)a + 0x30))(a, 0xff, 1);
+                a->v10(0xff, 1);
                 fn_801F0E34(a, 0x30009, 0);
             }
             {
@@ -400,15 +392,13 @@ extern "C" void fn_802ADC18(Actor* a) {
                 s32 room = a->field_04;
                 u8* mgr = (u8*)fn_802D6A9C();
                 Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
-                s32* ta = lbl_8046C8CC;
-                s32* tb = lbl_8046C8B0;
                 f32 by = b.b;
                 f32 one = lbl_8054090C;
                 f32 bx = b.a;
-                for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                     s32 xi = (s32)(px - bx);
                     f32 py = a->field_0C.y;
-                    for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                    for (j = 0; j < platformTileY[*(s32*)(p + 0x234)]; j++) {
                         s32 yi = (s32)(py - by);
                         s32 x = clampTileCoordinate(xi);
                         s32 y = clampTileCoordinate(yi);
@@ -426,21 +416,19 @@ extern "C" void fn_802ADC18(Actor* a) {
         case 4:
         case 5:
             if (count == 4) {
-                (*(void (**)(Actor*, s32, s32))(*(u8**)a + 0x30))(a, 0xff, 1);
+                a->v10(0xff, 1);
                 fn_801F0E34(a, 0x30009, 0);
                 f32 px = a->field_0C.x;
                 s32 room = a->field_04;
                 u8* mgr = (u8*)fn_802D6A9C();
                 Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
-                s32* ta = lbl_8046C8CC;
-                s32* tb = lbl_8046C8B0;
                 f32 by = b.b;
                 f32 one = lbl_8054090C;
                 f32 bx = b.a;
-                for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                     s32 xi = (s32)(px - bx);
                     f32 py = a->field_0C.y;
-                    for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                    for (j = 0; j < platformTileY[*(s32*)(p + 0x234)]; j++) {
                         s32 yi = (s32)(py - by);
                         s32 x = clampTileCoordinate(xi);
                         s32 y = clampTileCoordinate(yi);
@@ -465,15 +453,13 @@ extern "C" void fn_802ADC18(Actor* a) {
             s32 room = a->field_04;
             u8* mgr = (u8*)fn_802D6A9C();
             Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
-            s32* ta = lbl_8046C8CC;
-            s32* tb = lbl_8046C8B0;
             f32 by = b.b;
             f32 one = lbl_8054090C;
             f32 bx = b.a;
-            for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+            for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                 s32 xi = (s32)(px - bx);
                 f32 py = a->field_0C.y;
-                for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                for (j = 0; j < platformTileY[*(s32*)(p + 0x234)]; j++) {
                     s32 yi = (s32)(py - by);
                     s32 x = clampTileCoordinate(xi);
                     s32 y = clampTileCoordinate(yi);
@@ -497,8 +483,7 @@ extern "C" void fn_802ADC18(Actor* a) {
             *(s32*)(p + 0x230) = 5;
         } else if (*(s32*)(p + 0x244) != 0) {
             *(s32*)(p + 0x244) -= 1;
-            if (*(s32*)(p + 0x244) == 0 && *(s32*)(p + 0x23c) != 0
-                && (*(u8 (**)(Actor*))(*(u8**)a + 0x34))(a) == 1) {
+            if (*(s32*)(p + 0x244) == 0 && *(s32*)(p + 0x23c) != 0 && (u8)a->v11() == 1) {
                 *(s32*)(p + 0x244) = 1;
             }
         }
@@ -511,17 +496,15 @@ extern "C" void fn_802ADC18(Actor* a) {
             s32 room = a->field_04;
             u8* mgr = (u8*)fn_802D6A9C();
             Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
-            u16* tiles = (u16*)(lbl_8046C8B0 + 0xe);
-            s32* ta = lbl_8046C8CC;
-            s32* tb = lbl_8046C8B0;
+            const u16* tiles = platformTiles;
             f32 by = b.b;
             f32 one = lbl_8054090C;
             f32 bx = b.a;
-            for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+            for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                 s32 xi = (s32)(px - bx);
                 f32 py = a->field_0C.y;
-                u16* row = tiles;
-                for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                const u16* row = tiles;
+                for (j = 0; j < platformTileY[*(s32*)(p + 0x234)]; j++) {
                     s32 yi = (s32)(py - by);
                     s32 x = clampTileCoordinate(xi);
                     s32 y = clampTileCoordinate(yi);
@@ -538,25 +521,13 @@ extern "C" void fn_802ADC18(Actor* a) {
                 tiles += 4;
             }
             *(s32*)(p + 0x230) = 2;
-            Vec v0;
-            v0.z = lbl_805408C8;
-            v0.x = lbl_805408DC + a->field_0C.x;
-            v0.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v0(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v0, 0x381, 1, 0, 0, 0, 1, lbl_805408CC);
-            Vec v1;
-            v1.z = lbl_805408C8;
-            v1.x = lbl_805408DC + a->field_0C.x;
-            v1.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v1(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v1, 0x382, 1, 0, 0, 0, 1, lbl_805408CC);
-            Vec v2;
-            v2.z = lbl_805408C8;
-            v2.x = lbl_805408DC + a->field_0C.x;
-            v2.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v2(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v2, 0x383, 1, 0, 0, 0, 1, lbl_805408CC);
-            Vec v3;
-            v3.z = lbl_805408C8;
-            v3.x = lbl_805408DC + a->field_0C.x;
-            v3.y = lbl_805408DC + a->field_0C.y;
+            JGeometry::TVec3<f32> v3(lbl_805408DC + a->field_0C.x, lbl_805408DC + a->field_0C.y, lbl_805408C8);
             fn_8013CC50(a->field_04, &v3, 0x384, 1, 0, 0, 0, 1, lbl_805408CC);
         }
         break;
@@ -580,7 +551,7 @@ extern "C" void fn_802ADC18(Actor* a) {
                 *(f32*)(p + 0x248) = lbl_80540940;
                 *(s32*)(p + 0x230) = 8;
                 fn_802D79E8(fn_802D6A9C(), a->field_04, 1, lbl_80540944, lbl_805408C8);
-                Vec v4;
+                JGeometry::TVec3<f32> v4;
                 v4.x = lbl_805408EC + (lbl_805408F0 + a->field_0C.x);
                 v4.y = lbl_805408EC + a->field_0C.y;
                 v4.z = lbl_805408C8;
@@ -601,15 +572,13 @@ extern "C" void fn_802ADC18(Actor* a) {
                     s32 room = a->field_04;
                     u8* mgr = (u8*)fn_802D6A9C();
                     Box4 b = *(Box4*)(room < 8 ? mgr + 0xcc : mgr + 0xdc);
-                    s32* ta = lbl_8046C8CC;
-                    s32* tb = lbl_8046C8B0;
                     f32 by = b.b;
                     f32 one = lbl_8054090C;
                     f32 bx = b.a;
-                    for (i = 0; i < tb[*(s32*)(p + 0x234)]; i++) {
+                    for (i = 0; i < platformTileX[*(s32*)(p + 0x234)]; i++) {
                         s32 xi = (s32)(px - bx);
                         f32 py = a->field_0C.y;
-                        for (j = 0; j < ta[*(s32*)(p + 0x234)]; j++) {
+                        for (j = 0; j < platformTileY[*(s32*)(p + 0x234)]; j++) {
                             s32 yi = (s32)(py - by);
                             s32 x = clampTileCoordinate(xi);
                             s32 y = clampTileCoordinate(yi);
