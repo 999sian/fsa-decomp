@@ -609,16 +609,17 @@ extern "C" s32 fn_801A4FB4(u8* this_) {
     return *(u8*)(this_ + 0xD4);
 }
 
+#pragma opt_common_subs off
 #pragma dont_inline reset
 extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
- u8* other;
- s32 kind;
- s32 result;
- s32 id;
+ register u8* other;
+ register int result;
+ register int kind;
+ register int id=(int)a4;
  u8* self=(u8*)this_;
  if((*(u32*)(self+0xb0)&255)==0) return 0;
  result=0;
- id=fn_8023AE34(a4,*(s32*)(self+4),a5);
+ id=fn_8023AE34((void*)id,*(s32*)(self+4),a5);
  s32 room=*(s32*)(self+4);
  u8 (*mgr)[0x10000]=(u8 (*)[0x10000])fn_802D6A9C();
  if(mgr[1][room+0x31df]==0&&*(f32*)(self+0x14)>32.0f) return 0;
@@ -659,7 +660,7 @@ extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
    ++*(s32*)(other+0x270);*(s32*)(self+0xd8)=0;*(s32*)(self+0xdc)=0;*(s32*)(self+0x10c)=id;
   case 8:
    if(self[0xc4]) {*(s32*)(self+0xa0)=-1;result=255;break;}
-   if(kind==8&&(*(f32*)(self+0x14)!=0.0f||*(f32*)(self+0x44)!=0.0f)) {*(s32*)(self+0xa0)=-1;result=255;break;}
+   if(kind==8&&(*(f32*)(self+0x14)!=lbl_8053E5D4||*(f32*)(self+0x44)!=lbl_8053E5D4)) {*(s32*)(self+0xa0)=-1;result=255;break;}
    *(JGeometry::TVec3f*)(self+0x24)=JGeometry::TVec3f(*(f32*)(self+0xc)-*(f32*)(other+0xc),*(f32*)(self+0x10)-*(f32*)(other+0x10),*(f32*)(self+0x14)-*(f32*)(other+0x14));
    if(kind==8) break;
   case 0: case 9: default:
@@ -674,9 +675,9 @@ extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
   case 2:
    if(self[0xc4]) {result=255;break;}
    if(kind!=16) {
-    s32 hp=*(s32*)(self+0x108);hp-=fn_8023B5B4(id);
-    if(hp<=0) {*(s32*)(self+0x108)=0;result=20;other[0x11c]=0;break;}
-    *(s32*)(self+0x108)=hp;
+    s32 hp=*(s32*)(self+0x108);s32 remaining=hp-fn_8023B5B4(id);
+    if(remaining<=0) {*(s32*)(self+0x108)=0;result=20;other[0x11c]=0;break;}
+    *(s32*)(self+0x108)=remaining;
    }
   case 5:
   case 11: case 15: case 18:
@@ -688,9 +689,9 @@ extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
      u8* spawned=(u8*)fn_801F666C(fn_801F856C(),h);
      if(spawned&&*(s32*)(spawned+0x230)!=4) {
       s32 heading=fn_801F6874(*(s32*)(self+0x98));
-      f32 x=0.25f*(*(f32*)(self+0xc)-*(f32*)(spawned+0xc));
-      f32 y=0.25f*(*(f32*)(self+0x10)-*(f32*)(spawned+0x10));
-      *(f32*)(spawned+0x254)=std::sqrtf(x*x+y*y);
+      f32 x=0.8f*(*(f32*)(self+0xc)-*(f32*)(spawned+0xc));
+      f32 y=0.8f*(*(f32*)(self+0x10)-*(f32*)(spawned+0x10));
+      f32 magnitude=x*x+y*y; *(f32*)(spawned+0x254)=std::sqrtf(magnitude);
       u16 angle=(s32)(JMath::atanTable_.atan2_(-x,-y)*lbl_8053E5E0);
       u16 goal=fn_801F6874(*(s32*)(other+0x98))+0x8000;
       while(ClassifyBamAngleToQuadrant(angle)!=ClassifyBamAngleToQuadrant(goal)) fn_801F714C(&angle,goal,1,0x1000);
@@ -717,11 +718,12 @@ extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
     s32 h=fn_8023B2B0(i);
     if(h>=0) {other=(u8*)fn_801F666C(fn_801F856C(),h);if(other) *(s32*)(other+0x108)=0;}
    }
-   *(s32*)(self+0xa0)=-1;result=255;break;
-  case 3:result=0;break;
+   *(s32*)(self+0xa0)=-1;
+  case 3:result=255;break;
   case 7:
+   self[0x11c]=0;
   case 14:
-   self[0x11c]=0;*(s32*)(self+0xa0)=-1;
+   *(s32*)(self+0xa0)=-1;
    fn_8013CC50(*(s32*)(other+4),other+0xc,0x24a,0,1,0,0,1,1.0f);
    fn_8013CC50(*(s32*)(other+4),other+0xc,0x24b,0,1,0,0,1,1.0f);
    other[0x11c]=0;result=255;break;
@@ -763,14 +765,14 @@ extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
      ((SayaActor*)self)->v44();break;
     }
     case 8:
-     if(self[0xc4]||*(f32*)(self+0x14)!=0.0f||*(f32*)(self+0x44)!=0.0f) {*(s32*)(self+0xa0)=-1;result=255;break;}
+     if(self[0xc4]||*(f32*)(self+0x14)!=lbl_8053E5D4||*(f32*)(self+0x44)!=lbl_8053E5D4) {*(s32*)(self+0xa0)=-1;result=255;break;}
      if(*(s32*)(target+0x26c)==1) {*(s32*)(self+0xa0)=-1;*(s32*)(self+0x108)=0;*(s32*)(self+0xb0)=0;}
-     {JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(target+0xc)); pos+=*(JGeometry::TVec3f*)(self+0x24);*(JGeometry::TVec3f*)(self+0xc)=pos;}
+     {*(JGeometry::TVec3f*)(self+0xc)=*(JGeometry::TVec3f*)(target+0xc)+*(JGeometry::TVec3f*)(self+0x24);}
      *(s32*)(self+4)=*(s32*)(target+4);
      ((SayaActor*)self)->v44();
      if(*(s32*)(target+0x26c)==2) {((SayaActor*)self)->v24();result=20;}break;
     case 1:
-     {JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(target+0xc));pos+=*(JGeometry::TVec3f*)(self+0x24);*(JGeometry::TVec3f*)(self+0xc)=pos;}
+     {*(JGeometry::TVec3f*)(self+0xc)=*(JGeometry::TVec3f*)(target+0xc)+*(JGeometry::TVec3f*)(self+0x24);}
      *(s32*)(self+4)=*(s32*)(target+4);
      if(*(s32*)(target+0x26c)==2) {((SayaActor*)self)->v24();result=20;}break;
     default:break;
@@ -788,11 +790,12 @@ extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5) {
  return result;
 }
 #pragma dont_inline reset
+#pragma opt_common_subs reset
 
 // from src/Game/Saya_ForceState4_801A6108.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
-extern "C" s32 fn_801A5400(void* this_, void* a4, void* a5);
+
 
 // SAYA cluster, part 11/18 (88B). Vtable-slot wrapper directly invoking
 // state-handler fn_801A5400 (same external-entry-point pattern). Return
