@@ -359,6 +359,60 @@ extern "C" void fn_801EE558(void* this_, JGeometry::TVec3<f32>* dir, f32* dist, 
 
 extern f32 lbl_8054304C;
 
+
+extern "C" void fn_80239914(void*, s32, s32);
+extern "C" u8 fn_80303750(s32);
+extern "C" u8 fn_8022C8EC(s32);
+extern "C" u8 fn_8022B160();
+extern "C" void fn_8022FEB8(void*,s32,s32,s32,s32);
+extern "C" s32 fn_8023AF14(void*,s32,s32,f32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" s32 fn_8037E54C(s32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" u8 fn_8038C678(s32,s32,s32,s32,JGeometry::TVec3<f32>,s32);
+extern "C" void fn_8022FF8C(s32,void*,s32,s32,s32,s32);
+extern "C" u8 fn_80388CAC(s32,s32);
+extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void fn_8015F8FC(void*,s32,void*,s32);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D79E8(void*,s32,s32,f32,f32);
+extern "C" void* fn_8013C824();
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*,void*);
+extern u8* lbl_8053AB10;
+extern u8 lbl_80529DEC[];
+extern u8 lbl_8050DB0C[];
+extern JijiAction lbl_804AEC48[];
+static inline void jijiFace(u8* p,s32 player) {
+    if (*(s32*)(p+0x24c)) {
+        --*(s32*)(p+0x24c);
+    } else {
+        *(s32*)(p+0x24c)=20;
+        JGeometry::TVec3<f32> dir;
+        f32 dist;
+        fn_801EE558(p,&dir,&dist,player);
+        if(dist<100.0f) {
+            u16 ang=(u16)(s32)(JMAAtan2Radian(-dir.x,-dir.y)*lbl_8054304C);
+            if(ang<0x2000 || ang>=0xe000) *(s32*)(p+0x248)=3;
+            else if(ang>=0x2000 && ang<0x6000) *(s32*)(p+0x248)=1;
+            else if(ang>=0x6000 && ang<=0xa000) *(s32*)(p+0x248)=2;
+            else *(s32*)(p+0x248)=0;
+        } else *(s32*)(p+0x248)=2;
+    }
+}
+static inline void jijiExpand(f32* dst,f32* src,f32 v) {
+    dst[3]=v+src[3];
+    dst[2]=v+src[2];
+    dst[1]=src[1]-v;
+    dst[0]=src[0]-v;
+}
+static inline void jijiBoxPos(f32* b,u8* p) {
+    b[0]+=*(f32*)(p+0xc);
+    b[2]+=*(f32*)(p+0xc);
+    b[1]+=*(f32*)(p+0x10);
+    b[3]+=*(f32*)(p+0x10);
+}
+
 extern "C" void fn_8037C788(u8* this_) {
     f32 dist;
     JGeometry::TVec3<f32> pos;
