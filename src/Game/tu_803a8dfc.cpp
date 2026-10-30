@@ -3133,8 +3133,16 @@ extern "C" void fn_803B35F8(void* this_, u32 kind) {
     }
 }
 
+struct ScoreScreenPaneLookup {
+    u8 pad[0x10];
+    Scr_803B1B60* screens[2];
+    u8 pad18[0x438];
+    s32 screenIndex;
+};
+
 static inline void* findScorePane(u8* p, u64 tag) {
-    return ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(tag);
+    ScoreScreenPaneLookup* screen = (ScoreScreenPaneLookup*)p;
+    return screen->screens[screen->screenIndex]->v3C(tag);
 }
 
 extern "C" void fn_803B38E8(void* this_) {
@@ -3144,7 +3152,7 @@ extern "C" void fn_803B38E8(void* this_) {
     u8* dst;
     int i;
 
-    *(void**)(p + 0x30) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3132ULL);
+    *(void**)(p + 0x30) = findScorePane(p, 0x00005072616e3132ULL);
     *(void**)(p + 0x34) = ((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x00005072616e3232ULL);
     f31 = getBounds__7J2DPaneFv(*(void**)(p + 0x30))[1];
     *(f32*)(p + 0x42c) = getBounds__7J2DPaneFv(((Scr_803B1B60**)(p + 0x10))[*(s32*)(p + 0x450)]->v3C(0x4e64617461723031ULL))[1] - f31;
