@@ -312,11 +312,7 @@ digit=1;if(best==*(s32*)(self+0x278)){*next=digit;next++;count+=1;}
 digit=2;if(best==*(s32*)(self+0x27c)){*next=digit;next++;count+=1;}
 digit=3;if(best==*(s32*)(self+0x280)){*next=digit;count+=1;}
 if(count==1)return choices[0];
-f32 limit=count;
-u32* seed=(u32*)(lbl_8053AAF8+0xb4);*seed=*seed*0x19660d+0x3c6ef35f;
-u32 bits=(*seed>>9)|0x3f800000;
-f32 random=*(f32*)&bits-lbl_80542518;
-return choices[(s32)(limit*random)];
+return choices[(s32)(count*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1())];
 }
 #pragma opt_propagation reset
 
