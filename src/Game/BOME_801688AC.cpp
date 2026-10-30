@@ -274,8 +274,15 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern "C" void fn_802A20F0(void*, void*, s32, s32, s32, s32);
 extern u8* lbl_8053AC98;
+static inline u8 bomeOutside(const Vec* point, const f32 margin, const f32* box) {
+    if (point->x <= box[0] - margin || point->x >= box[2] + margin ||
+        point->y <= box[1] - margin || point->y >= box[3] + margin) return 1;
+    else return 0;
+}
+
 
 extern "C" void fn_80169030(u8* p) {
+BomeMovement* a=(BomeMovement*)p;
 s32 idx=*(s32*)(p+0x90);
 if(fn_8022F478(idx)==1&&fn_8022F514(*(s32*)(p+0x90))==1)idx=fn_8022F3DC(*(s32*)(p+0x90));
 if(*(s32*)(p+0x23c)==0){
@@ -285,18 +292,17 @@ if((f32)__fabs(*(f32*)(p+0x40)-*(f32*)(p+0x368))>0.01f)fn_801F71A4(p+0x40,*(f32*
 if(fn_801F6758(p+0xc,*(s32*)(p+4),300.0f))p[0x11c]=0;
 if(*(s32*)(p+0x268)<5){
 JGeometry::TVec3<f32> probe;probe.zero();
-probe.x=*(f32*)(p+*(s32*)(p+0x268)*0x18+0x2f4);
-probe.y=*(f32*)(p+*(s32*)(p+0x268)*0x18+0x2f8);
-if(fn_8022BC38(idx,*(s32*)(p+*(s32*)(p+0x268)*0x18+0x300),&probe)==1){
+((JGeometry::TVec2<f32>*)&probe)->set(a->targetPath[a->targetCount].end);
+if(fn_8022BC38(idx,a->targetPath[a->targetCount].endRoom,&probe)==1){
 f32* v=(f32*)fn_8023E724(idx);
 ((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x268)*0x18+0x2f4))->set(*(JGeometry::TVec2<f32>*)v);
 }else{
-*(s32*)(p+*(s32*)(p+0x268)*0x18+0x2fc)=fn_8023DE58(idx);
+a->targetPath[a->targetCount].startRoom=fn_8023DE58(idx);
 f32* v=(f32*)fn_8023E724(idx);
 ((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x268)*0x18+0x2ec))->set(*(JGeometry::TVec2<f32>*)v);
 ++*(s32*)(p+0x268);
 if(*(s32*)(p+0x268)<5){
-*(s32*)(p+*(s32*)(p+0x268)*0x18+0x300)=fn_8023DE58(idx);
+a->targetPath[a->targetCount].endRoom=fn_8023DE58(idx);
 f32* v=(f32*)fn_8023E724(idx);
 ((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x268)*0x18+0x2f4))->set(*(JGeometry::TVec2<f32>*)v);
 }}}
@@ -322,18 +328,18 @@ break;
 }else{
 JGeometry::TVec2<f32> d;
 f32* v=(f32*)fn_8023E724(*(s32*)(p+0x90));
-d=*(JGeometry::TVec2<f32>*)(v)-*(JGeometry::TVec2<f32>*)(p+0xc);
+d=*(JGeometry::TVec2<f32>*)(v)-*(JGeometry::TVec2<f32>*)&pos;
 if(d.squared()<240.0f){(*(JGeometry::TVec3<f32>*)(p+0xc))=*(JGeometry::TVec3<f32>*)fn_8023E724(*(s32*)(p+0x90));(*(f32*)(p+0x14))=0.0f;p[0x11c]=0;break;}
 }
 }else{
 if(*(s32*)(p+0x264)<5){
 if(p[0x17d]==0){((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x264)*0x18+0x274))->set(*(JGeometry::TVec2<f32>*)(p+0xc));}
 else{
-*(s32*)(p+*(s32*)(p+0x264)*0x18+0x288)=*(s32*)(p+4);
+a->path[a->pathCount].endRoom=*(s32*)(p+4);
 ((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x264)*0x18+0x27c))->set(*(JGeometry::TVec2<f32>*)(p+0xc));
 ++*(s32*)(p+0x264);
 if(*(s32*)(p+0x264)<5){
-*(s32*)(p+*(s32*)(p+0x264)*0x18+0x284)=*(s32*)(p+4);
+a->path[a->pathCount].startRoom=*(s32*)(p+4);
 ((JGeometry::TVec2<f32>*)(p+*(s32*)(p+0x264)*0x18+0x274))->set(*(JGeometry::TVec2<f32>*)(p+0xc));
 }}
 }
