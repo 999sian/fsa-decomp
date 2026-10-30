@@ -41,6 +41,8 @@ extern "C" s32 lbl_80539F98;
 extern const char lbl_80466E50[],lbl_80466E60[];
 struct GrokDrawTable {u8 pad[0x80];const char* normal[30];f32 normalY[30];const char* special[28];f32 specialY[28];};
 extern GrokDrawTable lbl_804A13E0;
+static inline const char* grokTexture(const char* const* table,s32 index) {return table[index];}
+static inline f32 grokYOffset(const f32* table,s32 index) {return table[index];}
 extern const f32 lbl_8053DDD8;
 static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     f32 cz,cy,cx,sz,sy,sx;
@@ -72,8 +74,7 @@ extern "C" void fn_8017EF98(u8* p) {
     JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(p+0xc);
     m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
     if(*(s32*)(p+0x230)!=0 && *(s32*)(p+0x230)!=1 && *(s32*)(p+0x230)!=23) {
-    switch(*(u32*)(p+0x90)) {case 1U: return; default: break;}
-    {
+    if(*(u32*)(p+0x90)==1) {return;} else {
     
     f32 offset;
     if(*(u32*)(p+0x90)==2 || *(u32*)(p+0x90)==3) {
