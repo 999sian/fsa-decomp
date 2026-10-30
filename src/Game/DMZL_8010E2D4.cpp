@@ -752,7 +752,7 @@ u16 angle;
 f32 zero,dz;
 f32 sine,speed;
 s32 result,kind;
-u8* p=(u8*)this_;
+register u8* p=this_;
 box.set(*(const JGeometry::TBox2<f32>*)(p+0x60));box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
 if(*(s32*)(p+0x238)==1 || *(s32*)(p+0x238)==2)fn_80239914(&box,*(s32*)(p+4),*(s32*)(p+0x198));
 fn_80110454(p);
