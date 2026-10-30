@@ -990,7 +990,7 @@ extern "C" void fn_8040F16C(u8* self) {
 
 struct J2DGrafContext;
 #include "JSystem/J2D/J2DPicture.h"
-static inline void menuSetCornerColor(J2DPicture* pane, const JUtility::TColor& color) {
+static inline void menuSetCornerColor(J2DPicture* pane, JUtility::TColor color) {
     pane->setCornerColor(color);
 }
 
@@ -2946,7 +2946,7 @@ if(*(s32*)(self+0x340)<=7){
  switch(style){
  case 0: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,50,0,0),JUtility::TColor(255,255,255,255));
- ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(127,248,37,255));
+ menuSetCornerColor(((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane),JUtility::TColor(127,248,37,255));
  u64* tags=(u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(100,255,50,0),JUtility::TColor(100,255,50,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(100,255,50,0),JUtility::TColor(100,255,50,255));
@@ -2954,7 +2954,7 @@ if(*(s32*)(self+0x340)<=7){
 }
 case 1: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(50,0,0,0),JUtility::TColor(255,255,255,255));
- ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(255,150,120,255));
+ menuSetCornerColor(((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane),JUtility::TColor(255,150,120,255));
  u64* tags=(u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(255,100,50,0),JUtility::TColor(255,100,50,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(255,100,50,0),JUtility::TColor(255,100,50,255));
@@ -2962,7 +2962,7 @@ case 1: {
 }
 case 2: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,10,40,0),JUtility::TColor(255,255,255,255));
- ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(120,240,255,255));
+ menuSetCornerColor(((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane),JUtility::TColor(120,240,255,255));
  u64* tags=(u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(50,220,240,0),JUtility::TColor(50,220,240,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(50,220,240,0),JUtility::TColor(50,220,240,255));
@@ -2970,7 +2970,7 @@ case 2: {
 }
 case 3: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(20,0,20,0),JUtility::TColor(255,255,255,255));
- ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(220,150,255,255));
+ menuSetCornerColor(((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane),JUtility::TColor(220,150,255,255));
  u64* tags=(u64*)(lbl_8048C2F8+idx*16);
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(200,100,240,0),JUtility::TColor(200,100,240,255));
  ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(200,100,240,0),JUtility::TColor(200,100,240,255));
