@@ -1284,17 +1284,17 @@ struct MsgMeasureSave {
 
 static inline void msgSetLineBit(MsgMeasure* m, s32 n) {
     if (n < 32) {
-        m->bits[0] |= 1 << n;
+        m->bits[0] = (1 << n) | m->bits[0];
     } else if (n < 64) {
-        m->bits[1] |= 1 << (n - 32);
+        m->bits[1] = (1 << (n - 32)) | m->bits[1];
     }
 }
 
 static inline void msgClearLineBit(MsgMeasure* m, s32 n) {
     if (n < 32) {
-        m->bits[0] &= ~(1 << n);
+        m->bits[0] = ~(1 << n) & m->bits[0];
     } else if (n < 64) {
-        m->bits[1] &= ~(1 << n);
+        m->bits[1] = ~(1 << n) & m->bits[1];
     }
 }
 
@@ -2174,11 +2174,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x20012:
     case 0x20013:
     case 0x20014:
-        if ((s32)m->line < 32) {
-            *(u32*)(p + 0x3c) |= 1 << m->line;
-        } else if ((s32)m->line < 64) {
-            *(u32*)(p + 0x40) |= 1 << (m->line - 32);
-        }
+        msgSetLineBit(m, m->line);
         m->tabW[p[0x282]] = m->lineW[m->line];
         (p + p[0x282])[0x1ee] = m->line;
         (p + p[0x282])[0x1fe] = m->lineChars[m->line];
@@ -2193,11 +2189,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     case 0x2001a:
     case 0x2001b:
     case 0x2001c:
-        if ((s32)m->line < 32) {
-            *(u32*)(p + 0x3c) &= ~(1 << m->line);
-        } else if ((s32)m->line < 64) {
-            *(u32*)(p + 0x40) &= ~(1 << m->line);
-        }
+        msgClearLineBit(m, m->line);
         m->tabW[p[0x282]] = m->lineW[m->line];
         (p + p[0x282])[0x1ee] = m->line;
         (p + p[0x282])[0x1fe] = m->lineChars[m->line];
