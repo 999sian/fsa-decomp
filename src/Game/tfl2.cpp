@@ -55,35 +55,236 @@ virtual void v9();
 virtual void trigger(s32,s32);
 virtual u8 ready();
 };
-extern f32 lbl_80541440;
-extern f32 lbl_80541444;
-extern f32 lbl_80541454;
-extern f32 lbl_80541464;
-extern f32 lbl_80541468;
-extern f32 lbl_8054146C;
-extern f32 lbl_80541470;
-extern f32 lbl_80541474;
-extern f32 lbl_80541478;
-extern f32 lbl_8054147C;
-extern f32 lbl_80541480;
-extern f32 lbl_80541484;
-extern f32 lbl_80541488;
-extern f32 lbl_8054148C;
-extern f32 lbl_80541490;
-extern f32 lbl_80541494;
-extern f32 lbl_80541498;
-extern f32 lbl_8054149C;
-extern f32 lbl_805414A8;
-extern f32 lbl_805414B8;
-extern f32 lbl_805414BC;
-extern f64 lbl_805414A0,lbl_805414B0;
+extern const f32 lbl_80541440;
+extern const f32 lbl_80541444;
+extern const f32 lbl_80541454;
+extern const f32 lbl_80541464;
+extern const f32 lbl_80541468;
+extern const f32 lbl_8054146C;
+extern const f32 lbl_80541470;
+extern const f32 lbl_80541474;
+extern const f32 lbl_80541478;
+extern const f32 lbl_8054147C;
+extern const f32 lbl_80541480;
+extern const f32 lbl_80541484;
+extern const f32 lbl_80541488;
+extern const f32 lbl_8054148C;
+extern const f32 lbl_80541490;
+extern const f32 lbl_80541494;
+extern const f32 lbl_80541498;
+extern const f32 lbl_8054149C;
+extern const f32 lbl_805414A8;
+extern const f32 lbl_805414B8;
+extern const f32 lbl_805414BC;
+extern const f64 lbl_805414A0,lbl_805414B0;
 static inline void tfl2Effect(u8* p,s32 id,s32 mode) {
  JGeometry::TVec3<f32> v;
  v.x=lbl_80541454+*(f32*)(p+0xc);v.y=lbl_80541454+*(f32*)(p+0x10);v.z=lbl_80541440;
  fn_8013CC50(*(u32*)(p+4),&v,id,mode,0,0,0,1,lbl_80541444);
 }
-extern "C" void fn_802F25C0(u8* this_) {
-    s32 state=*(s32*)(this_+0x234);
+extern "C" void fn_802F25C0(u8* p) {
+JGeometry::TVec2<f32> pos2;
+Tfl2Rect box;
+Tfl2Rect region;
+JGeometry::TVec3<f32> saved=*(JGeometry::TVec3<f32>*)(p+0xc);
+const s32* base=lbl_8046F788;
+switch(*(s32*)(p+0x234)){
+default:case 6:
+*(f32*)(p+0xc)+=lbl_80541454;*(f32*)(p+0x10)+=lbl_80541454;break;
+case 2:*(f32*)(p+0xc)+=lbl_80541464;*(f32*)(p+0x10)+=lbl_8054146C;break;
+case 3:*(f32*)(p+0xc)+=lbl_80541454;*(f32*)(p+0x10)+=lbl_8054146C;break;
+case 4:case 5:
+*(f32*)(p+0x80)=lbl_80541470;*(f32*)(p+0x84)=lbl_80541470;*(f32*)(p+0x88)=lbl_80541464;*(f32*)(p+0x8c)=lbl_80541464;
+box=*(Tfl2Rect*)(p+0x80);
+*(f32*)(p+0xc)+=lbl_80541464;*(f32*)(p+0x10)+=lbl_80541464;
+pos2.x=*(f32*)(p+0xc);pos2.y=*(f32*)(p+0x10);
+box.x0+=pos2.x;box.y0+=pos2.y;box.x1+=pos2.x;box.y1+=pos2.y;
+fn_80239914(&box,*(s32*)(p+4),*(void**)(p+0x198));
+*(JGeometry::TVec3<f32>*)(p+0xc)=saved;
+*(f32*)(p+0x10)+=lbl_80541464;
+*(f32*)(p+0x60)=lbl_80541474;*(f32*)(p+0x64)=lbl_80541478;*(f32*)(p+0x68)=lbl_8054147C;*(f32*)(p+0x6c)=lbl_80541480;
+break;
+}
+pos2.x=*(f32*)(p+0xc);pos2.y=*(f32*)(p+0x10);
+box=*(Tfl2Rect*)(p+0x60);
+box.x0+=pos2.x;box.y0+=pos2.y;box.x1+=pos2.x;box.y1+=pos2.y;
+s32 player=fn_8023AF14(&box,*(s32*)(p+4),0,lbl_80541484);
+if(player>=0 && fn_8022F514(player)==1 && player==fn_8022F478(player))player=-1;
+if(*(s32*)(p+0x23c)==1 && player>=0 && !fn_80234F68(player))player=-1;
+s32 ball=fn_801F2718(p,0x5342414c);
+fn_8023A89C(&box,*(s32*)(p+4),&pos2);
+s32 count=0;
+for(s32 i=0;i<4;i++)if(fn_8023A97C(i,&box,*(s32*)(p+4),&pos2))count++;
+*(JGeometry::TVec3<f32>*)(p+0xc)=saved;
+switch(*(s32*)(p+0x230)){
+case 0:{
+f32 x=*(f32*)(p+0xc);f32 y=*(f32*)(p+0x10);s32 room=*(s32*)(p+4);
+Tfl2RoomCfg* cfg=fn_802D6A9C();region=room<8?cfg->rectA:cfg->rectB;
+s32 tx=(s32)(x-region.x0);s32 ty=(s32)(y-region.y0);
+if(tx<0)tx=0;else if(tx>=512)tx=511;if(ty<0)ty=0;else if(ty>=512)ty=511;
+*(u16*)(p+0x250)=fn_802F9908(lbl_8053AB10->x20,*(u32*)(p+4),((ty<<1)&0x200)|(tx&0x100)|(ty&0xf0)|((tx>>4)&15));
+*(s32*)(p+0x230)=2;break;
+}
+case 2:
+switch(*(s32*)(p+0x234)){
+case 0:case 1:case 2:case 3:case 6:
+if(((Tfl2Virtual*)p)->ready() && (player>=0||ball>=0)){
+tfl2Effect(p,897,0);
+tfl2Effect(p,898,0);
+tfl2Effect(p,899,0);
+tfl2Effect(p,900,0);
+{
+f32 x=*(f32*)(p+0xc);
+s32 room=*(s32*)(p+4);
+Tfl2RoomCfg* cfg=fn_802D6A9C();
+region=room<8?cfg->rectA:cfg->rectB;
+f32 ry=region.y0;
+for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+s32 ty=(s32)(y-ry);
+s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
+if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
+u32 tile=((ty<<1)&0x200)|(cx&0x100)|(ty&0xf0)|((cx>>4)&0xf);
+fn_802F9974(lbl_8053AB10->x20,*(u32*)(p+4),tile,6);
+y+=lbl_80541488;
+}x+=lbl_80541488;
+}
+}
+*(s32*)(p+0x230)=3;fn_801F0E34(p,0x3001b,0);
+}break;
+case 4:case 5:
+if(count==4){
+((Tfl2Virtual*)p)->trigger(255,1);fn_801F0E34(p,0x30009,0);
+{
+f32 x=*(f32*)(p+0xc);
+s32 room=*(s32*)(p+4);
+Tfl2RoomCfg* cfg=fn_802D6A9C();
+region=room<8?cfg->rectA:cfg->rectB;
+f32 ry=region.y0;
+for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+s32 ty=(s32)(y-ry);
+s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
+if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
+u32 tile=((ty<<1)&0x200)|(cx&0x100)|(ty&0xf0)|((cx>>4)&0xf);
+fn_802F9974(lbl_8053AB10->x20,*(u32*)(p+4),tile,0x7c);
+y+=lbl_80541488;
+}x+=lbl_80541488;
+}
+}
+*(f32*)(p+0x24c)=lbl_8054148C;*(s32*)(p+0x230)=6;fn_801F0E34(p,0x3001b,0);
+}break;
+}break;
+case 3:
+*(f32*)(p+0x248)+=lbl_80541490;
+if(*(f32*)(p+0x248)>=lbl_80541494){
+*(f32*)(p+0x248)=lbl_80541498;
+{
+f32 x=*(f32*)(p+0xc);
+s32 room=*(s32*)(p+4);
+Tfl2RoomCfg* cfg=fn_802D6A9C();
+region=room<8?cfg->rectA:cfg->rectB;
+f32 ry=region.y0;
+for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+s32 ty=(s32)(y-ry);
+s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
+if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
+u32 tile=((ty<<1)&0x200)|(cx&0x100)|(ty&0xf0)|((cx>>4)&0xf);
+fn_802F9974(lbl_8053AB10->x20,*(u32*)(p+4),tile,*(u16*)(p+0x252));
+y+=lbl_80541488;
+}x+=lbl_80541488;
+}
+}
+*(s32*)(p+0x244)=40;
+if(*(s32*)(p+0x23c)==2)*(s32*)(p+0x230)=8;else *(s32*)(p+0x230)=4;
+}break;
+case 4:
+if(*(s32*)(p+0x244)==0 && player<0 && ball<0){
+fn_801F0E34(p,0x3001c,0);*(s32*)(p+0x230)=5;
+}else if(*(s32*)(p+0x244)!=0){
+--*(s32*)(p+0x244);
+if(*(s32*)(p+0x244)==0 && *(s32*)(p+0x23c)!=0 && ((Tfl2Virtual*)p)->ready()==1)*(s32*)(p+0x244)=1;
+}break;
+case 5:
+*(f32*)(p+0x248)-=lbl_8054149C;
+if(*(f32*)(p+0x248)<lbl_80541440){
+*(f32*)(p+0x248)=lbl_80541440;
+{
+f32 x=*(f32*)(p+0xc);
+s32 room=*(s32*)(p+4);
+Tfl2RoomCfg* cfg=fn_802D6A9C();
+region=room<8?cfg->rectA:cfg->rectB;
+f32 ry=region.y0;
+for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+s32 ty=(s32)(y-ry);
+s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
+if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
+u32 tile=((ty<<1)&0x200)|(cx&0x100)|(ty&0xf0)|((cx>>4)&0xf);
+if(*(s32*)(p+0x234)!=1)fn_802F9974(lbl_8053AB10->x20,*(u32*)(p+4),tile,*(u16*)(p+0x250));else fn_802F9974(lbl_8053AB10->x20,*(u32*)(p+4),tile,((const u16*)((const u8*)base+0x38+i*8))[j]);
+y+=lbl_80541488;
+}x+=lbl_80541488;
+}
+}
+*(s32*)(p+0x230)=2;
+tfl2Effect(p,897,1);
+tfl2Effect(p,898,1);
+tfl2Effect(p,899,1);
+tfl2Effect(p,900,1);
+}break;
+case 6:
+*(f32*)(p+0x248)-=*(f32*)(p+0x24c);
+*(f32*)(p+0x24c)-=lbl_805414A0;
+if(*(f32*)(p+0x248)<=lbl_805414A8){*(f32*)(p+0x248)=lbl_805414A8;*(s32*)(p+0x244)=4;*(s32*)(p+0x230)=7;}
+{u8* mgr=*(u8**)((u8*)lbl_8053AB10+0x24);if(!mgr[0x7f4])mgr[0x7f5]=1;}break;
+case 7:
+if(*(s32*)(p+0x244)==0){
+*(f32*)(p+0x248)-=*(f32*)(p+0x24c);*(f32*)(p+0x24c)+=lbl_805414B0;
+if(*(f32*)(p+0x248)<=lbl_805414B8){
+*(f32*)(p+0x248)=lbl_805414B8;*(s32*)(p+0x230)=8;
+fn_802D79E8(fn_802D6A9C(),*(s32*)(p+4),1,lbl_805414BC,lbl_80541440);
+JGeometry::TVec3<f32> v;
+v.x=lbl_80541464+(lbl_80541468+*(f32*)(p+0xc));v.y=lbl_80541464+*(f32*)(p+0x10);v.z=lbl_80541440;
+fn_8013CC50(*(u32*)(p+4),&v,0x263,0,0,0,0,1,lbl_80541444);
+if(*(s32*)(p+0x234)==4){
+const char* name=fn_802D9C4C(fn_802D6A9C());
+fn_8013CC50(*(u32*)(p+4),&v,130,1,0,0,0,1,lbl_80541444);
+fn_8013CC50(*(u32*)(p+4),&v,131,1,0,0,0,1,lbl_80541444);
+fn_8013CC50(*(u32*)(p+4),&v,132,1,0,0,0,1,lbl_80541444);
+if(*name=='r'||*name=='s'||*name=='y')fn_8013CC50(*(u32*)(p+4),&v,0x80,1,0,0,0,1,lbl_80541444);
+else fn_8013CC50(*(u32*)(p+4),&v,0x81,1,0,0,0,1,lbl_80541444);
+fn_801F0E34(p,0x30001,0);
+}else {
+f32 x=lbl_80541468+*(f32*)(p+0xc);
+s32 room=*(s32*)(p+4);
+Tfl2RoomCfg* cfg=fn_802D6A9C();
+region=room<8?cfg->rectA:cfg->rectB;
+f32 ry=region.y0;
+for(s32 i=0;i<base[*(s32*)(p+0x234)];i++){
+s32 tx=(s32)(x-region.x0);f32 y=*(f32*)(p+0x10);
+for(s32 j=0;j<base[7+*(s32*)(p+0x234)];j++){
+s32 ty=(s32)(y-ry);
+s32 cx=tx;if(tx<0)cx=0;else if(tx>=0x200)cx=0x1ff;
+if(ty<0)ty=0;else if(ty>=0x200)ty=0x1ff;
+u32 tile=((ty<<1)&0x200)|(cx&0x100)|(ty&0xf0)|((cx>>4)&0xf);
+fn_802F9974(lbl_8053AB10->x20,*(u32*)(p+4),tile,(u16)*(s32*)(p+0x240));
+y+=lbl_80541488;
+}x+=lbl_80541488;
+}
+}
+p[0x11c]=0;
+}
+}else --*(s32*)(p+0x244);
+{u8* mgr=*(u8**)((u8*)lbl_8053AB10+0x24);if(!mgr[0x7f4])mgr[0x7f5]=1;}
+break;
+case 1:p[0x11c]=0;break;
+case 8:break;
+}
 }
 
 // TFL2 init (vtable slot 1)
