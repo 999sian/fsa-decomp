@@ -119,20 +119,14 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" void fn_801F71A4(void*, f32, f32, f32);
 extern "C" char lbl_80471840[];
 
-static inline s32 actorCollisionResult(char* actor, JGeometry::TVec3<f32>& collision) {
-    return (u8)fn_801F2618(actor, &collision, 0);
-}
-
 static inline u8 roomMoveFlag(s32 room) {
     const u8* __restrict state = (u8*)fn_802D6A9C() + 0x10000;
     return state[room + 0x31df];
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_lifetimes off
 extern "C" void fn_80323B68(char* this_) {
-    s32 hit;
-    s32 kind;
-    s32 room = *(s32*)(this_ + 4);
+    const s32 room = *(s32*)(this_ + 4);
     if (*(u8*)(this_ + 0x278) != roomMoveFlag(room)) {
         if (roomMoveFlag(*(s32*)(this_ + 4)) == 0) {
             switch (*(u32*)(this_ + 0x98)) {
@@ -209,10 +203,10 @@ extern "C" void fn_80323B68(char* this_) {
         *(u8*)(this_ + 0x268) = 0;
         JGeometry::TVec3<f32> collision;
         collision.zero();
-        hit = (u8)fn_801F2618(this_, &collision, 0);
+        const s32 hit = (u8)fn_801F2618(this_, &collision, 0);
         if ((*(u8*)(this_ + 0x26a) == 0 && fn_801F2A10(this_, *(u32*)(this_ + 0x90), *(u32*)(this_ + 0x98), 0, 0)) || *(s32*)(this_ + 0x108) == 0 || hit) {
             {
-                room = *(s32*)(this_ + 4);
+                s32 room = *(s32*)(this_ + 4);
                 if (room < 8) fn_8013CC50(room, this_ + 0xc, lbl_80541B70, 0x339, 0, 1, 0, 0, 1);
                 else Actor_CreateByID(fn_801F856C(), 'HTMK', room, this_ + 0xc, 0, -1, -1);
             }
@@ -234,7 +228,7 @@ extern "C" void fn_80323B68(char* this_) {
             break;
         }
         if (*(f32*)(this_ + 0x14) < lbl_80541B78) {
-            kind = (u16)fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4));
+            const s32 kind = (u16)fn_8022461C(this_ + 0xc, *(s32*)(this_ + 4));
             fn_80226850(this_ + 0xc, *(s32*)(this_ + 4));
             if (kind == 12 || kind == 3) { *(u8*)(this_ + 0x11c) = 0; break; }
             if (kind == 14) {
@@ -265,7 +259,7 @@ extern "C" void fn_80323B68(char* this_) {
             else if (fn_80224D0C(this_ + 0xc, *(s32*)(this_ + 4)) == 1) fn_801F0E34(this_, 0x50072, 0);
             else if (fn_80224A04(this_ + 0xc, *(s32*)(this_ + 4)) == 1) fn_801F0E34(this_, 0x50073, 0);
             else fn_801F0E34(this_, 0x50075, 0);
-            room = *(s32*)(this_ + 4);
+            s32 room = *(s32*)(this_ + 4);
             if (room < 8) fn_8013CC50(room, this_ + 0xc, lbl_80541B70, 0x339, 0, 1, 0, 0, 1);
             else Actor_CreateByID(fn_801F856C(), 'HTMK', room, this_ + 0xc, 0, -1, -1);
             *(s32*)(this_ + 0x230) = 1;
@@ -328,7 +322,7 @@ extern "C" void fn_80323B68(char* this_) {
     if (*(s32*)(this_ + 0x244) > 0) --*(s32*)(this_ + 0x244);
     if (*(s32*)(this_ + 0x248) > 0) --*(s32*)(this_ + 0x248);
 }
-#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 extern "C" void* fn_80324570(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804AB3A8;
