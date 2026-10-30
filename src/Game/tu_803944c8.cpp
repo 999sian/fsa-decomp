@@ -428,16 +428,21 @@ extern "C" void fn_80395834(MsgPop2* self, J2DPane* pane) {
 }
 
 static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
+    MsgPop* self = (MsgPop*)p;
     s32 period = *(s16*)(lbl_8050DB0C + 0x284);
-    ++((MsgPop*)p)->fadeTimer;
+    ++self->fadeTimer;
     s32 half = period / 2;
-    if (*(s16*)(p + 0x196) >= period) *(s16*)(p + 0x196) = 0;
-    s32 t = *(s16*)(p + 0x196);
+    if (self->fadeTimer >= period) self->fadeTimer = 0;
+    s32 t = self->fadeTimer;
     s32 v;
     if (t < half) v = t; else v = period - t;
     f32 alpha = (f32)v / (f32)half;
     for (s32 j = 0; j < 4; j++) {
-        if (tags[j] != 0) screen->search(tags[j])->setAlpha(p[j + 0x1a5] * alpha);
+        if (tags[j] != 0) {
+            J2DPane* pane = screen->search(tags[j]);
+            f32 value = p[j + 0x1a5];
+            pane->setAlpha(value * alpha);
+        }
     }
 }
 static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
