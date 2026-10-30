@@ -40,7 +40,7 @@ extern "C" s32 fn_801F285C(void*, void*, void*, s32, s32);
 extern "C" u8 fn_802353AC(s32);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
 extern "C" s32 fn_8023B6CC(s32);
-extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
+extern "C" void fn_801F37AC(void*, s32, const JGeometry::TVec3<f32>*, s32, s32, s32);
 extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022F3DC(s32);
 extern "C" void fn_801F71A4(f32*, f32, f32, f32);
@@ -82,7 +82,7 @@ extern "C" void fn_80348B40(u8* p) {
         }
     }
     if (B(p,0x265)==1) {
-        void* pos=fn_8023E724(I(p,0x24c));
+        JGeometry::TVec3<f32>* pos=fn_8023E724(I(p,0x24c));
         fn_801F37AC(p,fn_8023B6CC(I(p,0x24c)),pos,0,1,-1);
         s32 idx=I(p,0x250);
         if (idx>=0) {
@@ -105,7 +105,7 @@ extern "C" void fn_80348B40(u8* p) {
             if (I(p,0x244)>=0) {
                 if (fn_8023DE58(I(p,0x244))<8) {
                     V(p,0x274)=V(p,0x268);
-                    V(p,0x268)=*(JGeometry::TVec3<f32>*)fn_8023E724(I(p,0x244));
+                    V(p,0x268)=*fn_8023E724(I(p,0x244));
                     s32 rank=fn_8022E970(I(p,0x244));
                     switch (fn_8022CAF8(I(p,0x244))) {
                     case 0:
@@ -129,7 +129,7 @@ extern "C" void fn_80348B40(u8* p) {
                             }
                         }
                         break;
-                    case 4: V(p,0x268)=*(JGeometry::TVec3<f32>*)fn_8023E724(fn_8022EA0C(I(p,0x244)));break;
+                    case 4: V(p,0x268)=*fn_8023E724(fn_8022EA0C(I(p,0x244)));break;
                     case 5:break;
                     }
                 }
