@@ -248,6 +248,21 @@ extern "C" void fn_80238E08(s32 handle);
 extern "C" void fn_80238D50(s32 handle);
 extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
 
+struct YasiFlags {
+    u32 sw3 : 5;
+    u32 sw2 : 5;
+    u32 sw1 : 5;
+    u32 sw0 : 5;
+    u32 b11 : 1;
+    u32 b10 : 1;
+    u32 b9 : 1;
+    u32 b8 : 1;
+    u32 b7 : 1;
+    u32 type : 3;
+    u32 dir : 2;
+    u32 kind : 2;
+};
+
 static inline f32 yasiReach(u32 flags) {
     return (f32)(s32)(((flags & 3) + 1) * 16);
 }
