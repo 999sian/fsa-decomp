@@ -1,6 +1,8 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 8016545C-80166BD0 (ARRW). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "Game/HitRect.h"
+#include "JSystem/JMath/JMath.h"
 
 // from src/Game/fn_801662D8_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -189,6 +191,33 @@ extern "C" void fn_8016545C(char* p) {
         u32 id = *(u32*)(p + 4);
         JUtility::TColor color(0, 0, 0, 0x80);
         fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), id, p + 0xc, color, lbl_8053D7C4);
+    }
+}
+
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" u8 fn_8022E438(s32 i, u32 a);
+extern "C" u8 fn_8023B190(s32 i, u32 a, void* pos);
+extern "C" void fn_8022E1A0(s32 i, u32 a);
+extern "C" void fn_80165730(char* this_) {
+    if (*(u16*)(this_ + 0x94) == 3) {
+        f32 box[4];
+        box[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+        box[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+        box[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+        box[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+        for (s32 i = 0; i < 4; i++) {
+            if (!fn_8023F264(i)) {
+                continue;
+            }
+            if (fn_8022E438(i, *(u32*)(this_ + 0x90))) {
+                continue;
+            }
+            if (!fn_8023B190(i, *(u32*)(this_ + 4), box)) {
+                continue;
+            }
+            fn_8022E1A0(i, *(u32*)(this_ + 0x198));
+        }
+        return;
     }
 }
 
