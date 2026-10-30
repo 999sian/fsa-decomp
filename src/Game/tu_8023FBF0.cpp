@@ -5115,6 +5115,12 @@ inline BOOL stageCleared(s32 a, s32 b) {
     return ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
 }
 
+inline BOOL curStageCleared() {
+    s32 a = S32(fn_802D6A9C(), 4);
+    s32 b = S32(fn_802D6A9C(), 8);
+    return stageCleared(a, b);
+}
+
 inline s32 linkRankLive(char* p) {
     if (S32(p, 0xd60) < 0) {
         return 0;
@@ -5329,12 +5335,11 @@ void fn_80254744(char* p) {
         case 0x1c1:
             U16(p, 0x3c4) = 0x3d;
             break;
-        case 1:
-        case 2:
-            U16(p, 0x3c4) = 0x3e;
-            break;
         case 3:
             U16(p, 0x3c4) = 0x3f;
+            break;
+        case 1:
+            U16(p, 0x3c4) = 0x3e;
             break;
         default:
             U16(p, 0x3c4) = 0x3e;
