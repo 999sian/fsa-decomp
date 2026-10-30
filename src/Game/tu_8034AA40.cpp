@@ -253,35 +253,6 @@ extern "C" f32 lbl_80542564;
 extern "C" void fn_8022FF8C(s32,void*,s32,s32,s32,s32);
 #pragma inline_depth(8)
 static inline u8 nwokEnabled(s32 i){u8 mask=1<<i;return (lbl_8053AAF8[0x82]&mask)!=0;}
-static inline bool nwokHasChicken(u8* self){
-JGeometry::TBox2f tmp;JGeometry::TBox2f box;
-tmp.i.x=lbl_80542528;tmp.i.y=lbl_8054252C;tmp.f.x=lbl_80542530;tmp.f.y=lbl_80542534;
-box=tmp;box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
-s32 index=-1;
-for(;;){index=fn_801F78F4(fn_801F856C(),0x4e495741,index);if(index<0)break;
-u8* obj=(u8*)fn_801F666C(fn_801F856C(),index);
-if(obj&&*(s32*)(self+0x4)==*(s32*)(obj+0x4)&&*(f32*)(obj+0x14)<lbl_8054252C){u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1&&obj[0xc4]==0)return true;}
-}return false;
-}
-static inline void nwokTally(u8* self){
-JGeometry::TBox2f tmp;JGeometry::TBox2f box;
-tmp.i.x=lbl_80542528;tmp.i.y=lbl_8054252C;tmp.f.x=lbl_80542530;tmp.f.y=lbl_80542534;
-box=tmp;box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
-*(s32*)(self+0x274)=0;*(s32*)(self+0x278)=0;*(s32*)(self+0x27c)=0;*(s32*)(self+0x280)=0;s32 index=-1;
-for(;;){index=fn_801F78F4(fn_801F856C(),0x4e495741,index);if(index<0)break;
-u8* obj=(u8*)fn_801F666C(fn_801F856C(),index);
-if(obj&&*(s32*)(obj+0x25c)>=0&&*(s32*)(self+0x4)==*(s32*)(obj+0x4)&&*(f32*)(obj+0x14)<lbl_8054252C){
-u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1){if(obj[0x2a3]==1)self[0x284+*(s32*)(obj+0x25c)]=1;*(s32*)(self+0x274);(*(s32*)(self+0x274+*(s32*)(obj+0x25c)*4))+=1;}
-}}
-}
-static inline s32 nwokWinner(u8* self){
-s32 choices[4];s32* next=choices;s32 best=*(s32*)(self+0x274);s32 count=0;
-if(fn_80138A30(lbl_8053AAF8)==1)return 0;
-if(best<*(s32*)(self+0x278))best=*(s32*)(self+0x278);if(best<*(s32*)(self+0x27c))best=*(s32*)(self+0x27c);if(best<*(s32*)(self+0x280))best=*(s32*)(self+0x280);
-if(best==*(s32*)(self+0x274)){*next++=0;count=1;}if(best==*(s32*)(self+0x278)){*next++=1;count++;}if(best==*(s32*)(self+0x27c)){*next++=2;count++;}if(best==*(s32*)(self+0x280)){*next=3;count++;}
-if(count==1)return choices[0];
-return choices[(s32)(count*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1())];
-}
 static inline bool nwokHasChicken(u8* self,JGeometry::TBox2f& tmp,JGeometry::TBox2f& box){
 tmp.i.x=lbl_80542528;tmp.i.y=lbl_8054252C;tmp.f.x=lbl_80542530;tmp.f.y=lbl_80542534;
 box=tmp;box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
