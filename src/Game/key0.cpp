@@ -735,6 +735,16 @@ static inline void key0LinkHere(char* p) {
     key0LinkPoints(key, pos, packed, id);
 }
 
+static inline void key0RegisterAt(const Key0Pt& pt, u32 id) {
+    fn_802D6C10(fn_802D6A9C(), pt, id);
+}
+
+static inline void key0RegisterRef(char* p) {
+    const Key0Pt& pt = Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
+    u32 id = *(u32*)(p + 0x238);
+    key0RegisterAt(pt, id);
+}
+
 // KEY0: collected. Spawns the pickup effect, registers the tile and deactivates.
 static inline void key0Collect(char* p) {
     s32 room = *(s32*)(p + 0x4);
@@ -743,7 +753,7 @@ static inline void key0Collect(char* p) {
     } else {
         fn_8013CC50(room, p + 0xc, lbl_80540C7C, 0x503, 1, 0, 0, 0, 1);
     }
-    key0Register(p);
+    key0RegisterRef(p);
     *(u8*)(p + 0x11c) = 0;
 }
 
@@ -789,8 +799,8 @@ extern "C" void fn_802C2C30(char* p) {
         if (*(u8*)(p + 0x2b3) == 1) {
             *(u8*)(p + 0x2b3) = 0;
             *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-            *(f32*)(p + 0x14) = lbl_80540C74;
-            vel.z = lbl_80540C74;
+            *(f32*)(p + 0x14) = 0.0f;
+            vel.z = 0.0f;
             if (vel.y >= lbl_80540C94) {
                 vel.y = lbl_80540C94;
             } else if (vel.y <= lbl_80540C9C) {
@@ -836,16 +846,16 @@ extern "C" void fn_802C2C30(char* p) {
                     vel.y = -(vel.y / lbl_80540C94);
                     return;
                 }
-                if (delta.y > lbl_80540C74) {
-                    if (vel.y < lbl_80540C74) {
-                        vel.y = lbl_80540C74;
+                if (delta.y > 0.0f) {
+                    if (vel.y < 0.0f) {
+                        vel.y = 0.0f;
                     }
                     return;
                 }
                 JGeometry::TVec3<f32> probe;
                 probe.x = lbl_80540C84 + *(f32*)(p + 0xc);
                 probe.y = lbl_80540C88 + *(f32*)(p + 0x10);
-                probe.z = lbl_80540C74;
+                probe.z = 0.0f;
                 u16 a = fn_80226850(&probe, *(s32*)(p + 4));
                 probe.x = *(f32*)(p + 0xc) - lbl_80540C84;
                 u16 b = fn_80226850(&probe, *(s32*)(p + 4));
@@ -884,7 +894,7 @@ extern "C" void fn_802C2C30(char* p) {
             if (delta.x != lbl_80540C74) {
                 vel.x = vel.x * lbl_80540CC0;
                 if ((delta.x > lbl_80540C74 && *(f32*)(p + 0xc) <= *(f32*)(p + 0x248)) ||
-                    (delta.x < lbl_80540C74 && *(f32*)(p + 0xc) >= *(f32*)(p + 0x248))) {
+                    (delta.x < 0.0f && *(f32*)(p + 0xc) >= *(f32*)(p + 0x248))) {
                     *(f32*)(p + 0xc) = *(f32*)(p + 0x248);
                     *(f32*)(p + 0x10) = *(f32*)(p + 0x24c);
                     *(f32*)(p + 0x14) = *(f32*)(p + 0x250);
