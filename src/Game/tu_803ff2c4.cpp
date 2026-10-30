@@ -34,6 +34,8 @@ extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B0F50[];
 extern u8 lbl_80529DEC[];
 
+struct BootTaskBase { u32 pad0; u8 ready; u8 pad5[3]; };
+struct BootTask : BootTaskBase { virtual void destroy(s32); u8 padC[8]; void* resource; };
 struct BootLoad {
     u8 pad0[4];
     u8 ready;
@@ -223,13 +225,14 @@ endDraw:
 }
 
 extern "C" void fn_803FFAA8(void* this_) {
+ u8* strings;
  u8* p=(u8*)this_;
- u8* strings=lbl_80479AC0;
+ strings=lbl_80479AC0;
  if(p[0x79]==0) {
   BootLoad* load=*(BootLoad**)(p+0x44);
   if(load->ready==1) {
    *(void**)(lbl_80529DEC+0x58)=load->resource;
-   if(load) load->dtor.destroy(1);
+   if(load) load->destroy();
    fn_803007D0();
    void* a=operator new(0xec); if(a) fn_8030AC4C(a);
    *(void**)(p+4)=a; *(void**)(lbl_80529DEC+0x5c)=*(void**)(p+4);
@@ -246,7 +249,7 @@ extern "C" void fn_803FFAA8(void* this_) {
   BootLoad* load=*(BootLoad**)(p+0x34);
   if(load->ready==1) {
    *(void**)(lbl_80529DEC+0x18)=load->resource;
-   if(load) load->dtor.destroy(1);
+   if(load) load->destroy();
    *(J2DScreen**)(p+0x18)=new J2DScreen;
    (*(J2DScreen**)(p+0x18))->setPriority((char*)strings+0x18,0,*(JKRArchive**)(lbl_80529DEC+0x18));
    ((J2DPicture*)(*(J2DScreen**)(p+0x18))->search(0x4e494e5f4c6f676fULL))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(220,0,0,255));
@@ -323,13 +326,13 @@ extern "C" void fn_803FFAA8(void* this_) {
   *(void**)(lbl_80529DEC+56)=(*(BootLoad**)(p+84))->resource;
   *(void**)(lbl_80529DEC+64)=(*(BootLoad**)(p+88))->resource;
   *(void**)(lbl_80529DEC+68)=(*(BootLoad**)(p+92))->resource;
-  {BootLoad* l=*(BootLoad**)(p+56);if(l) l->dtor.destroy(1);}
-  {BootLoad* l=*(BootLoad**)(p+64);if(l) l->dtor.destroy(1);}
-  {BootLoad* l=*(BootLoad**)(p+60);if(l) l->dtor.destroy(1);}
-  {BootLoad* l=*(BootLoad**)(p+72);if(l) l->dtor.destroy(1);}
-  {BootLoad* l=*(BootLoad**)(p+84);if(l) l->dtor.destroy(1);}
-  {BootLoad* l=*(BootLoad**)(p+88);if(l) l->dtor.destroy(1);}
-  {BootLoad* l=*(BootLoad**)(p+92);if(l) l->dtor.destroy(1);}
+  {BootLoad* l=*(BootLoad**)(p+56);if(l) l->destroy();}
+  {BootLoad* l=*(BootLoad**)(p+64);if(l) l->destroy();}
+  {BootLoad* l=*(BootLoad**)(p+60);if(l) l->destroy();}
+  {BootLoad* l=*(BootLoad**)(p+72);if(l) l->destroy();}
+  {BootLoad* l=*(BootLoad**)(p+84);if(l) l->destroy();}
+  {BootLoad* l=*(BootLoad**)(p+88);if(l) l->destroy();}
+  {BootLoad* l=*(BootLoad**)(p+92);if(l) l->destroy();}
   p[0x79]=4;p[0x78]=1;
  }
  if(p[0x78]==1) {fn_803B9B3C(lbl_8051C1A0);p[0x78]=2;}
