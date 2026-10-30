@@ -513,6 +513,42 @@ extern "C" void fn_80192BD8(char* this_) {
     }
 }
 
+#pragma dont_inline on
+extern "C" void fn_80192D98(char* self){
+JGeometry::TVec3f saved,pos;
+u8 box[16];fn_8018E890(box);s32 hit=0;fn_801546BC(&pos);
+*(s32*)(self+0x108)=10000;
+if(*(u32*)(self+0x90)==31){fn_80192BD8(self);return;}
+if(*(u32*)(self+0x90)==0)fn_8017ECC0();
+fn_80154718(self+0xc);
+if(*(u32*)(self+0x90)==0){
+((GnonVirtuals*)self)->v19();
+if(((GnonVirtuals*)self)->v9(lbl_8053E278,lbl_8053E29C,lbl_8053E2A0))return;
+fn_801F3D94(self,0);
+if(*(s32*)(self+0x2a0)!=3){
+if(self[0x2a6]==0&&*(f32*)(self+0x2ac)>lbl_8053E2A4&&fn_801F2FAC(self)){
+if(*(s32*)(self+0x298)>0)*(s32*)(self+0x298)-=10000-*(s32*)(self+0x108);
+if(*(s32*)(self+0x298)<=0){if(*(s32*)(self+0x230)!=9){
+if(*(s32*)(self+0x2a0)==0){*(s32*)(self+0x298)=480;fn_801F0E34(self,0x50000,0);*(s32*)(self+0x2a0)=1;lbl_8053AB91=1;}
+else{if(*(s32*)(self+0x2a0)==1)fn_80196D30((void*)2,0);*(s32*)(self+0x230)=9;}
+}}else{fn_801F0E34(self,0x50000,0);fn_801546BC(self+0x3c);}
+}}
+else if(self[0x2a6]==0){
+for(s32 i=0;i<4;i++){s32 player=fn_801F285C(self,0,0,1,i);if(player>=0){JGeometry::TVec2f point;fn_801F3128(self,&point);fn_80238548(player,0,&point,3);}}
+fn_80196D70(&saved.x,(f32*)(self+0xc));*(f32*)(self+0x10)-=*(f32*)(self+0x14);*(f32*)(self+0x14)=lbl_8053E278;s32 id=fn_801F2718(self,'GNON');fn_80196D70((f32*)(self+0xc),&saved.x);
+if(id>=0){void* other=fn_8015445C(id);if(other&&fn_8018A590()==1&&(fn_801544C8(other)==20||fn_801544C8(other)==21||fn_801544C8(other)==22||fn_801544C8(other)==23)){
+*(s32*)(self+0x298)=(f32)*(s32*)(self+0x298)-lbl_8053E2A8;
+fn_801F37AC(self,0,self+0xc,3,0,-1);fn_801544D0(self,0);lbl_8053AB90=1;fn_801F0E34(self,0x50005,0);fn_8013CC50(*(u32*)(self+4),self+0xc,0x1ce,0,3,0,0,1,lbl_8053E298);fn_8018A5A8(other,0);self[0x2a6]=1;
+if(*(s32*)(self+0x298)<=0)*(s32*)(self+0x230)=9;else{*(s32*)(self+0x28c)=15;((GnonVirtuals*)self)->v19();}
+fn_801546BC(self+0x3c);
+}}}}
+for(int i=0;i<10;i++)if(((GnonTimers*)self)->t[i]>0)((GnonTimers*)self)->t[i]--;
+if(*(s32*)(self+0x28c)==15){if(self[0x2a4]==0)return;*(s32*)(self+0x230)=3;}
+if(*(u32*)(self+0x90)!=30){fn_801F71A4(self+0x3c,*(f32*)(self+0x2b8),lbl_8053E2AC,lbl_8053E298);fn_801F71A4(self+0x40,*(f32*)(self+0x2bc),lbl_8053E2AC,lbl_8053E298);}
+fn_801545F0(self+0xc,self+0x3c);
+if(*(u32*)(self+0x90)==0||(u32)(*(u32*)(self+0x90)-20)<=2||*(u32*)(self+0x90)==23)fn_801F2B20(self,0);
+}
+
 extern "C" void fn_80192BD8(char* this_);
 extern "C" void fn_80196020(char* this_, s32 idx) {
     char* self = this_;
