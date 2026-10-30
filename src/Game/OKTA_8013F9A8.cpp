@@ -61,7 +61,9 @@ struct OktaRandom {
     u32 seed;
     f32 get_ufloat_1() {
         union { f32 f; u32 s; } out;
-        seed = (s32)seed * 0x19660d + 0x3c6ef35f;
+        const u32 multiplier = 0x19660d;
+        u32 value = seed;
+        seed = value * multiplier + 0x3c6ef35f;
         out.s = (seed >> 9) | 0x3f800000;
         return out.f - lbl_8053CE2C;
     }
@@ -171,8 +173,9 @@ extern "C" double fabs(double);
 extern "C" void fn_8013FD50(u8* p) {
     f32 negSize;
     f32 size;
+    register const f32* source=(f32*)(p+0xc);
     JGeometry::TVec3<f32> oldPos;
-    JGeometry::setTVec3f((f32*)(p+0xc), &oldPos.x);
+    JGeometry::setTVec3f(source, &oldPos.x);
     JGeometry::TVec3<f32> velocity;
     JGeometry::TVec3<f32> pos;
     s32 quad = -1;
@@ -296,8 +299,8 @@ case 1: (*(f32*)(p+0x27c))=-(*(f32*)(p+0x25c)); (*(f32*)(p+0x280))=lbl_8053CE28;
 case 2: { f32 speed=(*(f32*)(p+0x25c)); (*(f32*)(p+0x27c))=lbl_8053CE28; (*(f32*)(p+0x280))=speed; (*(f32*)(p+0x284))=lbl_8053CE28; } break;
 case 3: { f32 speed=-(*(f32*)(p+0x25c)); (*(f32*)(p+0x27c))=lbl_8053CE28; (*(f32*)(p+0x280))=speed; (*(f32*)(p+0x284))=lbl_8053CE28; } break;
 }
-                    (*(s32*)(p+0x234))=(s32)(lbl_8053CE54*((JMARandFast*)&lbl_8053AAF8->rnd)->get_ufloat_1())+50;
-                    (*(s32*)(p+0x238))=(s32)(lbl_8053CE54*((JMARandFast*)&lbl_8053AAF8->rnd)->get_ufloat_1())+100;
+                    (*(s32*)(p+0x234))=(s32)(lbl_8053CE54*lbl_8053AAF8->rnd.get_ufloat_1())+50;
+                    (*(s32*)(p+0x238))=(s32)(lbl_8053CE54*lbl_8053AAF8->rnd.get_ufloat_1())+100;
                     (*(s32*)(p+0x23c))=(s32)(lbl_8053CE68*(*(s32*)(p+0x238)));
                     if((*(u32*)(p+0x90))==2) (*(s32*)(p+0x238))=10000;
                     (*(s32*)(p+0x230))=0;
