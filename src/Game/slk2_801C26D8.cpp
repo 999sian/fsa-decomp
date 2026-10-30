@@ -360,13 +360,13 @@ extern "C" void fn_801C6784(u8* this_);
 extern "C" u8 fn_802153A8(void* p);
 extern s32 lbl_80469450[];
 extern "C" u8 fn_8021CFF8(void* this_);
-extern f32 lbl_8053EE18;
-extern f32 lbl_8053EE1C;
-extern f32 lbl_8053EE24;
-extern f32 lbl_8053EE2C;
-extern f32 lbl_8053EE30;
-extern f32 lbl_8053EE34;
-extern f32 lbl_8053EE38;
+extern const f32 lbl_8053EE18;
+extern const f32 lbl_8053EE1C;
+extern const f32 lbl_8053EE24;
+extern const f32 lbl_8053EE2C;
+extern const f32 lbl_8053EE30;
+extern const f32 lbl_8053EE34;
+extern const f32 lbl_8053EE38;
 
 static inline void slk2ResetHitRect(u8* this_) {
     if (*(u8*)(this_ + 0x34d) == 7) {
