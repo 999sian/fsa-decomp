@@ -51,12 +51,11 @@ extern "C" void fn_8016D398(void*, void*, s32, s32, void*, void*, void*, void*, 
 extern "C" void calc__17JPAEmitterManagerFUc(void*, u8);
 extern "C" void draw__17JPAEmitterManagerFPC11JPADrawInfoUc(void*, void*, u8);
 extern "C" u32 OSGetProgressiveMode(void);
-static inline f32 titleFadePulse(u8* self) {
+static inline void titleFadePulse(u8* self,f32& value) {
     s32 period=*(s16*)(lbl_8050DB0C+0x29c);
     s32 hold=*(s16*)(lbl_8050DB0C+0x29e);
     ++*(s16*)(self+0x7c);
     s32 t=*(s16*)(self+0x7c);
-    f32 value;
     if(t<=2*period) {
         s32 d;
         if(t<period) d=period-t; else d=t-period;
