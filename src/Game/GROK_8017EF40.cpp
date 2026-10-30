@@ -67,6 +67,7 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
 }
 
 #pragma opt_propagation off
+#pragma opt_propagation off
 extern "C" void fn_8017EF98(u8* p) {
     GrokDrawTable* t=&lbl_804A13E0;
     DrawRec rec;
