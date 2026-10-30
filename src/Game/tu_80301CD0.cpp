@@ -938,22 +938,22 @@ extern "C" void fn_80303CE4(s32 i)
     s32 p;
     const char* base = (const char*)lbl_80471208;
 
-    n = 0;
-    lbl_80506D38[i] = n;
-    lbl_8053ACE0[i] = n;
-    lbl_8053ACE4[i] = n;
+    lbl_80506D38[i] = 0;
+    lbl_8053ACE0[i] = 0;
+    lbl_8053ACE4[i] = 0;
     lbl_8053ACD4[i] = 1;
-    ((s32*)lbl_80506D88)[i] = n;
-    ((s32*)lbl_80506D98)[i] = n;
-    lbl_8053ACE8[i] = n;
-    lbl_8053ACEC[i] = n;
-    lbl_8053ACF0[i] = n;
-    lbl_8053ACF8[i] = n;
-    lbl_8053ACFC[i] = n;
-    lbl_80504A18[i] = n;
-    lbl_80504A28[i] = n;
+    ((s32*)lbl_80506D88)[i] = 0;
+    ((s32*)lbl_80506D98)[i] = 0;
+    lbl_8053ACE8[i] = 0;
+    lbl_8053ACEC[i] = 0;
+    lbl_8053ACF0[i] = 0;
+    lbl_8053ACF8[i] = 0;
+    lbl_8053ACFC[i] = 0;
+    lbl_80504A18[i] = 0;
+    lbl_80504A28[i] = 0;
 
     ent = (MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380);
+    n = 0;
     for (p = 0; p < 4; p++) {
         ent[n + 0].f118 = 0;
         ent[n + 0].f119 = 0;
@@ -1411,6 +1411,56 @@ extern "C" void fn_80304D64() {
             }
         }
     }
+}
+
+extern u8 lbl_804DB798[4][0xe0];
+extern u8 lbl_8053AD04[4],lbl_8053AD24[4],lbl_8053AD28[4],lbl_8053AD34[4],lbl_8053AD1C[4];
+extern u16 lbl_8053AD0C[4],lbl_8053AD14[4];
+extern "C" s32 AnimTable_IsField0xe0LessThan3(void*,s32);
+extern "C" u8 fn_8022F64C(s32);
+extern "C" void fn_802F53F4(u8*,s32,u8*);
+extern "C" u16 fn_8037F0CC(s32);
+extern "C" void fn_80303CE4(s32);
+extern "C" void fn_80307B58(s32,s32,u8);
+extern "C" u8 fn_80309A38(void*,s32);
+extern "C" u8* fn_80403328(const char*);
+static inline void tu80301_fadeStep(s32 i,s32 owner,bool advance) {
+    switch(lbl_8053ACEC[i]) {
+    case 0:
+        if(lbl_8053ACE8[i]){lbl_8053ACF0[i]=0;lbl_8053ACEC[i]++;}
+        break;
+    case 1:
+        lbl_8053ACF0[i]++;
+        if((lbl_8053ACE8[i]==1&&fn_8022F64C(owner))||(lbl_8053ACE8[i]!=1&&lbl_8053ACF0[i]>=lbl_8053ACF4[i])){
+            lbl_8053ACF0[i]=0;lbl_8053ACEC[i]++;
+        }
+        break;
+    case 2:
+        if(lbl_8053ACE8[i]==1){if(lbl_8053ACF0[i]<31)lbl_8053ACF0[i]++;else if(advance)lbl_8053ACEC[i]++;}
+        else{if(lbl_8053ACF0[i]<16)lbl_8053ACF0[i]++;else if(advance)lbl_8053ACEC[i]++;}
+        break;
+    case 3:
+        if(advance){if(lbl_8053ACF0[i])lbl_8053ACF0[i]--;break;}
+    default:
+        if(advance){lbl_8053ACE8[i]=0;lbl_8053ACEC[i]=0;lbl_8053ACF0[i]=0;lbl_8053ACF4[i]=0;}
+        else if(lbl_8053ACF0[i]==0){lbl_8053ACE8[i]=0;lbl_8053ACEC[i]=0;lbl_8053ACF4[i]=0;}
+        else lbl_8053ACF0[i]--;
+    }
+}
+static inline void tu80301_fadeCounter(s32 owner) {
+    if(lbl_8053ACF8[owner]){if(lbl_8053ACFC[owner]<17)lbl_8053ACFC[owner]++;}
+    else lbl_8053ACFC[owner]=0;
+}
+static inline void tu80301_packetChecksum(u8* p,MsgEntry_80301CD0* entries,s32 head) {
+    u32 sum=0;
+    if(entries[head].f118==0) {
+        int i;u8* q=p+8;int limit=lbl_80541618[lbl_8053AD08]*4;
+        for(i=8;i<limit;i++)sum+=*q++;
+    }else{
+        int i;u8* q=p+8;int limit=lbl_80541618[lbl_8053AD08]*4;
+        for(i=8;i<limit;i++)sum+=*q++;
+    }
+    p[0]=sum;
 }
 
 extern "C" void fn_8030801C(s32 param_1, s32 i);
