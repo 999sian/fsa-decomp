@@ -159,20 +159,6 @@ extern "C" void fn_8016088C(char* p) {
     fn_8013CB44(*(void**)(p + 0x294), (f32*)(p + 0xc), 0, 0, 1);
 }
 
-#ifndef EZRY_RANDOM_DEFINED
-struct EzryRandom {
-    u32 seed;
-    u32 get() {
-        seed = 0x19660d * seed + 0x3c6ef35f;
-        return seed;
-    }
-    f32 get_ufloat_1() {
-        union { f32 f; u32 s; } out;
-        out.s = (get() >> 9) | 0x3f800000;
-        return out.f - lbl_8053D670;
-    }
-};
-#endif
 
 extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801F0E34(void* target, s32 soundId, s32 flag);
