@@ -892,7 +892,7 @@ static inline f32 MenuPulse803E(s32 n,const f32 magnitude,const f32 denominator,
     f32 value=(f32)(n*n);
     return magnitude*(value/denominator)+base;
 }
-static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return half*(span-size)+origin;}
+static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return (span-size)*half+origin;}
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
 #pragma opt_common_subs off
