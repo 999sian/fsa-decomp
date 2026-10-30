@@ -55,18 +55,13 @@ static inline void drawTitleScreen(u8* self, f32 scale, BOOL showLogo) {
     (*(J2DScreen**)(self + 0x4))->search(0x506e7464)->setAlpha((u8)*(f32*)(self + 0x4c));
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3031ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
     (*(J2DScreen**)(self + 0x4))->search(0x50746c6f676f3032ULL)->setAlpha(showLogo ? (u8)*(f32*)(self + 0x4c) : 0);
-    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->setAlpha((u8)(self[0x14e] * scale));
+    (*(J2DScreen**)(self + 0x4))->search(0x7072737374727431ULL)->setAlpha(self[0x14e] * scale);
     (*(J2DScreen**)(self + 0x4))->search(0x7072737374727432ULL)->setAlpha((u8)(self[0x14f] * scale));
     (*(J2DScreen**)(self + 0x4))->draw(0.0f, 0.0f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 extern "C" void fn_803A44D8(u8* this_) {
-    u8 col[4] = {0, 0, 0, 0};
-    u8 copy[4];
-    *(u32*)copy = *(u32*)col;
-    sManager__10JFWDisplay[8] = copy[0];
-    sManager__10JFWDisplay[9] = copy[1];
-    sManager__10JFWDisplay[10] = copy[2];
-    sManager__10JFWDisplay[11] = copy[3];
+    f32 scale = 0.0f;
+    JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
     if (*(s32*)(lbl_80529DEC + 0x1a0) > 0) {
         *(s32*)(lbl_80529DEC + 0x1a0) -= 1;
     } else {
@@ -75,6 +70,150 @@ extern "C" void fn_803A44D8(u8* this_) {
     if (*(s16*)(this_ + 0x6c) != 0) {
         fn_8013B438(lbl_8053AB10);
         fn_80427D2C(*(void**)(this_ + 0x48), 0, 0, 0, 0);
+        if (lbl_80529DEC[0x249] != 0 && *(s16*)(this_ + 0x80) != 0) {
+            if ((fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) || fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) && *(s16*)(this_ + 0x82) == 0) {
+                s32 period = *(s16*)(lbl_8050DB0C + 0x29c);
+                s32 hold = *(s16*)(lbl_8050DB0C + 0x29e);
+                (*(s16*)(this_ + 0x7c))++;
+                s32 t = *(s16*)(this_ + 0x7c);
+                if (t <= period * 2) {
+                    s32 d = (t < period) ? period - t : t - period;
+                    f32 base = (f32)*(s16*)(lbl_8050DB0C + 0x2a0) / 255.0f;
+                    scale = base + ((1.0f - base) * (f32)(d * d)) / (f32)(period * period);
+                } else {
+                    scale = 1.0f;
+                    if (t >= hold + period * 2) {
+                        *(s16*)(this_ + 0x7c) = 0;
+                    }
+                }
+            }
+            fn_8013B490(lbl_8053AB10);
+            drawTitleScreen(this_, scale, FALSE);
+        }
+    } else {
+        fn_8013B490(lbl_8053AB10);
+        u8 mode = lbl_80529DEC[0x238];
+        if (mode == 0xff && lbl_80529DEC[0x249] != 0) {
+            if (*(s32*)(this_ + 0x154) == 1) {
+                Vec scl;
+                Mtx info[2];
+                Mtx m;
+                scl.x=7.0f; scl.y=7.0f; scl.z=7.0f;
+                void* mgr = *(void**)((u8*)fn_8013C824() + 0xc);
+                PSMTXIdentity(info[0]);
+                PSMTXIdentity(info[1]);
+                PSMTXIdentity(m);
+                fn_8013AC54(m);
+                PSMTXCopy(m, info[0]);
+                C_MTXLightOrtho(info[1], 448.0f, 0.0f, 0.0f, 608.0f, 0.5f, 0.5f, 0.5f, 0.5f);
+                fn_8016D398(m, *(void**)(lbl_8053AAF8 + 0x5c), 1, 1, this_ + 0x90, this_ + 0x84, this_ + 0x88, this_ + 0x8c, this_ + 0x11c, this_ + 0x134, 7.0f);
+                u8* p = this_;
+                for (s32 i = 0; i < 6; i++) {
+                    void* emitter=*(void**)(p+0x104);
+                    m[0][0] = 1.0f;
+                    m[0][1] = 0.0f;
+                    m[0][2] = 0.0f;
+                    m[0][3] = 300.0f;
+                    m[1][0] = 0.0f;
+                    m[1][1] = 0.0f;
+                    m[1][2] = 1.0f;
+                    m[1][3] = 250.0f;
+                    m[2][0] = 0.0f;
+                    m[2][1] = 1.0f;
+                    m[2][2] = 0.0f;
+                    m[2][3] = -513.0f - 96.0f * i;
+                    fn_8013ABCC(emitter, &scl, m);
+                    p += 4;
+                }
+                fn_8013AB2C();
+                calc__17JPAEmitterManagerFUc(mgr, 0);
+                draw__17JPAEmitterManagerFPC11JPADrawInfoUc(mgr, info, 0);
+            }
+            if (this_[0x150] == 1) {
+                fn_8013B490(lbl_8053AB10);
+                (*(J2DPicture**)(this_ + 0x20))->setAlpha((u8)*(s16*)(this_ + 0x68));
+                (*(J2DPicture**)(this_ + 0x20))->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
+            }
+            if (*(s16*)(this_ + 0x6e) == 1) {
+                if ((fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) || fn_8030A388(lbl_8053AD30, fn_8030AAF4(0))) && *(s16*)(this_ + 0x82) == 0) {
+                    s32 period = *(s16*)(lbl_8050DB0C + 0x29c);
+                    s32 hold = *(s16*)(lbl_8050DB0C + 0x29e);
+                    (*(s16*)(this_ + 0x7c))++;
+                    s32 t = *(s16*)(this_ + 0x7c);
+                    if (t <= period * 2) {
+                        s32 d = (t < period) ? period - t : t - period;
+                        f32 base = (f32)*(s16*)(lbl_8050DB0C + 0x2a0) / 255.0f;
+                        scale = base + ((1.0f - base) * (f32)(d * d)) / (f32)(period * period);
+                    } else {
+                        scale = 1.0f;
+                        if (t >= hold + period * 2) {
+                            *(s16*)(this_ + 0x7c) = 0;
+                        }
+                    }
+                }
+            }
+            drawTitleScreen(this_, scale, TRUE);
+            if (*(s16*)(this_ + 0x82) > 0 && 255.0f == *(f32*)(this_ + 0x4c)) {
+                (*(s16*)(this_ + 0x82))--;
+            }
+        } else {
+            switch (mode) {
+            case 2:
+            case 3:
+            case 4: {
+                (*(J2DPicture**)(this_ + 0xc))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                (*(J2DPicture**)(this_ + 0xc))->draw(113.0f, 281.0f, false, false, false);
+                s16 t = *(s16*)(this_ + 0x72);
+                f32 r;
+                if (t < 30) {
+                    r = (f32)t / 30.0f;
+                } else {
+                    r = (60.0f - (f32)t) / 30.0f;
+                }
+                s32 g = 255.0f * r;
+                s32 b = 200.0f * r;
+                if (this_[0x14c] == 0) {
+                    (*(J2DPicture**)(this_ + 0x18))->setBlackWhite(JUtility::TColor(g, b, 0, 0), JUtility::TColor(0xff, 0xc8, 0, 0xff));
+                    (*(J2DPicture**)(this_ + 0x1c))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xa0, 0xa0, 0xa0, 0xff));
+                } else {
+                    (*(J2DPicture**)(this_ + 0x18))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xa0, 0xa0, 0xa0, 0xff));
+                    (*(J2DPicture**)(this_ + 0x1c))->setBlackWhite(JUtility::TColor(g, b, 0, 0), JUtility::TColor(0xff, 0xc8, 0, 0xff));
+                }
+                (*(J2DPicture**)(this_ + 0x18))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                (*(J2DPicture**)(this_ + 0x18))->draw(211.0f, 372.0f, false, false, false);
+                (*(J2DPicture**)(this_ + 0x1c))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                (*(J2DPicture**)(this_ + 0x1c))->draw(350.0f, 372.0f, false, false, false);
+                break;
+            }
+            case 5:
+            case 6:
+                fn_8013AB00(lbl_8053AB10);
+                lbl_80529DEC[0x251] = 1;
+                break;
+            case 9:
+                if (!OSGetProgressiveMode()) {
+                    fn_8013AAD4(lbl_8053AB10);
+                }
+            case 10:
+            case 11:
+                if (this_[0x14c] == 0) {
+                    (*(J2DPicture**)(this_ + 0x14))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                    (*(J2DPicture**)(this_ + 0x14))->draw(153.0f, 309.0f, false, false, false);
+                } else {
+                    (*(J2DPicture**)(this_ + 0x10))->setAlpha((u8)*(f32*)(this_ + 0x50));
+                    (*(J2DPicture**)(this_ + 0x10))->draw(153.0f, 309.0f, false, false, false);
+                }
+                break;
+            default:
+                if (lbl_80529DEC[0x249] != 0) {
+                    drawTitleScreen(this_, scale, TRUE);
+                    if (*(s16*)(this_ + 0x82) > 0 && 255.0f == *(f32*)(this_ + 0x4c)) {
+                        (*(s16*)(this_ + 0x82))--;
+                    }
+                }
+                break;
+            }
+        }
     }
 }
 
