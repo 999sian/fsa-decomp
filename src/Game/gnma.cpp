@@ -61,6 +61,16 @@ extern "C" void fn_80458FF0(void* a, s32 b, s32 c, s32 d);
 
 struct GnmaTimers { u8 pad[0x234]; s32 t[4]; };
 
+#ifndef GNMA_CFG_DEFINED
+#define GNMA_CFG_DEFINED
+struct GnmaCfg { u8 pad[0x131df]; u8 flags[8]; };
+static inline u8 gnma_cfgFlagId(s32 id) {
+    u8* cfg = fn_802D6A9C();
+    return cfg[id + 0x131df];
+}
+#define gnma_cfgFlag(p) gnma_cfgFlagId(*(s32*)((p) + 0x4))
+#endif
+
 // GNMA update (vtable slot 3)
 extern "C" void fn_801AAE88(char* this_) {
     switch (*(s32*)(this_ + 0x254)) {
