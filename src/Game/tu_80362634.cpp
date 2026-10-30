@@ -1445,6 +1445,18 @@ extern "C" f32 lbl_80542BF8;
 extern "C" f32 lbl_80542BFC;
 
 extern "C" f32 lbl_80542BE0;
+#pragma opt_common_subs off
+struct InitAnimPair80365B5C { s32 delay, mode; };
+struct InitDescriptor80365B5C { s32 a, b, c, animation; };
+struct InitTables80365B5C {
+s32 directions[0x4c]; InitAnimPair80365B5C delays[31];
+InitDescriptor80365B5C descriptors[5];
+s32 directionOffsets[4], randomAnimations[4], regularAnimations[125], alternateAnimations[25];
+s8 durations[36], frames[36];
+s32 chaseAnimations[4];
+s8 durationIndices[128], alternateDurationIndices[44], frameIndices[128], alternateFrameIndices[28], modes[128], alternateModes[28];
+f32 speeds[4];
+};
 extern "C" void fn_80365B5C(char* self){
 const char* tables=(const char*)lbl_80474320;
 *(s32*)(self+0x234)=*(u32*)(self+0x90)&0x1f;
@@ -1471,15 +1483,14 @@ const char* tables=(const char*)lbl_80474320;
 switch(*(s32*)(self+0x234)){
 case 0:
 *(s32*)(self+0x248)=0xd0;*(s32*)(self+0x238)=-1;*(s32*)(self+0x258)=2;*(s32*)(self+0x26c)=0x38b;*(s32*)(self+0x260)=8;*(s32*)(self+0x25c)=8;
-*(f32*)(self+0x3c)=lbl_80542BE4;*(f32*)(self+0x40)=lbl_80542B0C;*(f32*)(self+0x44)=lbl_80542B0C;
-for(s32 i=0;i<3;i++){
-JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self+0xc));pos+=JGeometry::TVec3<f32>(lbl_80542BE0*i+lbl_80542BE8,lbl_80542B0C,lbl_80542B0C);
-((JGeometry::TVec3<f32>*)(self+0x2a0))[i]=pos;((JGeometry::TVec3<f32>*)(self+0x27c))[i]=((JGeometry::TVec3<f32>*)(self+0x2a0))[i];
-((JGeometry::TVec3<f32>*)(self+0x2c4))[i].z=lbl_80542B0C;((JGeometry::TVec3<f32>*)(self+0x2c4))[i].y=lbl_80542B0C;((JGeometry::TVec3<f32>*)(self+0x2c4))[i].x=lbl_80542B0C;
-((s32*)(self+0x2e8))[i]=0x38b;
+*(f32*)(self+0x3c)=-0.75f;*(f32*)(self+0x40)=0.0f;*(f32*)(self+0x44)=0.0f;
+char* p=self;char* ids=self;for(s32 i=0;i<3;i++){
+*(JGeometry::TVec3<f32>*)(p+0x2a0)=*(JGeometry::TVec3<f32>*)(self+0xc)+JGeometry::TVec3<f32>(16.0f*i+20.0f,0.0f,0.0f);*(JGeometry::TVec3<f32>*)(p+0x27c)=*(JGeometry::TVec3<f32>*)(p+0x2a0);
+((JGeometry::TVec3<f32>*)(p+0x2c4))->z=0.0f;((JGeometry::TVec3<f32>*)(p+0x2c4))->y=0.0f;((JGeometry::TVec3<f32>*)(p+0x2c4))->x=0.0f;
+*(s32*)(ids+0x2e8)=0x38b;p+=12;ids+=4;
 }break;
-case 1:*(s32*)(self+0x238)=0;*(s32*)(self+0x258)=2;*(s32*)(self+0x26c)=0x3ad;*(s32*)(self+0x260)=8;*(s32*)(self+0x25c)=8;*(s32*)(self+0x248)=100;*(f32*)(self+0x40)=lbl_80542BEC;break;
-case 3:*(s32*)(self+0x238)=0;*(s32*)(self+0x258)=3;*(s32*)(self+0x26c)=0xd5;*(s32*)(self+0x248)=0x86;*(s32*)(self+0x260)=8;*(char**)(self+0x300)=(char*)fn_8013CC50(*(u32*)(self+4),self+0xc,lbl_80542B10,0x555,-1,0,0,0,1);break;
+case 1:*(s32*)(self+0x238)=0;*(s32*)(self+0x258)=2;*(s32*)(self+0x26c)=0x3ad;*(s32*)(self+0x260)=8;*(s32*)(self+0x25c)=8;*(s32*)(self+0x248)=100;*(f32*)(self+0x40)=0.25f;break;
+case 3:*(s32*)(self+0x238)=0;*(s32*)(self+0x258)=3;*(s32*)(self+0x26c)=0xd5;*(s32*)(self+0x248)=0x86;*(s32*)(self+0x260)=8;*(char**)(self+0x300)=(char*)fn_8013CC50(*(u32*)(self+4),self+0xc,1.0f,0x555,-1,0,0,0,1);break;
 case 4:case 17:
 if(*(s32*)(self+0x234)==4){
 *(s32*)(self+0x26c)=((const s32*)(tables+0x298))[*(s32*)(self+0x238)];
@@ -1507,27 +1518,27 @@ for(s32 i=0;i<count;i++){char* obj=((ActorList80362634*)fn_801F856C())->actors[i
 if(obj && *(u32*)(obj+0x1a0)==0x454f574c){
 *(s32*)(self+0x24c)=i;s32 idx=*(s32*)(self+0x24c);obj=((ActorList80362634*)fn_801F856C())->actors[idx];
 if(!obj) *(s32*)(self+0x24c)=-1;
-else if(PSVECDistance((Vec*)(self+0xc),(Vec*)(obj+0xc))>=lbl_80542B58) *(s32*)(self+0x23c)=0;
+else if(PSVECDistance((Vec*)(self+0xc),(Vec*)(obj+0xc))>=80.0f) *(s32*)(self+0x23c)=0;
 else {
 
-*(s16*)(self+0x240)=(s16)(JMath::atanTable_.atan2_(*(f32*)(obj+0x10)-*(f32*)(self+0x10),*(f32*)(obj+0xc)-*(f32*)(self+0xc))*lbl_80542B50);
+*(s16*)(self+0x240)=(s16)(JMath::atanTable_.atan2_(*(f32*)(obj+0x10)-*(f32*)(self+0x10),*(f32*)(obj+0xc)-*(f32*)(self+0xc))*10430.3779296875f);
 u16 ang=*(s16*)(self+0x240);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;
 }
 *(s32*)(self+0x26c)=lbl_80474320[*(s32*)(self+0x238)*4+*(s32*)(self+0x23c)];*(s32*)(self+0x260)=((const s32*)(tables+0x130))[*(s32*)(self+0x238)*2];*(s32*)(self+0x25c)=*(s32*)(self+0x260);*(s32*)(self+0x258)=((const s32*)(tables+0x134))[*(s32*)(self+0x238)*2];break;
 }}
 *(s32*)(self+0x26c)=lbl_80474320[*(s32*)(self+0x238)*4+*(s32*)(self+0x23c)];*(s32*)(self+0x260)=((const s32*)(tables+0x130))[*(s32*)(self+0x238)*2];*(s32*)(self+0x25c)=*(s32*)(self+0x260);*(s32*)(self+0x258)=((const s32*)(tables+0x134))[*(s32*)(self+0x238)*2];break;}
 case 6:
-*(s32*)(self+0x23c)=0;*(f32*)(self+0x3c)=((const f32*)(tables+0x72c))[*(s32*)(self+0x238)];*(f32*)(self+0x40)=lbl_80542B0C;*(f32*)(self+0x44)=lbl_80542B0C;*(s32*)(self+0x248)=32;
-*(char**)(self+0x2f4)=(char*)lbl_804ADB60[0xd8+*(s32*)(self+0x238)];*(f32*)(self+0x2f8)=lbl_80542B0C;*(s32*)(self+0x26c)=((const s32*)(tables+0x234))[*(s32*)(self+0x238)*4];*(s32*)(self+0x264)=1;*(s32*)(self+0x258)=0;break;
+*(s32*)(self+0x23c)=0;*(f32*)(self+0x3c)=((const f32*)(tables+0x72c))[*(s32*)(self+0x238)];*(f32*)(self+0x40)=0.0f;*(f32*)(self+0x44)=0.0f;*(s32*)(self+0x248)=32;
+*(char**)(self+0x2f4)=(char*)lbl_804ADB60[0xd8+*(s32*)(self+0x238)];*(f32*)(self+0x2f8)=0.0f;*(s32*)(self+0x26c)=((const s32*)(tables+0x234))[*(s32*)(self+0x238)*4];*(s32*)(self+0x264)=1;*(s32*)(self+0x258)=0;break;
 case 7:
-*(f32*)(self+0x44)=lbl_80542B0C;*(f32*)(self+0x40)=lbl_80542B0C;*(f32*)(self+0x3c)=lbl_80542B0C;
-if((*(s32*)(self+0x238)&1)==0){*(f32*)(self+0x3c)=lbl_80542B54;*(s32*)(self+0x264)=0;*(s32*)(self+0x23c)=3;}else{*(f32*)(self+0x3c)=lbl_80542BC8;*(s32*)(self+0x264)=5;*(s32*)(self+0x23c)=2;}
+*(f32*)(self+0x44)=0.0f;*(f32*)(self+0x40)=0.0f;*(f32*)(self+0x3c)=0.0f;
+if((*(s32*)(self+0x238)&1)==0){*(f32*)(self+0x3c)=0.800000011920929f;*(s32*)(self+0x264)=0;*(s32*)(self+0x23c)=3;}else{*(f32*)(self+0x3c)=-0.800000011920929f;*(s32*)(self+0x264)=5;*(s32*)(self+0x23c)=2;}
 *(s32*)(self+0x238)=0;*(s32*)(self+0x26c)=0x38e;*(s32*)(self+0x25c)=4;*(s32*)(self+0x258)=0;break;
-case 8:*(s32*)(self+0x238)=0;*(s32*)(self+0x26c)=0x3a9;*(s32*)(self+0x258)=0;*(f32*)(self+0x80)=lbl_80542BF0;*(f32*)(self+0x84)=lbl_80542BF0;*(f32*)(self+0x88)=lbl_80542BF4;*(f32*)(self+0x8c)=lbl_80542BF4;break;
+case 8:*(s32*)(self+0x238)=0;*(s32*)(self+0x26c)=0x3a9;*(s32*)(self+0x258)=0;*(f32*)(self+0x80)=-8.0f;*(f32*)(self+0x84)=-8.0f;*(f32*)(self+0x88)=8.0f;*(f32*)(self+0x8c)=8.0f;break;
 case 9:{
 *(s32*)(self+0x238)=0;*(s32*)(self+0x258)=3;*(s32*)(self+0x248)=fn_801CD664(60);
-*(f32*)(self+0x80)=lbl_80542BF8;*(f32*)(self+0x84)=lbl_80542BF8;*(f32*)(self+0x88)=lbl_80542BBC;*(f32*)(self+0x8c)=lbl_80542BBC;
-f32 minX=lbl_80542B20;f32 offX=lbl_80542BB4;f32 offY=lbl_80542BB8;f32 zero=lbl_80542B0C;JGeometry::TVec3<f32> saved(*(JGeometry::TVec3<f32>*)(self+0xc));JGeometry::TVec3<f32> offset;Vec check;
+*(f32*)(self+0x80)=-4.0f;*(f32*)(self+0x84)=-4.0f;*(f32*)(self+0x88)=4.0f;*(f32*)(self+0x8c)=4.0f;
+f32 minX=lbl_80542B20;f32 offX=190.0f;f32 offY=140.0f;f32 zero=0.0f;JGeometry::TVec3<f32> saved(*(JGeometry::TVec3<f32>*)(self+0xc));JGeometry::TVec3<f32> offset;Vec check;
 for(s32 i=0;i<60;i++){
 offset.x=(f32)fn_801CD664(0x17c)-offX;offset.y=(f32)fn_801CD664(0x118)-offY;offset.z=zero;
 (*(JGeometry::TVec3<f32>*)(self+0xc)).add(offset);
@@ -1546,13 +1557,13 @@ bool bad;do{
     }
     check.x = lbl_80542B3C;
     check.y = lbl_80542B38;
-    check.z = lbl_80542B0C;
+    check.z = 0.0f;
     if (PSVECDistance((Vec*)(self+0xc), &check) < lbl_80542B40) {
         bad=true;break;
     }
     check.x = lbl_80542B44;
     check.y = lbl_80542B48;
-    check.z = lbl_80542B0C;
+    check.z = 0.0f;
     if (PSVECDistance((Vec*)(self+0xc), &check) < lbl_80542B40) {
         bad=true;break;
     }
@@ -1564,43 +1575,43 @@ case 10:{
 *(s32*)(self+0x23c)=3;if(*(s32*)(self+0x238)==0) *(s32*)(self+0x26c)=0x32f;else *(s32*)(self+0x26c)=0x33b;
 *(s32*)(self+0x26c)+=((const s32*)(tables+0x278))[*(s32*)(self+0x23c)];*(char**)(self+0x270)=(char*)lbl_80542A78;*(char**)(self+0x274)=(char*)lbl_80542A7C;*(s32*)(self+0x25c)=**(s8**)(self+0x270);*(s32*)(self+0x264)=**(s8**)(self+0x274);*(s32*)(self+0x258)=0;
 *(f32*)(self+0x3c)=lbl_8050C028[*(s32*)(self+0x23c)*3];*(f32*)(self+0x40)=lbl_8050C028[*(s32*)(self+0x23c)*3+1];*(f32*)(self+0x44)=lbl_8050C028[*(s32*)(self+0x23c)*3+2];break;}
-case 11:*(s32*)(self+0x238)=0;*(s32*)(self+0x26c)=0x375;*(s32*)(self+0x25c)=7;*(s32*)(self+0x258)=0;*(f32*)(self+0x3c)=lbl_80542B0C;*(f32*)(self+0x40)=lbl_80542B8C;*(f32*)(self+0x44)=lbl_80542B0C;break;
+case 11:*(s32*)(self+0x238)=0;*(s32*)(self+0x26c)=0x375;*(s32*)(self+0x25c)=7;*(s32*)(self+0x258)=0;*(f32*)(self+0x3c)=0.0f;*(f32*)(self+0x40)=0.5f;*(f32*)(self+0x44)=0.0f;break;
 case 12:{
 *(s32*)(self+0x24c)=-1;*(JGeometry::TVec3<f32>*)(self+0x27c)=*(JGeometry::TVec3<f32>*)(self+0xc);
 s32 count=((ActorList80362634*)fn_801F856C())->count;
 for(s32 i=0;i<count;i++){char* obj=((ActorList80362634*)fn_801F856C())->actors[i];
 if(!obj || *(u32*)(obj+0x1a0)!=0x454f574c || *(u8*)(obj+0x11c)!=1 || *(s32*)(obj+0x278)!=0) continue;
-if(!(PSVECDistance((Vec*)(self+0xc),(Vec*)(obj+0xc))<lbl_80542B4C))break;
+if(!(PSVECDistance((Vec*)(self+0xc),(Vec*)(obj+0xc))<100.0f))break;
 *(s32*)(self+0x24c)=i;JGeometry::TVec3<f32> target(*(JGeometry::TVec3<f32>*)(obj+0xc));
-fn_80363880_aim(self,*(f32*)(obj+0x10)-*(f32*)(self+0x10),*(f32*)(obj+0xc)-*(f32*)(self+0xc),lbl_80542B54);
-f32 radians=JMath::atanTable_.atan2_(*(f32*)(self+0x40),*(f32*)(self+0x3c));u16 ang=(s32)(radians*lbl_80542B50);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;*(s32*)(self+0x26c)=((const s32*)(tables+0x538))[*(s32*)(self+0x23c)];*(char**)(self+0x270)=(char*)lbl_80542AD8;*(char**)(self+0x274)=(char*)lbl_80542AC8;*(s32*)(self+0x25c)=**(s8**)(self+0x270);*(s32*)(self+0x264)=**(s8**)(self+0x274);*(s32*)(self+0x258)=0;break;
+fn_80363880_aim(self,*(f32*)(obj+0x10)-*(f32*)(self+0x10),*(f32*)(obj+0xc)-*(f32*)(self+0xc),0.800000011920929f);
+f32 radians=JMath::atanTable_.atan2_(*(f32*)(self+0x40),*(f32*)(self+0x3c));u16 ang=(s32)(radians*10430.3779296875f);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;*(s32*)(self+0x26c)=((const s32*)(tables+0x538))[*(s32*)(self+0x23c)];*(char**)(self+0x270)=(char*)lbl_80542AD8;*(char**)(self+0x274)=(char*)lbl_80542AC8;*(s32*)(self+0x25c)=**(s8**)(self+0x270);*(s32*)(self+0x264)=**(s8**)(self+0x274);*(s32*)(self+0x258)=0;break;
 }
 *(s32*)(self+0x23c)=0;s32 idx=*(s32*)(self+0x24c);
 if(idx>=0){char* obj=((ActorList80362634*)fn_801F856C())->actors[idx];if(obj){JGeometry::TVec3<f32> target(*(JGeometry::TVec3<f32>*)(obj+0xc));
-if(PSVECDistance((Vec*)(self+0xc),&target)>=lbl_80542B90){
-*(s32*)(self+0x24c)=-1;*(f32*)(self+0x44)=lbl_80542B0C;*(f32*)(self+0x40)=lbl_80542B0C;*(f32*)(self+0x3c)=lbl_80542B0C;*(s32*)(self+0x264)=1;*(s32*)(self+0x268)=0;
-}else{fn_80363880_aim(self,*(f32*)(obj+0x10)-*(f32*)(self+0x10),*(f32*)(obj+0xc)-*(f32*)(self+0xc),lbl_80542B8C);f32 radians=JMath::atanTable_.atan2_(*(f32*)(self+0x40),*(f32*)(self+0x3c));u16 ang=(s32)(radians*lbl_80542B50);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;}
+if(PSVECDistance((Vec*)(self+0xc),&target)>=60.0f){
+*(s32*)(self+0x24c)=-1;*(f32*)(self+0x44)=0.0f;*(f32*)(self+0x40)=0.0f;*(f32*)(self+0x3c)=0.0f;*(s32*)(self+0x264)=1;*(s32*)(self+0x268)=0;
+}else{fn_80363880_aim(self,*(f32*)(obj+0x10)-*(f32*)(self+0x10),*(f32*)(obj+0xc)-*(f32*)(self+0xc),0.5f);f32 radians=JMath::atanTable_.atan2_(*(f32*)(self+0x40),*(f32*)(self+0x3c));u16 ang=(s32)(radians*10430.3779296875f);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;}
 }}
 *(s32*)(self+0x26c)=((const s32*)(tables+0x538))[*(s32*)(self+0x23c)];*(char**)(self+0x270)=(char*)lbl_80542AD8;*(char**)(self+0x274)=(char*)lbl_80542AC8;*(s32*)(self+0x25c)=**(s8**)(self+0x270);*(s32*)(self+0x264)=**(s8**)(self+0x274);*(s32*)(self+0x268)=0;*(s32*)(self+0x258)=0;break;}
 case 13:{
-*(s32*)(self+0x23c)=fn_801CD664(5);if(*(s32*)(self+0x23c)==4){*(s32*)(self+0x23c)=fn_801CD664(4);*(f32*)(self+0x44)=lbl_80542B0C;*(f32*)(self+0x40)=lbl_80542B0C;*(f32*)(self+0x3c)=lbl_80542B0C;}else{
+*(s32*)(self+0x23c)=fn_801CD664(5);if(*(s32*)(self+0x23c)==4){*(s32*)(self+0x23c)=fn_801CD664(4);*(f32*)(self+0x44)=0.0f;*(f32*)(self+0x40)=0.0f;*(f32*)(self+0x3c)=0.0f;}else{
 *(f32*)(self+0x3c)=lbl_8050C088[*(s32*)(self+0x23c)*3];*(f32*)(self+0x40)=lbl_8050C088[*(s32*)(self+0x23c)*3+1];*(f32*)(self+0x44)=lbl_8050C088[*(s32*)(self+0x23c)*3+2];}
 *(s32*)(self+0x26c)=((const s32*)(tables+0x2e8))[*(s32*)(self+0x23c)];*(char**)(self+0x270)=(char*)(tables+0x4f0);*(char**)(self+0x274)=(char*)(tables+0x514);*(s32*)(self+0x25c)=**(s8**)(self+0x270);*(s32*)(self+0x264)=**(s8**)(self+0x274);*(s32*)(self+0x268)=0;*(s32*)(self+0x258)=1;
-*(s32*)(self+0x248)=fn_801CD664(20)+30;*(f32*)(self+0x80)=lbl_80542BF0;*(f32*)(self+0x84)=lbl_80542BF0;*(f32*)(self+0x88)=lbl_80542BF4;*(f32*)(self+0x8c)=lbl_80542BF4;break;}
+*(s32*)(self+0x248)=fn_801CD664(20)+30;*(f32*)(self+0x80)=-8.0f;*(f32*)(self+0x84)=-8.0f;*(f32*)(self+0x88)=8.0f;*(f32*)(self+0x8c)=8.0f;break;}
 case 14:{
 *(JGeometry::TVec3<f32>*)(self+0x27c)=*(JGeometry::TVec3<f32>*)(self+0xc);*(s16*)(self+0x240)=fn_801CD664(0x10000);
-*(f32*)(self+0x3c)=lbl_80542B80*JMACosShort(*(s16*)(self+0x240));*(f32*)(self+0x40)=lbl_80542B80*JMASinShort(*(s16*)(self+0x240));
-f32 radians=JMath::atanTable_.atan2_(*(f32*)(self+0x40),*(f32*)(self+0x3c));u16 ang=(s32)(radians*lbl_80542B50);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;*(s32*)(self+0x248)=fn_801CD664(20)+64;*(s32*)(self+0x26c)=((const s32*)(tables+0x288))[*(s32*)(self+0x23c)];*(s32*)(self+0x260)=12;*(s32*)(self+0x25c)=12;*(s32*)(self+0x258)=2;break;}
+*(f32*)(self+0x3c)=0.30000001192092896f*JMACosShort(*(s16*)(self+0x240));*(f32*)(self+0x40)=0.30000001192092896f*JMASinShort(*(s16*)(self+0x240));
+f32 radians=JMath::atanTable_.atan2_(*(f32*)(self+0x40),*(f32*)(self+0x3c));u16 ang=(s32)(radians*10430.3779296875f);if(ang>=0x2000 && ang<0x6000) *(s32*)(self+0x23c)=0;else if(ang>=0x6000 && ang<0xa000) *(s32*)(self+0x23c)=2;else if(ang>=0xa000 && ang<0xe000) *(s32*)(self+0x23c)=1;else *(s32*)(self+0x23c)=3;*(s32*)(self+0x248)=fn_801CD664(20)+64;*(s32*)(self+0x26c)=((const s32*)(tables+0x288))[*(s32*)(self+0x23c)];*(s32*)(self+0x260)=12;*(s32*)(self+0x25c)=12;*(s32*)(self+0x258)=2;break;}
 case 16:{
-*(f32*)(self+0xc)-=lbl_80542BFC;*(s32*)(self+0x238)=0;*(f32*)(self+0x44)=lbl_80542B0C;*(f32*)(self+0x40)=lbl_80542B0C;*(f32*)(self+0x3c)=lbl_80542B0C;
+*(f32*)(self+0xc)-=48.0f;*(s32*)(self+0x238)=0;*(f32*)(self+0x44)=0.0f;*(f32*)(self+0x40)=0.0f;*(f32*)(self+0x3c)=0.0f;
 *(s32*)(self+0x26c)=0xa3;*(s32*)(self+0x248)=240;*(s32*)(self+0x260)=7;*(s32*)(self+0x258)=2;
-JGeometry::TVec3<f32> pos;pos.y=lbl_80542AFC*(s32)(*(f32*)(self+0x10)/lbl_80542AFC)+lbl_80542AF8;pos.x=lbl_80542B04*(s32)(*(f32*)(self+0xc)*lbl_80542B08)+lbl_80542B00;pos.z=lbl_80542B0C;
-for(s32 i=0;i<4;i++) ((void**)(self+0x30c))[i]=fn_8013CC50(*(u32*)(self+4),&pos,lbl_80542B10,lbl_80542AE8[i],0,0,0,0,1);
+JGeometry::TVec3<f32> pos;pos.y=lbl_80542AFC*(s32)(*(f32*)(self+0x10)/lbl_80542AFC)+lbl_80542AF8;pos.x=512.0f*(s32)(*(f32*)(self+0xc)*0.001953125f)+256.0f;pos.z=0.0f;
+for(s32 i=0;i<4;i++) ((void**)(self+0x30c))[i]=fn_8013CC50(*(u32*)(self+4),&pos,1.0f,lbl_80542AE8[i],0,0,0,0,1);
 s32 count=((ActorList80362634*)fn_801F856C())->count;
 for(s32 i=0;i<count;i++){char* obj=((ActorList80362634*)fn_801F856C())->actors[i];if(obj && *(u32*)(obj+0x1a0)==0x454f574c && *(u8*)(obj+0x11c)==1){*(char**)(self+0x2fc)=obj;break;}}break;}
 }
 }
-
+#pragma opt_common_subs reset
 extern "C" char lbl_804ADF28[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern "C" void __dl__FPv(void*);
