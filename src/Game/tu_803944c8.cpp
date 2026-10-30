@@ -892,6 +892,26 @@ extern "C" void* fn_80397388(void* this_, s16 freeFlag) {
     return this_;
 }
 
+
+static inline void msgInitFontSize(MsgWindow* w) {
+    f32 scale=lbl_8054321C;
+    w->scale=scale;
+    J2DTextBox::TFontSize fs;
+    fs.x=w->fontW*scale;fs.y=w->fontH*scale;
+    setTBFontSize((J2DTextBox*)w->screen->search('Tm01'),fs);
+    f32 spacing=w->lineSpace*lbl_8054321C;
+    ((J2DTextBox*)w->screen->search('Tm01'))->setLineSpace(spacing);
+    setTBFontSize((J2DTextBox*)w->screen->search('Tm02'),fs);
+    spacing=w->lineSpace*lbl_8054321C;
+    ((J2DTextBox*)w->screen->search('Tm02'))->setLineSpace(spacing);
+    f32 s=lbl_8054321C;
+    f32 width=w->fontW;
+    w->m14->setScale(s,width);
+}
+static inline void msgFont(J2DScreen* screen,u64 tag,JUTFont* font) {
+    ((J2DTextBox*)screen->search(tag))->setFont(font);
+}
+
 extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     const char* r=(const char*)&lbl_80475768;
     const ResTIMG* image;
@@ -993,7 +1013,7 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     (*(J2DPicture**)(p+0x5c))->setBlackWhite(JUtility::TColor(255,255,140,0),JUtility::TColor(255,255,140,255));
     (*(J2DPicture**)(p+0x5c))->rotate(lbl_80543224,lbl_80543228,(J2DRotateAxis)'z',lbl_80543240);
     (*(f32*)(p+0x118))=0.0f;
-    (*(s16*)(p+0x198))=(s32)(lbl_8054322C*msgRandomUnit())+10;
+    (*(s16*)(p+0x198))=(s32)(lbl_8054322C*msgRandom())+10;
     (*(s16*)(p+0x19a))=-96;(*(s16*)(p+0x19c))=0;
     *(void**)(p+4)=0;
     *(JMessage::TResourceContainer**)(p+4)=new JMessage::TResourceContainer;
