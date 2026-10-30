@@ -131,8 +131,8 @@ static inline void gnonSetRotation(f32 (*m)[4], f32 rx, f32 ry, f32 rz, f32 scal
     cy = cos(ry);
     cz = cos(rz);
     ss = sx * sy;
-    cc = cx * cz;
     cs = cx * sz;
+    cc = cx * cz;
     m[0][0] = scaleX * (cy * cz);
     m[1][0] = scaleX * (cy * sz);
     m[2][0] = scaleX * -sy;
@@ -178,15 +178,15 @@ extern "C" void fn_80192090(char* this_) {
             gnonSetRotation(m, lbl_8053E278, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, lbl_8053E278, 1.4f, 1.4f);
             const ResTIMG* tex = fn_804032E8('GANO', lbl_80467F8C);
             rec.w18 = m;
-            rec.w30 = -1;
             ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x2b0);
-            fn_801EFD34(this_, tex, &rec, -1, lbl_8053E278, lbl_8053E278, lbl_8053E278);
+            rec.w30 = -1;
+            fn_801EFD34(this_, tex, &rec, -1, 0.0f, 0.0f, 0.0f);
         }
         return;
     }
     rec.b1f = 0;
     if (*(s32*)(this_ + 0x230) == 4 || *(s32*)(this_ + 0x230) == 6) {
-        *(f32*)(this_ + 0x14) = lbl_8053E278;
+        *(f32*)(this_ + 0x14) = 0.0f;
         ((u8*)&rec.w10)[0] = 0;
         ((u8*)&rec.w10)[1] = 0;
         ((u8*)&rec.w10)[2] = 0;
@@ -194,14 +194,14 @@ extern "C" void fn_80192090(char* this_) {
         rec.b1d = -2;
         const char** names = tables->names1;
         const ResTIMG* tex = fn_804032E8('GANO', names[*(s32*)(this_ + 0x284)]);
-        fn_801EFD34(this_, tex, &rec, -1, lbl_8053E278, lbl_8053E278, lbl_8053E278);
+        fn_801EFD34(this_, tex, &rec, -1, 0.0f, 0.0f, 0.0f);
         JUTTexture shadow(tex, 0);
         f32 offX = 0.5f * -(f32)shadow.getWidth();
         f32 offY = 0.5f * -(f32)shadow.getHeight();
         if (*(s32*)(this_ + 0x28c) == 5) {
-            m[0][3] = lbl_8053E278;
-            m[1][3] = lbl_8053E278;
-            m[2][3] = lbl_8053E278;
+            m[0][3] = 0.0f;
+            m[1][3] = 0.0f;
+            m[2][3] = 0.0f;
             gnonSetRotation(m, lbl_8053E278, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, lbl_8053E278, 1.4f, 1.4f);
             tex = fn_804032E8('GANO', lbl_80467F8C);
         } else {
@@ -226,7 +226,7 @@ extern "C" void fn_80192090(char* this_) {
         *(f32*)(this_ + 0x2c8) += offY;
         if ((u8)this_[0x2a5] == 0 && (*(s32*)(this_ + 0x28c) != 7 ||
                                       (*(s32*)(this_ + 0x28c) == 7 && *(s32*)(this_ + 0x25c) < 6))) {
-            fn_801EFD34(this_, tex, &rec, -1, offX, lbl_8053E278, -offY);
+            fn_801EFD34(this_, tex, &rec, -1, offX, 0.0f, -offY);
         }
     }
     *(f32*)(this_ + 0xc) = x;
@@ -249,14 +249,14 @@ extern "C" void fn_80192090(char* this_) {
     }
     const char** names = tables->names1;
     const ResTIMG* tex = fn_804032E8('GANO', names[*(s32*)(this_ + 0x284)]);
-    fn_801EFD34(this_, tex, &rec, -1, lbl_8053E278, lbl_8053E278, lbl_8053E278);
+    fn_801EFD34(this_, tex, &rec, -1, 0.0f, 0.0f, 0.0f);
     JUTTexture head(tex, 0);
     f32 offX = 0.5f * -(f32)head.getWidth();
     f32 offY = 0.5f * -(f32)head.getHeight();
     if (*(s32*)(this_ + 0x28c) == 5) {
-        m[0][3] = lbl_8053E278;
-        m[1][3] = lbl_8053E278;
-        m[2][3] = lbl_8053E278;
+        m[0][3] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][3] = 0.0f;
         gnonSetRotation(m, lbl_8053E278, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, lbl_8053E278,
                         1.4f * *(f32*)(this_ + 0x2d0), 1.4f * *(f32*)(this_ + 0x2d4));
         tex = fn_804032E8('GANO', lbl_80467F8C);
@@ -280,7 +280,7 @@ extern "C" void fn_80192090(char* this_) {
     *(f32*)(this_ + 0x2c8) += offY;
     if ((u8)this_[0x2a5] == 0 && (*(s32*)(this_ + 0x28c) != 7 ||
                                   (*(s32*)(this_ + 0x28c) == 7 && *(s32*)(this_ + 0x25c) < 6))) {
-        fn_801EFD34(this_, tex, &rec, -1, offX, lbl_8053E278, -offY);
+        fn_801EFD34(this_, tex, &rec, -1, offX, 0.0f, -offY);
     }
 }
 
