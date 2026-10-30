@@ -2846,7 +2846,8 @@ s32 fn_802527B0(char* p, s32* out) {
 }
 
 #pragma opt_common_subs off
-static inline void resetTrailFrom486(char* p,int i) {
+static inline void resetTrailFrom486(char* p,int start) {
+    int i=start;
     char* q=p;
     for(;i<0x31;i++) {
         F32(q,0x38)=F32(p,8);F32(q,0x3c)=F32(p,0xc);F32(q,0x40)=F32(p,0x10);
@@ -3504,34 +3505,19 @@ void fn_8024CD20(char* p, const JGeometry::TBox2<f32>* area, s32 a2, s32 a3, u8 
     }
 }
 
-BOOL fn_8024D058(char* p, u8 on) {
-    if (on) {
-        int i = 0;
-        U8(p, 0x454) = i;
-        if (U8(p, 0x1216) == 0) {
-            if (U8(p, 0x454) != 0) {
-                fn_8024B2E0(p);
-            } else {
-                char* q = p;
-                for (; i < 0x31; i++) {
-                    F32(q, 0x38) = F32(p, 0x8);
-                    F32(q, 0x3c) = F32(p, 0xc);
-                    F32(q, 0x40) = F32(p, 0x10);
-                    if (F32(p, 0x10) > 0.0f) {
-                        p[0x284 + i] = 1;
-                    } else {
-                        p[0x284 + i] = 0;
-                    }
-                    q += 0xc;
-                }
-            }
+BOOL fn_8024D058(char* p,u8 on) {
+    if(on) {
+        U8(p,0x454)=0;
+        if(U8(p,0x1216)==0) {
+            if(U8(p,0x454)!=0)fn_8024B2E0(p);
+            else resetTrailFrom486(p,0);
         }
-    } else {
+    }else {
         fn_8024B2E0(p);
-        U8(p, 0x454) = 0;
+        U8(p,0x454)=0;
     }
-    S32(p, 0xd74) = 10;
-    S32(p, 0x11f0) = 10;
+    S32(p,0xd74)=10;
+    S32(p,0x11f0)=10;
     fn_8024D134(p);
     return 1;
 }
