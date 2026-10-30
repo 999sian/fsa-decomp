@@ -68,6 +68,10 @@ extern "C" const f32 lbl_80541AF4;
 extern "C" const f32 lbl_80541AF8;
 static inline u8 dropRoomFlag320374(s32 room) { return ((u8*)fn_802D6A9C())[room+0x131df]; }
 static inline char* droppedActor320374(s32 id) { return (char*)fn_801F666C(fn_801F856C(),id); }
+static inline void dropDiagonal320374(JGeometry::TVec3f& velocity, const f32 y, const f32 z) {
+    const f32 factor = lbl_80541AF8;
+    velocity.set(factor * -y, factor * y, z);
+}
 static inline f32 deathRandom320374() {
     char* random = lbl_8053AAF8;
     u32 bits;
@@ -100,8 +104,8 @@ extern "C" void fn_80320374(char* p) {
 
     t = ((u16 (*)(f32*, s32))fn_8022461C)((f32*)(p + 0xc), *(s32*)(p + 4));
     if (t == 3 && *(f32*)(p + 0x14) < lbl_80541AD8) {
-        *(f32*)(p + 0x2b8) = lbl_80541ADC + static_cast<f32>(static_cast<s32>(*(f32*)(p + 0xc)) & 0xfff0);
-        *(f32*)(p + 0x2bc) = lbl_80541ADC + static_cast<f32>(static_cast<s32>(*(f32*)(p + 0x10)) & 0xfff0);
+        *(f32*)(p + 0x2b8) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0xc) & 0xfff0);
+        *(f32*)(p + 0x2bc) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0x10) & 0xfff0);
         *(s32*)(p + 0x2a8) = 1;
         *(f32*)(p + 0x14) = lbl_80541AE0;
         *(f32*)(p + 0x3c) = lbl_80541AE0;
@@ -114,8 +118,8 @@ extern "C" void fn_80320374(char* p) {
         if (fn_802DE9A0() != 0) {
             fn_801F0E34(p, 0x5005f, 0);
         } else {
-            *(f32*)(p + 0x2b8) = lbl_80541ADC + static_cast<f32>(static_cast<s32>(*(f32*)(p + 0xc)) & 0xfff0);
-            *(f32*)(p + 0x2bc) = lbl_80541ADC + static_cast<f32>(static_cast<s32>(*(f32*)(p + 0x10)) & 0xfff0);
+            *(f32*)(p + 0x2b8) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0xc) & 0xfff0);
+            *(f32*)(p + 0x2bc) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0x10) & 0xfff0);
             *(s32*)(p + 0x2a8) = 1;
             *(u8*)(p + 0x2ac) = 1;
             *(f32*)(p + 0x14) = lbl_80541AE0;
@@ -197,7 +201,7 @@ extern "C" void fn_80320374(char* p) {
     case 5:
         id=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),(f32*)(p+0xc),1,-1,-1);
         kind=*(s32*)(p+4);
-        if (*((u8*)fn_802D6A9C()+kind+0x131df)) {
+        if (dropRoomFlag320374(kind)) {
             if (id>=0) {
                 item=(char*)fn_801F666C(fn_801F856C(),id);
                 if (item!=0) {
@@ -232,7 +236,7 @@ extern "C" void fn_80320374(char* p) {
                 if (kind>=0) {
                     item=(char*)fn_801F666C(fn_801F856C(),kind);
                     if (item!=0) {
-                        bombVel2.set<const f32>(lbl_80541AF8*-F6(p,0x40),lbl_80541AF8*F6(p,0x40),F6(p,0x44));
+                        bombVel2.set(lbl_80541AF8*-F6(p,0x40),lbl_80541AF8*F6(p,0x40),F6(p,0x44));
                         V6(item,0x3c)=bombVel2;
                     }
                 }
