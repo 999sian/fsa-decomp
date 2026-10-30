@@ -952,7 +952,7 @@ static inline void key0LinkHere(char* p) {
 static inline void key0ReturnHome(char* p) {
     *(s32*)(p + 0x294) = 0;
     *(u8*)(p + 0x2b0) = 1;
-    key0RegisterPt(p);
+    key0Register(p);
     key0LinkHere(p);
 }
 
