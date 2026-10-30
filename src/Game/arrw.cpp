@@ -199,6 +199,11 @@ extern "C" u8 fn_8023F264(s32 i);
 extern "C" u8 fn_8022E438(s32 i, u32 a);
 extern "C" u8 fn_8023B190(s32 i, u32 a, void* pos);
 extern "C" void fn_8022E1A0(s32 i, u32 a);
+struct ArrwTables {
+    JGeometry::TVec2<f32> offsets[4];
+    s32 directions[4];
+    s32 frames[32];
+};
 extern const u8 lbl_804A0530[];
 extern const s32 lbl_804662FC[];
 extern const f32 lbl_8053D7C8;
@@ -231,18 +236,19 @@ extern "C" void JPAGetXYZRotateMtx__FsssPA4_f(s16,s16,s16,void*);
 extern "C" void fn_80165730(char* p) {
  const u8* table=lbl_804A0530;
  JGeometry::TVec3<f32> pos;
+ s32 index;
  if((*(u16*)(p+0x94))==3) {
    HitBox box; box.set(*(HitBox*)(p+0x60)); box.addPos((*(f32*)(p+0xc)),(*(f32*)(p+0x10)));
-   for(s32 i=0;i<4;i++) if(fn_8023F264(i) && !fn_8022E438(i,(*(s32*)(p+0x90))) && ((u8(*)(s32,void*,s32))fn_8023B190)(i,&box,(*(s32*)(p+0x4)))) fn_8022E1A0(i,(*(s32*)(p+0x198)));
+   for(index=0;index<4;index++) if(fn_8023F264(index) && !fn_8022E438(index,(*(s32*)(p+0x90))) && ((u8(*)(s32,void*,s32))fn_8023B190)(index,&box,(*(s32*)(p+0x4)))) fn_8022E1A0(index,(*(s32*)(p+0x198)));
    return;
  }
  if((*(s32*)(p+0x230))!=4) {
-   s32 id=fn_801F2718(p,'FLME');
-   if(id<0) {
-     id=fn_801F2718(p,'BLZ2');
-     if(id>=0) {char* a=fn_801F666C(fn_801F856C(),id); if(!a) id=-1; else if(*(u16*)(a+0x94)==0) id=-1;}
+   index=fn_801F2718(p,'FLME');
+   if(index<0) {
+     index=fn_801F2718(p,'BLZ2');
+     if(index>=0) {char* a=fn_801F666C(fn_801F856C(),index); if(!a) index=-1; else if(*(u16*)(a+0x94)==0) index=-1;}
    }
-   if(id>=0) {
+   if(index>=0) {
      (*(f32*)(p+0x3c))=(*(f32*)(p+0x40))=(*(f32*)(p+0x44))=lbl_8053D7C8;
      (*(void**)(p+0x278))=fn_8013CC50((*(s32*)(p+0x4)),p+0xc,0xbd,lbl_8053D7C0,0,1,0,0,1);
      (*(s32*)(p+0x26c))=2; (*(s32*)(p+0x108))=0; (*(s32*)(p+0x258))=0; (*(s32*)(p+0x244))=20; fn_801F0E34(p,0x30005,0); (*(s32*)(p+0x230))=4;
@@ -285,12 +291,12 @@ extern "C" void fn_80165730(char* p) {
          s32 effect=0; switch((*(s32*)(p+0x98))){case 0:effect=0x283;break;case 1:effect=0x282;break;case 2:effect=0x281;break;case 3:effect=0x284;break;}
          (*(void**)(p+0x27c))=fn_8013CC50((*(s32*)(p+0x4)),p+0xc,effect,lbl_8053D7C0,0,1,0,0,1);
        } else fn_8013CB44((*(void**)(p+0x27c)),p+0xc,0,1,1);
-       s32 angle=fn_801F6874((*(s32*)(p+0x98)));
-       angle+=0x2000;
-       for(s32 i=0;i<2;i++,angle-=0x4000) {
+       index=fn_801F6874((*(s32*)(p+0x98)));
+       index+=0x2000;
+       for(s32 i=0;i<2;i++,index-=0x4000) {
          pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
-         pos.x+=lbl_8053D7D0*JMath::sincosTable_.mTable[(u16)angle>>5].first;
-         pos.y+=lbl_8053D7D0*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+         pos.x+=lbl_8053D7D0*JMath::sincosTable_.mTable[(u16)index>>5].first;
+         pos.y+=lbl_8053D7D0*JMath::sincosTable_.mTable[(u16)index>>5].second;
          fn_802A20F0(lbl_8053AC98,&pos,(*(s32*)(p+0x90)),(*(s32*)(p+0x4)),0,0);
        }
      }
@@ -298,7 +304,7 @@ extern "C" void fn_80165730(char* p) {
      if((*(u8*)(p+0x274))==0) {
        for(s32 i=0;i<4;i++) if(fn_8023F264(i) && !fn_8022E438(i,(*(s32*)(p+0x90))) && ((u8(*)(s32,void*,s32))fn_8023B190)(i,&box,(*(s32*)(p+0x4)))) {
          JGeometry::TVec2<f32> center;
-         center.set(lbl_8053D7D4*(box.i.x-box.f.x)+box.f.x,lbl_8053D7D4*(box.i.y-box.f.y)+box.f.y);
+         center.x=lbl_8053D7D4*(box.i.x-box.f.x)+box.f.x; center.y=lbl_8053D7D4*(box.i.y-box.f.y)+box.f.y;
          if((*(u16*)(p+0x94))==0 || (*(u16*)(p+0x94))==4) {
            if(((u8*)lbl_8053AAF8)[0x7f]) fn_80238548(i,0,&center,0); else fn_80238548(i,2,&center,0);
            fn_8022E1A0(i,(*(s32*)(p+0x198)));
@@ -312,7 +318,7 @@ extern "C" void fn_80165730(char* p) {
      if(fn_801F2618(p,0,0)) {
        if((*(u16*)(p+0x94))==2 || (*(u16*)(p+0x94))==4) Actor_CreateByID(fn_801F856C(),'BLZE',(*(s32*)(p+0x4)),p+0xc,(*(s32*)(p+0x90))&3,-1,-1);
        (*(s32*)(p+0x26c))=1;(*(s32*)(p+0x108))=0;
-       if((*(void**)(p+0x27c))){char* emitter=(char*)(*(void**)(p+0x27c));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x27c))=0;}
+       if((*(void**)(p+0x27c))){((JPABaseEmitter*)(*(void**)(p+0x27c)))->becomeInvalidEmitter();(*(void**)(p+0x27c))=0;}
        (*(f32*)(p+0x44))=(*(f32*)(p+0x40))=(*(f32*)(p+0x3c))=lbl_8053D7C8; (*(s32*)(p+0x258))=0;(*(s32*)(p+0x244))=0;(*(s32*)(p+0x230))=2;
      } else {
        if((*(s32*)(p+0x258))!=(*(s32*)(p+0x270))){(*(s32*)(p+0x258))=(*(s32*)(p+0x270));fn_801F0E34(p,0x3001d,0);}
@@ -322,7 +328,7 @@ extern "C" void fn_80165730(char* p) {
    break;
  case 1:
    if(!((*(s32*)(p+0x248))&1)){const s32* directions=(const s32*)(table+0x20);(*(s32*)(p+0x258))++;(*(s32*)(p+0x258))&=3;(*(s32*)(p+0x98))=directions[(*(s32*)(p+0x258))];}
-   if((*(void**)(p+0x278))){char* emitter=(char*)(*(void**)(p+0x278));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){char* emitter=(char*)(*(void**)(p+0x27c));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x27c))=0;}
+   if((*(void**)(p+0x278))){((JPABaseEmitter*)(*(void**)(p+0x278)))->becomeInvalidEmitter();(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){((JPABaseEmitter*)(*(void**)(p+0x27c)))->becomeInvalidEmitter();(*(void**)(p+0x27c))=0;}
    fn_801F71A4(&(*(f32*)(p+0x234)),lbl_8053D7C8,lbl_8053D7D4,lbl_8053D7E4);
    (*(f32*)(p+0x44))-=lbl_8053D7E8;
    if((*(f32*)(p+0x14))<lbl_8053D7C8) (*(u8*)(p+0x11c))=0;
@@ -335,7 +341,7 @@ extern "C" void fn_80165730(char* p) {
    if((*(s32*)(p+0x258))==6 && (*(s32*)(p+0x244))<3)(*(s32*)(p+0x26c))=2;
    break;
  case 4:
-   if((*(s32*)(p+0x244))==0){if((*(void**)(p+0x278))){char* emitter=(char*)(*(void**)(p+0x278));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){char* emitter=(char*)(*(void**)(p+0x27c));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x27c))=0;} (*(u8*)(p+0x11c))=0;}
+   if((*(s32*)(p+0x244))==0){if((*(void**)(p+0x278))){((JPABaseEmitter*)(*(void**)(p+0x278)))->becomeInvalidEmitter();(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){((JPABaseEmitter*)(*(void**)(p+0x27c)))->becomeInvalidEmitter();(*(void**)(p+0x27c))=0;} (*(u8*)(p+0x11c))=0;}
    break;
  }
  if((*(s32*)(p+0x244))>0) (*(s32*)(p+0x244))--; if((*(s32*)(p+0x248))>0) (*(s32*)(p+0x248))--; if((*(s32*)(p+0x24c))>0) (*(s32*)(p+0x24c))--; if((*(s32*)(p+0x250))>0) (*(s32*)(p+0x250))--; if((*(s32*)(p+0x254))>0) (*(s32*)(p+0x254))--;
