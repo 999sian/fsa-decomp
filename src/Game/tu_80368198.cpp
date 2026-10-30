@@ -430,9 +430,6 @@ extern "C" void fn_80368660(void* this_) {
     }
 }
 
-void Unk8036C300::state1() {
-}
-
 extern char lbl_80529DEC[];
 extern char lbl_8050EC80[];
 extern void* lbl_8053AD30;
@@ -969,11 +966,11 @@ extern f32 lbl_80542CCC;
 extern f32 lbl_80542CA8;
 #pragma opt_common_subs off
 extern "C" void fn_8036B03C(u8* this_,s32 param){
-s32 i, n;
+s32 n, i;
 u8* dst;
 u16* ids;
-const u16* __restrict idTable;
-const s32* __restrict wordTable;
+u16* idTable;
+s32* wordTable;
 const char* tbl;
 u8* self;
 s32 state;
