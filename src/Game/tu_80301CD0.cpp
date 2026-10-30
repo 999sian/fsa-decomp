@@ -1556,6 +1556,39 @@ static inline void packetPrimaryFlag(Ctl4_80301CD0* header, s32 owner) {
 static inline void packetSecondaryFlag(Ctl4_80301CD0* header, s32 owner) {
     header->x=fn_8023CD74(owner)>>4;
 }
+static inline void packetPlayerSlots(u8* p, s32 owner) {
+    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
+    for(s32 i=0;i<4;i++) {
+        u32 slot=fn_802340A0(i);
+        if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
+        {
+            if(fn_8022BC38(owner,fn_8023DE58(i),fn_8023E724(i))) goto valid;
+            if(fn_8023DE58(owner)<=8 && fn_8023DE58(i)<=8) goto valid;
+        }
+empty:
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=1;
+        p[slot*4+0xa]=0x80;
+        p[slot*4+9]=0xe0;
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->mode=0;
+        p[slot*4+8]=0;
+        goto nextPlayer;
+valid:
+        if(fn_8023DE58(i)<8) {
+            firstFlags->y |=1<<slot;
+            ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=fn_8023D21C(i,owner)>>8;
+            p[slot*4+0xa]=fn_8023D21C(i,owner);
+            p[slot*4+9]=fn_8023CEAC(i,owner);
+        } else {
+            ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=fn_8023DAF4(i,owner)>>8;
+            p[slot*4+0xa]=fn_8023DAF4(i,owner);
+            p[slot*4+9]=fn_8023D644(i,owner);
+        }
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->mode=fn_8023CBC0(i)>>8;
+        p[slot*4+8]=fn_8023CBC0(i);
+nextPlayer:;
+    }
+}
+
 static inline void packetSecondarySlots(u8* p,int player) {
     if((((s32*)lbl_80506D48)[player]&1)==1) {
         Hi_80301CD0* flags7=(Hi_80301CD0*)(p+7);
