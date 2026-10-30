@@ -809,6 +809,9 @@ inline f32 hitInvSqrtSelf(f32 x) {
     x = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
     return x;
 }
+inline bool hitIsZero(const JGeometry::TVec3<f32>* v) {
+    return v->squared() <= lbl_80540298 * FLT_EPSILON;
+}
 inline void hitInvSqrtRef(f32& x) {
     if (x <= lbl_8054028C) {
         return;
