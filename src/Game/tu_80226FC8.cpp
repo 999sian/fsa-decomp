@@ -12,6 +12,16 @@ static inline void projectGateBox(JGeometry::TBox2f* box, u8* actor) {
     box->f.y -= pos.z;
 }
 
+static inline bool gateVelocitySame(u8* actor) {
+    extern const f32 lbl_8053FF60;
+    f32 eps = lbl_8053FF60 * FLT_EPSILON;
+    bool equal = false;
+    bool xy = false;
+    if (JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x3c), *(f32*)(actor+0x364), eps) &&
+        JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x40), *(f32*)(actor+0x368), eps)) xy = true;
+    if (xy && JGeometry::TUtilf::epsilonEquals(*(f32*)(actor+0x44), *(f32*)(actor+0x36c), eps)) equal = true;
+    return equal;
+}
 struct GateBox {
     f32 x0, y0, x1, y1;
     void translate(f32 x, f32 y) { x0 += x; y0 += y; x1 += x; y1 += y; }
@@ -260,7 +270,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
         y1=*(f32*)(p+0x6c); out[3]=y1;
         y=*(f32*)(p+0x10); x=*(f32*)(p+0xc);
         y0+=y; x0+=x; x1+=x; y1+=y;
-        out[1]=y0; out[0]=x0; out[2]=x1; out[3]=y1;
+        *(volatile f32*)(out+1)=y0; out[0]=x0; out[2]=x1; out[3]=y1;
         if (!fn_8022D75C(i) && fn_8022D534(i)) { p[i+0x234]=1; continue; }
         if ((*(s32*)(p+0x90)&0x7f)==0x10) return;
         if (fn_8022F514(i)) {
@@ -288,13 +298,11 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             if (fn_8022F478(i) && (*(s32*)(p+0x90)&0x7f)!=4) continue;
             if (((*(s32*)(p+0x90)&0x7f)==4 || (*(s32*)(p+0x90)&0x7f)==0x20 || (*(s32*)(p+0x90)&0x7f)==0x24) &&
                 fn_802373EC(i)==1 && fn_8023725C(i)>=2 && fn_8023513C(i)) continue;
-            u32 param;
-            u32 kind;
-            u32 rawRoom;
             int targetRoom;
-            param=*(u32*)(p+0x90);
-            kind=param&0x7f;
+            int rawRoom;
+            u32 param=*(u32*)(p+0x90);
             rawRoom=(param>>24)&7;
+            u32 kind=param&0x7f;
             targetRoom=rawRoom+7; if (!rawRoom) targetRoom=rawRoom;
             if (fn_802317F0(i,targetRoom,p+0xc,p+0x238,kind) &&
                 (*(s32*)(p+0x90)&0x7f)==4 && fn_8022F514(i)) {
@@ -310,7 +318,7 @@ extern "C" void fn_802278A8(void* this_, f32* out) {
             f32 a,x1,y0,x0,v;
             x0=out[0]; v=lbl_8053FF78; y0=out[1]; x1=out[2];
             a=x0-v; y1=out[3]; b=y0-v; c=x1+v; d=y1+v;
-            out[0]=a; out[1]=b; out[2]=c; out[3]=d;
+            *(volatile f32*)out=a; out[1]=b; out[2]=c; out[3]=d;
             if (!fn_8023B0F4(i,out,*(u32*)(p+4),0,lbl_8053FF74)) p[i+0x234]=0;
         }
     }
