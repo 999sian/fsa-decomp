@@ -52,6 +52,44 @@ extern "C" void fn_80140E84(void* this_) {
     }
 }
 
+extern "C" int fn_801F3D94(void* this_);
+extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" u8 fn_80237948(void* a, void* b);
+extern "C" void fn_8013CC50(void* obj, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 v);
+extern "C" void fn_80239914(void* a, void* b, void* c);
+extern "C" void fn_801EF510(void* this_);
+extern "C" f32 lbl_8053CEA8;
+extern "C" f32 lbl_8053CEB4;
+extern "C" f32 lbl_8053CEB8;
+extern "C" f32 lbl_8053CEBC;
+extern "C" f32 lbl_8053CEC0;
+extern "C" f32 lbl_8053CEAC;
+extern "C" f32 lbl_8053CEB0;
+extern "C" f32 PSVECDistance(void* a, void* b);
+extern "C" void fn_80141064(u8* this_) {
+    f32 pos[3];
+    f32 box[6];
+    u8 buf[0x1000];
+    f32 d[4];
+
+    d[0] = *(f32*)(this_ + 0x60);
+    d[1] = *(f32*)(this_ + 0x64);
+    d[2] = *(f32*)(this_ + 0x68);
+    d[3] = *(f32*)(this_ + 0x6c);
+    d[0] = d[0] + *(f32*)(this_ + 0x10);
+    d[1] = d[1] + *(f32*)(this_ + 0xc);
+    *(f32*)(buf + 0xb4) = d[1];
+    if (fn_801F3D94(this_) != 0) {
+        fn_801F2618(this_, 0, 0);
+        return;
+    }
+    (void)pos;
+    (void)box;
+}
+
 extern f32 lbl_8053CEB8;
 extern f32 lbl_8053CEF8;
 extern f32 lbl_8053CEFC;
@@ -65,11 +103,11 @@ extern f32 lbl_8053CF18;
 extern f32 lbl_8053CF1C;
 extern f32 lbl_8053CF20;
 extern "C" void fn_80142224(u8* this_) {
-    f32 a = lbl_8053CEF8;
-    f32 b = lbl_8053CEFC;
-    f32 c = lbl_8053CF00;
-    f32 d = lbl_8053CF04;
-    f32 e = lbl_8053CF08;
+    const f32 e = lbl_8053CF08;
+    const f32 d = lbl_8053CF04;
+    const f32 c = lbl_8053CF00;
+    const f32 b = lbl_8053CEFC;
+    const f32 a = lbl_8053CEF8;
 
     *(f32*)(this_ + 0x60) = a;
     *(f32*)(this_ + 0x64) = a;
