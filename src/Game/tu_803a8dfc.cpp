@@ -3256,7 +3256,7 @@ extern "C" void fn_803B6768(void* this_) {
     case 2:
         *(s32*)(p + 0x450) = 2;
         *(s32*)(p + 0x454) = 2;
-        fn_803B38E8(p);
+        fn_803B38E8((ScoreScreenPaneLookup*)p);
         break;
     case 3:
         *(s32*)(p + 0x450) = 1;
