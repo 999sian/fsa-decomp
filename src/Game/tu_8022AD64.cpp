@@ -1588,7 +1588,7 @@ void fn_80248DB8(Player*);
 void* fn_802D6A9C(void);
 int fn_80124600(s32*);
 int fn_802DD3D4(void*, s32*);
-void fn_80457F60(f32);
+void fn_80457F60(void*);
 void fn_802DCE5C(void*, s32*);
 void fn_802520C0(Player*, s32*);
 int fn_8025F590(void);
@@ -1660,16 +1660,16 @@ JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGe
     return destination;
 }
 
-#pragma optimization_level 3
 #pragma peephole off
+#pragma opt_propagation off
 JGeometry::TVec3<f32> fn_80233BC4(JGeometry::TVec3<f32>& left, const JGeometry::TVec3<f32>& right)
 {
     JGeometry::TVec3<f32> difference(left);
-    difference.sub(right);
+    difference.sub(difference, right);
     return difference;
 }
+#pragma opt_propagation reset
 #pragma peephole reset
-#pragma optimization_level reset
 f32 fn_80233C08(JGeometry::TVec3<f32>& value)
 {
     f32 squared = value.squared();
