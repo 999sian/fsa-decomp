@@ -258,9 +258,9 @@ static inline BOOL gbaReadPacket(GbaChan* c) {
 }
 
 static inline BOOL gbaHandshake(GbaChan* c, u32 expected) {
-    if (gbaReadId(c) == 0 && (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) == 0 || *(u32*)((u8*)c + 0x64) == expected)) {
-        if (memcmp((u8*)c + 0x64, lbl_8053ACC4, 4) == 0) {
-            *(s32*)((u8*)c + 0x5c) = 0;
+    if (gbaReadId(c) == 0 && (memcmp(c->gameId, lbl_8053ACC4, 4) == 0 || *(u32*)c->gameId == expected)) {
+        if (memcmp(c->gameId, lbl_8053ACC4, 4) == 0) {
+            c->f5c = 0;
         }
         if (gbaWriteId(c) == 0) {
             return gbaReadPacket(c);
