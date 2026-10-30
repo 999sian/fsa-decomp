@@ -4,6 +4,12 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
+extern "C" s32 fn_8023AE34(void*, s32, void*);
+extern "C" s32 fn_8023B2B0(s32);
+extern "C" s32 Actor_CreateByID(void*, u32, s32, void*, s32, s32, s32);
+extern "C" u16 fn_801F6874(s32);
+extern "C" void fn_801F714C(u16*, u16, s32, s32);
+extern "C" f32 fn_801EE4F0();
 
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void* fn_8023E724(s32);
@@ -391,8 +397,7 @@ extern "C" s32 fn_801A4754(u8* this_, void* a4, void* a5) {
         if (kind != 1) break;
     case 5:
         if (*(f32*)(this_ + 0x14) == lbl_8053E5D4) {
-            f32 one = 1.0f;
-            *(JGeometry::TVec3f*)(this_ + 0x3C) = JGeometry::TVec3f(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), lbl_8053E5E4 + (one - lbl_8053E5E8 * lbl_8053AAF8->rnd.get_ufloat_1()));
+            *(JGeometry::TVec3f*)(this_ + 0x3C) = JGeometry::TVec3f(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), lbl_8053E5E4 + (1.0f - lbl_8053E5E8 * lbl_8053AAF8->rnd.get_ufloat_1()));
             *(JGeometry::TVec3f*)(this_ + 0xC) = JGeometry::TVec3f(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) + *(f32*)(this_ + 0x44));
         }
         fn_801F3780(this_, 0x12C);
