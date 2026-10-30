@@ -437,7 +437,7 @@ static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
     if (t < half) v = t; else v = period - t;
     f32 alpha = (f32)v / (f32)half;
     for (s32 j = 0; j < 4; j++) {
-        if (tags[j] != 0) screen->search(tags[j])->setAlpha(alpha * p[j + 0x1a5]);
+        if (tags[j] != 0) screen->search(tags[j])->setAlpha(p[j + 0x1a5] * alpha);
     }
 }
 static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
