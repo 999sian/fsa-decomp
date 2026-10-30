@@ -449,17 +449,21 @@ static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
 }
 #pragma opt_common_subs off
 static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
-    for (s32 j = 0; j < 4; j++) {
-        if (tags[j] != 0) {
+    s32 j = 0;
+    const u64* child = tags;
+    for (; j < 4; j++, child++) {
+        if (*child != 0) {
             J2DScreen* screen = fixed ? ((MsgDraw*)p)->screen : ((MsgDraw*)p)->screens[p[0x1a2]];
-            screen->search(tags[j])->setAlpha(p[j + 0x1a5]);
+            screen->search(*child)->setAlpha(p[j + 0x1a5]);
         }
     }
 }
 
 static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
-    for (s32 j = 0; j < 4; j++) {
-        if (tags[j] != 0) ((MsgDraw*)p)->screen->search(tags[j])->setAlpha(p[j + 0x1a5]);
+    s32 j = 0;
+    const u64* child = tags;
+    for (; j < 4; j++, child++) {
+        if (*child != 0) ((MsgDraw*)p)->screen->search(*child)->setAlpha(p[j + 0x1a5]);
     }
 }
 
@@ -473,7 +477,7 @@ if((*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x100) && ((u8*)lbl_8053AAF8)[
 if(!p[0x3af] && !p[0x1a9]) {
 *(s16*)(p+0x194)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
@@ -483,7 +487,7 @@ if (!*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tags)+0xb0)) { J2DPan
 }
 }
 else {if(n!=4)n=0;{
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
@@ -495,7 +499,7 @@ if (!*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tags)+0xb0)) { J2DPane* pane=((M
 } else if(*(u32*)(*(u8**)(p+0x10)+0x4c)==99999 && !p[0x1a9]) {
 *(s16*)(p+0x196)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
@@ -506,7 +510,7 @@ msgRestoreChoice(p,tags,false);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[
 }
 }
 else {if(n!=4)n=0;{
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
@@ -520,7 +524,7 @@ msgRestoreChoiceTV(p,tags);} else {if (*(u8*)((u8*)((MsgDraw*)p)->screen->search
 *(s16*)(p+0x194)=0;
 *(s16*)(p+0x196)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 
@@ -528,7 +532,7 @@ if (*(u8*)((u8*)((MsgDraw*)p)->screens[p[0x1a2]]->search(*tag)+0xb0)) { J2DPane*
 }
 }
 else {
-for(int i=0;i<5;i++) {
+for(s32 i=0;i<5;i++) {
 const u64* tag=(const u64*)&lbl_80475768+i;
 const u64* tags=lbl_80475790[i];
 if(i>=1 && i<=3) continue;
