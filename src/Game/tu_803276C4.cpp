@@ -2,6 +2,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "Game/SinitPoolChain.h"
 
 class ResMgr {
 public:
@@ -67,7 +68,7 @@ extern "C" void fn_80327724(u8* this_) {
     }
 }
 
-extern "C" void fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, f32 scale = 1.0f);
 extern "C" void fn_801F0E34(void* a, s32 b, s32 c);
 extern "C" void fn_803279D0(Actor* this_) {
     u8* p = (u8*)this_;
@@ -92,7 +93,7 @@ extern "C" s32 fn_801F78F4(void* mgr, u32 code, s32 idx);
 extern "C" u8 fn_801F6758(f32* pos, s32 room, f32 r);
 extern "C" void fn_803283FC(u8* this_) {
     s32 idx = -1;
-    u8* p;
+    u8* p = 0;
     *(u16*)(this_ + 0x94) = *(u32*)(this_ + 0x90) & 0xf;
     *(s32*)(this_ + 0x240) = (*(u32*)(this_ + 0x90) >> 4) & 0xf;
     *(s32*)(this_ + 0x248) = (*(u32*)(this_ + 0x90) >> 8) & 0xf;
@@ -120,7 +121,7 @@ extern "C" void fn_803283FC(u8* this_) {
     *(u8*)(this_ + 0x11c) = 0;
     *(s32*)(this_ + 0x108) = 10000;
     *(f32*)(this_ + 0x10) -= 8.0f;
-    *(Vec*)(this_ + 0x260) = *(Vec*)(this_ + 0xc);
+    *(JGeometry::TVec3<f32>*)(this_ + 0x260) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
     *(s32*)(this_ + 0x230) = 0;
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x244) = 0;
@@ -158,3 +159,7 @@ extern "C" void fn_803283FC(u8* this_) {
         }
     }
 }
+
+extern "C" void fn_803285CC(void) {
+}
+
