@@ -67,14 +67,32 @@ extern "C" const f32 lbl_80541AF0;
 extern "C" const f32 lbl_80541AF4;
 extern "C" const f32 lbl_80541AF8;
 static inline f32 deathRandom320374() {
-    return ((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+    char* random = lbl_8053AAF8;
+    u32 bits;
+    *(u32*)(random+0xb4)=*(u32*)(random+0xb4)*0x19660d+0x3c6ef35f;
+    bits=(*(u32*)(random+0xb4)>>9)|0x3f800000;
+    return *(f32*)&bits-lbl_80541AEC;
 }
+#pragma opt_common_subs off
+#pragma opt_propagation on
 extern "C" void fn_80320374(char* p) {
     s32 t;
-    s32 room;
-    s32 kind;
+    s32 id;
     u16 st;
-    f32 v[3];
+    JGeometry::TVec3f smoke;
+    JGeometry::TVec3f savedVelocity;
+    JGeometry::TVec3f seedVelocity;
+    JGeometry::TVec3f chickenPos;
+    JGeometry::TVec3f rightVelocity;
+    JGeometry::TVec3f leftVelocity;
+    JGeometry::TVec3f bombPos;
+    JGeometry::TVec3f bombVel1;
+    JGeometry::TVec3f bombVel2;
+    JGeometry::TVec3f bombVel3;
+    JGeometry::TVec3f bombVel4;
+    JGeometry::TVec3f specialPos;
+    s32 kind;
+    char* item;
     void* mgr;
 
     t = ((u16 (*)(f32*, s32))fn_8022461C)((f32*)(p + 0xc), *(s32*)(p + 4));
@@ -90,7 +108,9 @@ extern "C" void fn_80320374(char* p) {
     }
     if (t == 0xe && *(f32*)(p + 0x14) < lbl_80541AD8) {
         fn_802DEB58();
-        if (fn_802DE9A0() == 0) {
+        if (fn_802DE9A0() != 0) {
+            fn_801F0E34(p, 0x5005f, 0);
+        } else {
             *(f32*)(p + 0x2b8) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0xc) & 0xfff0);
             *(f32*)(p + 0x2bc) = lbl_80541ADC + (f32)((s32)*(f32*)(p + 0x10) & 0xfff0);
             *(s32*)(p + 0x2a8) = 1;
@@ -101,40 +121,34 @@ extern "C" void fn_80320374(char* p) {
             *(f32*)(p + 0x44) = lbl_80541AE0;
             return;
         }
-        fn_801F0E34(p, 0x5005f, 0);
         fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE4, 0x2a9, -1, 1, 0, 0, 1);
         fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE4, 0x2aa, 0, 0, 0, 0, 1);
         detach__5ActorFv(p);
         return;
     }
+    if (t == 0xd || t == 0x3b) {
     if ((t == 0xd && *(f32*)(p + 0x14) < lbl_80541AD8) || t == 0x3b) {
         fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE4, 0x3d0, 0, 1, 0, 0, 1);
         detach__5ActorFv(p);
         return;
     }
-    room = *(s32*)(p + 4);
-    if (room >= 8) {
-        mgr = fn_801F856C();
-        v[0] = *(f32*)(p + 0xc);
-        v[1] = *(f32*)(p + 0x10);
-        v[2] = lbl_80541AE0;
-        Actor_CreateByID(mgr, 0x4b4d5249, room, v, 0, -1, -1);
+    }
+    if (*(s32*)(p + 4) >= 8) {
+        smoke=V6(p,0xc);
+        smoke.z=lbl_80541AE0;
+        Actor_CreateByID(fn_801F856C(), 'KMRI', *(s32*)(p+4), &smoke.x, 0, -1, -1);
     } else {
         fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AE8, 0x564, 2, 0, 0, 0, 1);
         fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_80541AEC, 0x503, 1, 0, 0, 0, 1);
     }
     fn_801F0E34(p, 0x30003, 0);
-    st = *(u16*)(p + 0x94);
-    if (st == 2) {
-        detach__5ActorFv(p);
-        return;
-    }
-    if (st >= 4) {
-        detach__5ActorFv(p);
-        return;
-    }
-    kind = *(s32*)(p + 0x264);
-    if (kind < 2) {
+    switch (*(u16*)(p+0x94)) {
+    case 0:
+    case 1:
+    case 3:
+    t = *(s32*)(p + 0x264);
+    kind = t;
+    if (t < 2) {
         kind = *(s32*)(p + 0x294);
     }
     if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
@@ -152,24 +166,125 @@ extern "C" void fn_80320374(char* p) {
             if (fn_802D7948(fn_802D6A9C()) != 0 || *(s32*)(p + 4) >= 8) kind = 6;
         }
     }
-    if ((u32)kind > 8) {
-        detach__5ActorFv(p);
-        return;
-    }
+
     switch (kind) {
     case 0:
     case 1:
+    default:
+        break;
     case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
+        id=Actor_CreateByID(fn_801F856C(),'NNJN',*(s32*)(p+4),(f32*)(p+0xc),1,-1,-1);
+        if (id>=0) {
+            item=(char*)fn_801F666C(fn_801F856C(),id);
+            if (item!=0) {
+                seedVelocity.set(lbl_80541AE0,lbl_80541AE0,lbl_80541AE4*deathRandom320374());
+                V6(item,0x3c)=seedVelocity;
+            }
+        }
+        break;
+    case 4: {
+        id=((I6(p,0x23c)&3)<<8)+3;
+        chickenPos.set(F6(p,0xc),F6(p,0x10)-F6(p,0x14),lbl_80541AE0);
+        Actor_CreateByID(fn_801F856C(),'NIWA',*(s32*)(p+4),&chickenPos.x,id,-1,-1);
         break;
     }
+    case 6:
+        Actor_CreateByID(fn_801F856C(),'RUPY',*(s32*)(p+4),(f32*)(p+0xc),0x260002,-1,-1);
+        break;
+    case 5:
+        id=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),(f32*)(p+0xc),1,-1,-1);
+        kind=*(s32*)(p+4);
+        if (*((u8*)fn_802D6A9C()+kind+0x131df)) {
+            if (id>=0) {
+                item=(char*)fn_801F666C(fn_801F856C(),id);
+                if (item!=0) {
+                    if (lbl_80541AE0 == F6(p,0x3c)) {
+                        if (deathRandom320374()>lbl_80541AE8) {
+                            rightVelocity.set(lbl_80541AF0,lbl_80541AE0,lbl_80541AE0);
+                            V6(item,0x3c)=rightVelocity;
+                        } else {
+                            leftVelocity.set(lbl_80541AF4,lbl_80541AE0,lbl_80541AE0);
+                            V6(item,0x3c)=leftVelocity;
+                        }
+                    } else V6(item,0x3c)=V6(p,0x3c);
+                }
+            }
+        } else {
+            if (id>=0) {
+                item=(char*)fn_801F666C(fn_801F856C(),id);
+                if (item!=0) V6(item,0x3c)=V6(p,0x3c);
+            }
+            if (lbl_80541AE0 == F6(p,0x3c)) {
+                bombPos.set(F6(p,0xc),F6(p,0x10),lbl_80541AE0);
+                kind=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),&bombPos.x,2,-1,-1);
+                if (kind>=0) {
+                    item=(char*)fn_801F666C(fn_801F856C(),kind);
+                    if (item!=0) {
+                        f32 x=lbl_80541AF8*F6(p,0x40);
+                        bombVel1.set(x,x,F6(p,0x44));
+                        V6(item,0x3c)=bombVel1;
+                    }
+                }
+                kind=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),(f32*)(p+0xc),2,-1,-1);
+                if (kind>=0) {
+                    item=(char*)fn_801F666C(fn_801F856C(),kind);
+                    if (item!=0) {
+                        bombVel2.set(lbl_80541AF8*-F6(p,0x40),lbl_80541AF8*F6(p,0x40),F6(p,0x44));
+                        V6(item,0x3c)=bombVel2;
+                    }
+                }
+            } else if (lbl_80541AE0 == F6(p,0x40)) {
+                kind=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),(f32*)(p+0xc),2,-1,-1);
+                if (kind>=0) {
+                    item=(char*)fn_801F666C(fn_801F856C(),kind);
+                    if (item!=0) {
+                        f32 x=lbl_80541AF8*F6(p,0x3c);
+                        bombVel3.set(x,x,F6(p,0x44));
+                        V6(item,0x3c)=bombVel3;
+                    }
+                }
+                kind=Actor_CreateByID(fn_801F856C(),'BMTY',*(s32*)(p+4),(f32*)(p+0xc),2,-1,-1);
+                if (kind>=0) {
+                    item=(char*)fn_801F666C(fn_801F856C(),kind);
+                    if (item!=0) {
+                        bombVel4.set(lbl_80541AF8*F6(p,0x3c),lbl_80541AF8*-F6(p,0x3c),F6(p,0x44));
+                        V6(item,0x3c)=bombVel4;
+                    }
+                }
+            }
+        }
+        break;
+    case 7:
+        Actor_CreateByID(fn_801F856C(),'BHRT',*(s32*)(p+4),(f32*)(p+0xc),0,-1,-1);
+        break;
+    case 3:
+    case 8:
+        if (kind==3) kind=((I6(p,0x23c)&3)<<8)+0x32;
+        else kind=((I6(p,0x23c)&3)<<8)+0x38;
+        specialPos.set(F6(p,0xc),F6(p,0x10)-F6(p,0x14),lbl_80541AE0);
+        kind=Actor_CreateByID(fn_801F856C(),'NIWA',*(s32*)(p+4),&specialPos.x,kind,-1,-1);
+        if (kind>=0) {
+            item=(char*)fn_801F666C(fn_801F856C(),kind);
+            if (item!=0) {
+                savedVelocity=V6(p,0x3c);
+                F6(p,0x44)=lbl_80541AE0;
+                V6(item,0x3c)=V6(p,0x3c);
+            }
+        }
+        break;
+    }
+    break;
+    case 2:
+        F6(p,0x14)=lbl_80541AE0;
+        Actor_CreateByID(fn_801F856C(),'LSTI',*(s32*)(p+4),(f32*)(p+0xc),I6(p,0x294)|0x180|((I6(p,0x298)&3)<<22),-1,-1);
+        break;
+    default:
+        break;
+    }
+    detach__5ActorFv(p);
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 static inline f32 ItemRandom321200() {
     char* rng=lbl_8053AAF8;
     u32 bits;
