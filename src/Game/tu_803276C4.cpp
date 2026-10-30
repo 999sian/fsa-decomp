@@ -88,7 +88,7 @@ extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
 extern "C" s32 fn_80230CFC(s32);
 extern "C" void fn_80230498(s32,void*,s32,s32,s32,s32,s32);
 extern "C" u8 fn_801F6758(f32*,s32,f32);
-static inline u8 osinRoomCheck(Actor* actor, f32 margin) {
+static inline u8 osinRoomCheck(Actor* actor, const f32 margin) {
     return fn_801F6758(&actor->field_0C.x,actor->field_04,margin);
 }
 extern "C" u8 fn_801F2618(Actor*,s32,s32);
@@ -122,6 +122,8 @@ extern const f32 lbl_80541C98;
 extern const f32 lbl_80541C9C;
 #pragma opt_propagation off
 extern "C" void fn_803279D0(Osin* p) {
+    s32 area;
+    s32 offset;
     if(p->scale<1.0f) {
         if((u8)p->v11()==1 && p->hidden==1) {
             fn_8013CC50((void*)p->field_04,&p->field_0C,0x503,1,0,0,0,1,(f32)(p->size+1));
@@ -155,7 +157,7 @@ extern "C" void fn_803279D0(Osin* p) {
             }
         }
     }
-    if(!((u8 (*)(const Vec*,s32,f32))fn_801F6758)(&p->field_0C,p->field_04,-40.0f)) blocked=fn_801F2618(p,0,0);
+    if(!osinRoomCheck(p,-40.0f)) blocked=fn_801F2618(p,0,0);
     p->weight=0;
     fn_80239914(&box,p->field_04,p->field_198);
     switch(p->field_94) {
@@ -185,7 +187,7 @@ extern "C" void fn_803279D0(Osin* p) {
         if(weight>1) {
             if(!blocked && 48.0f*(f32)(weight-1)+p->origin.y>p->field_0C.y) {
                 p->field_3C.y=0.5f;
-                p->frame=1;
+                OSIN_S32(p,0x234)=1;
                 if(p->field_94!=0 && weight>=p->maxWeight) p->maxWeight=weight;
             } else if(!blocked && 48.0f*(f32)(weight-1)+p->origin.y<p->field_0C.y) {
                 p->field_3C.y=-0.5f;
@@ -241,7 +243,7 @@ extern "C" void fn_803279D0(Osin* p) {
             if(p->field_94==2) {
                 void* bounds=fn_802D6A9C();
                 if(p->field_0C.x-OSIN_F32(bounds,0xd4)>40.0f) {
-                    s32 area = OSIN_S32(fn_802D6A9C(),0x18);
+                    area = OSIN_S32(fn_802D6A9C(),0x18);
                     void* mgr = fn_802D6A9C();
                     fn_802D9FE8(fn_802D6A9C(),OSIN_S32(mgr,0x14)+1,area);
                     fn_80136798(lbl_8053AAF8,17,0);
@@ -249,7 +251,7 @@ extern "C" void fn_803279D0(Osin* p) {
             } else if(p->field_94==3) {
                 void* bounds=fn_802D6A9C();
                 if(p->field_0C.x-OSIN_F32(bounds,0xcc)<-40.0f) {
-                    s32 area=OSIN_S32(fn_802D6A9C(),0x18);
+                    area=OSIN_S32(fn_802D6A9C(),0x18);
                     void* mgr=fn_802D6A9C();
                     fn_802D9FE8(fn_802D6A9C(),OSIN_S32(mgr,0x14)-1,area);
                     fn_80136798(lbl_8053AAF8,17,0);
