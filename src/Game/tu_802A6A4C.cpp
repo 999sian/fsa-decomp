@@ -90,15 +90,11 @@ extern const f32 lbl_805407F8;
 extern const f32 lbl_805407FC;
 extern const f32 lbl_80540800;
 #pragma opt_propagation off
-static inline void setSwitchPlayer(Tu2A6A4CActor* actor, u8 player, u32 state) {
-    ((void (*)(Tu2A6A4CActor*, u8, u32))(*(void***)actor)[12])(actor, player, state);
-}
-
 extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
-    s32 i;
-    bool found;
+    unsigned int flags;
     s32 actor;
-    u32 flags;
+    int i;
+    bool found;
     s32 player;
     s32 kind;
     u8* p = (u8*)self;
