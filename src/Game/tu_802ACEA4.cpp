@@ -117,7 +117,7 @@ static inline void platformRotation(f32 m[3][4], const f32 ry) {
     m[2][2]=cz*cy;
 }
 static inline f32 platformSin(f32 angle) {
-    if(angle<0.0f) return -sincosTable___5JMath[((u16)(s32)(-325.9493f*angle)&0x7ff)*2];
+    if(angle<0.0f) return -sincosTable___5JMath[((u16)(s32)(angle * -325.9493f)&0x7ff)*2];
     return sincosTable___5JMath[((u16)(s32)(325.9493f*angle)&0x7ff)*2];
 }
 static inline f32 platformCos(f32 angle) {
