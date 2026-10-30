@@ -819,7 +819,8 @@ inline void hitInvSqrtRef(f32& x) {
 inline void hitNormalize(JGeometry::TVec3<f32>* v) {
     f32 sq = v->squared();
     if (!(sq <= lbl_80540298 * FLT_EPSILON)) {
-        JMathInlineVEC::PSVECScale(v, v, hitInvSqrt(sq));
+        f32 invsqrt = hitInvSqrt(sq);
+        v->scale(invsqrt);
     }
 }
 inline JGeometry::TVec2<f32>& hitSubEq(JGeometry::TVec2<f32>& v, const Vec2f* pt) {
@@ -2495,6 +2496,7 @@ inline bool hitInMask(char* p) {
 
 void fn_80277F98(char* p) {
     u16 g = fn_8022461C(p + 8, PTR(p, 0x3b4));
+    s32 h;
     if (S32(lbl_8053AAF8, 0x4c) != 0xb && U8(p, 0xcfc) == 1 && !((u8(*)(char*))fn_8025F448)(p)) {
         if (g == 3 || g == 0xe || g == 0x3a) {
             fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x503, 1, 1, 0, 0, 1, lbl_80540288);
@@ -2534,7 +2536,8 @@ void fn_80277F98(char* p) {
         U8(p, 0x3fd) = 6;
         U8(p, 0x3fc)++;
         if (U8(p, 0x3fc) == 0x6a) {
-            if (hitInMask(p)) {
+            bool on = hitInMask(p);
+            if (on) {
                 if (U8(lbl_8053AAF8, 0x7f) != 0) {
                     if (U8(lbl_8053AAF8, 0x7e) != 0) {
                         s32 n = fn_80241920(p) / 2;
@@ -2610,7 +2613,7 @@ void fn_80277F98(char* p) {
                 Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x38, -1, -1);
             }
         }
-        s32 h = S32(p, 0x49c);
+        h = S32(p, 0x49c);
         if (h >= 0) {
             char* a = (char*)fn_801F666C(fn_801F856C(), h);
             if (a != NULL && ((u8(*)(char*))fn_8025F448)(p)) {
@@ -2678,11 +2681,11 @@ void fn_80277F98(char* p) {
         f32* b = r < 8 ? (f32*)(m + 0xcc) : (f32*)(m + 0xdc);
         f32 bx = b[0];
         f32 by = b[1];
-        s32 room = S32(p, 0x3b4);
+        h = S32(p, 0x3b4);
         char* m2 = fn_802D6A9C();
-        f32* b2 = room < 8 ? (f32*)(m2 + 0xcc) : (f32*)(m2 + 0xdc);
-        f32 dx = b2[0] - bx;
+        f32* b2 = h < 8 ? (f32*)(m2 + 0xcc) : (f32*)(m2 + 0xdc);
         f32 dy = b2[1] - by;
+        f32 dx = b2[0] - bx;
         F32(p, 0x8) += dx;
         F32(p, 0xc) += dy;
         F32(p, 0xc) += lbl_805402B0;
@@ -2744,8 +2747,8 @@ void fn_80277F98(char* p) {
                 fn_8022BC38(S32(p, 0xd08), S32(p, 0x3b4), p + 0x8)) {
                 JGeometry::TVec3<f32> tgt(*fn_8023E724(S32(p, 0xd08)));
                 tgt.x += lbl_805402D8;
-                s32 room = S32(p, 0x3b4);
-                if (!*(u8*)((u32)fn_802D6A9C() + 0x131df + room)) {
+                h = S32(p, 0x3b4);
+                if (!*(u8*)((u32)fn_802D6A9C() + 0x131df + h)) {
                     tgt.y += lbl_805402C4;
                 }
                 tgt.z = lbl_8054028C;
