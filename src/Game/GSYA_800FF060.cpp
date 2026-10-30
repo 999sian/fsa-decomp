@@ -7,6 +7,7 @@
 #define PSMTXConcat SDK_PSMTXConcat
 #define PSMTXIdentity SDK_PSMTXIdentity
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 #undef PSMTXIdentity
 #undef PSMTXConcat
 #undef PSMTXScale
@@ -50,7 +51,7 @@ extern "C" void* fn_800FF060(void* this_, s16 freeFlag) {
 extern "C" void fn_800FF0C0(Actor* this_) {
     s32 minutes;
     s32 value;
-    register s32 i;
+    s32 i;
     s32 count;
     JGeometry::TVec3<f32> saved;
     s32 state = *(s32*)((u8*)this_ + 0x230);
