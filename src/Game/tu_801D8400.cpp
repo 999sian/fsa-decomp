@@ -124,6 +124,7 @@ struct Slot11 {
     virtual void v7();
     virtual void v8();
     virtual u8 slot9(f32 a, f32 b, f32 c);
+    virtual void slot10(s32 a, f32 b, f32 c);
 };
 
 extern "C" void fn_801D8430(char* p) {
