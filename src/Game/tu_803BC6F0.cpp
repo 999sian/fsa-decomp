@@ -653,6 +653,7 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
 #pragma opt_propagation reset
 
 #pragma dont_inline on
+#pragma dont_inline off
 #include "Game/ItemBase.h"
 extern "C" void* lbl_8053AB10;
 extern "C" void fn_8013B490(void*);
@@ -665,22 +666,107 @@ static inline void* menuDrawResource(const char* name) {
     return ((void*(*)(void*,u32,const char*))(*(void***)mgr)[6])(mgr,0x534f4220,name);
 }
 extern "C" void fn_803BE3D8(void* a) {
-    char* this_ = (char*)a;
-    s16 cnt;
-    u8 tbl[0x10];
-    s32 i;
-    *(s16*)(this_ + 0xdc) += 1;
-    cnt = *(s16*)(this_ + 0xdc);
-    if (cnt < 0x36) {
-        return;
+    u8* p=(u8*)a;
+    const u8* base=lbl_804765D0;
+    (*(s16*)(p+0xdc))++;
+    if(*(s16*)(p+0xdc)>=0x36) *(s16*)(p+0xdc)=0;
+    if(*(s32*)(p+0xd0)!=0) {
+        DrawRec rec1;
+        DrawRec rec2;
+        for(s32 i=0;i<8;i++) {
+            JGeometry::TVec3<f32> pos1;
+            JGeometry::TVec3<f32> pos2;
+            {
+    f32 width;
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    width=pane->mBounds.f.x-pane->mBounds.i.x;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    pos1.x=lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    width=pane->mBounds.f.y-pane->mBounds.i.y;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
+    pos1.y=lbl_80543484*(lbl_80543488+width*lbl_80543480+pane->mGlobalBounds.i.y)/(f32)(int)JUTVideo::getManager()->getEfbHeight();
+    pos1.z=lbl_80543458;
+}
+            {
+    f32 width;
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    width=pane->mBounds.f.x-pane->mBounds.i.x;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    pos2.x=lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    width=pane->mBounds.f.y-pane->mBounds.i.y;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
+    pos2.y=lbl_80543484*(lbl_80543488+width*lbl_80543480+pane->mGlobalBounds.i.y)/(f32)(int)JUTVideo::getManager()->getEfbHeight();
+    pos2.z=lbl_80543458;
+}
+            rec1.b26=0;
+            ((u8*)&rec1.w10)[0]=0;((u8*)&rec1.w10)[1]=0;((u8*)&rec1.w10)[2]=0;
+            ((u8*)&rec1.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8)))[0xb2];
+            ((u8*)&rec2.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8)))[0xb2];
+            rec2.b26=0;
+            f32 rect[4];rect[0]=lbl_80543458;rect[1]=lbl_80543458;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
+            fn_8013B414(lbl_8053AB10,rect,1);
+            if(i==6) {
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x830),0xab,&rec1,lbl_80543478,lbl_80543478);
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos2,menuDrawResource((const char*)base+0x830),0xab,&rec2,lbl_80543478,lbl_80543478);
+            } else if(i==7) {
+                rec1.ids[7]=12;rec2.ids[7]=12;
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x844),0x10,&rec1,lbl_80543478,lbl_80543478);
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos2,menuDrawResource((const char*)base+0x844),0x10,&rec2,lbl_80543478,lbl_80543478);
+            } else {
+                s32 id=*(s32*)(base+0x818+i*4)+8;
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x854),id,&rec1,lbl_80543478,lbl_80543478);
+                id=*(s32*)(base+0x818+i*4)+8;
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos2,menuDrawResource((const char*)base+0x854),id,&rec2,lbl_80543478,lbl_80543478);
+            }
+        }
+    } else {
+        for(s32 i=0;i<8;i++) {
+            if(i<7 && *(s32*)(p+0xb8+i*4)!=0) {
+                DrawRec rec;
+                rec.b26=0;
+                ((u8*)&rec.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8)))[0xb2];
+                JGeometry::TVec3<f32> pos;
+                if(i==6) {
+                    {
+    f32 width;
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    width=pane->mBounds.f.x-pane->mBounds.i.x;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pos.x=lbl_80543458+lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    width=pane->mBounds.f.y-pane->mBounds.i.y;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pos.y=lbl_80543484*(lbl_8054348C+width*lbl_80543480+pane->mGlobalBounds.i.y)/(f32)(int)JUTVideo::getManager()->getEfbHeight();
+    pos.z=lbl_80543458;
+}
+                    f32 rect[4];rect[0]=lbl_80543458;rect[1]=lbl_80543458;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
+                    fn_8013B414(lbl_8053AB10,rect,1);
+                    s32 id=(*(s16*)(p+0xdc)%27)/9+0x21b;
+                    fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos,menuDrawResource((const char*)base+0x854),id,&rec,lbl_80543478,lbl_80543478);
+                } else {
+                    {
+    f32 width;
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    width=pane->mBounds.f.x-pane->mBounds.i.x;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pos.x=lbl_80543458+lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    width=pane->mBounds.f.y-pane->mBounds.i.y;
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pos.y=lbl_80543484*(lbl_80543490+width*lbl_80543480+pane->mGlobalBounds.i.y)/(f32)(int)JUTVideo::getManager()->getEfbHeight();
+    pos.z=lbl_80543458;
+}
+                    f32 rect[4];rect[0]=lbl_80543458;rect[1]=lbl_80543458;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
+                    fn_8013B414(lbl_8053AB10,rect,1);
+                    s32 id=*(s16*)(p+0xdc)/9+*(s32*)(base+0x818+i*4);
+                    fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos,menuDrawResource((const char*)base+0x854),id,&rec,lbl_80543478,lbl_80543478);
+                }
+            }
+        }
     }
-    *(s16*)(this_ + 0xdc) = 0;
-    if (*(u32*)(this_ + 0xd0) == 0) {
-        return;
-    }
-    for (i = 0; i < 0x10; i++) {
-        tbl[i] = (u8)i;
-    }
+    fn_8013B490(lbl_8053AB10);
 }
 #pragma dont_inline reset
 #pragma dont_inline reset
