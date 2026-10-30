@@ -547,6 +547,36 @@ extern "C" void fn_8026B81C(u8* p, u16 k) {
 extern "C" u8 fn_802413F0(void*);
 extern "C" u8 fn_802DEB58(void*);
 extern "C" void fn_8026E68C(u8*, u16);
+extern "C" u8 fn_80241230(void*);
+extern "C" u8 fn_80240670(void*);
+extern "C" u8 fn_80240F14(void*);
+extern "C" u8 fn_80237A80(void*);
+extern "C" void fn_8026EE60(u8* p);
+extern "C" void fn_8026EC88(u8* p, s32 param);
+extern "C" void fn_8026F54C(u8* p);
+extern "C" void fn_8026F388(u8* p);
+extern "C" void fn_8026F1C4(u8* p);
+extern "C" void fn_8026F000(u8* p);
+extern f32 lbl_8054025C;
+static inline void setHitAt_8026C350(u8* p, s32 off) { p[*(s32*)(p + 0x1c) + off] = 1; }
+static inline BOOL canGrab_8026C350(u8* p) {
+    void* o = *(void**)(p + 4);
+    return (!fn_8025F448(o) && *(f32*)((u8*)o + 0x10) >= lbl_8054025C) || fn_80240F14(*(void**)(p + 4)) ||
+           (fn_802486A0(*(void**)(p + 4)) == 4 && fn_80240670(*(void**)(p + 4)));
+}
+static inline void tileCheck0_8026C350(u8* p) {
+    u16 t = fn_80226850((Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4));
+    if (t == 6 || t == 0xb8) return;
+    if (fn_80226850((Vec2f*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4)) == 0x59) return;
+    setHitAt_8026C350(p, 0x20);
+}
+static inline void ladder_8026C350(u8* p) {
+    if (fn_80241230(*(void**)(p + 4))) {
+        setHitAt_8026C350(p, 0x38);
+    } else if (fn_802413F0(*(void**)(p + 4)) && !(*(f32*)(*(u8**)(p + 4) + 0x10) > lbl_80540254) && *(s32*)(p + 0xb0) <= 1) {
+        setHitAt_8026C350(p, 0x78);
+    }
+}
 extern "C" void fn_8026C350(u8* p, u16 param) {
     if (fn_8026FC20(*(void**)(p + 4)) >= 1) {
         if (param >= 0x10 && param < 0x14) {
