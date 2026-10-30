@@ -1736,12 +1736,258 @@ void fn_80231DE4(void) {
 
 #define PF(p, off, T) (*(T*)((u8*)(p) + (off)))
 
+struct RoomFlags8022 {
+    u8 flag(u32 i) { return mFlags[i]; }
+    u8 pad[0x131df];
+    u8 mFlags[1];
+};
+
+extern "C" const f32 lbl_80540010;
+extern "C" const f32 lbl_8054001C;
+extern "C" const f32 lbl_80540020;
+extern "C" const f32 lbl_80540024;
+extern "C" const f32 lbl_80540028;
+int fn_80233EDC(int);
+int fn_802349EC(int);
+int fn_8023EA28(int);
+int fn_8023E854(int);
+int fn_80236AB4(int);
+int fn_8023EFEC(int);
+int fn_8023ECF0(int);
+int fn_8023DE58(int);
+JGeometry::TVec3<f32>* fn_8023E724(int);
+void fn_8023DFF4(int, JGeometry::TVec3<f32>*);
+JGeometry::TBox2<f32> fn_801546F4(const void*);
+void fn_80238548(int, int, void*, int);
+int fn_8023B6CC(int);
+int fn_8023B630(int);
+int fn_8023A3DC(int);
+int fn_8023A5B8(int);
+void fn_802379E4(int, void*);
+int fn_80270C88(Player*);
+int fn_8025F55C(Player*);
+int fn_80273E7C(Player*, void*, int, void*, int);
+int fn_80273518(Player*, void*, int, void*);
+int fn_802573E0(Player*, void*, int, void*);
+int fn_80273FB8(Player*, void*, int, void*);
+int fn_80256F44(Player*, void*, int, void*);
+int fn_80272224(Player*, JGeometry::TBox2<f32>*, int, int, int, int);
+JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGeometry::TBox2<f32>& source);
+JGeometry::TVec3<f32> fn_80233BC4(JGeometry::TVec3<f32>& left, const JGeometry::TVec3<f32>& right);
+f32 fn_80233C08(JGeometry::TVec3<f32>& value);
+bool fn_80233C9C(const JGeometry::TBox2<f32>& left, const JGeometry::TBox2<f32>& right);
 void fn_80232A0C(void)
 {
+    JGeometry::TVec3<f32> hit;
+    int i;
+    int j;
+
     if (lbl_8053AC90->players[0] != NULL) *((u8*)lbl_8053AC90->players[0] + 0xafc) = 0;
     if (lbl_8053AC90->players[1] != NULL) *((u8*)lbl_8053AC90->players[1] + 0xafc) = 0;
     if (lbl_8053AC90->players[2] != NULL) *((u8*)lbl_8053AC90->players[2] + 0xafc) = 0;
     if (lbl_8053AC90->players[3] != NULL) *((u8*)lbl_8053AC90->players[3] + 0xafc) = 0;
+
+    for (i = 0; i < 3; i++) {
+        Player* a = lbl_8053AC90->players[i];
+        if (a == NULL || !isPlayerEnabled(i)) continue;
+        if (PF(a, 0x1240, s32) == 3) continue;
+        if ((u8)fn_80233EDC(i)) continue;
+        if ((u8)fn_8022D75C(i)) continue;
+        if ((u8)fn_802349EC(i)) continue;
+        if ((u8)fn_8023EA28(i)) continue;
+        if ((u8)fn_8023E854(i)) continue;
+        if (fn_8023E724(i)->z >= lbl_80540010) continue;
+        if ((u8)fn_80236AB4(i)) continue;
+        int room = fn_8023DE58(i);
+        if (((u8*)fn_802D6A9C())[room + 0x131df] && (u8)fn_8022F514(i)) continue;
+        if (!(u8)fn_8023188C(i)) continue;
+        if (PF(a, 0xd58, s32) > 0) continue;
+        if (PF(a, 0xd08, s32) >= 0) continue;
+        JGeometry::TBox2<f32> boxA = fn_801546F4((u8*)a + 0x4c0);
+        room = fn_8023DE58(i);
+        u8* mgr = (u8*)fn_802D6A9C();
+        f32* off = room < 8 ? (f32*)(mgr + 0xcc) : (f32*)(mgr + 0xdc);
+        boxA.addPos(-off[0], -off[1]);
+
+        for (j = i + 1; j < 4; j++) {
+            Player* b = lbl_8053AC90->players[j];
+            if (b == NULL || !isPlayerEnabled(j)) continue;
+            if (PF(b, 0x1240, s32) == 3) continue;
+            if (fn_8022CAF8(j) != 4 && (u8)fn_8022E438(i, j)) continue;
+            if ((u8)fn_8023EFEC(i) && (u8)fn_8022E438(fn_8023ECF0(i), j) && fn_8022CAF8(j) != 4) continue;
+            if ((u8)fn_8023EFEC(j) && (u8)fn_8022E438(fn_8023ECF0(j), i) && fn_8022CAF8(i) != 4) continue;
+            if ((u8)fn_80233EDC(j)) continue;
+            if ((u8)fn_8022D75C(j)) continue;
+            if ((u8)fn_802349EC(j)) continue;
+            if ((u8)fn_8023EA28(j)) continue;
+            if ((u8)fn_8023E854(j)) continue;
+            if (fn_8023E724(j)->z >= lbl_80540010) continue;
+            if ((u8)fn_80236AB4(j)) continue;
+            room = fn_8023DE58(j);
+            if (((u8*)fn_802D6A9C())[room + 0x131df] && (u8)fn_8022F514(j)) continue;
+            if (!(u8)fn_8023188C(j)) continue;
+            if (PF(b, 0xd58, s32) > 0) continue;
+            if (PF(b, 0xd08, s32) >= 0) continue;
+            JGeometry::TBox2<f32> boxB = fn_801546F4((u8*)b + 0x4c0);
+            room = fn_8023DE58(j);
+            mgr = (u8*)fn_802D6A9C();
+            off = room < 8 ? (f32*)(mgr + 0xcc) : (f32*)(mgr + 0xdc);
+            boxB.addPos(-off[0], -off[1]);
+
+            for (int k = 0;; k++) {
+                if (fn_8023DE58(j) != fn_8023DE58(i)) break;
+                if (!fn_80233C9C(boxA, boxB)) break;
+                if (PF(a, 0xd70, s32) == j) break;
+                if (PF(b, 0xd70, s32) == i) break;
+                if (fn_8022CAF8(i) != 4) {
+                    if ((u8)fn_8022F514(j) && PF(a, 0xd70, s32) == fn_8022F3DC(j)) break;
+                    if ((u8)fn_8022F514(i) && PF(b, 0xd70, s32) == fn_8022F3DC(i)) break;
+                }
+                JGeometry::TVec3<f32> push;
+                push.x = (boxA.f.x + lbl_80540014 * (boxA.i.x - boxA.f.x)) - (boxB.f.x + lbl_80540014 * (boxB.i.x - boxB.f.x));
+                push.y = (boxA.f.y + lbl_80540014 * (boxA.i.y - boxA.f.y)) - (boxB.f.y + lbl_80540014 * (boxB.i.y - boxB.f.y));
+                push.z = lbl_80540008;
+                if (!(push.x * push.x + push.y * push.y >= lbl_80540018) && PF(a, 0xd54, s32) <= 0 && PF(b, 0xd54, s32) <= 0) break;
+                if (PF(a, 0xd54, s32) > 0) PF(a, 0xd54, s32)--;
+                if (PF(b, 0xd54, s32) > 0) PF(b, 0xd54, s32)--;
+                fn_80233C08(push);
+                if (push.squared() <= lbl_8054000C * FLT_EPSILON) {
+                    push.set(lbl_8054001C, lbl_80540008, lbl_80540008);
+                } else if (push.x < lbl_80540020 && push.x > lbl_80540024) {
+                    push.x = lbl_80540020;
+                } else if (push.y < lbl_80540020 && push.y > lbl_80540024) {
+                    push.y = lbl_80540020;
+                }
+                if ((u8)fn_8022CCAC(i)) {
+                    JGeometry::TVec3<f32> back;
+                    back.negate(push);
+                    fn_8023DFF4(j, &back);
+                    boxB.addPos(-push.x, -push.y);
+                    PF(b, 0xafc, u8) = 1;
+                } else if ((u8)fn_8022CCAC(j)) {
+                    fn_8023DFF4(i, &push);
+                    boxA.addPos(push.x, push.y);
+                    PF(a, 0xafc, u8) = 1;
+                } else if (!((u8*)lbl_8053AAF8)[0x7e] && fn_8022CAF8(i) == 4) {
+                    if (i != fn_80234004(i)) {
+                        fn_8023DFF4(i, &push);
+                        boxA.addPos(push.x, push.y);
+                        PF(a, 0xafc, u8) = 1;
+                    }
+                    if (j != fn_80234004(j)) {
+                        JGeometry::TVec3<f32> back;
+                        back.negate(push);
+                        fn_8023DFF4(j, &back);
+                        boxB.addPos(-push.x, -push.y);
+                        PF(b, 0xafc, u8) = 1;
+                    }
+                } else {
+                    if (!(u8)fn_80250D30(a)) {
+                        fn_8023DFF4(i, &push);
+                        boxA.addPos(push.x, push.y);
+                        PF(a, 0xafc, u8) = 1;
+                    }
+                    if (!(u8)fn_80250D30(b)) {
+                        JGeometry::TVec3<f32> back;
+                        back.negate(push);
+                        fn_8023DFF4(j, &back);
+                        boxB.addPos(-push.x, -push.y);
+                        PF(b, 0xafc, u8) = 1;
+                    }
+                }
+                if (k >= 3) break;
+            }
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        Player* a = lbl_8053AC90->players[i];
+        if (a == NULL || !isPlayerEnabled(i)) continue;
+        if (PF(a, 0xbd4, u8)) continue;
+        for (j = 0; j < 4; j++) {
+            if (i == j) continue;
+            if ((u8)fn_8022E438(i, j)) continue;
+            Player* b = lbl_8053AC90->players[j];
+            if (b == NULL || !isPlayerEnabled(j)) continue;
+            if ((u8)Player_GetField_0x454(b)) continue;
+            if ((u8)fn_80270C88(b)) continue;
+            if (PF(b, 0xbd4, u8)) continue;
+            f32 z = fn_8023E724(j)->z;
+            if ((f32)__fabs(fn_8023E724(i)->z - z) >= lbl_80540010) continue;
+            if (fn_8023DE58(j) == fn_8023DE58(i) && PF(a, 0x458, u8) == 1 && PF(b, 0x458, u8) == 1 &&
+                (fn_80233C9C(PF(a, 0x4a0, JGeometry::TBox2<f32>), PF(b, 0x4a0, JGeometry::TBox2<f32>)) ||
+                 fn_80233C9C(PF(a, 0x4a0, JGeometry::TBox2<f32>), PF(b, 0x4b0, JGeometry::TBox2<f32>)) ||
+                 fn_80233C9C(PF(a, 0x4b0, JGeometry::TBox2<f32>), PF(b, 0x4a0, JGeometry::TBox2<f32>)))) {
+                fn_80238548(i, 0, (u8*)b + 8, 0x10);
+                fn_8024F0E8(a, 0x20002);
+                fn_80238548(j, 0, (u8*)a + 8, 0x10);
+                fn_8024F0E8(b, 0x20002);
+                PF(a, 0x35c, JGeometry::TVec3<f32>) = fn_80233BC4(*fn_8023E724(i), *fn_8023E724(j));
+                fn_80233C08(PF(a, 0x35c, JGeometry::TVec3<f32>));
+                PF(a, 0x35c, JGeometry::TVec3<f32>).scale(lbl_80540028);
+                PF(b, 0x35c, JGeometry::TVec3<f32>) = fn_80233BC4(*fn_8023E724(j), *fn_8023E724(i));
+                fn_80233C08(PF(b, 0x35c, JGeometry::TVec3<f32>));
+                PF(b, 0x35c, JGeometry::TVec3<f32>).scale(lbl_80540028);
+                continue;
+            }
+            if ((u8)fn_80273E7C(a, (u8*)b + 0x4c0, PF(b, 0x3b4, s32), &hit, 1)) {
+                JGeometry::TBox2<f32> box;
+                fn_80233BA0(box, PF(b, 0x5ec, JGeometry::TBox2<f32>));
+                if ((u8)fn_80272224(b, &box, PF(a, 0x3b4, s32), PF(a, 0x458, u8) == 1 ? PF(a, 0x3f0, s32) : PF(a, 0x3dc, s32), 1, 1)) {
+                    PF(a, 0x35c, JGeometry::TVec3<f32>) = fn_80233BC4(*fn_8023E724(i), *fn_8023E724(j));
+                    fn_80233C08(PF(a, 0x35c, JGeometry::TVec3<f32>));
+                    PF(a, 0x35c, JGeometry::TVec3<f32>).scale(lbl_80540028);
+                    PF(b, 0x35c, JGeometry::TVec3<f32>) = fn_80233BC4(*fn_8023E724(j), *fn_8023E724(i));
+                    fn_80233C08(PF(b, 0x35c, JGeometry::TVec3<f32>));
+                    PF(b, 0x35c, JGeometry::TVec3<f32>).scale(lbl_80540028);
+                } else if (((u8*)lbl_8053AAF8)[0x7f]) {
+                    fn_80238548(j, 0, fn_8023E724(i), 1);
+                } else if (fn_8023B6CC(i) == 1) {
+                    fn_80238548(j, 1, fn_8023E724(i), 1);
+                } else {
+                    fn_80238548(j, fn_8023B6CC(i) / 2, fn_8023E724(i), 1);
+                }
+                continue;
+            }
+            if (!((u8)fn_8025F590(a) && (u8)fn_8022E438(fn_8025F55C(a), PF(b, 4, s32))) &&
+                (u8)fn_80273518(a, (u8*)b + 0x4c0, PF(b, 0x3b4, s32), &hit)) {
+                JGeometry::TBox2<f32> box;
+                fn_80233BA0(box, PF(b, 0x5ec, JGeometry::TBox2<f32>));
+                if ((u8)fn_80272224(b, &box, PF(a, 0x3b4, s32), PF(a, 0x3dc, s32), 1, 0)) {
+                    fn_8024F0E8(b, 0x20003);
+                    fn_802379E4(i, &hit);
+                } else {
+                    fn_80238548(j, 0, fn_8023E724(i), 0xb);
+                }
+                continue;
+            }
+            if (PF(a, 0xb68, u8) == 1 && (u8)fn_802573E0(a, (u8*)b + 0x4c0, PF(b, 0x3b4, s32), &hit)) {
+                if (((u8*)lbl_8053AAF8)[0x7f]) {
+                    fn_80238548(j, 0, &hit, 1);
+                } else {
+                    fn_80238548(j, fn_8023B630(i) / 2, &hit, 1);
+                }
+                continue;
+            }
+            if (!playerMgrByte(0x71) && !(u8)fn_8023A3DC(j) && (u8)fn_80273FB8(a, (u8*)b + 0x4c0, PF(b, 0x3b4, s32), &hit)) {
+                if (((u8*)lbl_8053AAF8)[0x7f]) {
+                    fn_80238548(j, 0, fn_8023E724(i), 0x1b);
+                } else {
+                    fn_80238548(j, 2, fn_8023E724(i), 0x1b);
+                }
+                continue;
+            }
+            if (!playerMgrByte(0x71) && !(u8)fn_8023A3DC(j) && (u8)fn_80256F44(a, (u8*)b + 0x4c0, PF(b, 0x3b4, s32), &hit)) {
+                if (((u8*)lbl_8053AAF8)[0x7f]) {
+                    if ((u8)fn_8023A5B8(i)) fn_80238548(j, 0, fn_8023E724(i), 0x15);
+                    else fn_80238548(j, 0, fn_8023E724(i), 0x14);
+                } else {
+                    if ((u8)fn_8023A5B8(i)) fn_80238548(j, 4, fn_8023E724(i), 0x15);
+                    else fn_80238548(j, 2, fn_8023E724(i), 0x14);
+                }
+            }
+        }
+    }
 }
 
 JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGeometry::TBox2<f32>& source)
