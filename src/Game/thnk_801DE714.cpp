@@ -272,6 +272,7 @@ static inline bool thnkPlayerValid(s32 player) {
     if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = true;
     return valid;
 }
+#pragma opt_common_subs reset
 extern "C" void fn_801DEA70(void* this_) {
     char* p = (char*)this_;
     s32 state;
