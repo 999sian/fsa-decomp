@@ -66,8 +66,10 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     m[2][2]=scaleZ*(cx*cy);
 }
 
+#pragma optimization_level 2
+#pragma peephole off
 #pragma opt_propagation off
-#pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_8017EF98(u8* p) {
     GrokDrawTable* t=&lbl_804A13E0;
     DrawRec rec;
@@ -127,7 +129,7 @@ extern "C" void fn_8017EF98(u8* p) {
         return;
     }
     s32 frame=*(s32*)(p+0x26c);
-    s32 index=frame;
+    int index=frame;
     if(lbl_80539F98<=0) index=frame+14;
     void* texture;
     if(*(s32*)(p+0x230)!=9 && *(s32*)(p+0x230)!=15) {
@@ -135,11 +137,11 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x80))[index]);
-        offset=((const f32*)((u8*)t+0xf8))[index];
+        texture=fn_804032E8(0x47524f43,t->normal[index]);
+        offset=t->normalY[index];
     } else {
-        texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x170))[index]);
-        offset=((const f32*)((u8*)t+0x1e0))[index];
+        texture=fn_804032E8(0x47524f43,t->special[index]);
+        offset=t->specialY[index];
     }
     grokRotation(m,1.0f,1.0f,1.0f);
     if(*(s32*)(p+0x98)==0) grokRotation(m,-1.0f,1.0f,1.0f);
@@ -158,8 +160,8 @@ extern "C" void fn_8017EF98(u8* p) {
             if(frame==12) index=28;
             else if(frame==13) index=29;
         }
-        texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x80))[index]);offset=((const f32*)((u8*)t+0xf8))[index];
-    } else { texture=fn_804032E8(0x47524f43,((const char**)((u8*)t+0x170))[index]);offset=((const f32*)((u8*)t+0x1e0))[index]; }
+        texture=fn_804032E8(0x47524f43,t->normal[index]);offset=t->normalY[index];
+    } else { texture=fn_804032E8(0x47524f43,t->special[index]);offset=t->specialY[index]; }
     rec.b1d=1;
     if(*(s32*)(p+0x230)!=15) rec.b1f=0;
     else rec.b1d=0;
@@ -169,7 +171,10 @@ extern "C" void fn_8017EF98(u8* p) {
     fn_801EFD34(p,texture,&rec,-1,0.0f,-8.0f+offset,0.0f);
 }}
 }
+#pragma opt_strength_reduction reset
 #pragma opt_propagation reset
+#pragma peephole reset
+#pragma optimization_level 4
 extern "C" void fn_801546F4(void* a, void* b);
 extern "C" void fn_801826E4(f32* dst, f32 a, f32 b);
 extern "C" u8* fn_801826A4(s32 idx);
