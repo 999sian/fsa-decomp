@@ -269,6 +269,35 @@ static inline BOOL gbaHandshake(GbaChan* c, u32 expected) {
     return TRUE;
 }
 
+// Requests the GBA's packet into the caller's buffer, then reads it (8 words) into +0x28.
+static inline BOOL gbaReadPacketBuf(GbaChan* c, u32* cmd) {
+    *cmd = 0x04000000;
+    if (GBAWrite(c->chan, (u8*)cmd, c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
+        return TRUE;
+    }
+    for (s32 i = 0; i < 0x20; i += 4) {
+        if (GBAGetStatus(c->chan, c->status) != 0 || c->status[0] != 0x38) {
+            return TRUE;
+        }
+        if (GBARead(c->chan, (u8*)c + (i + 0x28), c->status) != 0 || (c->status[0] & 0x30) != 0x30) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+static inline BOOL gbaHandshakeBuf(GbaChan* c, u32 expected, u32* cmd) {
+    if (gbaReadId(c) == 0 && (memcmp(c->gameId, lbl_8053ACC4, 4) == 0 || *(u32*)c->gameId == expected)) {
+        if (memcmp(c->gameId, lbl_8053ACC4, 4) == 0) {
+            c->f5c = 0;
+        }
+        if (gbaWriteId(c) == 0) {
+            return gbaReadPacketBuf(c, cmd);
+        }
+    }
+    return TRUE;
+}
+
 static inline u32 gbaExpectedId(void) {
     if (fn_801365A8() == 0) {
         return lbl_80541620;
@@ -426,12 +455,12 @@ extern "C" void* fn_80300E1C(void* arg) {
         if (msg == (void*)7 && c->program == NULL) {
             msg = (void*)8;
         }
-        c->msg = (u32)msg;
         writeOff = 0;
         readOff = 0;
+        c->msg = (u32)msg;
         count = 0;
         c->f_d1 = 1;
-        c->status[2] = writeOff;
+        c->status[2] = 0;
         switch ((s32)msg) {
         case 3:
             timeout = (*(u32*)0x800000F8 / 4 / 1000) * 500;
@@ -545,7 +574,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             if (!(s & 8)) {
                 goto check;
             }
-            if ((err = GBARead(c->chan, (u8*)c + (readOff + 0x28), c->status)) != 0) {
+            if ((err = GBARead(c->chan, (u8*)&c->pkt + readOff, c->status)) != 0) {
                 goto fail;
             }
             if ((c->status[0] & 0x30) != 0x30) {
@@ -616,7 +645,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                     goto wait;
                 }
             }
-            expected = fn_801365A8() ? lbl_80541628 : lbl_80541620;
+            expected = gbaExpectedId();
             if (gbaHandshake(c, expected)) {
                 goto wait;
             }
@@ -633,7 +662,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             if ((err = GBAReset(c->chan, c->status)) != 0) {
                 goto wait;
             }
-            expected = fn_801365A8() ? lbl_80541628 : lbl_80541620;
+            expected = gbaExpectedId();
             if (gbaHandshake(c, expected)) {
                 goto wait;
             }
