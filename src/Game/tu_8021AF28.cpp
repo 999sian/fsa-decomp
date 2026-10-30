@@ -93,61 +93,41 @@ extern "C" void fn_8021AFB8(void* this_) {
 extern "C" f32 lbl_8053FCD8;
 extern "C" f32 lbl_8053FCDC;
 extern "C" u8 sincosTable___5JMath[];
+#pragma opt_common_subs off
 extern "C" void fn_8021B1AC(void* this_) {
-    char* p = (char*)this_;
-    {
-        DrawRec rec;
-        rec.b1f = 0;
-        char cVar = 0;
-        if (fn_80219E04(this_)) {
-            cVar = -6;
-        }
-        rec.b1d = cVar;
-        fn_801F06F0(this_, lbl_8046A660, 0x279, &rec, lbl_8053FCD4, lbl_8053FCD4, -1);
-        ((u8*)&rec.w10)[3] = 200;
-        rec.b1d = 0;
-        if (*(s32*)(p + 0x138) == 0) {
-            fn_801EF830(*(void**)(p + 4), p + 0xc, &rec, 0x407, lbl_8046A660, 0x279, 0);
-        }
-    }
-    {
-        DrawRec rec;
-        rec.b1f = 0;
-        char cVar = 0;
-        if (fn_80219E04(this_)) {
-            cVar = -6;
-        }
-        rec.b1d = cVar + 1;
-        f32 m[3][4];
-        u32 off = ((u32)(s32)*(s16*)(p + 0x2cc) >> 2) & 0x3ff8;
-        f32 s = *(f32*)(sincosTable___5JMath + off);
-        f32 c = *(f32*)(sincosTable___5JMath + off + 4);
-        m[0][3] = lbl_8053FCCC;
-        m[1][3] = lbl_8053FCCC;
-        m[2][3] = lbl_8053FCCC;
-        m[1][1] = lbl_8053FCD4;
-        m[0][2] = s;
-        m[0][0] = c;
-        m[2][0] = -s;
-        m[2][2] = c;
-        m[2][1] = lbl_8053FCCC;
-        m[1][2] = lbl_8053FCCC;
-        m[1][0] = lbl_8053FCCC;
-        m[0][1] = lbl_8053FCCC;
-        rec.w18 = m;
-        *(f32*)(p + 0x10) += lbl_8053FCD8;
-        fn_801F06F0(this_, lbl_8046A660, 0x27a, &rec, lbl_8053FCD4, lbl_8053FCD4, -1);
-        *(f32*)(p + 0x10) -= lbl_8053FCD8;
-        ((u8*)&rec.w10)[3] = 200;
-        rec.b1d = 0;
-        *(f32*)(p + 0x10) += lbl_8053FCDC;
-        if (*(s32*)(p + 0x138) == 0) {
-            fn_801EF830(*(void**)(p + 4), p + 0xc, &rec, 0x407, lbl_8046A660, 0x27a, 0);
-        }
-        *(f32*)(p + 0x10) -= lbl_8053FCDC;
-    }
+ char* p=(char*)this_;
+ u32 layer;
+ DrawRec rec;
+ f32 m[3][4];
+ rec.b1f=layer=0;
+ if(fn_80219E04(this_))layer=-6;
+ rec.b1d=layer;
+ fn_801F06F0(this_,lbl_8046A660,0x279,&rec,lbl_8053FCD4,lbl_8053FCD4,-1);
+ ((u8*)&rec)[0x13]=200; rec.b1d=0;
+ if(*(u32*)(p+0x138)==0) fn_801EF830(*(void**)(p+4),p+0xc,&rec,0x407,lbl_8046A660,0x279,0);
+ resetDrawRec(rec);
+ rec.b1f=layer=0;
+ if(fn_80219E04(this_))layer=-6;
+ rec.b1d=layer+1;
+ m[0][3]=lbl_8053FCCC; m[1][3]=lbl_8053FCCC; m[2][3]=lbl_8053FCCC;
+ u32 off=((u32)(s32)*(s16*)(p+0x2cc)>>2)&0x3ff8;
+ f32 c;
+ f32 s=*(f32*)(sincosTable___5JMath+off);
+ c=*(f32*)(sincosTable___5JMath+off+4);
+ m[1][1]=lbl_8053FCD4;
+ m[0][2]=s; m[0][0]=c; m[2][0]=-s; m[2][2]=c;
+ m[2][1]=lbl_8053FCCC; m[1][2]=lbl_8053FCCC; m[1][0]=lbl_8053FCCC; m[0][1]=lbl_8053FCCC;
+ rec.w18=m;
+ *(f32*)(p+0x10)+=-21.0f;
+ fn_801F06F0(this_,lbl_8046A660,0x27a,&rec,lbl_8053FCD4,lbl_8053FCD4,-1);
+ f32 raise=-10.5f;
+ *(f32*)(p+0x10)-=-21.0f;
+ ((u8*)&rec)[0x13]=200; rec.b1d=0;
+ *(f32*)(p+0x10)+=raise;
+ if(*(u32*)(p+0x138)==0) fn_801EF830(*(void**)(p+4),p+0xc,&rec,0x407,lbl_8046A660,0x27a,0);
+ *(f32*)(p+0x10)-=-10.5f;
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_8021B548(void* this_) {
     char* p = (char*)this_;
     char cVar2 = 0;
@@ -176,12 +156,12 @@ extern "C" void fn_8021B5C4(void* this_) {
     *(void**)(p + 0x2c4) = fn_8013CC50(uVar2, p + 0xc, 0x344, 0, cVar4, 0, 0, 1, lbl_8053FCD4);
 }
 
-extern "C" void fn_8021B668(void* this_) {
-    Actor* actor = (Actor*)this_;
+extern "C" void fn_8021B668(const Actor* this_) {
+    const Actor* actor = this_;
     u32 room = actor->field_04;
     char layer = 0;
-    if (fn_80219E04(actor)) layer = -6;
-    fn_8013CC50((void*)room, &actor->field_0C, 0x343, 0, layer, 0, 0, 1, lbl_8053FCD4);
+    if (fn_80219E04((void*)actor)) layer = -6;
+    fn_8013CC50((void*)room, (void*)&actor->field_0C, 0x343, 0, layer, 0, 0, 1, lbl_8053FCD4);
 }
 
 extern "C" void fn_8021B6E0(void) {
