@@ -207,6 +207,71 @@ extern "C" u8 fn_802E9884(char* p, const f32* __restrict pos) {
     return 0;
 }
 
+extern void* lbl_8053AF30;
+extern void* lbl_8053AEF0;
+extern void* lbl_8053AED0;
+extern const u8 lbl_8046F280[];
+extern "C" char lbl_804D56A8[];
+extern "C" char lbl_804D5730[];
+extern u8* lbl_804AA0B8[];
+extern const f32 lbl_80541318;
+extern const f32 lbl_805412EC;
+extern const f32 lbl_8054131C;
+extern const f32 lbl_80541320;
+extern const f32 lbl_80541324;
+extern const f32 lbl_80541328;
+extern const f32 lbl_8054132C;
+extern const f32 lbl_80541330;
+extern const f32 lbl_80541334;
+extern "C" void* fn_80119DD0();
+extern "C" void fn_80119958(void*);
+extern "C" void fn_80119998(void*, int, int, int, int, int, int, int);
+extern "C" char* fn_8016A3AC();
+extern "C" void fn_8016A2B4(void*);
+extern "C" u8 fn_8044B80C(void*, u8);
+extern "C" void fn_804432DC(void*, u8, int, int);
+extern "C" void fn_8043A268(void*, int, int, s16, f32, f32);
+extern "C" void fn_802D9CD8(void*);
+extern "C" char* fn_801F856C();
+extern "C" void fn_802DCD1C(void*, s32*);
+extern "C" void fn_803613D0(void*);
+extern "C" void fn_80362634(void*);
+extern "C" void fn_8036E544(void*);
+static inline void Endm_updateView(char* p) {
+    JGeometry::TBox2<f32> bounds;
+    JGeometry::TVec2<f32> pos;
+    JGeometry::TVec2<f32> tmp;
+    f32 x0 = *(f32*)(p + 0x250);
+    f32 y0 = *(f32*)(p + 0x254);
+    JGeometry::TVec2<f32> off(0.0f, -30.0f);
+    tmp.x = x0;
+    tmp.y = y0;
+    pos.x = x0 + off.x;
+    f64 d = pos.x;
+    f32 px = (f32)d;
+    pos.y = y0 + off.y;
+    bounds = *(JGeometry::TBox2<f32>*)(*(char**)(lbl_8053AB10 + 0x24) + 0x164);
+    tmp.x = pos.x;
+    tmp.y = pos.y;
+    f32 w = bounds.f.x - bounds.i.x;
+    f32 hw = w * 0.5f;
+    f32 h = bounds.f.y - bounds.i.y;
+    f32 hh = h * 0.5f;
+    if (px + hw >= *(f32*)(p + 0x268)) pos.x = *(f32*)(p + 0x268) - hw;
+    else if (px - hw <= *(f32*)(p + 0x260)) pos.x = *(f32*)(p + 0x260) + hw;
+    if (pos.y + hh >= *(f32*)(p + 0x26c)) pos.y = *(f32*)(p + 0x26c) - hh;
+    else if (pos.y - hh <= *(f32*)(p + 0x264)) pos.y = *(f32*)(p + 0x264) + hh;
+    if (*(f32*)(p + 0x270) != *(f32*)(p + 0x274)) {
+        *(f32*)(p + 0x270) += *(f32*)(p + 0x278);
+        if (*(f32*)(p + 0x278) < 0.0f) {
+            if (*(f32*)(p + 0x270) < *(f32*)(p + 0x274)) *(f32*)(p + 0x270) = *(f32*)(p + 0x274);
+        } else {
+            if (*(f32*)(p + 0x270) > *(f32*)(p + 0x274)) *(f32*)(p + 0x270) = *(f32*)(p + 0x274);
+        }
+    }
+    fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), &pos.x, (f32)(s32)*(f32*)(p + 0x270));
+}
+
 void fn_802E9B6C(u8* this_)
 {
     *(s32*)(this_ + 0x234) = *(s32*)(this_ + 0x234) + 1;
