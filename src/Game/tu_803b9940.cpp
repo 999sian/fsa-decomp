@@ -313,21 +313,32 @@ extern "C" s32 fn_803BAEF4(void* fileInfo, void* src1, void* src2, s32 size1, s3
 extern "C" s32 fn_803BBF08(void* fileInfo, void* src1, void* src2, s32 size1, s32 size2);
 extern "C" char lbl_80476568[];
 extern "C" u8 lbl_80512180[];
+#pragma opt_loop_invariants off
+#pragma opt_common_subs off
+static inline bool cardMountResult(char* this_, s32 result) {
+                switch (result) {
+                case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; return false;
+                case -3: *(s32*)(this_ + 0x1fd0) = 0; return false;
+                case -6: case 0:
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) return true;
+                    *(s32*)(this_ + 0x1fd0) = 7; return false;
+                case -0xd: *(s32*)(this_ + 0x1fd0) = 6; return false;
+                default: return false;
+                }
+}
+
 extern "C" void fn_803B9F40(void* obj) {
     s32 r2;
     char* this_ = (char*)obj;
     s32 r;
     s32 req;
-    s32 memSize;
     s32 sectorSize;
-    s32 freeBytes;
+    s32 memSize;
     s32 freeFiles;
-    u32 uVar2;
+    s32 freeBytes;
+    s32 uVar2;
     bool ok;
-    u8 fi54[20];
-    u8 fi40[20];
-    u8 fi2c[44];
-    u8 fi68[20];
+    u8 fileInfo[4][20];
 
     do {
         OSLockMutex(this_ + 0x1fd4);
@@ -336,273 +347,166 @@ extern "C" void fn_803B9F40(void* obj) {
         }
         switch (req) {
         case 1:
-            r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi54);
+            r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fileInfo[3]);
             if (r == 0) {
-                r = fn_803BAEF4(fi54, this_ + 0x20, this_ + 0x280, 600, 0x1d4c);
-                if (r == 0) {
+                if (fn_803BAEF4(fileInfo[3], this_ + 0x20, this_ + 0x280, 600, 0x1d4c) == 0) {
                     *(s32*)(this_ + 0x1fd0) = 3;
-                } else if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                    *(s32*)(this_ + 0x1fd0) = 7;
-                }
-                CARDClose(fi54);
-            } else if (r == -5 || r == -0x80) {
-                *(s32*)(this_ + 0x1fd0) = 0xc;
-            } else if (r < -5) {
-                if (r == -0xd) {
-                    *(s32*)(this_ + 0x1fd0) = 6;
-                } else if (r < -0xd) {
-                    if (r == -0x80) {
-                        *(s32*)(this_ + 0x1fd0) = 0xc;
-                    }
-                } else if (r > -7) {
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                }
-            } else if (r == 0) {
-                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                    *(s32*)(this_ + 0x1fd0) = 7;
-                }
-            } else if (r < 0) {
-                if (r == -3) {
-                    *(s32*)(this_ + 0x1fd0) = 0;
-                } else if (r < -3) {
-                    *(s32*)(this_ + 0x1fd0) = 2;
-                }
+                } else { switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+} }
+                CARDClose(fileInfo[3]);
+            } else {
+                switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
             }
             break;
         case 2:
             if (*(s32*)(this_ + 0x1fd0) == 1) {
-                r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi40);
+                r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fileInfo[2]);
                 if (r == 0) {
-                    r = fn_803BAE68(fi40);
-                    if (r == 0) {
+                    if (fn_803BAE68(fileInfo[2]) == 0) {
                         *(s32*)(this_ + 0x1fd0) = 3;
-                    } else if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                    CARDClose(fi40);
-                } else if (r == -5 || r == -0x80) {
-                    *(s32*)(this_ + 0x1fd0) = 0xc;
-                } else if (r < -5) {
-                    if (r == -0xd) {
-                        *(s32*)(this_ + 0x1fd0) = 6;
-                    } else if (r < -0xd) {
-                        if (r == -0x80) {
-                            *(s32*)(this_ + 0x1fd0) = 0xc;
-                        }
-                    } else if (r > -7) {
-                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                            *(s32*)(this_ + 0x1fd0) = 7;
-                        }
-                    }
-                } else if (r == 0) {
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                } else if (r < 0) {
-                    if (r == -3) {
-                        *(s32*)(this_ + 0x1fd0) = 0;
-                    } else if (r < -3) {
-                        *(s32*)(this_ + 0x1fd0) = 2;
-                    }
+                    } else { switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+} }
+                    CARDClose(fileInfo[2]);
+                } else {
+                    switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
                 }
             }
             break;
         case 3:
             if (*(s32*)(this_ + 0x1fd0) == 2) {
-                r2 = CARDCreate(*(u8*)(this_ + 0x1ff4), lbl_80476568, 0x6000, fi2c);
+                r2 = CARDCreate(*(u8*)(this_ + 0x1ff4), lbl_80476568, 0x6000, fileInfo[1]);
                 if (r2 == 0) {
                     *(s32*)(this_ + 0x1fd0) = 1;
                 } else if (r2 == -7) {
                     *(s32*)(this_ + 0x1fd0) = 1;
-                } else if (r2 == -5 || r2 == -0x80) {
-                    *(s32*)(this_ + 0x1fd0) = 0xc;
-                } else if (r2 < -5) {
-                    if (r2 == -0xd) {
-                        *(s32*)(this_ + 0x1fd0) = 6;
-                    } else if (r2 < -0xd) {
-                        if (r2 == -0x80) {
-                            *(s32*)(this_ + 0x1fd0) = 0xc;
-                        }
-                    } else if (r2 > -7) {
-                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                            *(s32*)(this_ + 0x1fd0) = 7;
-                        }
-                    }
-                } else if (r2 == 0) {
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                } else if (r2 < 0) {
-                    if (r2 == -3) {
-                        *(s32*)(this_ + 0x1fd0) = 0;
-                    } else if (r2 < -3) {
-                        *(s32*)(this_ + 0x1fd0) = 2;
-                    }
+                } else {
+                    switch (r2) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
                 }
             }
             if (*(s32*)(this_ + 0x1fd0) == 1) {
-                r2 = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi2c);
+                r2 = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fileInfo[1]);
                 if (r2 == 0) {
-                    r2 = fn_803BBF08(fi2c, this_ + 0x20, this_ + 0x280, 600, 0x1d4c);
-                    if (r2 == 0) {
+                    r2 = fn_803BBF08(fileInfo[1], this_ + 0x20, this_ + 0x280, 600, 0x1d4c);
+                    if (r2 != 0) {
+switch (r2) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
+                    } else {
                         *(s32*)(this_ + 0x1fd0) = 4;
-                    } else if (r2 == -5 || r2 == -0x80) {
-                        *(s32*)(this_ + 0x1fd0) = 0xc;
-                    } else if (r2 < -5) {
-                        if (r2 == -0xd) {
-                            *(s32*)(this_ + 0x1fd0) = 6;
-                        } else if (r2 < -0xd) {
-                            if (r2 == -0x80) {
-                                *(s32*)(this_ + 0x1fd0) = 0xc;
-                            }
-                        } else if (r2 > -7) {
-                            if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                                *(s32*)(this_ + 0x1fd0) = 7;
-                            }
-                        }
-                    } else if (r2 == 0) {
-                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                            *(s32*)(this_ + 0x1fd0) = 7;
-                        }
-                    } else if (r2 < 0) {
-                        if (r2 == -3) {
-                            *(s32*)(this_ + 0x1fd0) = 0;
-                        } else if (r2 < -3) {
-                            *(s32*)(this_ + 0x1fd0) = 2;
-                        }
                     }
-                    CARDClose(fi2c);
-                } else if (r2 == -5 || r2 == -0x80) {
-                    *(s32*)(this_ + 0x1fd0) = 0xc;
-                } else if (r2 < -5) {
-                    if (r2 == -0xd) {
-                        *(s32*)(this_ + 0x1fd0) = 6;
-                    } else if (r2 < -0xd) {
-                        if (r2 == -0x80) {
-                            *(s32*)(this_ + 0x1fd0) = 0xc;
-                        }
-                    } else if (r2 > -7) {
-                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                            *(s32*)(this_ + 0x1fd0) = 7;
-                        }
-                    }
-                } else if (r2 == 0) {
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                } else if (r2 < 0) {
-                    if (r2 == -3) {
-                        *(s32*)(this_ + 0x1fd0) = 0;
-                    } else if (r2 < -3) {
-                        *(s32*)(this_ + 0x1fd0) = 2;
-                    }
+                    CARDClose(fileInfo[1]);
+                } else {
+                    switch (r2) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
                 }
+            } else {
+switch (r2) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
             }
             break;
         case 4:
             r = CARDFormat(*(u8*)(this_ + 0x1ff4));
             if (r == 0) {
                 *(s32*)(this_ + 0x1fd0) = 5;
-            } else if (r == -5 || r == -0x80) {
-                *(s32*)(this_ + 0x1fd0) = 0xc;
-            } else if (r < -5) {
-                if (r == -0xd) {
-                    *(s32*)(this_ + 0x1fd0) = 6;
-                } else if (r < -0xd) {
-                    if (r == -0x80) {
-                        *(s32*)(this_ + 0x1fd0) = 0xc;
-                    }
-                } else if (r > -7) {
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                }
-            } else if (r == 0) {
-                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                    *(s32*)(this_ + 0x1fd0) = 7;
-                }
-            } else if (r < 0) {
-                if (r == -3) {
-                    *(s32*)(this_ + 0x1fd0) = 0;
-                } else if (r < -3) {
-                    *(s32*)(this_ + 0x1fd0) = 2;
-                }
+            } else {
+                switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
             }
             break;
         case 5:
             r = CARDProbeEx(*(u8*)(this_ + 0x1ff4), &memSize, &sectorSize);
             if (r == -2) {
                 *(s32*)(this_ + 0x1fd0) = 10;
-            } else if (sectorSize == 0x2000) {
+            } else if (sectorSize != 0x2000) {
+                *(s32*)(this_ + 0x1fd0) = 0xb;
+            } else {
                 r = CARDMount(*(u8*)(this_ + 0x1ff4), lbl_80512180, 0);
-                ok = false;
-                if (r == -5 || r == -0x80) {
-                    *(s32*)(this_ + 0x1fd0) = 0xc;
-                } else if (r < -5) {
-                    if (r == -0xd) {
-                        *(s32*)(this_ + 0x1fd0) = 6;
-                    } else if (r < -0xd) {
-                        if (r == -0x80) {
-                            *(s32*)(this_ + 0x1fd0) = 0xc;
-                        }
-                    } else if (r > -7) {
-                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) {
-                            ok = true;
-                        } else {
-                            *(s32*)(this_ + 0x1fd0) = 7;
-                        }
-                    }
-                } else if (r == 0) {
-                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) {
-                        ok = true;
-                    } else {
-                        *(s32*)(this_ + 0x1fd0) = 7;
-                    }
-                } else if (r < 0) {
-                    if (r == -3) {
-                        *(s32*)(this_ + 0x1fd0) = 0;
-                    }
+                switch (r) {
+                case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; ok = false; break;
+                case -3: *(s32*)(this_ + 0x1fd0) = (ok = false); break;
+                case -6: case 0:
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) ok = true;
+                    else { *(s32*)(this_ + 0x1fd0) = 7; ok = false; }
+                    break;
+                case -0xd: *(s32*)(this_ + 0x1fd0) = 6; ok = false; break;
+                default: ok = false; break;
                 }
                 if (ok) {
-                    r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi68);
+                    r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fileInfo[0]);
                     if (r == 0) {
-                        CARDClose(fi68);
+                        CARDClose(fileInfo[0]);
                         ok = true;
                     } else {
+                        switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
                         ok = false;
-                        if (r == -5 || r == -0x80) {
-                            *(s32*)(this_ + 0x1fd0) = 0xc;
-                        } else if (r < -5) {
-                            if (r == -0xd) {
-                                *(s32*)(this_ + 0x1fd0) = 6;
-                            } else if (r < -0xd) {
-                                if (r == -0x80) {
-                                    *(s32*)(this_ + 0x1fd0) = 0xc;
-                                }
-                            } else if (r > -7) {
-                                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                                    *(s32*)(this_ + 0x1fd0) = 7;
-                                }
-                            }
-                        } else if (r == 0) {
-                            if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                                *(s32*)(this_ + 0x1fd0) = 7;
-                            }
-                        } else if (r < 0) {
-                            if (r == -3) {
-                                *(s32*)(this_ + 0x1fd0) = 0;
-                            } else if (r < -3) {
-                                *(s32*)(this_ + 0x1fd0) = 2;
-                            }
-                        }
                     }
                     if (ok) {
                         *(s32*)(this_ + 0x1fd0) = 1;
                     } else {
                         r = CARDFreeBlocks(*(u8*)(this_ + 0x1ff4), &freeBytes, &freeFiles);
-                        if (r == 0) {
+                        if (r != 0) {
+                            switch (r) {
+case -0x80: case -5: *(s32*)(this_ + 0x1fd0) = 0xc; break;
+case -3: *(s32*)(this_ + 0x1fd0) = 0; break;
+case -6: case 0: if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) *(s32*)(this_ + 0x1fd0) = 7; break;
+case -0xd: *(s32*)(this_ + 0x1fd0) = 6; break;
+case -4: *(s32*)(this_ + 0x1fd0) = 2; break;
+}
+                            uVar2 = 3;
+                        } else {
                             if (freeBytes < 0x6000) {
                                 uVar2 = 1;
                             } else if (freeFiles < 1) {
@@ -610,47 +514,15 @@ extern "C" void fn_803B9F40(void* obj) {
                             } else {
                                 uVar2 = 0;
                             }
-                        } else {
-                            if (r == -5 || r == -0x80) {
-                                *(s32*)(this_ + 0x1fd0) = 0xc;
-                            } else if (r < -5) {
-                                if (r == -0xd) {
-                                    *(s32*)(this_ + 0x1fd0) = 6;
-                                } else if (r < -0xd) {
-                                    if (r == -0x80) {
-                                        *(s32*)(this_ + 0x1fd0) = 0xc;
-                                    }
-                                } else if (r > -7) {
-                                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                                        *(s32*)(this_ + 0x1fd0) = 7;
-                                    }
-                                }
-                            } else if (r == 0) {
-                                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
-                                    *(s32*)(this_ + 0x1fd0) = 7;
-                                }
-                            } else if (r < 0) {
-                                if (r == -3) {
-                                    *(s32*)(this_ + 0x1fd0) = 0;
-                                } else if (r < -3) {
-                                    *(s32*)(this_ + 0x1fd0) = 2;
-                                }
-                            }
-                            uVar2 = 3;
                         }
-                        if (uVar2 == 2) {
-                            *(s32*)(this_ + 0x1fd0) = 9;
-                        } else if (uVar2 < 2) {
-                            if (uVar2 == 0) {
-                                *(s32*)(this_ + 0x1fd0) = 2;
-                            } else {
-                                *(s32*)(this_ + 0x1fd0) = 8;
-                            }
+                        switch (uVar2) {
+                        case 0: *(s32*)(this_ + 0x1fd0) = 2; break;
+                        case 1: *(s32*)(this_ + 0x1fd0) = 8; break;
+                        case 2: *(s32*)(this_ + 0x1fd0) = 9; break;
+                        case 3: default: break;
                         }
                     }
                 }
-            } else {
-                *(s32*)(this_ + 0x1fd0) = 0xb;
             }
             break;
         case 6:
@@ -662,7 +534,8 @@ extern "C" void fn_803B9F40(void* obj) {
         OSUnlockMutex(this_ + 0x1fd4);
     } while (true);
 }
-
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 // ---- from src/Game/fn_803BAA1C_dtor.cpp ----
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804AFB48[];
