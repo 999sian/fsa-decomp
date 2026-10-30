@@ -1764,7 +1764,7 @@ extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
 
 extern u8 lbl_80529DEC[];
 extern u8 lbl_80466368[];
-extern u8 lbl_804A0790[];
+extern const char* lbl_804A0790[6][3];
 extern "C" void fn_8016FDE0(void);
 extern "C" void __construct_array(void*, void*, void*, u32, u32);
 extern "C" void* __nw__FUlP7JKRHeapi(u32, JKRHeap*, s32);
@@ -1773,8 +1773,10 @@ extern "C" void __ct__14WaveControllerFlll(void*, s32, s32, s32);
 extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
 #pragma push
 #pragma opt_propagation off
+extern const char lbl_8053DA04[8];
 extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     u8* tex;
+    JUTTexture* optionalTex;
     JKRArchive* arc;
     void* res;
     u32 strs = (u32)lbl_80466368;
@@ -1796,7 +1798,9 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x220), (const char*)(strs + 0x238), 0, (const char*)(strs + 0x250), 0, 0x11240000, *(JKRHeap**)self, (J3DModel**)(self + 0xb4), (J3DAnmTextureSRTKey**)(self + 0xb8), 0, (J3DAnmTevRegKey**)(self + 0xbc), 0);
     fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x268), (const char*)(strs + 0x278), 0, 0, 0, 0x1240000, *(JKRHeap**)self, (J3DModel**)(self + 0x34), (J3DAnmTextureSRTKey**)(self + 0x38), 0, 0, 0);
     u8* tbl2 = lbl_80529DEC;
-    fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x288), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
+    model=(J3DModel**)(self+0xec);
+    first=*(JKRArchive**)(tbl2+0x10);
+    fn_8016A3BC(first, (const char*)(strs + 0x288), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, model, 0, 0, 0, 0);
     *(void**)(self + 0xf0) = 0;
     if (*(void**)(self + 0xec) == 0) {
         fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x294), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
@@ -1812,10 +1816,10 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     }
     {
         u8* p = self;
-        const char** ent = (const char**)lbl_804A0790;
+        u32 ent = (u32)lbl_804A0790;
         for (s32 i = 0; i < 6; i++) {
-            fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), ent[0], ent[1], 0, ent[2], 0, 0x10240000, *(JKRHeap**)self, (J3DModel**)(p + 0x3c), (J3DAnmTextureSRTKey**)(p + 0x54), 0, (J3DAnmTevRegKey**)(p + 0x6c), 0);
-            ent += 3;
+            fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), *(const char**)ent, *(const char**)(ent+4), 0, *(const char**)(ent+8), 0, 0x10240000, *(JKRHeap**)self, (J3DModel**)(p + 0x3c), (J3DAnmTextureSRTKey**)(p + 0x54), 0, (J3DAnmTevRegKey**)(p + 0x6c), 0);
+            ent += 12;
             p += 4;
         }
     }
@@ -1868,115 +1872,115 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x40c))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x40c));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x104) = tex;
+        *(JUTTexture**)(self+0x104) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x418))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x418));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x108) = tex;
+        *(JUTTexture**)(self+0x108) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x424))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x424));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x10c) = tex;
+        *(JUTTexture**)(self+0x10c) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x434))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x434));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x110) = tex;
+        *(JUTTexture**)(self+0x110) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
-        if (arc && arc->getResource(0x54494d47, 0)) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
-                res = arc->getResource(0x54494d47, 0);
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+        optionalTex = 0;
+        if (arc && arc->getResource(0x54494d47, lbl_8053DA04)) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
+                res = arc->getResource(0x54494d47, lbl_8053DA04);
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x114) = tex;
+        *(JUTTexture**)(self+0x114) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x440))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x440));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x118) = tex;
+        *(JUTTexture**)(self+0x118) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x450))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x450));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x11c) = tex;
+        *(JUTTexture**)(self+0x11c) = optionalTex;
     }
     {
         arc = *(JKRArchive**)(tbl2 + 0x10);
-        tex = 0;
+        optionalTex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x460))) {
-            tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
-            if (tex) {
+            optionalTex = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+            if (optionalTex) {
                 res = arc->getResource(0x54494d47, (const char*)(strs + 0x460));
-                *(void**)(tex + 0x28) = 0;
-                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
-                tex[0x3b] &= 2;
+                optionalTex->mEmbPalette = 0;
+                storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)optionalTex, res, 0);
+                optionalTex->mFlags &= 2;
             }
         }
-        *(u8**)(self + 0x120) = tex;
+        *(JUTTexture**)(self+0x120) = optionalTex;
     }
     {
         s32 i = 0;
