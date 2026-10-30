@@ -249,7 +249,17 @@ extern "C" s32 fn_803A65EC() {
 
 extern f32 lbl_80543370;
 extern f32 lbl_80543374;
-extern "C" void fn_80402940(void* a, s32 b, s32 c, f32 d, f32 e);
+extern "C" u8 fn_80402940(void* a, s32 b, s32 c, f32 d, f32 e);
+extern "C" u32 fn_80309C4C(void* pad, u32 mask, s32 b);
+extern "C" u32 fn_80309A9C(void* pad, u32 mask, s32 b);
+extern "C" void fn_80458880(void* snd, s32 id, s32 b);
+extern "C" void fn_804594E4(void* snd, s32 mode);
+extern "C" void OSSetSoundMode(u32 mode);
+extern "C" void* fn_8030AAF4(s32 a);
+extern "C" u8 fn_8030A388(void* pad, void* b);
+extern "C" void fn_80134CC0(void* game, s32 a);
+extern void* lbl_8053AD30;
+extern void* lbl_8053AF80;
 extern "C" void fn_803A6608(char* p) {
     *(s32*)(p + 0x80) = 5;
     if (*(u8*)(p + 0x76) == 0) {
