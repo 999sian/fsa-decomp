@@ -93,6 +93,10 @@ static inline f32 tuRandUnit() {
     u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
     return *(f32*)&bits - lbl_805423A8;
 }
+static inline void tuSetSwimVel(u8* self, f32 speed) {
+    *(f32*)(self + 0x3c) = speed * JMASinShort(*(u16*)(self + 0x250));
+    *(f32*)(self + 0x40) = speed * JMACosShort(*(u16*)(self + 0x250));
+}
 extern "C" void fn_80345744(Actor* this_) {
     u8* self = (u8*)this_;
     fn_801F71A4((f32*)(self + 0x3c), *(f32*)(self + 0x254), lbl_805423B8, *(f32*)(self + 0x260));
