@@ -232,6 +232,61 @@ extern "C" void fn_80159C28(char* this_) {
     }
 }
 
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern "C" void fn_8043D67C(u8* p, s32 id, void* h, s32 zero);
+extern "C" u8 fn_8038BD08(s32, s32, s32, JGeometry::TVec3<f32>*, s32);
+extern "C" void fn_80230EB8(s32 h, s32 id);
+extern "C" void* fn_8022F340(void* h);
+extern "C" void fn_80236804(void* p, s32 n);
+extern "C" void fn_80230F44(s32 h, s32 id);
+extern "C" void* fn_8013CC50(s32 room, void* p, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230498(s32 h, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d);
+extern "C" u8 fn_80233E40(s32 h);
+extern "C" void fn_80230FD0(s32 h, s32 id);
+extern "C" void fn_801F6718(void* a, void* b, s32 c, void* d, s32 e, s32 f);
+extern "C" void* fn_8030AAF4(s32 i);
+extern "C" void* fn_80309D6C(void* p, void* q, s32 n);
+extern "C" u8 fn_803865B8(s32 h);
+extern "C" u8 fn_80388EEC(s32 h);
+extern "C" u8 fn_8023061C(void* h, s32 n);
+extern "C" u8 fn_80230224(s32 h, s32 n);
+extern "C" u8 fn_80230534(s32 n);
+extern "C" void fn_8037E8D4(s32 h);
+extern s32 lbl_80465F78[];
+extern u32 lbl_80465E38[];
+extern void* lbl_8053AD30;
+extern u8* lbl_8053AF80;
+extern "C" f32 lbl_8053D460;
+extern "C" f32 lbl_8053D464;
+extern "C" f32 lbl_8053D468;
+extern "C" f32 lbl_8053D46C;
+extern "C" f32 lbl_8053D470;
+extern "C" f32 lbl_8053D474;
+extern "C" f32 lbl_8053D478;
+extern "C" f32 lbl_8053D47C;
+extern "C" f32 lbl_8053D484;
+extern "C" f32 lbl_8053D488;
+extern "C" f32 lbl_8053D48C;
+extern "C" f32 lbl_8053D490;
+extern "C" f32 lbl_8053D494;
+extern "C" f32 lbl_8053D498;
+extern "C" f32 lbl_8053D49C;
+extern "C" f32 lbl_8053D4A0;
+extern "C" f32 lbl_8053D4A4;
+extern "C" f32 lbl_8053D4A8;
+extern "C" f32 lbl_8053D4B0;
+
+static inline void* findGbaLink() {
+    for (s32 i = 0; i < 4; i++) {
+        void* r = fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100);
+        if (r) return r;
+    }
+    return NULL;
+}
+
+extern "C" void fn_8015A374(char* this_) {
+}
+
 extern "C" void* fn_8015B420(char* this_, short how) {
     if (this_) {
         *(void**)this_ = lbl_804A01D0;
