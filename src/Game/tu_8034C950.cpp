@@ -159,6 +159,56 @@ extern "C" u8 fn_8023E8F0(s32 i);
 extern "C" u8 fn_8023188C(s32 i);
 extern "C" u8 fn_802319B4(s32 i, s32 j);
 extern "C" u8 fn_80234D94(s32 i);
+struct RockPlayerState {
+    u8 field_00;
+    u8 pad01[3];
+    JGeometry::TVec3<f32> position;
+    s32 mode;
+};
+struct RockStoredActor {
+    u32 id;
+    JGeometry::TVec3<f32> position;
+    u32 param;
+    s32 slot;
+};
+struct Rck2State : Actor {
+    s32 state;
+    s32 directions[4];
+    s32 counts[4];
+    s32 players[2];
+    u8 active[4];
+    RockStoredActor stored[8];
+    RockPlayerState playerStates[4];
+    s32 field_370;
+    s32 storedCount;
+    s32 field_378;
+    s32 timer;
+    u8 field_380, field_381, field_382, field_383, field_384, field_385;
+    u8 pad386[2];
+    s32 direction;
+};
+extern const f32 lbl_80472190[4][2];
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" u8 fn_8022F9E4(s32, s32, s32, s32);
+extern "C" u8 fn_8022E438(s32,s32);
+extern "C" u8 fn_8022F478(s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" u8 fn_8022C310(s32);
+extern "C" void fn_80230C6C(s32);
+extern "C" void fn_8023DFF4(s32,const JGeometry::TVec3<f32>*);
+extern "C" JGeometry::TVec3<f32>* fn_8023E7B0(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" void fn_8020D7D0(void*,s32);
+extern "C" void fn_801F3604(Actor*);
+extern "C" u8 fn_801F2618(Actor*,s32,s32);
+extern "C" u16 fn_80226850(void*,s32);
+extern "C" void* lbl_8053AC98;
+extern "C" void fn_802A381C(void*,void*,s32,s32);
+extern "C" u8 fn_801F2740(Actor*,s32);
+extern "C" void fn_80238548(s32,s32,void*,s32);
+extern "C" u8 fn_801F2B20(Actor*,s32);
+extern "C" void fn_801F0D20(Actor*,s32);
+
 extern "C" void fn_8034CEB0(Actor* a) {
     u8* p = (u8*)a;
     f32 box[4];
