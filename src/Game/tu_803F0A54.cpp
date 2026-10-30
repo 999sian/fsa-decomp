@@ -129,7 +129,7 @@ extern const f32 lbl_805437AC;
 extern const f32 lbl_80543764;
 extern const f32 lbl_8054376C;
 extern "C" void fn_80440EE8(void* p);
-extern u8 lbl_80478A60[];
+extern const u8 lbl_80478A60[];
 extern void* lbl_8053AED8;
 extern void* lbl_8053AB10;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void*, f32, f32, void*);
@@ -189,7 +189,7 @@ struct FsaBlock156 {
 extern "C" FsaBlock156 lbl_804B0B40[6];
 
 extern "C" void fn_803F0A54(void* self) {
-    u8* base = lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     u8* p = (u8*)self;
     JGeometry::TVec3f pos;
     f32 ratio = (f32)(*(J2DPane**)(p + 0xc))->search(*(u64*)(base + 0x708))->getAlpha() / (f32)p[0x335];
@@ -383,7 +383,7 @@ extern "C" void fn_803F1C70(u8* p) {
     s32 rank;
     ResTIMG* img;
     s32 n;
-    u8* base = lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     const u64* rowA = (const u64*)(base+0xb60);
     const u64* rowB = (const u64*)(base+0xc20);
     const u64* rowC = (const u64*)(base+0xce0);
@@ -538,7 +538,7 @@ extern "C" void fn_803F2660(u8* p) {
 extern "C" void* getStringPtr__10J2DTextBoxCFv(void* p);
 extern "C" void fn_803832BC(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void* fn_804031C4(s32 a, void* b);
-extern "C" u8 lbl_80478A60[];
+extern "C" const u8 lbl_80478A60[];
 extern const f32 lbl_80543754;
 extern const f32 lbl_8054375C;
 extern const f32 lbl_80543760;
@@ -549,7 +549,7 @@ extern "C" void fn_803F267C(u8* p) {
     void* s3;
     J2DPane* piVar4;
 
-    base = lbl_80478A60;
+    base = (u8*)lbl_80478A60;
     {
         void* o = *(void**)(p + 0xc);
         s1 = getStringPtr__10J2DTextBoxCFv((*(J2DPane**)(p + 0xc))->search(0x5468616e3031ULL));
@@ -687,7 +687,7 @@ extern "C" void fn_803F2B78(u8* p) {
     void* s2;
     u8* sp;
 
-    base = lbl_80478A60;
+    base = (u8*)lbl_80478A60;
     if (*(s32*)(p + 0x1ac) == 0) {
         void* uVar1 = fn_804031C4(0x54494d47, base + 0xf30);
         piVar = (*(J2DPane**)(obj + 8))->search(0x50746e3032ULL);
@@ -1032,23 +1032,181 @@ struct MenuFrameValue803F {s32 frame;};
 struct MenuFrame803F {u8 _00[0x220];MenuFrameValue803F frame220[4];MenuFrameValue803F frame230[4];};
 static inline void MenuMove803F(J2DPane* screen,u64 tag,f32 x,f32 y) {screen->search(tag)->move(x,y);}
 
-extern "C" void fn_803F4120(u8* p) {
+#pragma opt_common_subs off
+extern "C" void fn_803F4120(void* param_1) {
+    u8* p=(u8*)param_1;
+    f32 x,y,size;
+    JGeometry::TVec3f pos;
+    JGeometry::TBox2f box;
+    const u8* base=(const u8*)((u32)lbl_80479238-0x7d8);
+    {
+    u8* q=p;
+    const u64* a=(u64*)(base+0x858);
+    const u64* b=(u64*)(base+0x7f8);
+    const u64* c=(u64*)(base+0x818);
+    const u64* d=(u64*)(base+0x838);
+    s32 mask;
     s32 i;
-    u8* base = lbl_80478A60;
-    s32 bit;
-    for (i = 0; i < 4; i++) {
-        bit = 1 << (i + 4);
-        if (*(s32*)(p + 0x210) == 0) {
-            *(u8*)(p + 0x25b) &= ~bit;
+    for(i=0;i<4;i++,q+=4,d++,c++,b++,a++) {
+        mask=1<<(i+4);
+        if(MenuEnabled803F(i)&1) {
+            s32 v=*(s32*)(q+0x210);
+            s32 alpha;
+            if(v==0) {p[0x25b]&=~(1<<i);alpha=0;}
+            else if(v<36) alpha=lbl_80543758*((f32)(v*v)/lbl_80543794);
+            else {
+                if(*(s16*)(p+0x248)==0) p[0x25b]|=1<<i;
+                if(p[0x25b]&(1<<i)) {
+                    s16 t=*(s16*)(p+0x248);
+                    if(t<50) {s32 n=t;alpha=((f32)(n*n)/lbl_8054379C)*lbl_80543798+lbl_80543758;}
+                    else {s32 n=50-(t-50);alpha=((f32)(n*n)/lbl_8054379C)*lbl_80543798+lbl_80543758;}
+                } else alpha=150;
+            }
+            ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*a))->v9(alpha);
+            if(p[0x25b]&mask) {p[0x25b]&=~mask;MenuRestore803F(p,b,c,d);}
+        } else {
+            ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*a))->v9(0);
+            if(fn_8030A388(lbl_8053AD30,fn_8030AAF4(i))) {
+                if(!(p[0x25b]&mask)&&*(s16*)(p+0x24a)==50) p[0x25b]|=mask;
+                if(p[0x25b]&mask) {
+                    s16 t=*(s16*)(p+0x24a);
+                    if(t<50) {s32 n=t;x=(f32)(n*n)/lbl_8054379C;}
+                    else {s32 n=50-(t-50);x=(f32)(n*n)/lbl_8054379C;}
+                    ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*b))->v9((f32)p[0x253]*x);
+                    ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*c))->v9((f32)p[0x254]*x);
+                    ((Tu803FVObj*)(*(J2DPane**)(p+8))->search(*d))->v9((f32)p[0x255]*x);
+                }
+            } else if(p[0x25b]&mask) {p[0x25b]&=~mask;MenuRestore803F(p,b,c,d);}
         }
     }
-    (void)base;
-}
+    }
+    draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p+8),lbl_8054372C,lbl_8054372C,((void**)lbl_8053AB10)[4]);
+    if(*(s32*)(p+0x1c4)!=3) {
+        if(*(s32*)(p+0x220)==0&&*(s32*)(p+0x224)==0&&*(s32*)(p+0x228)==0&&*(s32*)(p+0x22c)==0) {
+            *(s16*)(p+0x24e)=MenuNext803F(*(s16*)(p+0x24e),*(s32*)(p+0x1ac)+1);
+            if(*(s16*)(p+0x24e)!=-1) ((MenuFrame803F*)p)->frame220[*(s16*)(p+0x24e)].frame++;
+        }
+        if(*(s32*)(p+0x230)==0&&*(s32*)(p+0x234)==0&&*(s32*)(p+0x238)==0&&*(s32*)(p+0x23c)==0) {
+            *(s16*)(p+0x250)=MenuNext803F(*(s16*)(p+0x250),*(s32*)(p+0x1ac)+1);
+            if(*(s16*)(p+0x250)!=-1) ((MenuFrame803F*)p)->frame230[*(s16*)(p+0x250)].frame++;
+        }
+    }
+    {
+    u8* q=p;
+    const u64* a=(u64*)(base+0x918);
+    const u64* b=(u64*)(base+0x938);
+    const u64* c=(u64*)(base+0x898);
+    s32 i;
+    for(i=0;i<=*(s32*)(p+0x1ac)+1;q+=4,a++,b++,c+=4,i++) {
 
-#pragma opt_lifetimes on
+        if(*(s32*)(q+0x220)!=0) {
+            ++*(s32*)(q+0x220);
+            if(*(s32*)(q+0x220)>=*(s16*)(*(u8**)(q+0x38)+6)) *(s32*)(q+0x220)=0;
+            *(f32*)(*(u8**)(q+0x38)+8)=(f32)*(s32*)(q+0x220);
+            (*(J2DPane**)(q+0x18))->search(0x4e554c4c5f303031ULL)->animationTransform();
+            if(i==*(s16*)(p+0x24e) && *(s32*)(q+0x220)==*(s16*)(*(u8**)(q+0x38)+6)-10) {
+                s16 old=*(s16*)(p+0x24e);
+                s16 next=MenuNext803F(old,*(s32*)(p+0x1ac)+1);
+                if(next!=-1 && old!=next) {
+                    *(s16*)(p+0x24e)=next;
+                    u8* r=p+next*4;
+                    ((MenuFrame803F*)r)->frame220[0].frame++;
+                    *(f32*)(*(u8**)(q+0x38)+8)=(f32)*(s32*)(r+0x220);
+                    (*(J2DPane**)(r+0x18))->search(0x4e554c4c5f303031ULL)->animationTransform();
+                }
+            }
+        }
+
+        if(*(s32*)(q+0x230)!=0) {
+            ++*(s32*)(q+0x230);
+            if(*(s32*)(q+0x230)>=*(s16*)(*(u8**)(q+0x48)+6)) *(s32*)(q+0x230)=0;
+            *(f32*)(*(u8**)(q+0x48)+8)=(f32)*(s32*)(q+0x230);
+            (*(J2DPane**)(q+0x28))->search(0x4e64617461793030ULL)->animationTransform();
+            if(i==*(s16*)(p+0x250) && *(s32*)(q+0x230)==*(s16*)(*(u8**)(q+0x48)+6)-10) {
+                s16 old=*(s16*)(p+0x250);
+                s16 next=MenuNext803F(old,*(s32*)(p+0x1ac)+1);
+                if(next!=-1 && old!=next) {
+                    *(s16*)(p+0x250)=next;
+                    u8* r=p+next*4;
+                    ((MenuFrame803F*)r)->frame230[0].frame++;
+                    *(f32*)(*(u8**)(q+0x48)+8)=(f32)*(s32*)(r+0x230);
+                    (*(J2DPane**)(r+0x28))->search(0x4e64617461793030ULL)->animationTransform();
+                }
+            }
+        }
+
+
+        size=(*(J2DPane**)(q+0x18))->search(0x4e554c4c5f303031ULL)->getWidth();
+        J2DPane* pane=(*(J2DPane**)(p+8))->search(*a);
+        y=((*(J2DPane**)(p+8))->search(*a))->getBounds()->i.x;
+        f32 root=((*(J2DPane**)(p+8))->search(0x4e554c4c5f303031ULL))->getBounds()->i.x;
+        {f32 origin=root+y;f32 delta=pane->getWidth()-size;x=delta*lbl_80543720+origin;}
+        size=(*(J2DPane**)(q+0x18))->search(0x4e554c4c5f303031ULL)->getHeight();
+        pane=(*(J2DPane**)(p+8))->search(*a);
+        y=((*(J2DPane**)(p+8))->search(*a))->getBounds()->i.y;
+        root=((*(J2DPane**)(p+8))->search(0x4e554c4c5f303031ULL))->getBounds()->i.y;
+        {f32 origin=root+y;f32 delta=pane->getHeight()-size;y=delta*lbl_80543720+origin;}
+        MenuMove803F(*(J2DPane**)(q+0x18),0x4e554c4c5f303031ULL,x,y);
+        y=((*(J2DPane**)(p+8))->search(*b))->getBounds()->i.x;
+        root=((*(J2DPane**)(p+8))->search(0x004e646174613033ULL))->getBounds()->i.x;
+        x=root+y;
+        size=((*(J2DPane**)(q+0x28))->search(0x0050636361613030ULL))->getBounds()->i.y;
+        y=((*(J2DPane**)(p+8))->search(*b))->getBounds()->i.y;
+        root=((*(J2DPane**)(p+8))->search(0x004e646174613033ULL))->getBounds()->i.y;
+        y=root+y;
+        root=((*(J2DPane**)(p+8))->search(c[1]))->getBounds()->i.y;
+        y=(root+y)-size;
+        MenuMove803F(*(J2DPane**)(q+0x28),0x4e64617461793030ULL,x,y);
+        draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(q+0x28),lbl_8054372C,lbl_8054372C,((void**)lbl_8053AB10)[4]);
+        if(*(s32*)(p+0x1c4)!=3 && !(lbl_8053AAF8[0x82]&(u8)(1<<(i+4))))
+            draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(q+0x18),lbl_8054372C,lbl_8054372C,((void**)lbl_8053AB10)[4]);
+    }
+    }
+    box.set(lbl_8054372C,lbl_8054372C,lbl_805437A0,lbl_805437A4);
+    fn_8013B414(lbl_8053AB10,&box.i.x,1);
+    u8* row=p;
+    const u64* a=(u64*)(base+0x7d8);
+    const u64* b=(u64*)(base+0x4d0);
+    u8* q=p;
+    s32 i;
+    for(i=0;i<4;i++,a++,q+=4,row+=9,b+=9) {
+        DrawRec rec;
+        rec.ids[7]=i+12;
+        rec.b26=0;
+        J2DPane* pane=(*(J2DPane**)(p+8))->search(*a);
+        f32 size=pane->getWidth();
+        pane=(*(J2DPane**)(p+8))->search(*a);
+        pos.x=lbl_805437A0*(size*lbl_80543720+*(f32*)((u8*)pane+0x30))/(f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+4);
+        pane=(*(J2DPane**)(p+8))->search(*a);
+        size=pane->getHeight();
+        pane=(*(J2DPane**)(p+8))->search(*a);
+        pos.y=lbl_805437A4*(lbl_80543728+(size*lbl_80543720+*(f32*)((u8*)pane+0x34)))/(f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo+4)+6);
+        pos.z=lbl_8054372C;
+        u8 alpha=((u8*)(*(J2DPane**)(p+8))->search(*b))[0xb2];
+        f32 ratio=(f32)alpha/(f32)row[0x2ee];
+        if(!(lbl_8053AAF8[0x82]&(u8)(1<<(i+4)))||*(s32*)(q+0x210)==0) {
+            if(i>*(s32*)(p+0x1ac)+1) {
+                ((u8*)&rec.w10)[0]=0x80;((u8*)&rec.w10)[1]=0x80;((u8*)&rec.w10)[2]=0x80;
+                ((u8*)&rec.w10)[3]=(u8)(lbl_805437A8*ratio);
+            } else ((u8*)&rec.w10)[3]=(u8)(lbl_80543718*ratio);
+            MenuSprite803F(pos,0x10,rec,base);
+        } else {
+            s32 v=*(s32*)(q+0x210);
+            ((u8*)&rec.w10)[3]=(u8)(lbl_80543718*ratio);
+            if(v<=10) MenuSprite803F(pos,0xdb,rec,base);
+            else if(v<=36) MenuSprite803F(pos,(v-10)/2+0xdb,rec,base);
+            else if(v<100) MenuSprite803F(pos,0xe8,rec,base);
+            else {const s32* sequence=(const s32*)(base+0x40);s32 index=v-100;s32 id=sequence[index]+0x10;MenuSprite803F(pos,id,rec,base);}
+        }
+    }
+    fn_8013B490(lbl_8053AB10);
+    if(*(s32*)(p+0x1c4)==6) fn_804316EC(lbl_8053AEC0);
+    fn_80440EE8(lbl_8053AED8);
+}
+#pragma opt_common_subs reset
 extern "C" void fn_803F5410(u8* p) {
     int state = *(s32*)(p + 0x1c4);
-    u8* base = lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     u8* q;
     f32 cursorX;
     f32 baseY;
@@ -1173,7 +1331,7 @@ extern const f32 lbl_80543748;
 #pragma opt_propagation on
 #pragma opt_lifetimes on
 extern "C" void fn_803F726C(u8* p){
-u8* base=lbl_80478A60;
+u8* base = (u8*)lbl_80478A60;
 f32 fade;
 s16 buf[3];s16* order;s16* dest;
 s32 start,stop,offset,j,i;
@@ -1318,7 +1476,7 @@ extern const f32 lbl_805437C0;
 extern const f32 lbl_805437C4;
 #pragma opt_common_subs off
 extern "C" void fn_803F8354(u8* p) {
-    u8* base = lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     f32 a;
     int start;
     s32 stop;
@@ -1605,7 +1763,7 @@ static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fad
 
 #pragma opt_common_subs off
 extern "C" void fn_803F943C(u8* p) {
-    u8* base=lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     s32 i;
     int start;
     s32 stop;
@@ -1729,7 +1887,7 @@ extern "C" void fn_803F943C(u8* p) {
 
 extern const f32 lbl_805437D0;
 extern "C" void fn_803F9EA8(u8* p) {
-    u8* base = lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     s32 i;
     int start;
     s32 stop;
@@ -1870,7 +2028,7 @@ extern "C" void fn_803F9EA8(u8* p) {
 
 #pragma opt_common_subs off
 extern "C" void fn_803FAA88(u8* p) {
- u8* base=lbl_80478A60;
+ u8* base = (u8*)lbl_80478A60;
  s32 buf[3];
  s32 start,stop,offset,j;
  s32* order=buf;
@@ -2017,7 +2175,7 @@ extern "C" void fn_803FB6F4(u8* p) {
 #pragma opt_common_subs off
 #pragma opt_propagation off
 extern "C" void fn_803FB9E4(u8* self) {
-    u8* base=lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     s32 j;
     s32 i;
     f32 t;
@@ -2423,7 +2581,7 @@ extern "C" void* fn_803FC904(u8* param_1, s16 param_2) {
 }
 
 extern "C" void fn_803FCBC4(u8* p) {
-    u8* base = lbl_80478A60;
+    u8* base = (u8*)lbl_80478A60;
     *(s32*)(p + 0x1a4) = 0;
     *(s32*)(p + 0x1a8) = 0;
     *(s32*)(p + 0x1ac) = lbl_80529DEC[0x23d];
