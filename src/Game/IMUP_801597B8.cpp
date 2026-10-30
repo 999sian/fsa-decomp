@@ -280,6 +280,12 @@ extern "C" f32 lbl_8053D4A4;
 extern "C" f32 lbl_8053D4A8;
 extern "C" f32 lbl_8053D4B0;
 
+static inline void spawnSparkle(char* p, f32 dy) {
+    JGeometry::TVec3f c(*(JGeometry::TVec3f*)(p + 0xc));
+    c.y -= dy;
+    fn_801F6718(fn_801F856C(), *(void**)(p + 0x274), *(s32*)(p + 4), &c, *(s32*)(p + 0x234), 2);
+}
+
 static inline void* findGbaLink() {
     for (s32 i = 0; i < 4; i++) {
         void* r = fn_80309D6C(lbl_8053AD30, fn_8030AAF4(i), 0x100);
