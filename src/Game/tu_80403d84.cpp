@@ -990,9 +990,6 @@ extern "C" void fn_8040F16C(u8* self) {
 
 struct J2DGrafContext;
 #include "JSystem/J2D/J2DPicture.h"
-static inline void menuSetCornerColor(J2DPicture* pane, JUtility::TColor color) {
-    pane->setCornerColor(color);
-}
 static inline void menuSetCornerColor(PaneRef* ref, const JUtility::TColor color) {
     ((J2DPicture*)ref->pane)->setCornerColor(color);
 }
