@@ -234,7 +234,7 @@ extern "C" void fn_801F71A4(f32*,f32,f32,f32);
 extern "C" void JPAGetXYZRotateMtx__FsssPA4_f(s16,s16,s16,void*);
 #pragma opt_propagation off
 extern "C" void fn_80165730(char* p) {
- const u8* table=lbl_804A0530;
+ const ArrwTables* table=(const ArrwTables*)lbl_804A0530;
  JGeometry::TVec3<f32> pos;
  s32 index;
  if((*(u16*)(p+0x94))==3) {
@@ -259,11 +259,11 @@ extern "C" void fn_80165730(char* p) {
    if((*(s32*)(p+0x260))==0) {(*(void**)(p+0x278))=fn_8013CC50((*(s32*)(p+0x4)),p+0xc,0xbd,lbl_8053D7C0,0,1,0,0,1); (*(s32*)(p+0x260))=1;}
    if((*(void**)(p+0x278))) {
      pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
-     const JGeometry::TVec2<f32>* offsets=(const JGeometry::TVec2<f32>*)(table+0);
+     const JGeometry::TVec2<f32>* offsets=table->offsets;
      pos.x+=offsets[(*(s32*)(p+0x98))].x; pos.y+=offsets[(*(s32*)(p+0x98))].y;
      fn_8013CB44((*(void**)(p+0x278)),&pos,0,2,1);
      s32 dir=(*(s32*)(p+0x98)); s32 rot=0; if(dir==2) rot=lbl_804662FC[dir];
-     JPAGetXYZRotateMtx__FsssPA4_f(-1,rot,lbl_804662FC[dir],(char*)(*(void**)(p+0x278))+0x68);
+     s16 zrot=lbl_804662FC[dir]; JPAGetXYZRotateMtx__FsssPA4_f(-1,rot,zrot,(char*)(*(void**)(p+0x278))+0x68);
    }
    fn_8013CB44((*(void**)(p+0x27c)),p+0xc,0,1,1);
    (*(f32*)(p+0x60))=lbl_8053D7CC; (*(f32*)(p+0x64))=lbl_8053D7CC; (*(f32*)(p+0x68))=lbl_8053D7D0; (*(f32*)(p+0x6c))=lbl_8053D7D0;
@@ -304,7 +304,7 @@ extern "C" void fn_80165730(char* p) {
      if((*(u8*)(p+0x274))==0) {
        for(s32 i=0;i<4;i++) if(fn_8023F264(i) && !fn_8022E438(i,(*(s32*)(p+0x90))) && ((u8(*)(s32,void*,s32))fn_8023B190)(i,&box,(*(s32*)(p+0x4)))) {
          JGeometry::TVec2<f32> center;
-         center.x=lbl_8053D7D4*(box.i.x-box.f.x)+box.f.x; center.y=lbl_8053D7D4*(box.i.y-box.f.y)+box.f.y;
+         f32 half=lbl_8053D7D4; f32 x=box.f.x; f32 y=box.f.y; center.x=half*(box.i.x-x)+x; center.y=half*(box.i.y-y)+y;
          if((*(u16*)(p+0x94))==0 || (*(u16*)(p+0x94))==4) {
            if(((u8*)lbl_8053AAF8)[0x7f]) fn_80238548(i,0,&center,0); else fn_80238548(i,2,&center,0);
            fn_8022E1A0(i,(*(s32*)(p+0x198)));
@@ -317,8 +317,10 @@ extern "C" void fn_80165730(char* p) {
      }
      if(fn_801F2618(p,0,0)) {
        if((*(u16*)(p+0x94))==2 || (*(u16*)(p+0x94))==4) Actor_CreateByID(fn_801F856C(),'BLZE',(*(s32*)(p+0x4)),p+0xc,(*(s32*)(p+0x90))&3,-1,-1);
-       (*(s32*)(p+0x26c))=1;(*(s32*)(p+0x108))=0;
-       if((*(void**)(p+0x27c))){((JPABaseEmitter*)(*(void**)(p+0x27c)))->becomeInvalidEmitter();(*(void**)(p+0x27c))=0;}
+       JPABaseEmitter* emitter;
+ s32 one=1; s32 zero=0;
+       (*(s32*)(p+0x26c))=one;(*(s32*)(p+0x108))=zero;
+       emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); if(emitter){ emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;}
        (*(f32*)(p+0x44))=(*(f32*)(p+0x40))=(*(f32*)(p+0x3c))=lbl_8053D7C8; (*(s32*)(p+0x258))=0;(*(s32*)(p+0x244))=0;(*(s32*)(p+0x230))=2;
      } else {
        if((*(s32*)(p+0x258))!=(*(s32*)(p+0x270))){(*(s32*)(p+0x258))=(*(s32*)(p+0x270));fn_801F0E34(p,0x3001d,0);}
@@ -326,13 +328,16 @@ extern "C" void fn_80165730(char* p) {
      }
    }
    break;
- case 1:
-   if(!((*(s32*)(p+0x248))&1)){const s32* directions=(const s32*)(table+0x20);(*(s32*)(p+0x258))++;(*(s32*)(p+0x258))&=3;(*(s32*)(p+0x98))=directions[(*(s32*)(p+0x258))];}
-   if((*(void**)(p+0x278))){((JPABaseEmitter*)(*(void**)(p+0x278)))->becomeInvalidEmitter();(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){((JPABaseEmitter*)(*(void**)(p+0x27c)))->becomeInvalidEmitter();(*(void**)(p+0x27c))=0;}
+ case 1: {
+   if(!((*(s32*)(p+0x248))&1)){(*(s32*)(p+0x258))++;const s32* directions=table->directions;(*(s32*)(p+0x258))&=3;(*(s32*)(p+0x98))=directions[(*(s32*)(p+0x258))];}
+   JPABaseEmitter* emitter;
+ s32 one=1; s32 zero=0;
+   emitter=(JPABaseEmitter*)(*(void**)(p+0x278)); if(emitter){ emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x278))=(void*)zero;} emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); if(emitter){ emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;}
    fn_801F71A4(&(*(f32*)(p+0x234)),lbl_8053D7C8,lbl_8053D7D4,lbl_8053D7E4);
    (*(f32*)(p+0x44))-=lbl_8053D7E8;
    if((*(f32*)(p+0x14))<lbl_8053D7C8) (*(u8*)(p+0x11c))=0;
    break;
+ }
  case 2:
    fn_801F0E34(p,0x30000,0); (*(s32*)(p+0x230))=3;
  case 3:
@@ -341,7 +346,8 @@ extern "C" void fn_80165730(char* p) {
    if((*(s32*)(p+0x258))==6 && (*(s32*)(p+0x244))<3)(*(s32*)(p+0x26c))=2;
    break;
  case 4:
-   if((*(s32*)(p+0x244))==0){if((*(void**)(p+0x278))){((JPABaseEmitter*)(*(void**)(p+0x278)))->becomeInvalidEmitter();(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){((JPABaseEmitter*)(*(void**)(p+0x27c)))->becomeInvalidEmitter();(*(void**)(p+0x27c))=0;} (*(u8*)(p+0x11c))=0;}
+   if((*(s32*)(p+0x244))==0){JPABaseEmitter* emitter;
+ s32 one=1; s32 zero=0; emitter=(JPABaseEmitter*)(*(void**)(p+0x278)); if(emitter){ emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x278))=(void*)zero;} emitter=(JPABaseEmitter*)(*(void**)(p+0x27c)); if(emitter){ emitter->mFlags|=1; emitter->mMaxFrame=one; (*(void**)(p+0x27c))=(void*)zero;} (*(u8*)(p+0x11c))=0;}
    break;
  }
  if((*(s32*)(p+0x244))>0) (*(s32*)(p+0x244))--; if((*(s32*)(p+0x248))>0) (*(s32*)(p+0x248))--; if((*(s32*)(p+0x24c))>0) (*(s32*)(p+0x24c))--; if((*(s32*)(p+0x250))>0) (*(s32*)(p+0x250))--; if((*(s32*)(p+0x254))>0) (*(s32*)(p+0x254))--;
@@ -352,10 +358,11 @@ extern "C" void fn_80165730(char* p) {
        (*(s32*)(p+0x268))=(*(s32*)(p+0x98))*3;(*(s32*)(p+0x268))+=(*(s32*)(p+0x264));
        if((*(s32*)(p+0x244))==0){(*(s32*)(p+0x244))=2;(*(s32*)(p+0x264))++;if((*(s32*)(p+0x264))>2)(*(s32*)(p+0x264))=0;}
      }
-   }else {const s32* frames=(const s32*)(table+0x30); (*(s32*)(p+0x268))=frames[(*(s32*)(p+0x98))*8+(*(s32*)(p+0x258))];}
+   }else {s32 dir=(*(s32*)(p+0x98)); const s32* frames=table->frames; s32 frame=(*(s32*)(p+0x258)); (*(s32*)(p+0x268))=frames[dir*8+frame];}
  }
 }
 
+#pragma opt_lifetimes reset
 #pragma opt_propagation reset
 extern "C" u8* fn_8020D58C();
 extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, const char* ext);
