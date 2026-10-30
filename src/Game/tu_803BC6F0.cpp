@@ -1427,11 +1427,7 @@ extern "C" void fn_803C1340(u8* p) {
     p[0x110] = 0x14;
 }
 
-static inline void initializeMenuRow(u8* p,u8* q,u8* base) {
- s32 j;u8* kp;
- j=0;kp=base+0x7f8;
- for(;j<4;j++,kp+=8) fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[j+0x19f]);
-}
+static inline u8 menuIconFlag(const u8* p,s32 index) { return p[index+0x19f]; }
 
 #pragma opt_lifetimes off
 extern "C" void fn_803C1734(u8* this_) {
@@ -1439,7 +1435,7 @@ extern "C" void fn_803C1734(u8* this_) {
  s32 textIndex;
  u8* base=(u8*)lbl_804765D0;
  u8* kp;
- s32 j;
+ int j;
  {kp=base+0x3b0;
  for(j=0;j<8;j++,kp+=8){
  if(fn_803B90E4(*(u32*)(p+0xa4),j)) ((J2DPane*)*(void**)(p+4))->search(*(u64*)(kp+0x10))->hide();
@@ -3673,14 +3669,15 @@ extern "C" void fn_803CB3DC(u8* p) {
  fn_80402628(*(void**)(p+0x38+*id*4),b,(*(u8**)(p+0x38+*id*4))[0x28],0);
  s32 idx=*id;
  s32 cell;
+ void* found;
 #define KB(o, fl) { const u64* key = (const u64*)(base + o); fn_804023D0(*(void**)(p+cell),((J2DPane*)*(void**)(p+8))->search(key[idx]),p[fl]); }
- { const u64* key = (const u64*)(base + 0x780); fn_804023D0(*(void**)(p+(cell=idx*4+0x38)),((J2DPane*)*(void**)(p+8))->search(key[idx]),p[0x125]); }
+ { const u64* key = (const u64*)(base + 0x780); fn_804023D0(*(void**)(p+(cell=idx*4+0x38)),found=((J2DPane*)*(void**)(p+8))->search(key[idx]),p[0x125]); }
  KB(0x768,0x126) KB(0x750,0x127) KB(0x6c8,0x128) KB(0x6b0,0x129) KB(0x698,0x12a) KB(0x680,0x12b)
  KB(0x668,0x12c) KB(0x650,0x12d) KB(0x638,0x12e) KB(0x620,0x12f) KB(0x608,0x130) KB(0x5f0,0x131)
  ((Fn5Fn)fn_80402B10)(*(void**)(p+0x44+*id*4),b,0,lbl_80543458,lbl_80543498);
  fn_80402628(*(void**)(p+0x44+*id*4),b,(*(u8**)(p+0x44+*id*4))[0x28],0);
  idx=*id;
- { const u64* key = (const u64*)(base + 0x5d8); fn_804023D0(*(void**)(p+(cell=idx*4+0x44)),((J2DPane*)*(void**)(p+8))->search(key[idx]),p[0x118]); }
+ { const u64* key = (const u64*)(base + 0x5d8); fn_804023D0(*(void**)(p+(cell=idx*4+0x44)),found=((J2DPane*)*(void**)(p+8))->search(key[idx]),p[0x118]); }
  KB(0x5c0,0x119) KB(0x5a8,0x11a) KB(0x590,0x11b) KB(0x578,0x11c) KB(0x560,0x11d) KB(0x548,0x11e)
  KB(0x530,0x11f) KB(0x518,0x120) KB(0x500,0x121) KB(0x4e8,0x122) KB(0x4d0,0x123) KB(0x4b8,0x124)
 #undef KB
