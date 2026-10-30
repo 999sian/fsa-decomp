@@ -427,13 +427,14 @@ extern "C" u16 fn_80226850(void*,s32);
 extern "C" void* fn_801902C0();
 extern "C" s32 fn_801F26CC(void*,const u32*);
 extern "C" void fn_801F349C(void*,s32,void*);
+struct GateWarpTarget {
+    void warp(const u32 param, void* pos) { fn_801F349C(this, gateRoom(param), pos); }
+};
 #pragma opt_propagation off
-extern "C" void fn_80227F50(void* this_) {
-    const u32* types;
+extern "C" void fn_80227F50(Actor* this_) {
     u8* p=(u8*)this_;
     s32 i;
     u8* cursor=p;
-    types=lbl_8046ABE8;
     JGeometry::TVec3f delta;
     JGeometry::TVec3f dest;
     GateBox boxA;
@@ -526,9 +527,9 @@ extern "C" void fn_80227F50(void* this_) {
     if(t==0x19c || t==0x19d) return;
     s32 id;
     s32 kind=(*(u32*)(p+0x90))&0x7f;
-    if(kind==4 || kind==0x20 || kind==0x24) id=fn_801F26CC(p,types+17);
-    else if(kind==6 || kind==11 || kind==20) id=fn_801F26CC(p,types+14);
-    else id=fn_80227290(p,lbl_8053FF60,types,-1);
+    if(kind==4 || kind==0x20 || kind==0x24) id=fn_801F26CC(p,gateHeavyTypes);
+    else if(kind==6 || kind==11 || kind==20) id=fn_801F26CC(p,gateCarryTypes);
+    else id=fn_80227290(p,lbl_8053FF60,lbl_8046ABE8,-1);
     if(id<0) return;
     u8* actor=(u8*)fn_801F666C(fn_801F856C(),id);
     if(!actor) return;
