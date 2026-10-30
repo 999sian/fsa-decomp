@@ -204,6 +204,57 @@ public:
     GnefSlot mSlots[4]; // 0x27c
     void* m2CC;
 };
+extern const f32 lbl_80541418, lbl_8054141C, lbl_80541420, lbl_80541424;
+extern const u8 lbl_8046F508[];
+extern void* lbl_804AA340[];
+extern "C" void fn_802D8050(void*, s32, s32, s32);
+extern "C" u8 fn_802D800C(void*, s32);
+extern "C" void fn_801F6884(void);
+extern "C" void fn_8022CA6C(s32, s32, s32);
+extern "C" u8 fn_802ED538(u8*);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern "C" void fn_8045815C(void*, s32);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+extern "C" void fn_8013CB44(s32, void*, s32, s32, s32);
+
+static inline void gnefCamera(GnefSelf* self) {
+    u8* s = *(u8**)(lbl_8053AB10 + 0x24);
+    if (!s[0x7f5]) {
+        s[0x7f4] = 1;
+        *(s32*)(s + 0x7f8) = 4;
+        *(f32*)(s + 0x7fc) = self->x;
+        *(f32*)(s + 0x800) = self->y;
+        *(f32*)(s + 0x804) = self->z;
+        s[0x7f6] = 0;
+    }
+}
+static inline void gnefView() {
+    u8* s = *(u8**)(lbl_8053AB10 + 0x30);
+    if (!s[0x284]) {
+        s[0x284] = 1;
+        *(f32*)(s + 0x28c) = lbl_8054141C;
+    }
+}
+static inline void gnefSetLink(s32 index, u8 flag) {
+    if (index >= 0) {
+        GnefActor* actor = fn_801F856C()->mActors[index];
+        if (actor && actor->mName == 'SLR4') fn_802EEA24(flag);
+    }
+}
+static inline void gnefStop(s32& handle) {
+    u8* p = (u8*)handle;
+    if (p) {
+        *(u32*)(p + 0xf4) |= 1;
+        *(s32*)(p + 0x24) = 1;
+        handle = 0;
+    }
+}
+static inline void gnefDelete(s32& handle) {
+    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824()+0xc), (void*)handle);
+    handle = 0;
+}
+
 extern "C" void fn_802ED984(u8* this_) {
     switch (*(s32*)(this_ + 0x24c)) {
     case 0:
