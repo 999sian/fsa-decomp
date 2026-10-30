@@ -55,6 +55,11 @@ extern const f32 lbl_805436BC;
 extern const f32 lbl_805436C8;
 extern const f64 lbl_80543678;
 extern const f64 lbl_80543670;
+extern const f32 lbl_8054369C;
+extern const f32 lbl_805436A0;
+extern const f32 lbl_805436A4;
+extern const f32 lbl_80543680;
+extern "C" u8 lbl_8050EC80[];
 static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 multiplier) {
     f32 square=(f32)(elapsed*elapsed);
     return magnitude*(square*multiplier);
@@ -201,15 +206,13 @@ extern "C" void fn_803E2A20(u8* p) {
     const u64* onesA = (const u64*)(base + 0xa20);
     const u64* onesB = (const u64*)(base + 0xa40);
     const u64* status;
-    const u64* statusBase;
-
+    const u64* statusBase = (const u64*)(base + 0x9e0);
     const u64* a = (const u64*)(base + 0xba8);
     const u64* b = (const u64*)(base + 0xc68);
     const u64* c = (const u64*)(base + 0xd28);
     const u64* d = (const u64*)(base + 0xde8);
     s32 i;
-    const u64* hundredsA = (const u64*)(base + 0xaa0);
-    statusBase=(const u64*)(base+0x9e0);
+    register const u64* hundredsA = (const u64*)(base + 0xaa0);
     status = statusBase;
     for (i=0; i<4; i++, row+=4, group++, hundredsA++, hundredsB++, tensA++, tensB++, onesA++, onesB++, status++, a+=6,b+=6,c+=6,d+=6) {
         if(i>=1) {
@@ -220,13 +223,13 @@ extern "C" void fn_803E2A20(u8* p) {
         *(s32*)(row+0x200)=fn_804033D4(i);
         *(s32*)(row+0x210)=fn_8040336C(i);
         s32 value=fn_80403070(*(s32*)(row+0x1f0));
-        ResTIMG* texture=(ResTIMG*)fn_804030C4('TIMG',lbl_804B0AD8[value/100]);
+        ResTIMG* texture=MenuDigit803E(value/100);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*hundredsA))->changeTexture((ResTIMG*)texture,0);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*hundredsB))->changeTexture((ResTIMG*)texture,0);
-        texture=(ResTIMG*)fn_804030C4('TIMG',lbl_804B0AD8[value%100/10]);
+        texture=MenuDigit803E(value%100/10);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*tensA))->changeTexture((ResTIMG*)texture,0);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*tensB))->changeTexture((ResTIMG*)texture,0);
-        texture=(ResTIMG*)fn_804030C4('TIMG',lbl_804B0AD8[value%10]);
+        texture=MenuDigit803E(value%10);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*onesA))->changeTexture((ResTIMG*)texture,0);
         ((J2DPicture*)(*(J2DPane**)(p+0x10))->search(*onesB))->changeTexture((ResTIMG*)texture,0);
         max=fn_8040305C(*(s32*)(row+0x200))-1;
