@@ -54,7 +54,7 @@ extern const f32 lbl_8053EA10;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, TlwpDrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, TlwpDrawParam* param, s32 a, f32 s0, f32 s1);
 extern "C" void fn_801B4EC8(char* p);
-extern "C" void fn_801B56A0(void* this_);
+extern "C" void fn_801B56A0(char* p);
 extern "C" void fn_801B5228(char* p);
 
 extern "C" void fn_801B4D0C(char* p) {
@@ -394,25 +394,189 @@ void fn_801365E8(void*, s32, s32, s32);
 }
 extern const f32 lbl_8053EA64, lbl_8053EA68, lbl_8053EA6C, lbl_8053EA70, lbl_8053EA74, lbl_8053EA78;
 
-extern "C" void fn_801B56A0(void* this_) {
-    char* p = (char*)this_;
-    f32 box[4];
-    TlwpVec pos = *(TlwpVec*)(p + 0xc);
-    box[0] = *(f32*)(p + 0x60) + pos.x;
-    box[1] = *(f32*)(p + 0x64) + pos.x;
-    box[2] = *(f32*)(p + 0x68) + pos.x;
-    box[3] = *(f32*)(p + 0x6c) + pos.y;
+#pragma opt_common_subs off
+#pragma opt_propagation on
+#pragma opt_dead_assignments off
+#pragma opt_dead_code off
+extern "C" void fn_801B56A0(char* p) {
+    TlwpVec target;
+    JGeometry::TBox2f box;
+    JGeometry::TVec3f pos;
+    JGeometry::TVec3f arg;
+    s32 collisionFlags;
+    s32 extra;
+    f32 collisionFloat;
+    TlwpData* d = &lbl_804A37E0;
     TlwpSave* save = (TlwpSave*)((u8*)&lbl_8050EC80 + lbl_8050EC80.cur * 0xc8);
-    u8 m = 1 << *(s32*)(p + 0x254);
-    if (!(save->mask & m)) {
-        return;
+    box.i.x=*(f32*)(p+0x60); box.i.y=*(f32*)(p+0x64); box.f.x=*(f32*)(p+0x68); box.f.y=*(f32*)(p+0x6c);
+    pos = *(JGeometry::TVec3f*)(p+0xc);
+    box.addPos(*(JGeometry::TVec2f*)(p+0xc));
+    u8 mask = 1 << *(s32*)(p+0x254);
+    if (!(mask & save->mask)) return;
+    if ((u8)lbl_8053AAF8[0x7e] != 0) {
+    } else return;
+    if (*(s32*)(p+0x230)==5 || *(s32*)(p+0x230)==6 || *(s32*)(p+0x230)==7) {
+        if (fn_80309C4C(lbl_8053AD30, 0x1000, -1)) {
+            lbl_8053A118=0x309;
+            *(s32*)(p+0x230)=7;
+        }
     }
-    if (*(s32*)(p + 0x230) == 5 || *(s32*)(p + 0x230) == 6) {
-        *(s32*)(p + 0x230) = 6;
+    fn_801EEC98(p, *(s32*)(p+0x198), 0, &collisionFlags, &collisionFloat, &extra, 0, 0);
+    switch (*(s32*)(p+0x230)) {
+    case 0:
+        *(s32*)(p+0x294)=fn_8013CC50(*(s32*)(p+4),(TlwpVec*)(p+0xc),0x48b,0,0,0,0,1,lbl_8053EA10);
+        *(s32*)(p+0x298)=fn_8013CC50(*(s32*)(p+4),(TlwpVec*)(p+0xc),0x48c,0,0,0,0,1,lbl_8053EA10);
+        *(s32*)(p+0x230)=1;
+    case 1:
+        fn_8022FEB8(&box,*(s32*)(p+4),*(s32*)(p+0x198),0,0);
+        *(s32*)(p+0x244)=fn_8022FD8C(*(s32*)(p+0x198));
+        if (*(s32*)(p+0x244)<0) break;
+        if (!fn_802300EC(*(s32*)(p+0x244))) break;
+        pos.y -= lbl_8053EA64;
+        arg = pos;
+        if (!fn_8038AD24(*(s32*)(p+0x244),((s32*)((char*)d+0x68))[*(s32*)(p+0x254)],*(s32*)(p+0x198),*(s32*)(p+4),&arg,0x100)) break;
+        *(s32*)(p+0x230)=2;
+    case 2:
+        fn_8022FE80(*(s32*)(p+0x244),*(s32*)(p+4),*(s32*)(p+0x198),0,0);
+        if (fn_803865B8(*(s32*)(p+0x244))) {
+            fn_80384C58(*(s32*)(p+0x244),*(s32*)(p+0x198));
+            switch (fn_8037EFB4(*(s32*)(p+0x244))) {
+            case 0: *(s32*)(p+0x230)=4; break;
+            case 1: fn_80230534(0); *(s32*)(p+0x230)=3; break;
+            }
+        }
+        break;
+    case 3: {
+        s32 count=0;
+        for (s32 i=0; i<fn_80138A30(lbl_8053AAF8); i++) {
+            f32 dx=fn_8023E724(i)->x-*(f32*)(p+0xc);
+            f32 dy=fn_8023E724(i)->y-*(f32*)(p+0x10);
+            f32 dist=dx*dx+dy*dy;
+            if (dist>0.0f) {
+f64 g=__frsqrte(dist);
+g=0.5*g*(3.0-g*g*dist);
+g=0.5*g*(3.0-g*g*dist);
+g=0.5*g*(3.0-g*g*dist);
+dist=dist*g;
+} else if (dist<0.0) { dist=NAN; }
+else if (isnan(dist)) { dist=NAN; }
+            if(dist>lbl_8053EA68) count++;
+        }
+        if(count>=fn_80138A30(lbl_8053AAF8)) *(s32*)(p+0x230)=1;
+        break;
     }
-    if (*(s32*)(p + 0x230) == 7) {
-        return;
+    case 4: {
+        char* q;
+        s32 room;
+        if (!fn_801F68E0(fn_801F856C())) break;
+        q=p;
+        for(s32 i=0;i<4;i++,q+=0xc) {
+            if(fn_8023F264(i)) {
+                room=*(s32*)(p+4);
+                if(room==fn_8023DE58(i)) {
+                    TlwpVec* v=fn_8023E724(i);
+                    *(f32*)(q+0x264)=v->x;
+                    *(f32*)(q+0x268)=v->y;
+                    *(f32*)(q+0x26c)=v->z;
+                    *(f32*)(q+0x26c)=lbl_8053EA18;
+                    if(fn_8022F3DC(i)<0) fn_8022CA6C(i,5,0);
+                    if(fn_80236B50(i)) fn_8023764C(i,1);
+                }
+            }
+        }
+        lbl_80529DEC[0x24e]=1;
+        *(s32*)(p+0x230)=5;
+    }
+    case 5: {
+        char* q;
+        s32 count;
+        target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
+        count=0;
+        q=p;
+        for(s32 i=0;i<4;i++,q+=0xc) {
+            if(fn_8023F264(i)) {
+                if(i!=0) target.y-=lbl_8053EA6C;
+                fn_801F71A4((f32*)(q+0x264),target.x,lbl_8053EA28,lbl_8053EA10);
+                fn_801F71A4((f32*)(q+0x268),target.y,lbl_8053EA28,lbl_8053EA10);
+                f32 dy=*(f32*)(q+0x268)-target.y;
+                f32 dx=*(f32*)(q+0x264)-target.x;
+                f32 dist=dx*dx+dy*dy;
+                if (dist>0.0f) {
+f64 g=__frsqrte(dist);
+g=0.5*g*(3.0-g*g*dist);
+g=0.5*g*(3.0-g*g*dist);
+g=0.5*g*(3.0-g*g*dist);
+dist=dist*g;
+} else if (dist<0.0) { dist=NAN; }
+else if (isnan(dist)) { dist=NAN; }
+                if(dist<lbl_8053EA10) {
+                    count++;
+                    fn_80230498(i,(TlwpVec*)(q+0x264),0x3f,0xff,-0x80,-0x80,1);
+                } else {
+                    u16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*lbl_8053EA70);
+                    fn_80230BF4(i,ClassifyBamAngleToQuadrant(angle));
+                    fn_802303FC(i,q+0x264,0xff);
+                }
+            } else count++;
+        }
+        if(count>=4) *(s32*)(p+0x230)=6;
+        break;
+    }
+    case 6: {
+        char* q;
+        s32 room;
+        if(*(s32*)(p+0x234)!=0) break;
+        target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
+        q=p;
+        for(s32 i=0;i<4;i++,q+=0xc) {
+            if(fn_8023F264(i)) {
+                room=*(s32*)(p+4);
+                if(room==fn_8023DE58(i)) {
+                    if(i!=0) target.y-=lbl_8053EA6C;
+                    fn_801F71A4((f32*)(q+0x264),target.x,lbl_8053EA28,lbl_8053EA10);
+                    fn_801F71A4((f32*)(q+0x268),target.y,lbl_8053EA28,lbl_8053EA10);
+                    f32 dy=*(f32*)(q+0x268)-target.y;
+                    f32 dx=*(f32*)(q+0x264)-target.x;
+                    dy=(f32)fabs(dy); dx=(f32)fabs(dx);
+                    f32 dist=dx*dx+dy*dy;
+                    if (dist>0.0f) {
+f64 g=__frsqrte(dist);
+g=0.5*g*(3.0-g*g*dist);
+g=0.5*g*(3.0-g*g*dist);
+g=0.5*g*(3.0-g*g*dist);
+dist=dist*g;
+} else if (dist<0.0) { dist=NAN; }
+else if (isnan(dist)) { dist=NAN; }
+                    bool arrived = dist<lbl_8053EA60;
+                    if(*(s32*)(p+0x240)==0) fn_80230498(i,(TlwpVec*)(q+0x264),0x3c,0xff,-0x80,-0x80,1);
+                    else fn_80230498(i,(TlwpVec*)(q+0x264),0x3e,0xff,-0x80,-0x80,1);
+                }
+            }
+        }
+        *(s32*)(p+0x234)=8;
+        ++*(s32*)(p+0x240);
+        if(*(s32*)(p+0x240)>1) {
+            f32 offset=lbl_8053EA74;
+            for(s32 i=0;i<3;i++) {
+                target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
+                target.x+=offset;
+                offset+=lbl_8053EA78;
+                Actor_CreateByID(fn_801F856C(),0x544c5750,*(s32*)(p+4),&target,(i+1)<<4,-1,-1);
+            }
+            *(s32*)(p+0x230)=7;
+        }
+        break;
+    }
+    case 7:
+        if(lbl_8053A118==0x309) {
+            s32 index=*(s32*)(p+0x254);
+            fn_801365E8(lbl_8053AAF8,((s32*)((char*)d+0x28))[index],((s32*)((char*)d+0x48))[index],0);
+        }
+        break;
     }
 }
-
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
+#pragma opt_dead_code reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
