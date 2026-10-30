@@ -1,7 +1,7 @@
 #include "Game/esd/types.h"
 struct ActorGroups80204638 {
     u32 flags;
-    u8* actors[2][10];
+    u8* actors[10][2];
 };
 static u8 lbl_804CADE0[0xd0];
 #include "Game/SinitPoolChain.h"
@@ -100,9 +100,9 @@ extern "C" u8 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
     *(s32*)(param_1 + 0x54) = *(s32*)(param_1 + 0x54) + 1;
     return ret;
 }
-#pragma opt_strength_reduction off
+#pragma opt_propagation off
 extern "C" void fn_80204834(u8* param_1) {
-    for (int i = 0; i < 2; i++) {
+    for (u32 i = 0; i < 8; i += 4) {
         for (int j = 4; j <= 0x28; j += 4) {
             u8* p = *(u8**)(param_1 + j);
             if (p) {
@@ -112,7 +112,7 @@ extern "C" void fn_80204834(u8* param_1) {
         param_1 += 0x28;
     }
 }
-#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
 extern "C" void* fn_802D6A9C(void);
 static inline bool actorInsideBounds(const f32* rect, const f32* pos) {
  return pos[0] >= rect[0] && pos[1] >= rect[1] && pos[0] < rect[2] && pos[1] < rect[3];
