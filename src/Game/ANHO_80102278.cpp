@@ -84,6 +84,11 @@ static inline u8 anhoStartMessage(int player, int message, int handle, int room,
     return fn_8038AD24(player, message, handle, room, copy, mode);
 }
 
+static inline u8 anhoStartActorMessage(char* actor, int message, int handle, int room, JGeometry::TVec3<f32>& copy, const JGeometry::TVec3<f32>& pos, int mode) {
+    copy = pos;
+    return fn_8038AD24(*(s32*)(actor + 0x23c), message, handle, room, copy, mode);
+}
+
 #pragma opt_lifetimes off
 extern "C" void fn_80102398(char* p) {
     JGeometry::TVec3<f32> pos(*(Vec*)(p + 0xC));
@@ -118,7 +123,7 @@ extern "C" void fn_80102398(char* p) {
         if (*(s32*)(p + 0x23c) >= 0 && fn_802300EC(*(s32*)(p + 0x23c))) {
             s32 room0 = *(s32*)(p+4);
             s32 handle0 = *(s32*)(p+0x198);
-            if (fn_8038AD24(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, handle0, room0, (temp0 = pos, temp0), 0)) {
+            if (anhoStartMessage(*(s32*)(p + 0x23c), ((u8*)p)[0x236] == 1 ? 0x32E : 0x32E, handle0, room0, temp0, pos, 0)) {
                 for (int i = 0; i < 4; i++) fn_802308E0(i);
                 *(s32*)(p + 0x230) = 1;
                 *(s32*)(p + 0x244) = 0;
