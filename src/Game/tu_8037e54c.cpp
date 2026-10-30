@@ -2237,11 +2237,6 @@ found:
     return 1;
 }
 #pragma opt_lifetimes off
-static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
-    typedef u8 (*ShowFn)(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u32);
-    u32 index = fn_803846BC(id);
-    return ((ShowFn)fn_8038A42C)(manager, player, source, index, value, &pos, flags);
-}
 extern "C" u8 fn_8038AD24(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u16 flags) {
     f32 out[3];
     s32 i;
