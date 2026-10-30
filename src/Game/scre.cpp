@@ -130,13 +130,6 @@ static inline void screDigitAt(u8* p, int n, f32 alpha) {
         screDigit(n, *(JGeometry::TVec3f*)(p + 0xc), color);
     }
 }
-static inline void screDigitOff(u8* p, int n, f32 x, f32 alpha) {
-    JGeometry::TVec3f pos(x, *(f32*)(p + 0x10), *(f32*)(p + 0x14));
-    if (*(s32*)(p + 4) < 8) {
-        JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
-        screDigit(n, pos, color);
-    }
-}
 extern "C" void fn_80391F58(void* this_) {
     u8* p = (u8*)this_;
     f32 alpha = lbl_80543194 * (*(s32*)(p + 0x230) / lbl_80543198);
