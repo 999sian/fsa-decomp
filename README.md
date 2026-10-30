@@ -4,6 +4,7 @@
 [![Matched Code](https://img.shields.io/badge/Code-59.03%25-green.svg)](https://github.com/999sian/fsa-decomp)
 [![Matched Functions](https://img.shields.io/badge/Functions-88.13%25-green.svg)](https://github.com/999sian/fsa-decomp)
 [![Linked Objects](https://img.shields.io/badge/Linked_Files-455%20%2F%201007-blue.svg)](https://github.com/999sian/fsa-decomp)
+[![Navi Trackers](https://img.shields.io/badge/Navi_Trackers-15.47%25-orange.svg)](https://github.com/999sian/fsa-decomp)
 
 A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**. The repository also covers the Japan-only **Navi Trackers** executable — later known as **Tetra's Trackers** — as a separate target.
 
@@ -36,6 +37,7 @@ sha1sum -c config/G4SJ01_NT/build.sha1
 ```
 
 See [`docs/versions/README.md`](docs/versions/README.md#navi-trackers-g4sj01_nt) for details.
+
 ---
 
 ## Progress Tracker
@@ -52,6 +54,17 @@ Current FSA progress is automatically tracked against compiler-verified metadata
 
 *Fuzzy code matching stands at **89.93%** (includes near-matches).*
 <!-- PROGRESS_END -->
+
+### Navi Trackers (`G4SJ01_NT`)
+
+| Metric | Progress | Count |
+| :--- | :--- | :--- |
+| **Matched Code** | **15.47%** | 312,136 / 2,018,048 B |
+| **Matched Functions** | **51.45%** | 4,178 / 8,121 fns |
+| **Fuzzy Code** | **17.97%** | includes near-matches |
+
+*NT figures are measured by decompdecomp from the Japanese `framework.dol`; use `python3 tools/progress.py --version G4SJ01_NT` after a build.*
+
 ---
 
 ## Building
