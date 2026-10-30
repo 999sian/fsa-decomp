@@ -917,6 +917,10 @@ extern "C" void fn_8040E298(u8* self) {
 }
 
 extern "C" const f32 lbl_80543948;
+struct T5B10;
+extern "C" void fn_804054B8(T5B10*);
+extern "C" void fn_80405B10(T5B10*,s32);
+extern "C" void fn_80405D00(u8*,s32);
 #pragma opt_propagation off
 extern "C" void fn_8040E3A0(u8* self) {
 	f32 baseSpeed = 3.4f;
