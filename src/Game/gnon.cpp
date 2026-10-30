@@ -123,12 +123,12 @@ static inline void gnonSetRotation(f32 (*m)[4], f32 rx, f32 ry, f32 rz, f32 scal
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;
     m[2][3] = 0.0f;
-    sx = sin(rx);
-    sy = sin(ry);
-    sz = sin(rz);
-    cx = cos(rx);
-    cy = cos(ry);
-    cz = cos(rz);
+    sx = std::sinf(rx);
+    sy = std::sinf(ry);
+    sz = std::sinf(rz);
+    cx = std::cosf(rx);
+    cy = std::cosf(ry);
+    cz = std::cosf(rz);
     ss = sx * sy;
     cc = cx * cz;
     cs = cx * sz;
@@ -154,7 +154,7 @@ static inline void gnonSetScale(f32 (*m)[4], f32 x, f32 y, f32 z) {
     m[2][2] = z;
 }
 extern "C" void fn_80192090(char* this_) {
-    u8* tables = lbl_804A1FF8;
+    GnonDrawTables* tables = (GnonDrawTables*)lbl_804A1FF8;
     DrawRec rec;
     f32 m[3][4];
     m[0][3] = 0.0f;
@@ -171,7 +171,7 @@ extern "C" void fn_80192090(char* this_) {
         if (type == 0x1e) {
             rec.b1f = 0;
             rec.b1d = 5;
-            gnonSetRotScale(m, *(u16*)(this_ + 0x2b4) / lbl_8053E27C, lbl_8053E280, lbl_8053E280);
+            gnonSetRotation(m, 0.0f, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, 0.0f, 1.4f, 1.4f);
             const ResTIMG* tex = fn_804032E8('GANO', lbl_80467F8C);
             rec.w18 = m;
             rec.w30 = -1;
@@ -188,17 +188,17 @@ extern "C" void fn_80192090(char* this_) {
         ((u8*)&rec.w10)[2] = 0;
         ((u8*)&rec.w10)[3] = 100;
         rec.b1d = -2;
-        const ResTIMG* tex = fn_804032E8('GANO', ((const char**)(tables + 0x3a0))[*(s32*)(this_ + 0x284)]);
+        const ResTIMG* tex = fn_804032E8('GANO', tables->names1[*(s32*)(this_ + 0x284)]);
         fn_801EFD34(this_, tex, &rec, -1, 0.0f, 0.0f, 0.0f);
         JUTTexture shadow(tex, 0);
-        f32 offX = lbl_8053E284 * -(f32)shadow.getWidth();
-        f32 offY = lbl_8053E284 * -(f32)shadow.getHeight();
+        f32 offX = 0.5f * -(f32)shadow.getWidth();
+        f32 offY = 0.5f * -(f32)shadow.getHeight();
         if (*(s32*)(this_ + 0x28c) == 5) {
-            gnonSetRotScale(m, *(u16*)(this_ + 0x2b4) / lbl_8053E27C, lbl_8053E280, lbl_8053E280);
+            gnonSetRotation(m, 0.0f, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, 0.0f, 1.4f, 1.4f);
             tex = fn_804032E8('GANO', lbl_80467F8C);
         } else {
             gnonSetScale(m, *(f32*)(this_ + 0x2d0), *(f32*)(this_ + 0x2d4), *(f32*)(this_ + 0x2d4));
-            tex = fn_804032E8('GANO', ((const char**)(tables + 0x48c))[*(s32*)(this_ + 0x288)]);
+            tex = fn_804032E8('GANO', tables->names2[*(s32*)(this_ + 0x288)]);
         }
         rec.w18 = m;
         ((u8*)&rec.w10)[0] = 0;
@@ -207,16 +207,15 @@ extern "C" void fn_80192090(char* this_) {
         ((u8*)&rec.w10)[3] = 100;
         rec.b1d = -1;
         JUTTexture body(tex, 0);
-        f32* off = ((f32(*)[2])(tables + 0x578))[*(s32*)(this_ + 0x28c)];
-        offX += lbl_8053E284 * (f32)body.getWidth() + off[0];
+        offX += 0.5f * (f32)body.getWidth() + tables->offsets[*(s32*)(this_ + 0x28c)][0];
+        offY += 0.5f * (f32)body.getHeight() + tables->offsets[*(s32*)(this_ + 0x28c)][1];
         *(f32*)(this_ + 0x2c4) = *(f32*)(this_ + 0xc);
         *(f32*)(this_ + 0x2c8) = *(f32*)(this_ + 0x10);
         *(f32*)(this_ + 0x2cc) = *(f32*)(this_ + 0x14);
-        offY += lbl_8053E284 * (f32)body.getHeight() + off[1];
         *(f32*)(this_ + 0x2c4) += offX;
         *(f32*)(this_ + 0x2c8) += offY;
-        if (this_[0x2a5] == 0 && (*(s32*)(this_ + 0x28c) != 7 ||
-                                  (*(s32*)(this_ + 0x28c) == 7 && *(s32*)(this_ + 0x25c) < 6))) {
+        if ((u8)this_[0x2a5] == 0 && (*(s32*)(this_ + 0x28c) != 7 ||
+                                      (*(s32*)(this_ + 0x28c) == 7 && *(s32*)(this_ + 0x25c) < 6))) {
             fn_801EFD34(this_, tex, &rec, -1, offX, 0.0f, -offY);
         }
     }
@@ -238,34 +237,33 @@ extern "C" void fn_80192090(char* this_) {
     } else {
         rec.w30 = 0x11;
     }
-    const ResTIMG* tex = fn_804032E8('GANO', ((const char**)(tables + 0x3a0))[*(s32*)(this_ + 0x284)]);
+    const ResTIMG* tex = fn_804032E8('GANO', tables->names1[*(s32*)(this_ + 0x284)]);
     fn_801EFD34(this_, tex, &rec, -1, 0.0f, 0.0f, 0.0f);
     JUTTexture head(tex, 0);
-    f32 offX = lbl_8053E284 * -(f32)head.getWidth();
-    f32 offY = lbl_8053E284 * -(f32)head.getHeight();
+    f32 offX = 0.5f * -(f32)head.getWidth();
+    f32 offY = 0.5f * -(f32)head.getHeight();
     if (*(s32*)(this_ + 0x28c) == 5) {
-        gnonSetRotScale(m, *(u16*)(this_ + 0x2b4) / lbl_8053E27C, lbl_8053E280 * *(f32*)(this_ + 0x2d0),
-                        lbl_8053E280 * *(f32*)(this_ + 0x2d4));
+        gnonSetRotation(m, 0.0f, *(u16*)(this_ + 0x2b4) / -10430.2275390625f, 0.0f, 1.4f * *(f32*)(this_ + 0x2d0),
+                        1.4f * *(f32*)(this_ + 0x2d4));
         tex = fn_804032E8('GANO', lbl_80467F8C);
     } else {
         gnonSetScale(m, *(f32*)(this_ + 0x2d0), *(f32*)(this_ + 0x2d4), *(f32*)(this_ + 0x2d4));
-        tex = fn_804032E8('GANO', ((const char**)(tables + 0x48c))[*(s32*)(this_ + 0x288)]);
+        tex = fn_804032E8('GANO', tables->names2[*(s32*)(this_ + 0x288)]);
     }
     rec.w18 = m;
     rec.w30 = -1;
     rec.b1d = 5;
     ((u8*)&rec.w10)[3] = (s32)*(f32*)(this_ + 0x2b0);
     JUTTexture body(tex, 0);
-    f32* off = ((f32(*)[2])(tables + 0x578))[*(s32*)(this_ + 0x28c)];
-    offX += lbl_8053E284 * (f32)body.getWidth() + off[0];
+    offX += 0.5f * (f32)body.getWidth() + tables->offsets[*(s32*)(this_ + 0x28c)][0];
+    offY += 0.5f * (f32)body.getHeight() + tables->offsets[*(s32*)(this_ + 0x28c)][1];
     *(f32*)(this_ + 0x2c4) = *(f32*)(this_ + 0xc);
     *(f32*)(this_ + 0x2c8) = *(f32*)(this_ + 0x10);
     *(f32*)(this_ + 0x2cc) = *(f32*)(this_ + 0x14);
-    offY += lbl_8053E284 * (f32)body.getHeight() + off[1];
     *(f32*)(this_ + 0x2c4) += offX;
     *(f32*)(this_ + 0x2c8) += offY;
-    if (this_[0x2a5] == 0 && (*(s32*)(this_ + 0x28c) != 7 ||
-                              (*(s32*)(this_ + 0x28c) == 7 && *(s32*)(this_ + 0x25c) < 6))) {
+    if ((u8)this_[0x2a5] == 0 && (*(s32*)(this_ + 0x28c) != 7 ||
+                                  (*(s32*)(this_ + 0x28c) == 7 && *(s32*)(this_ + 0x25c) < 6))) {
         fn_801EFD34(this_, tex, &rec, -1, offX, 0.0f, -offY);
     }
 }
