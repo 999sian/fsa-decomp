@@ -108,8 +108,8 @@ static inline void setRotZ_80339AEC(Mtx m, s16 angle) {
     m[0][2] = 0.0f;
 }
 static inline void setRotY_80339AEC(Mtx m, s16 angle) {
-    f32 s = JMASinShort(angle);
     f32 c = JMACosShort(angle);
+    f32 s = JMASinShort(angle);
     m[0][0] = c;
     m[1][1] = 1.0f;
     m[0][2] = s;
