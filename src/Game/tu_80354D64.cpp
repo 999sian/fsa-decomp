@@ -288,10 +288,10 @@ extern "C" void fn_80355610(char* this_) {
 }
 
 extern "C" void* fn_80239914(f32* out, s32 room, s32 handle);
-extern "C" void* fn_8020D58C(s32 room);
-extern "C" void fn_8020D8C0(void* a, s32 b, s32 c, s32 d);
+extern "C" void* fn_8020D58C();
+extern "C" void fn_8020D8C0(void* a, void* box, s32 room, s32 handle);
 extern "C" void fn_80354FE8(void* this_);
-extern "C" void fn_8013CB44(void* this_, s32 a, s32 b, s32 c);
+extern "C" void fn_8013CB44(void* emitter, void* pos, s32 a, s32 b, s32 c);
 extern "C" u8 fn_8023F264(s32);
 extern "C" s32 fn_80230CFC(s32);
 extern "C" u8 fn_8022C004(s32);
@@ -331,7 +331,10 @@ static inline u8 mrtaInside(const JGeometry::TBox2f& box, f32 x, f32 y) {
 
 #pragma opt_common_subs on
 extern "C" void fn_803558A4(void* this_) {
-    s32 i;
+    s32 loopIndex;
+    s32 scanIndex;
+    s32 hitIndex;
+    s32 filterIndex;
     s32 accepted;
     u8* player;
     u8* record;
@@ -378,19 +381,19 @@ extern "C" void fn_803558A4(void* this_) {
         *(s32*)(p+0x244)=0;*(s32*)(p+0x248)=0;*(s32*)(p+0x24c)=0;*(s32*)(p+0x250)=0;
         *(s32*)(p+0x2d0)=-1;
         player=p;
-        for(i=0;i<4;i++,player+=4) {
-            if(fn_8023F264(i)) {
-                f32* loc=(f32*)fn_8023E724(i);
+        for(scanIndex=0;scanIndex<4;scanIndex++,player+=4) {
+            if(fn_8023F264(scanIndex)) {
+                f32* loc=(f32*)fn_8023E724(scanIndex);
                 f32 x=loc[0],y=loc[1];
-                s32 direction=fn_80230CFC(i);
+                s32 direction=fn_80230CFC(scanIndex);
                 f32* offset=(f32*)(lbl_804722B0+direction*8);
                 x+=offset[0];y+=offset[1];
-                p[0x264+i]=fn_8022C004(i);
-                if(p[0x264+i]==1 && fn_8023E8F0(i)==1 && fn_8023188C(i)==1 && fn_802319B4(i,17)==1 && !fn_80234D94(i) && (u8)mrtaInside(box,x,y)==1) {
+                p[0x264+scanIndex]=fn_8022C004(scanIndex);
+                if(p[0x264+scanIndex]==1 && fn_8023E8F0(scanIndex)==1 && fn_8023188C(scanIndex)==1 && fn_802319B4(scanIndex,17)==1 && !fn_80234D94(scanIndex) && (u8)mrtaInside(box,x,y)==1) {
                     *(s32*)(player+0x234)=direction;
                     ++*(s32*)(p+0x244+*(s32*)(player+0x234)*4);
-                } else p[0x264+i]=0;
-                if(p[0x264+i]==1 && *(s32*)(p+0x2d0)==-1) {
+                } else p[0x264+scanIndex]=0;
+                if(p[0x264+scanIndex]==1 && *(s32*)(p+0x2d0)==-1) {
                     if(*(s32*)(p+0x2c0)==0) {
                         if(*(s32*)(player+0x234)==0 || *(s32*)(player+0x234)==1) break;
                     } else {
@@ -405,8 +408,8 @@ extern "C" void fn_803558A4(void* this_) {
         accepted=0;
         if(((s32*)(p+*(s32*)(p+0x2d0)*4))[0x244/4]>=4) {
             player=p;
-            for(i=0;i<4;i++,player+=4) {
-                if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0) && !fn_8023E8F0(i)) {
+            for(filterIndex=0;filterIndex<4;filterIndex++,player+=4) {
+                if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0) && !fn_8023E8F0(filterIndex)) {
                     *(s32*)(player+0x234)=-1;
                     --*(s32*)(p+0x244+*(s32*)(p+0x2d0)*4);
                 }
@@ -416,13 +419,13 @@ extern "C" void fn_803558A4(void* this_) {
             record=p;
             player=p;
             order=p;
-            for(i=0;i<4;i++,player+=4,record+=0x14) {
-                *(JGeometry::TVec3f*)(record+0x26c)=*(JGeometry::TVec3f*)fn_8023E724(i);
-                *(s32*)(record+0x278)=fn_8022CAF8(i);
+            for(loopIndex=0;loopIndex<4;loopIndex++,player+=4,record+=0x14) {
+                *(JGeometry::TVec3f*)(record+0x26c)=*(JGeometry::TVec3f*)fn_8023E724(loopIndex);
+                *(s32*)(record+0x278)=fn_8022CAF8(loopIndex);
                 if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0) && accepted<4) {
-                    if(fn_8022F9E4(i,*(s32*)(p+0x198),1,0)) {
+                    if(fn_8022F9E4(loopIndex,*(s32*)(p+0x198),1,0)) {
                         ++accepted;
-                        *(s32*)(order+0x254)=i;
+                        *(s32*)(order+0x254)=loopIndex;
                         order+=4;
                         if(accepted>=4) {
                             if(((Actor*)p)->v13()>0) {
@@ -436,8 +439,8 @@ extern "C" void fn_803558A4(void* this_) {
         }
         if(*(s32*)(p+0x230)==1) {
             player=p;
-            for(i=0;i<4;i++,player+=0x14) {
-                if(fn_8022E438(*(s32*)(p+0x254),i)==1 || fn_8022E438(*(s32*)(p+0x258),i)==1)
+            for(loopIndex=0;loopIndex<4;loopIndex++,player+=0x14) {
+                if(fn_8022E438(*(s32*)(p+0x254),loopIndex)==1 || fn_8022E438(*(s32*)(p+0x258),loopIndex)==1)
                     player[0x268]=0;
             }
         }
@@ -448,12 +451,12 @@ extern "C" void fn_803558A4(void* this_) {
             player=p;
             record=p;
             next=positions;
-            for(i=0;i<4;i++,record+=0x14,player+=4) {
+            for(loopIndex=0;loopIndex<4;loopIndex++,record+=0x14,player+=4) {
                 if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0) && record[0x268]==0) {
-                    s32 state=fn_8022CAF8(i);
-                    if(*(s32*)(record+0x278)!=state) {fn_80230C6C(i);return;}
+                    s32 state=fn_8022CAF8(loopIndex);
+                    if(*(s32*)(record+0x278)!=state) {fn_80230C6C(loopIndex);return;}
                 }
-                current=*(JGeometry::TVec3f*)fn_8023E724(i);
+                current=*(JGeometry::TVec3f*)fn_8023E724(loopIndex);
                 saved=*(JGeometry::TVec3f*)(record+0x26c);
                 if(!record[0x268]) {
                     f32 x=current.x-saved.x,y=current.y-saved.y;
@@ -463,10 +466,10 @@ extern "C" void fn_803558A4(void* this_) {
                         temp=saved;
                         temp.sub(current);
                         delta=temp;
-                        fn_8023DFF4(i,delta);
+                        fn_8023DFF4(loopIndex,delta);
                     }
                 }
-                if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0)) *next++=*(JGeometry::TVec3f*)fn_8023E7B0(i);
+                if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0)) *next++=*(JGeometry::TVec3f*)fn_8023E7B0(loopIndex);
             }
             positions[0].add(positions[1]);
             positions[0].add(positions[2]);
@@ -492,10 +495,10 @@ extern "C" void fn_803558A4(void* this_) {
                 u8 hit=0;
                 if(mask>0) {
                     player=p;
-                    for(i=0;i<4;i++,player+=4) {
-                        if(*(s32*)(player+0x234)!=*(s32*)(p+0x2d0) && (s32)(mask&(1<<i))>0 &&
-                           !fn_8022E438(*(s32*)(p+0x254),i) && !fn_8022E438(*(s32*)(p+0x258),i)) {
-                            fn_80238548(i,0,p+0xc,5);hit=1;
+                    for(hitIndex=0;hitIndex<4;hitIndex++,player+=4) {
+                        if(*(s32*)(player+0x234)!=*(s32*)(p+0x2d0) && (s32)(mask&(1<<hitIndex))>0 &&
+                           !fn_8022E438(*(s32*)(p+0x254),hitIndex) && !fn_8022E438(*(s32*)(p+0x258),hitIndex)) {
+                            fn_80238548(hitIndex,0,p+0xc,5);hit=1;
                         }
                     }
                 }
