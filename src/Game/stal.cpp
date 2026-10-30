@@ -81,6 +81,13 @@ extern "C" s32 ClassifyBamAngleToQuadrant(u32);
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 extern s32 lbl_804A0C10[];
+#pragma pool_data on
+static s32 stalWalkFrames[24] = {0,1,0,2,3,2,6,7,6,8,9,8,12,13,12,14,15,14,18,19,18,20,21,20};
+static s32 stalWalkTicks[6] = {3,10,3,3,10,3};
+static s32 stalJumpFrames[16] = {4,5,4,0,10,11,10,6,16,17,16,12,22,23,22,18};
+static s32 stalJumpTicks[4] = {2,10,2,10};
+#pragma pool_data reset
+
 static inline void stalAnimate(char* p, const s32* frames, const s32* ticks, s32 stride) {
     *(s32*)(p+0x258)=frames[*(s32*)(p+0x98)*stride+*(s32*)(p+0x24c)];
     *(s32*)(p+0x238)=ticks[*(s32*)(p+0x24c)];
@@ -159,7 +166,7 @@ extern "C" void fn_801757D4(char* this_) {
         if (*(u32*)(this_ + 0xb0) == 0) {
             *(u32*)(this_ + 0xb0) = 0x42205;
         }
-        if ((*(u32*)(this_ + 0x90) == 0 || *(s32*)(this_ + 0x230) != 4) && (z = *(f32*)(this_+0x14), z == 0.0f) && (u8)fn_801F305C(this_) != 0) {
+        if ((*(u32*)(this_ + 0x90) == 0 || *(s32*)(this_ + 0x230) != 4) && (z = *(f32*)(this_+0x14), 0.0f == z) && (u8)fn_801F305C(this_) != 0) {
             if (*(u32*)(this_ + 0x90) == 5) {
                 *(s32*)(this_ + 0x25c) -= 10000 - *(s32*)(this_ + 0x108);
                 if (*(s32*)(this_ + 0x25c) <= 0) {
@@ -205,7 +212,7 @@ case 0: {
 void* list[0x400];
 if(*(u32*)(this_ + 0x90)==5 && fn_801F7818(fn_801F856C(),'WIZR',*(u32*)(this_ + 0x4),list,-1)==0) {*(s32*)(this_ + 0x230)=7;break;}
 if(*(s32*)(this_ + 0x23c)==0) *(s32*)(this_ + 0x23c)=(s32)(30.0f*lbl_8053AAF8->rnd.get_ufloat_1())+30;
-{ if(stalRoomFlag(this_) && hit && (z=probe[1],z!=0.0f))hit=0;}
+{ if(stalRoomFlag(this_) && hit && (z=probe[1],0.0f!=z))hit=0;}
 if(hit || lbl_8053AAF8->rnd.get_ufloat_1()<0.3f || quad<0) {
 {if(!stalRoomFlag(this_))*(s32*)(this_ + 0x98)^=2;}
 if(lbl_8053AAF8->rnd.get_ufloat_1()<0.5f)*(s32*)(this_ + 0x98)^=1;
@@ -222,9 +229,7 @@ case 3:*(f32*)(this_ + 0x26c)=0.0f;*(f32*)(this_ + 0x270)=-0.7f;*(f32*)(this_ + 
 }
 case 1:
 if(*(s32*)(this_ + 0x238)==0) {
-*(s32*)(this_ + 0x258)=(table+0)[*(s32*)(this_ + 0x98)*6+*(s32*)(this_ + 0x24c)];
-*(s32*)(this_ + 0x238)=(table+24)[*(s32*)(this_ + 0x24c)];
-++*(s32*)(this_ + 0x24c);
+stalAnimate(this_,table+0,table+24,6);
 if(*(s32*)(this_ + 0x24c)>5)*(s32*)(this_ + 0x24c)=0;
 }
 if(*(s32*)(this_ + 0x23c)==0){*(f32*)(this_ + 0x26c)=0.0f;
@@ -245,9 +250,7 @@ if(quad>=0){ if(!stalRoomFlag(this_)) *(s32*)(this_ + 0x98)=quad; else if(!(quad
 case 4:
 {if(!stalRoomFlag(this_))*(f32*)(this_ + 0x44)-=0.4f;}
 if(*(s32*)(this_ + 0x24c)<4){if(*(s32*)(this_ + 0x238)==0) {
-*(s32*)(this_ + 0x258)=(table+30)[*(s32*)(this_ + 0x98)*4+*(s32*)(this_ + 0x24c)];
-*(s32*)(this_ + 0x238)=(table+46)[*(s32*)(this_ + 0x24c)];
-++*(s32*)(this_ + 0x24c);
+stalAnimate(this_,table+30,table+46,4);
 }}
 { if(!stalRoomFlag(this_) && *(f32*)(this_+0x14)<0.0f)goto landed;}
 { if(!stalRoomFlag(this_) || !(probe[1]<0.0f))break;}
@@ -258,7 +261,7 @@ s32 handle=Actor_CreateByID(fn_801F856C(),'OKTM',*(u32*)(this_ + 0x4),this_+0xc,
 char* actor=fn_801F666C(fn_801F856C(),handle);
 if(actor!=0) {
 JGeometry::TVec3<f32> velocity;
-velocity.x=1.8f*JMath::sincosTable_.mTable[(u16)ang>>5].first;
+velocity.x=1.8f*stalSinAt((const f32*)JMath::sincosTable_.mTable,ang);
 velocity.y=1.8f*JMath::sincosTable_.mTable[ang>>5].second;
 *(JGeometry::TVec3<f32>*)(actor+0x3c)=velocity;
 }}
@@ -326,10 +329,7 @@ break;
 
 if(*(s32*)(this_ + 0x238)>0)--*(s32*)(this_ + 0x238);
 if(*(s32*)(this_ + 0x23c)>0)--*(s32*)(this_ + 0x23c);
-char* timers=this_+8;
-if(*(s32*)(timers+0x238)>0)--*(s32*)(timers+0x238);
-if(*(s32*)(timers+0x23c)>0)--*(s32*)(timers+0x23c);
-if(*(s32*)(timers+0x240)>0)--*(s32*)(timers+0x240);
+stalTickThree(this_+8);
 }
 
 extern "C" void fn_80176538(char* this_) {
