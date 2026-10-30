@@ -127,7 +127,7 @@ static inline f32 platformCos(f32 angle) {
 
 #pragma opt_propagation on
 extern "C" void fn_802ACF04(Actor* a) {
-Actor* const self=a;
+Actor* self=a;
 DrawRec rec;
 f32 m[3][4];
 Vec pos;
@@ -221,19 +221,34 @@ if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&v7,(*(J
 }
 }
 #pragma opt_propagation reset
+extern "C" {
 void fn_80239914(s32 room, void* obj);
-void* fn_8023E724(s32 idx);
-s32 fn_8022F478(s32 idx);
-s32 fn_80234F68(s32 idx);
-void* fn_801F2718(Actor* a, u32 fourcc);
+Vec* fn_8023E724(s32 idx);
+u8 fn_8022F478(s32 idx);
+u8 fn_80234F68(s32 idx);
+s32 fn_801F2718(Actor* a, u32 fourcc);
 void fn_8023A89C(void* box, s32 room, void* out);
-s32 fn_8023A97C(s32 idx, void* box, s32 room, void* out);
-s32 fn_802D800C(void* mgr, s32 idx);
-s16 fn_802F9908(void* mgr, s32 room, u32 key);
-void fn_8013CC50(s32 room, void* vec, s32 id, s32 f6, s32 f7, s32 f8, s32 f9, s32 f10);
+u8 fn_8023A97C(s32 idx, void* box, s32 room, void* out);
+u8 fn_802D800C(void* mgr, s32 idx);
+u16 fn_802F9908(void* mgr, s32 room, u32 key);
+void fn_8013CC50(s32 room, Vec* vec, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
 void fn_801F0E34(Actor* a, u32 id, s32 n);
+void fn_802D79E8(void* mgr, s32 room, s32 n, f32 a, f32 b);
+char* fn_802D9C4C(void* mgr);
+}
 extern "C" f32 lbl_805408EC;
+extern "C" f32 lbl_805408F0;
 extern "C" f32 lbl_805408F8;
+extern "C" f32 lbl_80540910;
+extern "C" f32 lbl_80540914;
+extern "C" f32 lbl_80540918;
+extern "C" f32 lbl_8054091C;
+extern "C" f32 lbl_80540920;
+extern "C" f64 lbl_80540928;
+extern "C" f32 lbl_80540930;
+extern "C" f64 lbl_80540938;
+extern "C" f32 lbl_80540940;
+extern "C" f32 lbl_80540944;
 extern "C" void fn_802ADC18(Actor* a) {
     u8* p = (u8*)a;
     Vec pos = a->field_0C;
