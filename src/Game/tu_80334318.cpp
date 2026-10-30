@@ -187,6 +187,32 @@ extern "C" void fn_80334488(Actor* a) {
     }
 }
 
+extern int __float_epsilon[];
+extern const f32 lbl_80541F98;
+
+static inline bool SBAL_epsEquals(f32 a, f32 b, f32 eps) {
+    bool r = false;
+    f32 d = a - b;
+    if (-eps <= d && d <= eps) {
+        r = true;
+    }
+    return r;
+}
+
+// True when all three components of v are within 32*epsilon of zero.
+static inline bool SBAL_isNearZero(const f32* v) {
+    f32 eps = lbl_80541F98 * *(f32*)__float_epsilon;
+    bool xy = false;
+    bool all = false;
+    if (SBAL_epsEquals(v[0], lbl_80541F70, eps) && SBAL_epsEquals(v[1], lbl_80541F70, eps)) {
+        xy = true;
+    }
+    if (xy && SBAL_epsEquals(v[2], lbl_80541F70, eps)) {
+        all = true;
+    }
+    return all;
+}
+
 void fn_80334A04(u8* p)
 {
     *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
