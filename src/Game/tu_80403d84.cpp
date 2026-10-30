@@ -993,6 +993,9 @@ struct J2DGrafContext;
 static inline void menuSetCornerColor(J2DPicture* pane, JUtility::TColor color) {
     pane->setCornerColor(color);
 }
+static inline void menuSetCornerColor(PaneRef* ref, const JUtility::TColor& color) {
+    ((J2DPicture*)ref->pane)->setCornerColor(color);
+}
 
 #include "JSystem/J2D/J2DScreen.h"
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
