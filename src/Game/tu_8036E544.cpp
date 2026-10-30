@@ -113,8 +113,7 @@ static inline bool spawnPair(char* p, JGeometry::TVec3f pos, s32 kind) {
     slots[0] = slots[1] = 0;
     n = 0;
     out = slots;
-    q = p;
-    for (i = 0; i < 20; q += 4, i++) {
+    for (i = 0, q = p; i < 20; q += 4, i++) {
         if (*(void**)(q + 0x258) == 0) {
             n++;
             *out++ = i;
