@@ -809,6 +809,13 @@ inline f32 hitInvSqrtSelf(f32 x) {
     x = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
     return x;
 }
+inline void hitInvSqrtRef(f32& x) {
+    if (x <= lbl_8054028C) {
+        return;
+    }
+    f32 y = __frsqrte(x);
+    x = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
+}
 inline void hitNormalize(JGeometry::TVec3<f32>* v) {
     f32 sq = v->squared();
     if (!(sq <= lbl_80540298 * FLT_EPSILON)) {
@@ -1012,7 +1019,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
         d.x = lbl_8054028C;
         d.y = lbl_80540288;
     } else if (!(sq <= eps)) {
-        sq = hitInvSqrt(sq);
+        sq = hitInvSqrtSelf(sq);
         d.x *= sq;
         d.y *= sq;
     }
@@ -1065,10 +1072,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
             JGeometry::TVec3<f32> t(pt->x, pt->y, lbl_8054028C);
             ((JGeometry::TVec3<f32>*)(p + 0x35c))->set(*(JGeometry::TVec3<f32>*)(p + 0x8) - t);
             F32(p, 0x364) = lbl_8054028C;
-            f32 sq3 = JMathInlineVEC::PSVECSquareMag((Vec*)(p + 0x35c));
-            if (!(sq3 <= lbl_80540298 * FLT_EPSILON)) {
-                ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(hitInvSqrt(sq3));
-            }
+            hitNormalize((JGeometry::TVec3<f32>*)(p + 0x35c));
             ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(lbl_805402B4);
         }
         if (S32(p, 0x1240) == 8) {
@@ -1081,10 +1085,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
             JGeometry::TVec3<f32> t(pt->x, pt->y, lbl_8054028C);
             ((JGeometry::TVec3<f32>*)(p + 0x35c))->set(*(JGeometry::TVec3<f32>*)(p + 0x8) - t);
             F32(p, 0x364) = lbl_8054028C;
-            f32 sq3 = JMathInlineVEC::PSVECSquareMag((Vec*)(p + 0x35c));
-            if (!(sq3 <= lbl_80540298 * FLT_EPSILON)) {
-                ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(hitInvSqrt(sq3));
-            }
+            hitNormalize((JGeometry::TVec3<f32>*)(p + 0x35c));
             ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(lbl_805402B0);
         }
         if (S32(p, 0x1240) == 8) {
@@ -1097,10 +1098,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
             JGeometry::TVec3<f32> t(pt->x, pt->y, lbl_8054028C);
             ((JGeometry::TVec3<f32>*)(p + 0x35c))->set(*(JGeometry::TVec3<f32>*)(p + 0x8) - t);
             F32(p, 0x364) = lbl_8054028C;
-            f32 sq3 = JMathInlineVEC::PSVECSquareMag((Vec*)(p + 0x35c));
-            if (!(sq3 <= lbl_80540298 * FLT_EPSILON)) {
-                ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(hitInvSqrt(sq3));
-            }
+            hitNormalize((JGeometry::TVec3<f32>*)(p + 0x35c));
             ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(lbl_805402A8);
         }
         if (S32(p, 0x1240) == 8) {
