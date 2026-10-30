@@ -290,7 +290,7 @@ static inline void Endm_updateView(char* p) {
 }
 static inline u8 Endm_tick(s32* timer) {
     if (*timer) --*timer;
-    return *timer == 0;
+    return __cntlzw(*timer) >> 5;
 }
 
 extern "C" void fn_802E9B6C(char* p) {
@@ -323,16 +323,14 @@ extern "C" void fn_802E9B6C(char* p) {
         break;
     case 1:
         *((u8*)lbl_8053AF30 + 0x14) = 1;
-        if (*(s32*)(p + 0x27c)) --*(s32*)(p + 0x27c);
-        if ((u8)(*(s32*)(p + 0x27c) == 0)) {
+        if (Endm_tick((s32*)(p + 0x27c))) {
             fn_80119998(fn_80119DD0(), 100, 0, 2, 0, 0, 20, 0);
             *(s32*)(p + 0x27c) = 60;
             *(s32*)(p + 0x23c) = 2;
         }
         break;
     case 2:
-        if (*(s32*)(p + 0x27c)) --*(s32*)(p + 0x27c);
-        if ((u8)(*(s32*)(p + 0x27c) == 0)) {
+        if (Endm_tick((s32*)(p + 0x27c))) {
             if (*(u8*)(p + 0x230) == 15) *(s32*)(p + 0x23c) = 4;
             else *(s32*)(p + 0x23c) = 3;
         } else *((u8*)lbl_8053AF30 + 0x14) = 1;
@@ -349,8 +347,7 @@ extern "C" void fn_802E9B6C(char* p) {
         *(u8*)(p + 0x28c) = *(u8*)(p + 0x230) * 2;
         break;
     case 4:
-        if (*(s32*)(p + 0x27c)) --*(s32*)(p + 0x27c);
-        if ((u8)(*(s32*)(p + 0x27c) == 0)) {
+        if (Endm_tick((s32*)(p + 0x27c))) {
             int n = *(u8*)(p + 0x230);
             if (data[0x104 + n]) {
                 fn_8043A268(lbl_8053AED0, ((int*)data)[n], ((int*)(data+0x44))[n],
@@ -418,10 +415,10 @@ extern "C" void fn_802E9B6C(char* p) {
         u32 b=((u16*)(data+0xac))[*(u8*)(p+0x28c)+1];
         char* rec=(char*)fn_802D6A9C();
         *(u32*)(rec+4)=a; *(u32*)(rec+8)=b;
-        if (*(u8*)(p+0x28d)==0) { s32 v[2]={0,-1}; fn_802DCD1C(fn_802D6A9C(),v); }
-        else if (*(u8*)(p+0x28d)==1) { s32 v[2]={0,1}; fn_802DCD1C(fn_802D6A9C(),v); }
-        else if (*(u8*)(p+0x28d)==2) { s32 v[2]={-1,0}; fn_802DCD1C(fn_802D6A9C(),v); }
-        else if (*(u8*)(p+0x28d)==3) { s32 v[2]={1,0}; fn_802DCD1C(fn_802D6A9C(),v); }
+        if (*(u8*)(p+0x28d)==0) { s32 v[2]; v[0]=0; v[1]=-1; fn_802DCD1C(fn_802D6A9C(),v); }
+        else if (*(u8*)(p+0x28d)==1) { s32 v[2]; v[0]=0; v[1]=1; fn_802DCD1C(fn_802D6A9C(),v); }
+        else if (*(u8*)(p+0x28d)==2) { s32 v[2]; v[0]=-1; v[1]=0; fn_802DCD1C(fn_802D6A9C(),v); }
+        else if (*(u8*)(p+0x28d)==3) { s32 v[2]; v[0]=1; v[1]=0; fn_802DCD1C(fn_802D6A9C(),v); }
         u32 oldA=*(u32*)(p+0x280), oldB=*(u32*)(p+0x284);
         rec=(char*)fn_802D6A9C();
         *(u32*)(rec+4)=oldB; *(u32*)(rec+8)=oldA;
@@ -482,8 +479,7 @@ extern "C" void fn_802E9B6C(char* p) {
         }
         break;
     case 8:
-        if(*(s32*)(p+0x27c)) --*(s32*)(p+0x27c);
-        if((u8)(*(s32*)(p+0x27c)==0)) {
+        if(Endm_tick((s32*)(p+0x27c))) {
             if(*(u8*)(p+0x295)==2) *(s32*)(p+0x23c)=0;
             else { *(s32*)(p+0x23c)=4; *(s32*)(p+0x27c)=10; }
             ++*(u8*)(p+0x230);
