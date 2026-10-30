@@ -316,22 +316,6 @@ extern const f32 lbl_805427A8;
 extern const f32 lbl_805427AC;
 extern const f32 lbl_805427B0;
 
-static inline bool mrtaStopped(const JGeometry::TVec3f& motion) {
-    return motion.squared() <= lbl_80542794 * FLT_EPSILON;
-}
-
-static inline s32 mrtaCount(u8* p, s32 direction) {
-    u8* selected = p + direction * 4;
-    return *(s32*)(selected + 0x244);
-}
-
-static inline void mrtaAverage(JGeometry::TVec3f* values) {
-    values[0].add(values[1]);
-    values[0].add(values[2]);
-    values[0].add(values[3]);
-    values[0].scale(lbl_805427AC);
-}
-
 static inline u8 mrtaInside(const JGeometry::TBox2f& box, f32 x, f32 y) {
     u8 inside = 0;
     if (x >= box.i.x && y >= box.i.y && x < box.f.x && y < box.f.y) inside = 1;
@@ -415,7 +399,7 @@ extern "C" void fn_803558A4(void* this_) {
         }
         if(*(s32*)(p+0x2d0)==-1) break;
         accepted=0;
-        if(mrtaCount(p,*(s32*)(p+0x2d0))>=4) {
+        if(((s32*)(p+*(s32*)(p+0x2d0)*4))[0x244/4]>=4) {
             player=p;
             for(filterIndex=0;filterIndex<4;filterIndex++,player+=4) {
                 if(*(s32*)(player+0x234)==*(s32*)(p+0x2d0) && !fn_8023E8F0(filterIndex)) {
@@ -471,7 +455,8 @@ extern "C" void fn_803558A4(void* this_) {
                     f32 x=current.x-saved.x,y=current.y-saved.y;
                     f32 xSquared=x*x;
                     f32 ySquared=y*y;
-                    if(JGeometry::TUtilf::sqrt(xSquared+ySquared)>lbl_805427A8) {
+                    x=xSquared+ySquared;
+                    if(JGeometry::TUtilf::sqrt(x)>lbl_805427A8) {
                         temp=saved;
                         temp.sub(current);
                         delta=temp;
