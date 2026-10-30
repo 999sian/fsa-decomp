@@ -234,6 +234,7 @@ extern "C" void fn_801F71A4(f32*,f32,f32,f32);
 extern "C" void JPAGetXYZRotateMtx__FsssPA4_f(s16,s16,s16,void*);
 #pragma opt_propagation on
 #pragma opt_lifetimes off
+#pragma opt_strength_reduction off
 extern "C" void fn_80165730(char* p) {
  const ArrwTables* table=(const ArrwTables*)lbl_804A0530;
  JGeometry::TVec3<f32> pos;
