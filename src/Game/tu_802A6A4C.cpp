@@ -91,10 +91,16 @@ extern const f32 lbl_805407FC;
 extern const f32 lbl_80540800;
 #pragma opt_propagation off
 static inline void setSwitchPlayer(Tu2A6A4CActor* actor, u8 player, u32 state) {
-    actor->v10(player, state);
+    ((void (*)(Tu2A6A4CActor*, u8, u32))(*(void***)actor)[12])(actor, player, state);
 }
 
 extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
+    s32 i;
+    bool found;
+    s32 actor;
+    u32 flags;
+    s32 player;
+    s32 kind;
     u8* p = (u8*)self;
     JGeometry::TVec3<f32> pos;
     JGeometry::TBox2<f32> box;
@@ -104,9 +110,9 @@ extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
     box.f.x = *(f32*)(p + 0x68); box.f.y = *(f32*)(p + 0x6c);
     box.addPos(x, y);
     if (fn_801F8108(p, 'TBO2', -1, lbl_805407F0) >= 0) return;
-    s32 player = fn_8023AF14(&box, *(s32*)(p + 4), 1, lbl_805407F4);
-    s32 kind = 0;
-    s32 actor = -1;
+    player = fn_8023AF14(&box, *(s32*)(p + 4), 1, lbl_805407F4);
+    kind = 0;
+    actor = -1;
     if (self->field_234 != 7) {
         actor = fn_801F8108(p, 'AMOS', -1, lbl_805407F0);
         if (actor < 0) {
@@ -144,16 +150,17 @@ self->field_258 = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(p + 4
             if (self->field_234 != 4 && self->field_234 != 7) {
             if (fn_8023513C(player) == 1 || fn_802353AC(player) == 1 ||
                 fn_80233DA4(player) == 1 || fn_80235004(player) == 1) break;
-            s32 id = self->v13();
-            if (!fn_802D800C(fn_802D6A9C(), id)) {
+            kind = self->v13();
+            if (!fn_802D800C(fn_802D6A9C(), kind)) {
                 if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
-                    bool found = false;
-                    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
-                    s32 i = 0, off = 0;
-                    for (; i < count; off += 4, i++) {
-                        u8* other = *(u8**)((u8*)fn_801F856C() + off + 8);
+                    found = false;
+                    kind = *(s32*)((u8*)fn_801F856C() + 0x1008);
+                    i = 0;
+                    actor = 0;
+                    for (; i < kind; actor += 4, i++) {
+                        u8* other = *(u8**)((u8*)fn_801F856C() + actor + 8);
                         if (other && *(u32*)(other + 0x1a0) == 'SWTH' && *(s32*)(other + 0x198) != *(s32*)(p + 0x198)) {
-                            u32 flags = *(u32*)(other + 0x90);
+                            flags = *(u32*)(other + 0x90);
                             if (player == fn_802D7E1C(fn_802D6A9C(), flags >> 27) && ((flags & 0x3f) == 0 || (flags & 0x3f) == 5)) found = true;
                         }
                     }
