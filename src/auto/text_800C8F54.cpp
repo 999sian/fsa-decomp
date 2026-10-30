@@ -438,6 +438,10 @@ struct J3DNBTScaleInfo {
 extern "C" J3DNBTScaleInfo j3dDefaultNBTScaleInfo;
 
 struct J3DNBTScale : public J3DNBTScaleInfo {
+    J3DNBTScale(const J3DNBTScaleInfo& info) {
+        mHasScale=info.mHasScale;
+        mScale[0]=info.mScale[0]; mScale[1]=info.mScale[1]; mScale[2]=info.mScale[2];
+    }
     J3DNBTScale() {
         mHasScale = j3dDefaultNBTScaleInfo.mHasScale;
         mScale[0] = j3dDefaultNBTScaleInfo.mScale[0];
@@ -606,7 +610,7 @@ J3DMaterial* J3DMaterialFactory::create(J3DMaterial* material, MaterialType type
 
 extern "C" void* createTexGenBlock__11J3DMaterialFUl(u32);
 extern "C" void* createTevBlock__11J3DMaterialFi(int);
-extern "C" void fn_800CBB9C(J3DNBTScaleInfo* out, u8* p, s32 idx);
+extern "C" J3DNBTScale fn_800CBB9C(const J3DMaterialFactory* self, int idx);
 extern "C" TevKColorWord fn_800CB104(const J3DMaterialFactory* self, int idx, int no);
 struct J3DTevSwapModeTable;
 extern "C" J3DTevSwapModeTable fn_800CB520(const J3DMaterialFactory* self, int idx, int stage);
@@ -1618,26 +1622,13 @@ extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
     return 1;
 }
 
-extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) {
-    J3DNBTScale local;
-    u16 uVar4;
-    u8* puVar5;
-
-    uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
-    if (uVar4 != 0xffff) {
-        puVar5 = *(u8**)(param_2 + 0x74) + (uVar4 << 4);
-        param_1->mHasScale = *puVar5;
-        param_1->mScale[0] = *(f32*)(puVar5 + 4);
-        param_1->mScale[1] = *(f32*)(puVar5 + 8);
-        param_1->mScale[2] = *(f32*)(puVar5 + 0xc);
-    } else {
-        volatile u32* src = (volatile u32*)&local;
-        u32* dst = (u32*)param_1;
-        dst[0] = src[0];
-        dst[1] = src[1];
-        dst[2] = src[2];
-        dst[3] = src[3];
+extern "C" J3DNBTScale fn_800CBB9C(const J3DMaterialFactory* self, int idx) {
+    J3DNBTScale defaultScale;
+    u16 index=*(u16*)((u8*)&((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]]+0x14a);
+    if(index!=0xffff) {
+        return J3DNBTScale(((J3DNBTScaleInfo*)self->unk_0C[26])[index]);
     }
+    return defaultScale;
 }
 
 extern "C" void fn_800CBC44(void) {
