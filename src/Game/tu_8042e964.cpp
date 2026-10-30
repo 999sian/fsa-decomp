@@ -306,39 +306,157 @@ f32 fn_80430368(void* self, u8 type, s32 count, char* buf) {
 #pragma push
 #pragma dont_inline on
 f32 fn_80430518(void* self, u8 type, s32 count, f32 scale) {
-    JUTFont::TWidth w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, wa, wb;
     f32 width = lbl_80543AF8;
     switch (type) {
-    case 3:
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0xa0, &w0);
+    case 1: {
+        JUTFont::TWidth w0;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(160, &w0);
         width += scale * (f32)(int)w0.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x46, &w1);
+        JUTFont::TWidth w1;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(70, &w1);
         width += scale * (f32)(int)w1.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x6f, &w2);
+        JUTFont::TWidth w2;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(111, &w2);
         width += scale * (f32)(int)w2.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x72, &w3);
+        JUTFont::TWidth w3;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(114, &w3);
         width += scale * (f32)(int)w3.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x63, &w4);
+        JUTFont::TWidth w4;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(99, &w4);
         width += scale * (f32)(int)w4.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x65, &w5);
+        JUTFont::TWidth w5;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(101, &w5);
         width += scale * (f32)(int)w5.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0xa0, &w6);
+        JUTFont::TWidth w6;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(160, &w6);
         width += scale * (f32)(int)w6.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x47, &w7);
+        JUTFont::TWidth w7;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(71, &w7);
         width += scale * (f32)(int)w7.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x65, &w8);
+        JUTFont::TWidth w8;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(101, &w8);
         width += scale * (f32)(int)w8.w1;
-        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x6d, &w9);
+        JUTFont::TWidth w9;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(109, &w9);
         width += scale * (f32)(int)w9.w1;
         if (count != 1) {
-            (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0x73, &wa);
-            width += scale * (f32)(int)wa.w1;
-            (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(0xa0, &wb);
-            width += scale * (f32)(int)wb.w1;
+        JUTFont::TWidth w10;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w10);
+        width += scale * (f32)(int)w10.w1;
         }
         break;
-    default:
+    }
+    case 2: {
+        JUTFont::TWidth w11;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(160, &w11);
+        width += scale * (f32)(int)w11.w1;
+        JUTFont::TWidth w12;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(67, &w12);
+        width += scale * (f32)(int)w12.w1;
+        JUTFont::TWidth w13;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(117, &w13);
+        width += scale * (f32)(int)w13.w1;
+        JUTFont::TWidth w14;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(99, &w14);
+        width += scale * (f32)(int)w14.w1;
+        JUTFont::TWidth w15;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(99, &w15);
+        width += scale * (f32)(int)w15.w1;
+        JUTFont::TWidth w16;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(111, &w16);
+        width += scale * (f32)(int)w16.w1;
+        if (count != 1) {
+        JUTFont::TWidth w17;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w17);
+        width += scale * (f32)(int)w17.w1;
+        }
         break;
+    }
+    case 3: {
+        JUTFont::TWidth w18;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(160, &w18);
+        width += scale * (f32)(int)w18.w1;
+        JUTFont::TWidth w19;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(98, &w19);
+        width += scale * (f32)(int)w19.w1;
+        JUTFont::TWidth w20;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(97, &w20);
+        width += scale * (f32)(int)w20.w1;
+        JUTFont::TWidth w21;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(100, &w21);
+        width += scale * (f32)(int)w21.w1;
+        JUTFont::TWidth w22;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(100, &w22);
+        width += scale * (f32)(int)w22.w1;
+        if (count == 1) {
+        JUTFont::TWidth w23;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(121, &w23);
+        width += scale * (f32)(int)w23.w1;
+        } else {
+        JUTFont::TWidth w24;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(105, &w24);
+        width += scale * (f32)(int)w24.w1;
+        JUTFont::TWidth w25;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(101, &w25);
+        width += scale * (f32)(int)w25.w1;
+        JUTFont::TWidth w26;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w26);
+        width += scale * (f32)(int)w26.w1;
+        }
+        break;
+    }
+    case 4: {
+        JUTFont::TWidth w27;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(160, &w27);
+        width += scale * (f32)(int)w27.w1;
+        JUTFont::TWidth w28;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(116, &w28);
+        width += scale * (f32)(int)w28.w1;
+        JUTFont::TWidth w29;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(105, &w29);
+        width += scale * (f32)(int)w29.w1;
+        JUTFont::TWidth w30;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(109, &w30);
+        width += scale * (f32)(int)w30.w1;
+        JUTFont::TWidth w31;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(101, &w31);
+        width += scale * (f32)(int)w31.w1;
+        if (count != 1) {
+        JUTFont::TWidth w32;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w32);
+        width += scale * (f32)(int)w32.w1;
+        }
+        break;
+    }
+    case 5: {
+        JUTFont::TWidth w33;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(160, &w33);
+        width += scale * (f32)(int)w33.w1;
+        JUTFont::TWidth w34;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w34);
+        width += scale * (f32)(int)w34.w1;
+        JUTFont::TWidth w35;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(121, &w35);
+        width += scale * (f32)(int)w35.w1;
+        JUTFont::TWidth w36;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w36);
+        width += scale * (f32)(int)w36.w1;
+        JUTFont::TWidth w37;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(116, &w37);
+        width += scale * (f32)(int)w37.w1;
+        JUTFont::TWidth w38;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(101, &w38);
+        width += scale * (f32)(int)w38.w1;
+        JUTFont::TWidth w39;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(109, &w39);
+        width += scale * (f32)(int)w39.w1;
+        if (count != 1) {
+        JUTFont::TWidth w40;
+        (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(115, &w40);
+        width += scale * (f32)(int)w40.w1;
+        }
+        break;
+    }
     }
     return width;
 }
@@ -679,14 +797,14 @@ extern "C" const char lbl_80543B20[8];
 extern "C" f32 fn_80430518(void*,u8,s32,f32);
 extern "C" f32 lbl_80543B1C;
 #pragma opt_propagation reset
-extern "C" void fn_8042EF9C(T80431_Owner* self_, char* out, s32 message, s32 count) {
+extern "C" void fn_8042EF9C(T80431_Owner* self, char* out_, s32 message, s32 count) {
 int code;
+char* out = out_;
 char* p;
 int digit;
 s32 idx;
 char* text;
 u8 choice;
-T80431_Owner* self=self_;
 JUTFont::TWidth wa,wb,wc,wd,we;
 char chunk[3];
 char padding[16];
