@@ -10,7 +10,7 @@ extern void* lbl_8053AB10;
 extern void* lbl_8053AF80;
 extern f32 lbl_804A3108[];
 extern u16 lbl_8053A110[4];
-extern f32 lbl_8053E7D8, lbl_8053E7E8, lbl_8053E7EC, lbl_8053E7F0, lbl_8053E7F4;
+extern f32 lbl_8053E7D0, lbl_8053E7D8, lbl_8053E7E8, lbl_8053E7EC, lbl_8053E7F0, lbl_8053E7F4;
 extern f32 lbl_8053E7F8, lbl_8053E7FC, lbl_8053E800, lbl_8053E804, lbl_8053E808, lbl_8053E80C;
 extern f32 lbl_8053E810, lbl_8053E814, lbl_8053E818, lbl_8053E81C, lbl_8053E820, lbl_8053E824;
 extern "C" void fn_8030C210(void*, void*);
@@ -41,7 +41,7 @@ static inline void DdgoChangeState(char* t, s32 state) {
     }
 }
 static inline void DdgoSetVelocity(char* t, f32 a, f32 b) {
-    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=0.0f;
+    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=lbl_8053E7D8;
     switch (*(s32*)(t+0x98)) {
     case 0: *(f32*)(t+0x268)=a; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
     case 1: *(f32*)(t+0x268)=b; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
@@ -50,8 +50,8 @@ static inline void DdgoSetVelocity(char* t, f32 a, f32 b) {
     }
 }
 static inline void DdgoStop(char* t) {
-    *(f32*)(t+0x270)=*(f32*)(t+0x26c)=*(f32*)(t+0x268)=
-    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=0.0f;
+    *(f32*)(t+0x270)=lbl_8053E7D8; *(f32*)(t+0x26c)=lbl_8053E7D8; *(f32*)(t+0x268)=lbl_8053E7D8;
+    *(f32*)(t+0x44)=lbl_8053E7D8; *(f32*)(t+0x40)=lbl_8053E7D8; *(f32*)(t+0x3c)=lbl_8053E7D8;
 }
 static inline s32 DdgoOldDirection(char* t) {
     s32 dir=3;
@@ -65,7 +65,14 @@ static inline f32 DdgoRandom() {
     u32* seed=(u32*)((char*)lbl_8053AAF8+0xb4);
     *seed=*seed*0x19660d+0x3c6ef35f;
     u32 bits=(*seed>>9)|0x3f800000;
-    return *(f32*)&bits-1.0f;
+    return *(f32*)&bits-lbl_8053E7D0;
+}
+static inline void DdgoIndexedBox(char* t, f32* boxes, s32 index, f32 scale) {
+    f32* box=boxes+index*4;
+    f32 l=box[0], top=box[1], b=box[3], r=box[2];
+    l=scale*l; top=scale*top; b=scale*b;
+    *(f32*)(t+0x60)=l; *(f32*)(t+0x64)=top;
+    *(f32*)(t+0x68)=scale*r; *(f32*)(t+0x6c)=b;
 }
 static inline void DdgoBox(char* t, f32* box, f32 scale) {
     f32 l=box[0], top=box[1], b=box[3], r=box[2];
