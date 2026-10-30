@@ -461,12 +461,14 @@ static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
 }
 
 #pragma opt_strength_reduction off
-static inline void msgRestoreChoiceTV(const u8* p, const u64* tags) {
+static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
     int j = 0;
     const u64* child = tags;
     for (; j < 4; j++, child++) {
         if (*child == 0) continue;
-        ((MsgDraw*)p)->screen->search(*child)->setAlpha(((const MsgPop*)p)->childAlpha[j]);
+        J2DPane* pane = ((MsgDraw*)p)->screen->search(*child);
+        u8 alpha = p[j + 0x1a5];
+        pane->setAlpha(alpha);
     }
 }
 #pragma opt_strength_reduction reset
