@@ -87,6 +87,9 @@ void fn_80458FF0(void*, s32, s32, s32);
 void fn_8022ADCC(void);
 u8 fn_802DCD0C(u8*);
 }
+struct LimtBox {
+    u32 w[4];
+};
 struct LimtState {
     JGeometry::TVec3<f32> v;
     u32 box[4];
