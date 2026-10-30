@@ -26,7 +26,7 @@ extern void* lbl_8049AE5C[];
 extern void* __vt__10J3DAnmBase[];
 extern void* __vt__15J3DAnmTransform[];
 extern "C" void __dl__FPv(void*);
-extern "C" void fn_800CFE2C(void*, J3DAnmTransformKey*, const J3DAnmTransformKeyData*);
+extern "C" void fn_800CFE2C(void*, void*, const J3DAnmTransformKeyData*);
 extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
 extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
@@ -491,7 +491,8 @@ extern "C" void fn_800CFE04(void** self, void* data)
 }
 
 #pragma opt_propagation reset
-extern "C" void fn_800CFE2C(void* self, J3DAnmTransformKey* a, const J3DAnmTransformKeyData* s) {
+extern "C" void fn_800CFE2C(void* self, void* anm, const J3DAnmTransformKeyData* s) {
+    J3DAnmTransformKey* a=(J3DAnmTransformKey*)anm;
     f32 f = lbl_8053BC80;
     int h;
     int w;
