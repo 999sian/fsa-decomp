@@ -515,13 +515,106 @@ self[0x253]=0;
 
 extern "C" void fn_8043BB84(u8* self)
 {
-    static u8 unused_guard;
-    if (self[0x252] != 0) {
-        u8* p = self;
-        s32 i = 0;
-        while (i < 0) {
-            i++;
+    static JUtility::TColor colors[6] = {
+        JUtility::TColor(255,210,0,255), JUtility::TColor(180,255,0,255),
+        JUtility::TColor(250,100,50,255), JUtility::TColor(110,225,240,255),
+        JUtility::TColor(225,130,255,255), JUtility::TColor(255,255,255,255)
+    };
+    s32 i;
+    s32 j;
+    f32 alpha;
+    if(self[0x252]) {
+        for(i=0;i<self[0x252];i++) {
+            alpha=(f32)self[0x244+i]/255.0f;
+            fn_8013B490(lbl_8053AB10);
+            alpha=200.0f*alpha;
+            for(j=0;j<5;j++) {
+                switch(self[0x1f4+i+j*10]) {
+                case 0:
+                    (*(J2DPicture**)(self+0x258))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x258))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x258))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x258))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x258))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x258))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 1:
+                    (*(J2DPicture**)(self+0x25c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x25c))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x25c))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x25c))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x25c))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x25c))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 2:
+                    (*(J2DPicture**)(self+0x260))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x260))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x260))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x260))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x260))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x260))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 3:
+                    (*(J2DPicture**)(self+0x264))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x264))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x264))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x264))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x264))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x264))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 4:
+                    (*(J2DPicture**)(self+0x268))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x268))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x268))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x268))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x268))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x268))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 5:
+                    (*(J2DPicture**)(self+0x26c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x26c))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x26c))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x26c))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x26c))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x26c))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 6:
+                    (*(J2DPicture**)(self+0x270))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x270))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x270))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x270))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x270))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x270))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 7:
+                    (*(J2DPicture**)(self+0x274))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x274))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x274))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x274))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x274))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x274))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 8:
+                    (*(J2DPicture**)(self+0x278))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x278))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x278))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x278))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x278))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x278))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                case 9:
+                    (*(J2DPicture**)(self+0x27c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+                    (*(J2DPicture**)(self+0x27c))->setAlpha((u8)alpha);
+                    (*(J2DPicture**)(self+0x27c))->draw(3.0f+*(f32*)(self+i*4+0x118),3.0f+*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    (*(J2DPicture**)(self+0x27c))->setBlackWhite(JUtility::TColor(0,0,0,0),colors[self[0x23a+i]]);
+                    (*(J2DPicture**)(self+0x27c))->setAlpha(self[0x244+i]);
+                    (*(J2DPicture**)(self+0x27c))->draw(*(f32*)(self+i*4+0x118),*(f32*)(self+i*4+0x140),16.0f**(f32*)(self+i*4+0x168),16.0f**(f32*)(self+i*4+0x168),false,false,false);
+                    break;
+                }
+                *(f32*)(self+i*4+0x118)+=*(f32*)(self+i*4+0x168)*lbl_80543CC0;
+            }
         }
+        self[0x252]=0;
     }
 }
 
