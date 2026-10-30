@@ -60,6 +60,12 @@ extern const f32 lbl_805436A0;
 extern const f32 lbl_805436A4;
 extern const f32 lbl_80543680;
 extern "C" u8 lbl_8050EC80[];
+static inline f32 MenuFade803E(s32 n) {
+    f32 v = (f32)(8 - n) * lbl_805436EC;
+    if (v < lbl_80543664) v = lbl_80543664;
+    else if (v > lbl_80543668) v = lbl_80543668;
+    return v;
+}
 static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 multiplier) {
     f32 square=(f32)(elapsed*elapsed);
     return magnitude*(square*multiplier);
@@ -1574,12 +1580,173 @@ extern "C" void fn_803E9EE8(u8* p) {
 extern const f32 lbl_8054369C;
 extern const f32 lbl_805436E8;
 extern "C" void fn_803EA3F8(u8* p) {
-    s16 cnt;
-    cnt = *(s16*)(p + 0x254) + 1;
-    *(s16*)(p + 0x254) = cnt;
-    if (cnt > 0 && cnt < 8) {
-        *(f32*)(p + 0xa0) = lbl_8054369C * (((f32)(cnt * cnt) - (f32)lbl_80543678) * lbl_805436E8);
+    u8* base = lbl_80477970;
+    u64* names;
+    int j;
+    int i;
+    J2DPane* pane;
+    f32 t;
+    s32 frame;
+    *(s16*)(p + 0x254) += 1;
+    frame = *(s16*)(p + 0x254);
+    if (frame > 0) {
+        if (frame < 8) {
+            *(f32*)(p + 0xa0) = MenuSlideExit803E(frame, lbl_8054369C, lbl_805436E8);
+            *(f32*)(p + 0xac) = MenuSlideExit803E(*(s16*)(p + 0x254), lbl_805436A0, lbl_805436E8);
+            t = (f32)(8 - *(s16*)(p + 0x254)) * lbl_805436EC;
+            if (t < lbl_80543664) t = lbl_80543664;
+            else if (t > lbl_80543668) t = lbl_80543668;
+            names = (u64*)(base + 0x420);
+            for (i = 0; i < 34; i++, names++) {
+                pane = (*(J2DPane**)(p + 8))->search(*names);
+                f32 value = p[0x2dc + i];
+                value *= t;
+                pane->setAlpha((u8)value);
+            }
+            t = (f32)(8 - *(s16*)(p + 0x254)) * lbl_805436EC;
+            if (t < lbl_80543664) t = lbl_80543664;
+            else if (t > lbl_80543668) t = lbl_80543668;
+            names = (u64*)(base + 0x398);
+            for (i = 0; i < 11; i++, names++) {
+                pane = (*(J2DPane**)(p + 8))->search(*names);
+                f32 value = p[0x2cb + i];
+                value *= t;
+                pane->setAlpha((u8)value);
+            }
+        } else {
+            *(f32*)(p + 0xa0) = lbl_8054369C;
+            *(f32*)(p + 0xac) = lbl_805436A0;
+            names = (u64*)(base + 0x420);
+            for (i = 0; i < 34; i++, names++) {
+                pane = (*(J2DPane**)(p + 8))->search(*names);
+                f32 value = p[0x2dc + i];
+                value *= lbl_80543664;
+                pane->setAlpha((u8)value);
+            }
+            names = (u64*)(base + 0x398);
+            for (i = 0; i < 11; i++, names++) {
+                pane = (*(J2DPane**)(p + 8))->search(*names);
+                f32 value = p[0x2cb + i];
+                value *= lbl_80543664;
+                pane->setAlpha((u8)value);
+            }
+        }
     }
+    frame = *(s16*)(p + 0x254);
+    if (frame > 0) {
+        if (frame < 8) {
+            *(f32*)(p + 0xb8) = MenuSlideExit803E(frame, lbl_8054368C, lbl_805436E8);
+            *(f32*)(p + 0xbc) = MenuSlideExit803E(*(s16*)(p + 0x254), lbl_8054368C, lbl_805436E8);
+            t = (f32)(8 - *(s16*)(p + 0x254)) * lbl_805436EC;
+            if (t < lbl_80543664) t = lbl_80543664;
+            else if (t > lbl_80543668) t = lbl_80543668;
+            names = (u64*)(base + 0x3f0);
+            for (i = 0; i < 6; i++, names++) {
+                pane = (*(J2DPane**)(p + 8))->search(*names);
+                f32 value = p[0x2d6 + i];
+                value *= t;
+                pane->setAlpha((u8)value);
+            }
+        } else {
+            *(f32*)(p + 0xb8) = lbl_8054368C;
+            *(f32*)(p + 0xbc) = lbl_8054368C;
+            names = (u64*)(base + 0x3f0);
+            for (i = 0; i < 6; i++, names++) {
+                pane = (*(J2DPane**)(p + 8))->search(*names);
+                f32 value = p[0x2d6 + i];
+                value *= lbl_80543664;
+                pane->setAlpha((u8)value);
+            }
+        }
+    }
+    int lo2;
+    int hi;
+    long lo;
+    for (i = 0; i < 4; i++) {
+        lo = (long)i * 5;
+        lo2 = i * 5;
+        hi = (int)i * 5 + 8;
+        if (*(s16*)(p + 0x254) > lo) {
+            if (*(s16*)(p + 0x254) < hi) {
+                s32 idx = 3 - i;
+                *(f32*)(p + 0xe0 + idx * 4) = MenuSlideExit803E(*(s16*)(p + 0x254) - lo2, lbl_805436A4, lbl_805436E8);
+                t = (f32)(8 - (*(s16*)(p + 0x254) - lo2)) * lbl_805436EC;
+                if (t < lbl_80543664) t = lbl_80543664;
+                else if (t > lbl_80543668) t = lbl_80543668;
+                u8* alpha = p + idx * 9;
+                names = (u64*)(base + 0x530);
+                names += idx * 9;
+                for (int k = 0; k < 9; k++, alpha++, names++) {
+                    pane = (*(J2DPane**)(p + 8))->search(*names);
+                    f32 value = alpha[0x2fe];
+                    value *= t;
+                    pane->setAlpha((u8)value);
+                }
+            } else {
+                s32 idx = 3 - i;
+                *(f32*)(p + 0xe0 + idx * 4) = lbl_805436A4;
+                u8* alpha = p + idx * 9;
+                names = (u64*)(base + 0x530);
+                names += idx * 9;
+                for (int k = 0; k < 9; k++, alpha++, names++) {
+                    pane = (*(J2DPane**)(p + 8))->search(*names);
+                    f32 value = alpha[0x2fe];
+                    value *= lbl_80543664;
+                    pane->setAlpha((u8)value);
+                }
+            }
+        }
+    }
+    if (*(s16*)(p + 0x254) >= 23) {
+        j = 0;
+        for (i = 0; i < 4; i++) {
+            if (i < *(s32*)(p + 0x1bc) + 1) {
+                lbl_8053AAF8[0x82] |= (u8)(1 << i);
+                u8* q = lbl_8053AAF8;
+                q[0x83] &= ~(u8)(3 << j);
+                q[0x83] |= (u8)(1 << j);
+            } else {
+                lbl_8053AAF8[0x82] &= ~(u8)(1 << i);
+                lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
+            }
+            j += 2;
+        }
+        if (*(s32*)(p + 0x1d0) == *(s32*)(p + 0x1bc) + 1) {
+            *(s32*)(p + 0x1d8) = *(s32*)(p + 0x1d4);
+            *(s32*)(p + 0x1d4) = 0xf;
+            if (*(s32*)(p + 0x1bc) == 2 && *(s32*)(lbl_80529DEC + 0x64) == -1) {
+                u8* g = lbl_8053AAF8;
+                *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+                u32 bits = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+                f32 r = *(f32*)&bits;
+                s32 v = (s32)(lbl_80543680 * (r - lbl_80543668));
+                if (v >= 3) v = 2;
+                *(s32*)(lbl_80529DEC + 0x64) = v;
+            }
+            u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+            if (rec[0x85] & 1) {
+                lbl_80529DEC[0x237] = 5;
+                *(s32*)(p + 0x360) = 6;
+            } else {
+                *(s32*)(lbl_80529DEC + 0x118) = 8;
+                *(s32*)(lbl_80529DEC + 0x11c) = 3;
+                *(s32*)(p + 0x360) = 7;
+                lbl_80529DEC[0x242] = 0;
+            }
+            lbl_80529DEC[0x23e] = 0;
+        } else {
+            fn_803E3CB0(p);
+        }
+        *(s16*)(p + 0x254) = 0;
+    }
+    (*(J2DPane**)(p + 8))->search(0x4e646174613033ULL)->move(*(f32*)(p + 0x98), *(f32*)(p + 0x9c) + *(f32*)(p + 0xa0));
+    (*(J2DPane**)(p + 8))->search(0x4e646174613035ULL)->move(*(f32*)(p + 0xa4), *(f32*)(p + 0xa8) + *(f32*)(p + 0xac));
+    (*(J2DPane**)(p + 8))->search(0x4e646174613036ULL)->move(*(f32*)(p + 0xb0), *(f32*)(p + 0xb4) + *(f32*)(p + 0xb8));
+    fn_80402E08(*(void**)(p + 0x78), lbl_80543664, *(f32*)(p + 0xbc));
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3032ULL)->move(*(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3132ULL)->move(*(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3232ULL)->move(*(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
+    (*(J2DPane**)(p + 8))->search(0x50706c6c626b3332ULL)->move(*(f32*)(p + 0xcc), *(f32*)(p + 0xdc) + *(f32*)(p + 0xec));
 }
 
 extern const f32 lbl_805436A0;
