@@ -81,6 +81,9 @@ extern "C" const char platformGround[16]="jimen_smp.bin";
 extern "C" const char platformHouse[16]="house_smp.bin";
 #pragma pool_data reset
 
+static inline void platformSetVec(Vec* v, f32 x, f32 y, f32 z) {
+    v->x=x; v->y=y; v->z=z;
+}
 extern "C" double cos(double);
 extern "C" double sin(double);
 extern "C" const f32 sincosTable___5JMath[];
