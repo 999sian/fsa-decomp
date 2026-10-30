@@ -2846,6 +2846,12 @@ s32 fn_802527B0(char* p, s32* out) {
 }
 
 #pragma opt_common_subs off
+static inline void resetGuardedTrail486(char* p) {
+    if(U8(p,0x1216)==0) {
+        if(U8(p,0x454)!=0)fn_8024B2E0(p);
+        else resetTrail(p);
+    }
+}
 static inline void resetTrailThreshold486(char* const p,f32 zero) {
     PlayerTrail* t=(PlayerTrail*)p;
     for(int i=0;i<0x31;i++) {
@@ -2864,7 +2870,7 @@ static inline void resetPlayerTrail486(PlayerTrail* t) {
 void fn_80248604(char* p) {
     if(U8(p,0x1216)==0) {
         if(U8(p,0x454)!=0)fn_8024B2E0(p);
-        else resetTrailThreshold486(p,lbl_80540034);
+        else {char* base=p;resetTrail(base);}
     }
 }
 #pragma opt_common_subs reset
