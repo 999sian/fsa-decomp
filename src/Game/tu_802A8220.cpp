@@ -58,6 +58,12 @@ static inline bool SpawnRadiusZero(f32 value) {
     return nonzero==0;
 }
 
+static inline f32 SpawnRandom() {
+    union { f32 f; u32 s; } out;
+    out.s=(((JMARandFast*)(lbl_8053AAF8+0xb4))->get()>>9)|0x3f800000;
+    return out.f-lbl_80540858;
+}
+
 extern "C" void fn_802A8284(u8* this_) {
     ActorExt* a=(ActorExt*)this_;
     s32 room=a->field_04;
