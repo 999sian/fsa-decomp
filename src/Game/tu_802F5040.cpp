@@ -2542,13 +2542,14 @@ extern "C" void fn_802FCE74(u8* this_) {
     }
 }
 #pragma dont_inline reset
+extern "C" f32 lbl_80541524;
 static inline f32 WarpSqrt802F(f32 x) {
-    if(x>0.0f) {
+    if(x>lbl_805414F8) {
         f32 estimate=__frsqrte(x);
         f32 product=estimate*x;
-        estimate=3.0f-product*estimate;
+        estimate=lbl_80541524-product*estimate;
         estimate=estimate*product;
-        return estimate*0.5f;
+        return estimate*lbl_80541520;
     }
     return x;
 }
