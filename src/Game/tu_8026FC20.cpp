@@ -801,11 +801,14 @@ inline f32 hitInvSqrt(f32 x) {
     y = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
     return y;
 }
-inline JGeometry::TVec2<f32> hitDelta(char* p, const Vec2f* pt) {
-    JGeometry::TVec2<f32> v(F32(p, 0x8), F32(p, 0xc));
+inline JGeometry::TVec2<f32>& hitSubEq(JGeometry::TVec2<f32>& v, const Vec2f* pt) {
     v.x -= pt->x;
     v.y -= pt->y;
     return v;
+}
+inline JGeometry::TVec2<f32> hitDelta(char* p, const Vec2f* pt) {
+    JGeometry::TVec2<f32> v(F32(p, 0x8), F32(p, 0xc));
+    return hitSubEq(v, pt);
 }
 inline BOOL isHitBusy(char* p) {
     if (fn_80241200(p)) {
@@ -913,9 +916,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
             S32(p, 0x464) = 2;
         }
         if (fn_80251AEC(p, 0x50)) {
-            JGeometry::TVec2<f32> d(F32(p, 0x8), F32(p, 0xc));
-            d.x -= pt->x;
-            d.y -= pt->y;
+            JGeometry::TVec2<f32> d = hitDelta(p, pt);
             s16 a = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * lbl_80540294);
             if (a < -0x6000) {
                 S32(p, 0x3dc) = 1;
@@ -939,9 +940,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
     }
     if (action == 0x18) {
         if (fn_80251AEC(p, 0x51)) {
-            JGeometry::TVec2<f32> d(F32(p, 0x8), F32(p, 0xc));
-            d.x -= pt->x;
-            d.y -= pt->y;
+            JGeometry::TVec2<f32> d = hitDelta(p, pt);
             s32 a = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * lbl_80540294);
             s32 room = S32(p, 0x3b4);
             if (*(u8*)((u32)fn_802D6A9C() + 0x131df + room)) {
@@ -988,9 +987,7 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
         S32(p, 0x464) = 0xb4;
         return true;
     }
-    JGeometry::TVec2<f32> d(F32(p, 0x8), F32(p, 0xc));
-    d.x -= pt->x;
-    d.y -= pt->y;
+    JGeometry::TVec2<f32> d = hitDelta(p, pt);
     f32 sq = d.x * d.x + d.y * d.y;
     f32 eps = lbl_80540298 * FLT_EPSILON;
     if (sq <= eps) {
