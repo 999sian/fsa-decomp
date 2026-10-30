@@ -24,6 +24,11 @@ extern "C" void fn_801E5BA8(u8*, u8*, f32*, u8);
 extern "C" f32 lbl_8053F578;
 extern "C" f32 lbl_8053F580;
 
+static inline void clearBombSlot(u8* slot) {
+    fn_801D7874(slot);
+    slot[4] = 0;
+}
+
 static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
     u8* slot;
     u8 found = 0;
@@ -42,12 +47,12 @@ static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
 }
 
 extern "C" void fn_801E4D88(u8* this_) {
+    s32 cleanupIndex;
     u8* e;
     u8** actors;
     s32 i;
     u8* p;
     s32 id;
-    s32 cleanupIndex;
     s32 count;
     u8* list[0x400];
     JGeometry::TVec3<f32> pv;
@@ -74,8 +79,8 @@ extern "C" void fn_801E4D88(u8* this_) {
             fn_801D7874(slot); slot[4]=0; continue;
         }
         {
-            u8** cursor=list;
             s32 j;
+            u8** cursor=list;
             for(j=0;j<count;j++,cursor++) {
                 if (*(s32*)(e+0x198)==*(s32*)(*cursor+0x198)) break;
             }
@@ -92,9 +97,10 @@ extern "C" void fn_801E4D88(u8* this_) {
         if(hasBombSlot(this_,e,0x30c) && hasBombSlot(this_,e,0x30d)) {
             zero.setAll(0.0f);
             *(JGeometry::TVec3<f32>*)(e+0x3c)=zero;
-            p=this_;
-            for(s32 j=0;j<16;j++,p+=0x14) {
-                if(*(s32*)(p+0x308)==*(s32*)(e+0x198) && p[0x30c] && p[0x30d]) {
+            s32 j;
+            u8* scan=this_;
+            for(j=0;j<16;scan+=0x14,j++) {
+                if(*(s32*)(scan+0x308)==*(s32*)(e+0x198) && scan[0x30c] && scan[0x30d]) {
                     u8* slot=this_+j*0x14+0x308;
                     fn_801D7830(slot);
                     movePos=*(JGeometry::TVec3<f32>*)(e+0xc);
@@ -121,23 +127,24 @@ extern "C" void fn_801E4D88(u8* this_) {
         f32 y=pv.y-*(f32*)(this_+0x10);
         f32 range=*(f32*)(this_+0x47c);
         x=x*x;
+        f32 rangeSquared=range*range;
         y=y*y;
-        range=range*range;
-        if(x+y <= range) {
+        if(x+y <= rangeSquared) {
             fn_801EB00C(this_+0x464,&pv.x,&out.x);
             u32 flags=*(u32*)(this_+0x230)&0x4000;
             if(!flags && hasBombSlot(this_,e,0x30c) && !hasBombSlot(this_,e,0x30d)) {
                 fn_801E5BA8(this_,e,&out.x,0);
             } else if(flags) {
-                u8 isZero = out.isZero();
+                u8 isZero = out.isZero() != 0;
                 if(isZero) continue;
                 if(out.z>0.0f) {
                     zero2.setAll(0.0f);
                     *(JGeometry::TVec3<f32>*)(e+0x3c)=zero2;
                     if(!hasBombSlot(this_,e,0x30c)) {
-                        p=this_;
-                        for(s32 j=0;j<16;j++,p+=0x14) {
-                            if(!p[0x30c]) {
+                        s32 j;
+                        u8* scan=this_;
+                        for(j=0;j<16;scan+=0x14,j++) {
+                            if(!scan[0x30c]) {
                                 u8* slot=this_+j*0x14+0x308;
                                 *(s32*)slot=*(s32*)(e+0x198);
                                 slot[4]=1;
