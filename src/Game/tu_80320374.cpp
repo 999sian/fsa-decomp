@@ -62,6 +62,13 @@ extern "C" void fn_801F06F0(void*, void*, s32, void*, s32, f32, f32);
 extern "C" void fn_803075AC(s32, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void* fn_801F666C(void*,s32);
+extern "C" const f32 lbl_80541AF0;
+extern "C" const f32 lbl_80541AF4;
+extern "C" const f32 lbl_80541AF8;
+static inline f32 deathRandom320374() {
+    return ((JMARandFast*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1();
+}
 extern "C" void fn_80320374(char* p) {
     s32 t;
     s32 room;
