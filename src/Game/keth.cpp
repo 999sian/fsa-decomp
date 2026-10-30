@@ -79,6 +79,12 @@ struct KethVT {
     virtual void v9();
     virtual void v10();
     virtual u8 isVisible();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual u8 canMove(s32 room, void* pos);
 };
 
 static inline f32 ksin(f32 x) { return sin(x); }
