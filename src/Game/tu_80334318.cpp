@@ -194,7 +194,12 @@ extern "C" void fn_80334488(Actor* a) {
 extern int __float_epsilon[];
 extern const f32 lbl_80541F98;
 
-static inline bool SBAL_epsEquals(f32 a, f32 b, f32 eps) {
+// The SBAL actor adds one virtual after Actor's 19.
+struct SBALActor : public Actor {
+    virtual s32 v19();
+};
+
+static inline bool SBAL_epsEquals(f32 a, const f32& b, f32 eps) {
     bool r = false;
     f32 d = a - b;
     if (-eps <= d && d <= eps) {
@@ -239,41 +244,41 @@ extern const f32 lbl_80541FC4;
 extern "C" void fn_80334A04(u8* p) {
     u16 ang;
     s32 idx;
-    JGeometry::TVec3<f32> off;
     JGeometry::TVec3<f32> v;
+    JGeometry::TVec3<f32> off;
     u8 hit;
     ang = 0;
     JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
     if (*(u32*)(p + 0x90) & 1) {
         v = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        off.x = lbl_80541F90 * JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].first;
-        off.y = lbl_80541F90 * JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].second;
+        off.x = lbl_80541F90 * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c));
+        off.y = lbl_80541F90 * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c));
         v.add(off);
         fn_802A1688(lbl_8053AC98, &v, *(u32*)(p + 4), 'SBAL');
         v = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        off.x = lbl_80541F90 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) + 0x1500) >> 5].first;
-        off.y = lbl_80541F90 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) + 0x1500) >> 5].second;
+        off.x = lbl_80541F90 * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c) + 0x1500);
+        off.y = lbl_80541F90 * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c) + 0x1500);
         v.add(off);
         fn_802A1688(lbl_8053AC98, &v, *(u32*)(p + 4), 'SBAL');
         v = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        off.x = lbl_80541F90 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) - 0x1500) >> 5].first;
-        off.y = lbl_80541F90 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) - 0x1500) >> 5].second;
+        off.x = lbl_80541F90 * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c) - 0x1500);
+        off.y = lbl_80541F90 * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c) - 0x1500);
         v.add(off);
         fn_802A1688(lbl_8053AC98, &v, *(u32*)(p + 4), 'SBAL');
     } else {
         v = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        off.x = lbl_80541F94 * JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].first;
-        off.y = lbl_80541F94 * JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].second;
+        off.x = lbl_80541F94 * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c));
+        off.y = lbl_80541F94 * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c));
         v.add(off);
         fn_802A1688(lbl_8053AC98, &v, *(u32*)(p + 4), 'SBAL');
         v = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        off.x = lbl_80541F94 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) + 0x1500) >> 5].first;
-        off.y = lbl_80541F94 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) + 0x1500) >> 5].second;
+        off.x = lbl_80541F94 * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c) + 0x1500);
+        off.y = lbl_80541F94 * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c) + 0x1500);
         v.add(off);
         fn_802A1688(lbl_8053AC98, &v, *(u32*)(p + 4), 'SBAL');
         v = *(JGeometry::TVec3<f32>*)(p + 0xc);
-        off.x = lbl_80541F94 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) - 0x1500) >> 5].first;
-        off.y = lbl_80541F94 * JMath::sincosTable_.mTable[(u16)(*(u16*)(p + 0x26c) - 0x1500) >> 5].second;
+        off.x = lbl_80541F94 * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c) - 0x1500);
+        off.y = lbl_80541F94 * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c) - 0x1500);
         v.add(off);
         fn_802A1688(lbl_8053AC98, &v, *(u32*)(p + 4), 'SBAL');
     }
@@ -324,8 +329,8 @@ extern "C" void fn_80334A04(u8* p) {
             *(s32*)(p + 0x230) = 2;
         }
         if (idx >= 0 || !SBAL_isNearZero((f32*)(p + 0x260))) {
-            *(f32*)(p + 0x3c) = *(f32*)(p + 0x23c) * JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].first;
-            *(f32*)(p + 0x40) = *(f32*)(p + 0x23c) * JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].second;
+            *(f32*)(p + 0x3c) = *(f32*)(p + 0x23c) * JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c));
+            *(f32*)(p + 0x40) = *(f32*)(p + 0x23c) * JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c));
         } else {
             *(f32*)(p + 0x3c) = lbl_80541F70;
             *(f32*)(p + 0x40) = lbl_80541F70;
@@ -346,8 +351,8 @@ extern "C" void fn_80334A04(u8* p) {
         }
         *(s32*)(p + 0x254) -= 1;
         if (idx >= 0 || !SBAL_isNearZero((f32*)(p + 0x260))) {
-            *(f32*)(p + 0x3c) = JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].first;
-            *(f32*)(p + 0x40) = JMath::sincosTable_.mTable[*(u16*)(p + 0x26c) >> 5].second;
+            *(f32*)(p + 0x3c) = JMath::sincosTable_.sinShort(*(u16*)(p + 0x26c));
+            *(f32*)(p + 0x40) = JMath::sincosTable_.cosShort(*(u16*)(p + 0x26c));
         } else {
             *(f32*)(p + 0x3c) = lbl_80541F70;
             *(f32*)(p + 0x40) = lbl_80541F70;
