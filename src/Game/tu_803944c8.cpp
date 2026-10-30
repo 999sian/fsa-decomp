@@ -454,6 +454,12 @@ static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
     }
 }
 
+static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
+    for (s32 j = 0; j < 4; j++) {
+        if (tags[j] != 0) ((MsgDraw*)p)->screen->search(tags[j])->setAlpha(p[j + 0x1a5]);
+    }
+}
+
 extern "C" const u64 lbl_80475790[5][4];
 #pragma opt_common_subs off
 extern "C" void fn_80395BE8(void* this_) {
