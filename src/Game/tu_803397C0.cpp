@@ -383,9 +383,6 @@ extern const f32 lbl_80542124;
 extern const f32 lbl_80542128;
 extern const f32 lbl_8054212C;
 
-static inline void floorPosSet(JGeometry::TVec3f* pos, const f32 x, const f32 y, const f32 z) {
-    pos->set(x, y, z);
-}
 extern "C" void fn_8033A658(u8* this_) {
 u16 angle=0;
 s32 player;
@@ -401,45 +398,45 @@ case 0:
 if(*(s32*)(self + 0x238)>=*(s32*)(self + 0x270)) {
 *(s32*)(self + 0x230)=1;
 switch(*(s32*)(self + 0x24c)) {
-case 0: fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), ((Actor*)self)->field_04, 0x276); break;
-case 8: fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), ((Actor*)self)->field_04, 0xd); break;
-case 1: if(fn_8022461C((f32*)(self+0xc), ((Actor*)self)->field_04)!=0x21) {*(u8*)(self + 0x11c)=0;break;}
-*(s32*)(self + 0x260)=fn_80226850((f32*)(self+0xc), ((Actor*)self)->field_04); fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), ((Actor*)self)->field_04, 0x79); break;
-case 2: {s32 room=((Actor*)self)->field_04;JGeometry::TVec3f pos;pos.set(*(f32*)(self+0xc)-lbl_80542114,*(f32*)(self+0x10),lbl_805420E8);fn_8029D8F0(lbl_8053AC98,(f32*)&pos,room,1,0);break;}
+case 0: fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), *(s32*)(self + 0x4), 0x276); break;
+case 8: fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), *(s32*)(self + 0x4), 0xd); break;
+case 1: if(fn_8022461C((f32*)(self+0xc), *(s32*)(self + 0x4))!=0x21) {*(u8*)(self + 0x11c)=0;break;}
+*(s32*)(self + 0x260)=fn_80226850((f32*)(self+0xc), *(s32*)(self + 0x4)); fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), *(s32*)(self + 0x4), 0x79); break;
+case 2: {s32 room=*(s32*)(self+4);JGeometry::TVec3f pos;pos.set(*(f32*)(self+0xc)-lbl_80542114,*(f32*)(self+0x10),lbl_805420E8);fn_8029D8F0(lbl_8053AC98,(f32*)&pos,room,1,0);break;}
 case 3: {
-s32 y; s32 x;f32 dy;f32 dx; f32 zero=lbl_805420E8; f32 step=lbl_80542114; f32 off=lbl_80542118;
+s32 y; s32 x;f32 dy;f32 dx; f32 zero; f32 step; f32 off; off=lbl_80542118; step=lbl_80542114; zero=lbl_805420E8;
 for(x=0;x<6;x++){dx=step*x;for(y=0;y<6;y++){dy=step*y;
-s32 room=((Actor*)self)->field_04;JGeometry::TVec3f pos;pos.set(*(f32*)(self+0xc)-off+dx,*(f32*)(self+0x10)-off+dy,zero);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x1b0);
-s32 room2=((Actor*)self)->field_04+1;JGeometry::TVec3f pos2;pos2.set(*(f32*)(self+0xc)-off+dx,*(f32*)(self+0x10)-off+dy,zero);fn_802A381C(lbl_8053AC98,(f32*)&pos2,room2,0);
+s32 room=*(s32*)(self+4);JGeometry::TVec3f pos;pos.set(*(f32*)(self+0xc)-off,*(f32*)(self+0x10)-off,zero);pos.x+=dx;pos.y+=dy;fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x1b0);
+s32 room2=*(s32*)(self+4)+1;JGeometry::TVec3f pos2;pos2.set(*(f32*)(self+0xc)-off,*(f32*)(self+0x10)-off,zero);pos2.x+=dx;pos2.y+=dy;fn_802A381C(lbl_8053AC98,(f32*)&pos2,room2,0);
 }}break;}
 case 4: {
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,*(f32*)(self + 0x10)-lbl_8054211C,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x272);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),*(f32*)(self + 0x10)-lbl_8054211C,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27d);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,lbl_8054211C+*(f32*)(self + 0x10),lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x275);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),lbl_8054211C+*(f32*)(self + 0x10),lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27a);}
+{s32 room=*(s32*)(self+4); f32 y=*(f32*)(self+0x10); y-=lbl_8054211C; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x272);}
+{s32 room=*(s32*)(self+4); f32 y=*(f32*)(self+0x10); y-=lbl_8054211C; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27d);}
+{s32 room=*(s32*)(self+4); f32 y=lbl_8054211C+*(f32*)(self + 0x10); JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x275);}
+{s32 room=*(s32*)(self+4); f32 y=lbl_8054211C+*(f32*)(self + 0x10); JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27a);}
 break;}
 case 6: {
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,*(f32*)(self + 0x10)-lbl_8054211C,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x273);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),*(f32*)(self + 0x10)-lbl_8054211C,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27c);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,lbl_8054211C+*(f32*)(self + 0x10),lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x274);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),lbl_8054211C+*(f32*)(self + 0x10),lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27b);}
+{s32 room=*(s32*)(self+4); f32 y=*(f32*)(self+0x10); y-=lbl_8054211C; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x273);}
+{s32 room=*(s32*)(self+4); f32 y=*(f32*)(self+0x10); y-=lbl_8054211C; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27c);}
+{s32 room=*(s32*)(self+4); f32 y=lbl_8054211C+*(f32*)(self + 0x10); JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x274);}
+{s32 room=*(s32*)(self+4); f32 y=lbl_8054211C+*(f32*)(self + 0x10); JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x27b);}
 break;}
 case 9: {
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,*(f32*)(self + 0x10)-lbl_8054211C,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),*(f32*)(self + 0x10)-lbl_8054211C,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,lbl_8054211C+*(f32*)(self + 0x10),lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
-{s32 room=((Actor*)self)->field_04; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),lbl_8054211C+*(f32*)(self + 0x10),lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
+{s32 room=*(s32*)(self+4); f32 y=*(f32*)(self+0x10); y-=lbl_8054211C; JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
+{s32 room=*(s32*)(self+4); f32 y=*(f32*)(self+0x10); y-=lbl_8054211C; JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
+{s32 room=*(s32*)(self+4); f32 y=lbl_8054211C+*(f32*)(self + 0x10); JGeometry::TVec3f pos; pos.set(*(f32*)(self + 0xc)-lbl_8054211C,y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
+{s32 room=*(s32*)(self+4); f32 y=lbl_8054211C+*(f32*)(self + 0x10); JGeometry::TVec3f pos; pos.set(lbl_8054211C+*(f32*)(self + 0xc),y,lbl_805420E8);fn_802A381C(lbl_8053AC98,(f32*)&pos,room,0x361);}
 break;}
-case 5: *(s32*)(self + 0x260)=fn_80226850((f32*)(self+0xc),((Actor*)self)->field_04); if(*(s32*)(self + 0x260)<0x40 || *(s32*)(self + 0x260)>0x49){*(u8*)(self + 0x11c)=0;break;} fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), ((Actor*)self)->field_04, 0x11); break;
+case 5: *(s32*)(self + 0x260)=fn_80226850((f32*)(self+0xc),*(s32*)(self + 0x4)); if(*(s32*)(self + 0x260)<0x40 || *(s32*)(self + 0x260)>0x49){*(u8*)(self + 0x11c)=0;break;} fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), *(s32*)(self + 0x4), 0x11); break;
 case 7: {s32 idx=fn_801F2718(self,0x544b5241);if(idx>=0){u8* obj=fn_801F666C(fn_801F856C(),idx);if(obj) *(u8*)(obj + 0x11c)=0;}
-if(fn_80226850((f32*)(self+0xc),((Actor*)self)->field_04)==0x10) *(u8*)(self + 0x258)=1;
-fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), ((Actor*)self)->field_04, 0x9e); break;}
+if(fn_80226850((f32*)(self+0xc),*(s32*)(self + 0x4))==0x10) *(u8*)(self + 0x258)=1;
+fn_802A381C(lbl_8053AC98, (f32*)(self+0xc), *(s32*)(self + 0x4), 0x9e); break;}
 }
 *(s32*)(self + 0x238)=0;*(f32*)(self + 0x44)=lbl_805420EC;
 } else {
 switch(*(s32*)(self + 0x24c)){
-case 1: if(fn_8022461C((f32*)(self+0xc),((Actor*)self)->field_04)!=0x21){if (((Actor*)self)->v13() > 0) ((Actor*)self)->v10(255,1); *(u8*)(self + 0x11c)=0; return;}break;
-case 5: *(s32*)(self + 0x260)=fn_80226850((f32*)(self+0xc),((Actor*)self)->field_04);
+case 1: if(fn_8022461C((f32*)(self+0xc),*(s32*)(self + 0x4))!=0x21){if (((Actor*)self)->v13() > 0) ((Actor*)self)->v10(255,1); *(u8*)(self + 0x11c)=0; return;}break;
+case 5: *(s32*)(self + 0x260)=fn_80226850((f32*)(self+0xc),*(s32*)(self + 0x4));
 if(*(s32*)(self + 0x260)<0x40||*(s32*)(self + 0x260)>0x49){if (((Actor*)self)->v13() > 0) ((Actor*)self)->v10(255,1); *(u8*)(self + 0x11c)=0; return;}break;
 }
 *(s32*)(self + 0x248)=*(s32*)(self + 0x244);
@@ -447,7 +444,7 @@ if(!*(u8*)(self + 0x278)) {
 int best=0xfff;
 s32 count=*(s32*)((u8*)fn_801F856C()+0x1008);
 for(s32 i=0;i<count;i++) {
-u8* obj=*((u8**)fn_801F856C()+i+2);
+u8* obj=(u8*)*((Actor**)fn_801F856C()+i+2);
 if(obj && *(u32*)(obj+0x1a0)==0x464c594f && obj) {
 int value; if(*(s32*)(obj+0x230)==0||*(s32*)(obj+0x230)==4) value=*(s32*)(obj+0x248); else value=0xfff; if(value<=best) {if(*(s32*)(obj+0x230)==0||*(s32*)(obj+0x230)==4) value=*(s32*)(obj+0x248); else value=0xfff; best=value;}
 }}
@@ -481,17 +478,17 @@ if(*(s32*)(self + 0x238)%20==1 && *(s32*)(self + 0x238)<=61){*(f32*)(self + 0x10
 }break;
 case 3: if (((Actor*)self)->v13() > 0) ((Actor*)self)->v10(255,1);
 switch(*(s32*)(self + 0x24c)){
-case 0:case 8:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x7e, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x7f, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30018, 0);break;
-case 1:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x357, 0, 0, 0, 0, 1, lbl_80542128);fn_801F0E34(self, 0x30002, 0);fn_80339820(self);break;
-case 2:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xad, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xaf, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xb0, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30003, 0);break;
-case 3:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x82, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x83, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x84, 1, 0, 0, 0, 1, lbl_805420EC);
-if(**(s8**)(self+0x288)=='r'||**(s8**)(self+0x288)=='s'){fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x80, 1, 0, 0, 0, 1, lbl_805420EC);}else{fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x81, 1, 0, 0, 0, 1, lbl_805420EC);}fn_801F0E34(self, 0x30003, 0);break;
-case 4:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xa7, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xa8, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30003, 0);break;
-case 5:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xab, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0xac, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x3000b, 0);fn_80339820(self);break;
-case 6:case 9:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x99, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x9a, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30003, 0);break;
-case 7:fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x78, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(((Actor*)self)->field_04, self+0xc, 0x79, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30018, 0);break;
+case 0:case 8:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x7e, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x7f, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30018, 0);break;
+case 1:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x357, 0, 0, 0, 0, 1, lbl_80542128);fn_801F0E34(self, 0x30002, 0);fn_80339820(self);break;
+case 2:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xad, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xaf, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xb0, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30003, 0);break;
+case 3:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x82, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x83, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x84, 1, 0, 0, 0, 1, lbl_805420EC);
+if(**(s8**)(self+0x288)=='r'||**(s8**)(self+0x288)=='s'){fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x80, 1, 0, 0, 0, 1, lbl_805420EC);}else{fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x81, 1, 0, 0, 0, 1, lbl_805420EC);}fn_801F0E34(self, 0x30003, 0);break;
+case 4:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xa7, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xa8, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30003, 0);break;
+case 5:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xab, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0xac, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x3000b, 0);fn_80339820(self);break;
+case 6:case 9:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x99, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x9a, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30003, 0);break;
+case 7:fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x78, 1, 0, 0, 0, 1, lbl_805420EC);fn_8013CC50(*(s32*)(self + 0x4), self+0xc, 0x79, 1, 0, 0, 0, 1, lbl_805420EC);fn_801F0E34(self, 0x30018, 0);break;
 }
-if(*(s32*)(self + 0x254)==1){s32 idx=fn_801F8544(fn_801F856C(),0x52555059,((Actor*)self)->field_04,self+0xc,4);if(idx>=0){
+if(*(s32*)(self + 0x254)==1){s32 idx=fn_801F8544(fn_801F856C(),0x52555059,*(s32*)(self + 0x4),self+0xc,4);if(idx>=0){
 u8* obj=fn_801F666C(fn_801F856C(),idx);
 if(obj){JGeometry::TVec3f vel(lbl_805420E8,lbl_805420E8,lbl_8054212C);*(JGeometry::TVec3f*)(obj+0x3c)=vel;}
 }}
@@ -499,7 +496,7 @@ if(obj){JGeometry::TVec3f vel(lbl_805420E8,lbl_805420E8,lbl_8054212C);*(JGeometr
 case 4:if(fn_802D800C(fn_802D6A9C(),*(s32*)(self + 0x250))){*(s32*)(self + 0x230)=0;*(s32*)(self + 0x238)=0;}break;
 }
 if(*(s32*)(self + 0x230)!=0 && *(s32*)(self + 0x230)!=4){
-f32 xpos=*(f32*)(self + 0xc); f32 ypos=*(f32*)(self + 0x10)-*(f32*)(self + 0x14); JGeometry::TVec3f pos; pos.set(xpos,ypos,lbl_805420E8);
+f32 xpos=*(f32*)(self + 0xc); f32 ypos=*(f32*)(self + 0x10)-*(f32*)(self + 0x14); f32 y=ypos; JGeometry::TVec3f pos; pos.set(xpos,y,lbl_805420E8);
 fn_8030C210(((void**)lbl_8053AB10)[9],&pos);
 *(s32*)(self + 0x240)+=*(s16*)(self + 0x25c);
 if(*(s32*)(self + 0x240)>=0x8000){
@@ -507,7 +504,7 @@ if(*(s32*)(self + 0x240)>=0x8000){
 if(*(s32*)(self + 0x23c)<=0){*(s32*)(self + 0x23c)=1;fn_801F0E34(self, 0x3003f, 0);}
 }}
 if(*(s32*)(self + 0x230)==1 || *(s32*)(self + 0x230)==2){
-if(fn_801F6758(self+0xc,((Actor*)self)->field_04,lbl_80542114)){*(u8*)(self + 0x11c)=0;}
+if(fn_801F6758(self+0xc,*(s32*)(self + 0x4),lbl_80542114)){*(u8*)(self + 0x11c)=0;}
 else if(collided || fn_801F2B7C(self,*(s32*)(self + 0x114),-1,*(s32*)(self + 0x268))){*(s32*)(self + 0x230)=3;}
 else {
 for(s32 i=0;i<4;i++){
@@ -516,7 +513,7 @@ if(hit==1){
 s32 value=fn_802357E0(fn_8022F340(i));
 fn_802359A4(fn_8022F340(i),value);
 s32 n=fn_802357E0(fn_8022F340(i));
-s32 room=((Actor*)self)->field_04;
+s32 room=*(s32*)(self + 0x4);
 void* obj=fn_8022F340(i);
 fn_801F6718(fn_801F856C(),obj,room,self+0xc,n,0);
 }
