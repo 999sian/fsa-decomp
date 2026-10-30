@@ -1,4 +1,3 @@
-#include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Matrix.h"
 #include "types.h"
@@ -598,4 +597,7 @@ extern "C" u8* fn_8010D7A0(u8* this_) {
     *(s32*)(this_ + 0x37c) = 0;
     return this_;
 }
+
+#include "Game/SinitPoolChain.h"
+
 
