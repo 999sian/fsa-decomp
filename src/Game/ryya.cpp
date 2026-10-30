@@ -77,6 +77,20 @@ static inline void ryyaPlayerDirection(char* p,const JGeometry::TVec3f& delta) {
 #include "types.h"
 
 // from src/Game/Saya_ForceStateRange_801A68A4.cpp
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AF80;
+extern const f32 lbl_8053E628, lbl_8053E62C, lbl_8053E654, lbl_8053E660, lbl_8053E664;
+extern "C" void fn_80138B7C(void*);
+extern "C" void fn_80458508(void*,s32);
+extern "C" void fn_8022B1C8(void);
+extern "C" void fn_801A7C48(void*);
+static inline void ryyaSetCycle(char* p, s32 st) {
+    if (*(s32*)(p + 0x250) != st) {
+        *(s32*)(p + 0x250) = st;
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x240) = 0;
+    }
+}
 extern "C" void fn_801A68DC(void* this_);
 
 // SAYA cluster, part 14/18 (56B). Vtable-slot wrapper directly invoking
@@ -304,13 +318,7 @@ struct RyyaVT {
     virtual u8 v11();
 };
 
-static inline void ryyaSetCycle(char* p, s32 st) {
-    if (*(s32*)(p + 0x250) != st) {
-        *(s32*)(p + 0x250) = st;
-        *(s32*)(p + 0x234) = 0;
-        *(s32*)(p + 0x240) = 0;
-    }
-}
+
 
 extern "C" void fn_801A7DD4(char* p) {
     *(f32*)(p + 0x60) = lbl_8053E660;
