@@ -467,6 +467,26 @@ static inline s32 cutsceneFlag(s32 idx,s32 bit) {
     return (mask & *(u32*)(lbl_8050EC80+*(s32*)(lbl_8050EC80+0x10)*200+0x28))!=0;
 }
 
+extern "C" void* fn_80119DD0(void);
+extern "C" void fn_80119958(void);
+extern "C" void fn_80119998(void*,s32,s32,s32,s32,s32,s32,s32);
+extern "C" void Gol2_SetField_0x2f4(void*,s32);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern f32 lbl_80542CA8;
+extern const f32 lbl_80542C5C;
+extern const f32 lbl_80542C60;
+extern const f32 lbl_80542C8C;
+extern const f32 lbl_80542C90;
+extern const f32 lbl_80542C94;
+extern const f32 lbl_80542C98;
+extern const f32 lbl_80542C9C;
+extern const f32 lbl_80542CAC;
+extern const f32 lbl_80542CB0;
+
+void Unk8036C300::state1() {
+}
+
 #pragma opt_common_subs off
 void Unk8036C300::state0() {
     Vec3f v;
