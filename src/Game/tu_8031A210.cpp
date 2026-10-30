@@ -80,14 +80,52 @@ extern "C" void fn_8031A270(Actor* p) {
     }
 }
 
-extern "C" void fn_801F856C(void);
-extern "C" void fn_8013CC50(void);
+#include "JSystem/JGeometry/Box.h"
+extern "C" void* fn_801F856C();
+extern "C" void fn_8013CC50(s32=0,void* =0,f32=1,s32=0,s32=0,s32=0,s32=0,s32=0,s32=1);
 extern "C" void fn_801F0D20(Actor*, s32);
+extern "C" void fn_801F0E34(void*,s32,s32);
 extern "C" void fn_801F71A4(void*, f32, f32, f32);
-extern "C" void fn_8023AF14(void);
-extern "C" void fn_801F2618(void);
-extern "C" void Actor_CreateByID(void);
-extern "C" void fn_8023E724(void);
+extern "C" s32 fn_8023AF14(void*,s32,s32,f32);
+extern "C" u8 fn_801F2618(void*,s32,s32);
+extern "C" void* Actor_CreateByID(void* =0,u32=0,s32=0,void* =0,s32=0,s32=-1,s32=-1);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" u8 fn_80230188(s32);
+extern "C" u8 fn_8023EA28(s32);
+extern "C" u8 fn_8023B9CC(s32,void*,s32,void*,s32);
+extern "C" u8 fn_8023B848(s32,void*,s32,void*);
+extern "C" u8 fn_80234C5C(s32);
+extern "C" u8 fn_8022B7C4(s32);
+extern "C" u8 fn_80234ECC(s32);
+extern "C" u8 fn_8023ED8C(s32);
+extern "C" u8 fn_8023EBB8(s32);
+extern "C" u8 fn_80233DA4(s32);
+extern "C" u8 fn_802308E0(s32);
+extern "C" u8 fn_80233E40(s32);
+extern "C" void fn_80230498(s32,void*,s32,s32,s32,s32,s32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern "C" u8 fn_802D7F40(void*,s32);
+extern "C" void fn_802D7F84(void*,s32,s32);
+extern "C" void fn_8043D67C(void*,s32,s32,s32);
+extern "C" void fn_8043D874(void*,s32,s32,s32);
+extern "C" void fn_80230FD0(s32,s32);
+extern "C" void fn_802362C4(s32,s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u8 fn_8023F264(s32);
+extern "C" void fn_801F3604(void*);
+extern "C" void fn_8030C210(void*,void*);
+extern "C" u8 fn_80233D20(s32);
+extern "C" s32 fn_801F78F4(void*,u32,s32);
+extern "C" u8* fn_801F666C(void*,s32);
+extern "C" void fn_801EE558(void*,void*,void*,s32);
+extern "C" void* lbl_8053AED0;
+extern "C" u8* lbl_8053AB10;
+extern "C" u8 lbl_80471678[];
+extern "C" s32 lbl_804AB078[];
+extern "C" const f32 lbl_80541924,lbl_80541928,lbl_8054192C,lbl_80541938,lbl_8054193C,lbl_80541940,lbl_80541944,lbl_8054194C,lbl_80541950,lbl_80541954,lbl_80541958,lbl_8054195C,lbl_80541960,lbl_80541964,lbl_80541968,lbl_8054196C,lbl_80541970,lbl_80541974,lbl_80541978,lbl_8054197C,lbl_80541980,lbl_80541984;
+inline u8 actorRoomMode(u32);
+inline f32 actorRandomUnit();
 extern "C" f32 PSVECDistance(const Vec*, const Vec*);
 extern "C" void fn_8031A6A4(Actor* p) {
     u32 room;
