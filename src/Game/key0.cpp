@@ -942,10 +942,10 @@ static inline void key0LinkHere(char* p) {
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
-    Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
     Key0Pt pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
     u32 id = *(u32*)(p + 0x238);
-    key0LinkPoints(pos, key, packed, id);
+    key0LinkPoints(key, pos, packed, id);
 }
 
 // KEY0: the key sat dropped too long; send it home.
