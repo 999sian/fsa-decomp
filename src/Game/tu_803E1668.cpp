@@ -66,6 +66,8 @@ static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 
 }
 static inline f32 MenuSquare803E(s32 n) { return n * n; }
 static inline int MenuFadeAlpha803E(u8 alpha, const f32 factor) { return (f32)alpha * factor; }
+static inline void MenuSetSlide803E(u8* entry, f32 value) { *(f32*)(entry + 0x120) = value; }
+static inline f32 MenuGetSlide803E(u8* entry) { return *(f32*)(entry + 0x120); }
 static inline f32 MenuAlpha803E(s32 elapsed) {
     return (f32)(elapsed * elapsed) / 900.0f;
 }
@@ -1907,7 +1909,7 @@ MenuRowAlpha803E(p,*selected,base,lbl_80543664);
 }}}
 time=*(s16*)(p+0x254);
 if(time>15){if(time<23){
-((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0]=(lbl_805436AC*(MenuSquare803E(time-15)/64.0f));
+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slideX=(lbl_805436AC*(MenuSquare803E(time-15)/64.0f));
 s32 id=*(s32*)(p+0x1bc);
 t=(f32)(8-(*(s16*)(p+0x254)-15))/8.0f;
 if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
@@ -1915,7 +1917,7 @@ if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
 u64* names=(u64*)(base+0x140);names+=id*6;u8* alpha=p+id*6;for(int k=0;k<6;k++,alpha++,names++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=t;((Pane803E4650*)pane)->setAlpha((int)value);}}
 
 }else{
-((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0]=lbl_805436AC;
+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slideX=lbl_805436AC;
 MenuRowAlpha803E(p,*(s32*)(p+0x1bc),base,lbl_80543664);
 
 }}
@@ -1965,7 +1967,7 @@ fn_80402E08(*(void**)(p+0x78),lbl_80543664,*(f32*)(p+0xfc));
 (*(J2DPane**)(p+4))->search(0x004e646174613035ULL)->move(*(f32*)(p+316)+*(f32*)(p+332),*(f32*)(p+320));
 (*(J2DPane**)(p+4))->search(0x004e646174613037ULL)->move(*(f32*)(p+324)+*(f32*)(p+332),*(f32*)(p+328));
 f32 y=getBounds__7J2DPaneFv((*(J2DPane**)(p+4))->search(0x50736375726f3032ULL))[1];
-(*(J2DPane**)(p+4))->search(0x50736375726f3032ULL)->move(*(f32*)(p+0x19c)+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0],y);
+(*(J2DPane**)(p+4))->search(0x50736375726f3032ULL)->move(*(f32*)(p+0x19c)+((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slideX,y);
 }
 #pragma optimization_level 3
 extern "C" void fn_80403680(void* p);
