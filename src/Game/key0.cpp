@@ -701,6 +701,40 @@ extern "C" void fn_802C2BD0(char* p) {
     key0Register(p);
 }
 
+extern "C" void fn_801F0E34(char* p, s32 a, s32 b);
+extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_802DE9A0();
+extern "C" u8 fn_802DEB58();
+extern const f32 lbl_80540C7C;
+
+// KEY0: react to the tile the key landed on (pit / special floor).
+static inline u8 key0TileEvent(char* p, u16 tile) {
+    u8 handled;
+    if (tile == 3) {
+        if ((u8)fn_801EE24C(p) == 1) {
+            *(s32*)(p + 0x240) = 4;
+            handled = 1;
+            goto done;
+        }
+    } else if (tile == 0xe) {
+        if (fn_802DE9A0()) {
+            fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540C7C, 0x2a9, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540C7C, 0x2aa, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5005f, 0);
+        } else if (fn_802DEB58()) {
+            fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540C7C, 0x45e, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(s32*)(p + 4), p + 0xc, lbl_80540C7C, 0x45f, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5003f, 0);
+        }
+    } else {
+        handled = 0;
+        goto done;
+    }
+    *(u8*)(p + 0x2b0) = handled = 1;
+done:
+    return handled;
+}
+
 #pragma auto_inline off
 extern "C" void fn_802C2C30(char* p) {
     s32 room;
