@@ -462,6 +462,7 @@ static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
     }
 }
 
+#pragma opt_common_subs reset
 extern "C" const u64 lbl_80475790[5][4];
 #pragma opt_propagation on
 extern "C" void fn_80395BE8(void* this_) {
