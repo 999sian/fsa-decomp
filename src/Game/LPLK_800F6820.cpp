@@ -88,6 +88,14 @@ struct LplkRandom {
 };
 struct LplkGame { u8 pad[0xb4]; LplkRandom rnd; };
 extern LplkGame* lbl_8053AAF8;
+static inline f32 LplkRand() {
+    u32 multiplier = 0x19660d;
+    LplkGame* game = lbl_8053AAF8;
+    union {f32 f; u32 u;} value;
+    game->rnd.seed = game->rnd.seed * multiplier + 0x3c6ef35f;
+    value.u = (game->rnd.seed >> 9) | 0x3f800000;
+    return value.f - lbl_8053BF30;
+}
 extern const f32 lbl_8053BF34;
 extern const f32 lbl_8053BF38;
 extern const u16 lbl_80539E70[4];
@@ -263,7 +271,7 @@ u16 angle;
 s32 id,priority,player,amount;
 bool grounded;
 f32 absY,absX,oldV;
-f32 vertical,gravity,zero;
+f32 vertical,gravity,zero,dy,speed;
 angle=0;dist=lbl_8053BF48;quad=0;target=-1;
 fn_801EEC98(self,(*(s32*)(self+0x198)),&angle,&quad,&dist,&target,0,0);
 ++(*(s32*)(self+0x24c));
@@ -271,10 +279,10 @@ switch((*(s32*)(self+0x230))){
 case 4:if(((LplkVirt*)self)->v11()){(*(s32*)(self+0x230))=0;}break;
 case 0:
 grounded=false;vertical=(*(f32*)(self+0x44));gravity=lbl_8053BF3C;(*(f32*)(self+0x44))=vertical-gravity;
-if((*(f32*)(self+0x14))<lbl_8053BF48){
+zero=lbl_8053BF48;if((*(f32*)(self+0x14))<zero){
 if(self[0x23c]==0){
 fn_801F0E34(self,0x3000a,0);(*(f32*)(self+0x14))=lbl_8053BF48;
-(*(f32*)(self+0x44))=(lbl_8053BF30-lbl_8053BF58*((JMath::TRandom_fast_*)&lbl_8053AAF8->rnd)->get_ufloat_1())+lbl_8053BF58;
+(*(f32*)(self+0x44))=(lbl_8053BF30-lbl_8053BF58*lbl_8053AAF8->rnd.get())+lbl_8053BF58;
 (*(f32*)(self+0x3c))=lbl_8053BF34-lbl_8053AAF8->rnd.get();
 (*(f32*)(self+0x40))=lbl_8053BF34-lbl_8053AAF8->rnd.get();
 self[0x23c]=1;
@@ -294,7 +302,7 @@ if(fn_801F3D94(self,1)!=0)break;if(fn_801F305C(self))break;
 if(target!=-1 && dist<lbl_8053BF64 && !(u8)fn_8022DCD8(target)){
 *(u16*)(self+0x23e)=angle;
 absX=__fabsf((*(f32*)(self+0xc))-fn_8023E724(target)->x);
-absY=__fabsf((*(f32*)(self+0x10))-fn_8023E724(target)->y);
+dy=(*(f32*)(self+0x10))-fn_8023E724(target)->y;absY=__fabsf(dy);
 if(absX<lbl_8053BF68 && absY<lbl_8053BF68 && (u8)fn_8022DE10(target,1)==1){
 (*(s32*)(self+0x230))=2;(*(s32*)(self+0x238))=target;(*(s32*)(self+0x250))=0;(*(s32*)(self+0x248))=0;(*(s32*)(self+0x240))=0;self[0x235]=0;}
 }else{
