@@ -1858,21 +1858,6 @@ extern "C" u8 fn_8038470C(s32 p, s32 q) {
     return 0;
 }
 
-static inline void removeMessageSlot(s32 a, s32& found, s32 start) {
-if (((u8*)lbl_8053AD78->sub[resolvePlayer(a)])[0x24] == 8) {
- s32 b=resolvePlayer(a); s32 temp[4]; s32 j, offset; s32* out;
- j=start; out=temp; offset=j;
- for(;j<lbl_8053AD78->wf8;offset+=4,out++,j++) {
- *out=*(s32*)((u8*)lbl_8053AD78+offset+0xfc);
- if(*(s32*)((u8*)lbl_8053AD78+offset+0xfc)==b){*(s32*)((u8*)lbl_8053AD78+offset+0xfc)=-1;found=j;}
- }
- lbl_8053AD78->wf8--;
- for(;found<lbl_8053AD78->wf8;found++)lbl_8053AD78->wfc[found]=temp[found+1];
- lbl_8053AD78->wfc[lbl_8053AD78->wf8]=-1;
- if((*(u16*)((u8*)lbl_8053AD78->sub[a]+0x28)&0x40)==0)fn_80458880(lbl_8053AF80,0x29,-1);
-}
-}
-
 extern "C" void fn_80230224(s32 i, s32 b);
 #pragma opt_lifetimes on
 extern "C" u8 fn_80384C58(s32 param_1, s32 param_2) {
