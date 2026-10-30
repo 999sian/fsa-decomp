@@ -115,6 +115,10 @@ extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
 #pragma opt_loop_invariants off
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
+static inline f32 beeeScaled(const f32 scale, const f32 value) {
+    return scale * value;
+}
+
 extern "C" void fn_80343D90(char* p) {
     JGeometry::TVec3<f32> delta;
     delta.x=delta.y=delta.z=lbl_80542350;
@@ -202,15 +206,16 @@ states:
                     delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
                     f32 playerY=F7(fn_8023E724(i),4);
                     delta.y=playerY-F7(p,0x10);
-                    f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
+                    f32 yy=delta.y*delta.y;
+                    f32 xx=delta.x*delta.x;
                     if(!(xx+yy>lbl_8054236C)) {
                         I7(p,0x238)=60;
                         {
-                            int j;
+                            u32 j;
                             char* segment=p+12;char* angles=p+2;
                             for(j=1;j<7;j++) {
                                 V7(segment,0x2f8)=V7(p,0x2f8);
-                                H7(angles,0x294)=(j<<16)/6;
+                                H7(angles,0x294)=((s32)(j<<16))/6;
                                 F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
                                 F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
                                 segment+=12;angles+=2;
@@ -225,15 +230,16 @@ states:
                 delta.x=F7(fn_8023E724(i),0)-F7(p,0xc);
                 f32 playerY=F7(fn_8023E724(i),4);
                     delta.y=playerY-F7(p,0x10);
-                f32 xx=delta.x*delta.x,yy=delta.y*delta.y;
+                f32 yy=delta.y*delta.y;
+                    f32 xx=delta.x*delta.x;
                 if(!(xx+yy>lbl_80542374)) {
                     I7(p,0x238)=120;
                     {
-                            int j;
+                            u32 j;
                             char* segment=p+12;char* angles=p+2;
                             for(j=1;j<7;j++) {
                                 V7(segment,0x2f8)=V7(p,0x2f8);
-                                H7(angles,0x294)=(j<<16)/6;
+                                H7(angles,0x294)=((s32)(j<<16))/6;
                                 F7(segment,0x2f8)+=lbl_80542370*JMath::sincosTable_.sinShort(H7(angles,0x294));
                                 F7(segment,0x2fc)+=lbl_80542370*JMath::sincosTable_.cosShort(H7(angles,0x294));
                                 segment+=12;angles+=2;
@@ -489,5 +495,84 @@ extern "C" void fn_803450AC(char* this_) {
     *(f32*)(this_ + 0x6c) = 4.0f;
     *(s32*)(this_ + 0x230) = 0;
     *(u8*)(this_ + 0x194) = 1;
+}
+
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char lbl_8050A2F8[];
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" void __register_global_object(void*, void*, void*);
+extern "C" void fn_80345218(void) {
+    char* base = lbl_8050A2F8;
+    if (!__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (!__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0xc);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+    if (!__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel) {
+        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x18);
+        __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
+    }
+    if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x24);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
+    }
+    if (!__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x30);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
+    }
+    if (!__init__memPool___30JASPoolAllocObject_9JAIStream) {
+        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, base + 0x3c);
+        __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
+    }
+    if (!__init__memPool___35JASPoolAllocObject_13JAISoundChild) {
+        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, base + 0x48);
+        __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
+    }
+    if (!__init__memPool___27JASPoolAllocObject_6JAISeq) {
+        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, base + 0x54);
+        __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
+    }
+    if (!__init__memPool___26JASPoolAllocObject_5JAISe) {
+        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, base + 0x60);
+        __init__memPool___26JASPoolAllocObject_5JAISe = 1;
+    }
 }
 
