@@ -855,6 +855,8 @@ extern "C" void fn_8030C210(void* a, void* b);
 extern "C" s32 fn_8022F340(s32 a);
 extern "C" void fn_801F3604(void* a);
 extern "C" u8 fn_8023F264(s32 a);
+static inline s32 rupyRandScaled(const f32 scale) { return scale * rupyInitRand01(); }
+
 static inline f32 rupyDistance(f32 dx, f32 dy) { return std::sqrtf(dx * dx + dy * dy); }
 
 #pragma opt_propagation off
@@ -991,9 +993,10 @@ extern "C" void fn_8032C664(u8* p) {
         *(f32*)(p + 0x44) = lbl_80541DB4;
         *(s32*)(p + 0x24c) = 0x212;
         *(s32*)(p + 0x230) = 4;
-    case 4:
+    case 4: {
+        f32 zero=lbl_80541D88;
         *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_80541DAC;
-        if (*(f32*)(p + 0x14) <= lbl_80541D88 && *(f32*)(p + 0x44) < lbl_80541D88) {
+        if (*(f32*)(p + 0x14) <= zero && *(f32*)(p + 0x44) < zero) {
             *(f32*)(p + 0x44) = lbl_80541D88;
             *(f32*)(p + 0x40) = lbl_80541D88;
             *(f32*)(p + 0x3c) = lbl_80541D88;
@@ -1025,6 +1028,7 @@ extern "C" void fn_8032C664(u8* p) {
             p[0x11c] = 0;
         }
         break;
+    }
     case 6:
         for (i = 0; i < 4; i++) {
             if (fn_80230188(i) == 0) {
@@ -1130,7 +1134,7 @@ extern "C" void fn_8032C664(u8* p) {
             }
             dy = *(f32*)(p + 0x10) - *(f32*)(p + 0x14) - *(f32*)(o + 0x10);
             dx = *(f32*)(p + 0xc) - *(f32*)(o + 0xc);
-            if (std::sqrtf(dx * dx + dy * dy) < lbl_80541D98) {
+            if (rupyDistance(dx,dy) < lbl_80541D98) {
                 s32 j = *(s32*)(o + 0x26c);
                 if (j >= 0) {
                     u8* o2 = (u8*)fn_801F666C(fn_801F856C(), j);
