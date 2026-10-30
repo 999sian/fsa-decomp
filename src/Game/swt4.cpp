@@ -1,6 +1,7 @@
 // TU 0x802a964c-0x802aa364 (actor SWT4).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- fn_802A964C_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
