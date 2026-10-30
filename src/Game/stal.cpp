@@ -112,10 +112,17 @@ static inline f32 stalSinAt(const f32* table, s16 angle) {
 static inline f32 stalCosAt(const f32* table, s16 angle) {
     return table[((u16)angle >> 5) * 2 + 1];
 }
+struct StalTimerBlock {
+    u8 pad[0x238];
+    s32 first, second, third;
+};
+static inline void stalTickThree(StalTimerBlock* timers) {
+    if (timers->first>0)--timers->first;
+    if (timers->second>0)--timers->second;
+    if (timers->third>0)--timers->third;
+}
 static inline void stalTickThree(char* timers) {
-    if (*(s32*)(timers+0x238)>0)--*(s32*)(timers+0x238);
-    if (*(s32*)(timers+0x23c)>0)--*(s32*)(timers+0x23c);
-    if (*(s32*)(timers+0x240)>0)--*(s32*)(timers+0x240);
+    stalTickThree((StalTimerBlock*)timers);
 }
 
 extern "C" void fn_801757D4(char* this_) {
@@ -123,7 +130,7 @@ extern "C" void fn_801757D4(char* this_) {
     s32 idxOut = -1;
     u16 ang;
     f32 dist = 0.0f;
-    const s32* table=lbl_804A0C10;
+
     f32 probe[3];
     u8 hit;
     s32 roomForPlayer;
@@ -229,7 +236,7 @@ case 3:*(f32*)(this_ + 0x26c)=0.0f;*(f32*)(this_ + 0x270)=-0.7f;*(f32*)(this_ + 
 }
 case 1:
 if(*(s32*)(this_ + 0x238)==0) {
-stalAnimate(this_,table+0,table+24,6);
+stalAnimate(this_,stalWalkFrames,stalWalkTicks,6);
 if(*(s32*)(this_ + 0x24c)>5)*(s32*)(this_ + 0x24c)=0;
 }
 if(*(s32*)(this_ + 0x23c)==0){*(f32*)(this_ + 0x26c)=0.0f;
@@ -250,7 +257,7 @@ if(quad>=0){ if(!stalRoomFlag(this_)) *(s32*)(this_ + 0x98)=quad; else if(!(quad
 case 4:
 {if(!stalRoomFlag(this_))*(f32*)(this_ + 0x44)-=0.4f;}
 if(*(s32*)(this_ + 0x24c)<4){if(*(s32*)(this_ + 0x238)==0) {
-stalAnimate(this_,table+30,table+46,4);
+stalAnimate(this_,stalJumpFrames,stalJumpTicks,4);
 }}
 { if(!stalRoomFlag(this_) && *(f32*)(this_+0x14)<0.0f)goto landed;}
 { if(!stalRoomFlag(this_) || !(probe[1]<0.0f))break;}
@@ -261,7 +268,7 @@ s32 handle=Actor_CreateByID(fn_801F856C(),'OKTM',*(u32*)(this_ + 0x4),this_+0xc,
 char* actor=fn_801F666C(fn_801F856C(),handle);
 if(actor!=0) {
 JGeometry::TVec3<f32> velocity;
-velocity.x=1.8f*stalSinAt((const f32*)JMath::sincosTable_.mTable,ang);
+velocity.x=1.8f*((const f32*)JMath::sincosTable_.mTable)[((u32)ang>>5)*2];
 velocity.y=1.8f*JMath::sincosTable_.mTable[ang>>5].second;
 *(JGeometry::TVec3<f32>*)(actor+0x3c)=velocity;
 }}
@@ -323,7 +330,7 @@ case 8:
 if(*(f32*)(this_ + 0x14)>0.0f) {
 *(f32*)(this_ + 0x44)-=1.0f;if(*(f32*)(this_ + 0x44) < -10.0f)*(f32*)(this_ + 0x44)=-10.0f;
 } else {*(f32*)(this_ + 0x14)=0.0f;*(f32*)(this_ + 0x44)=0.0f;}
-if(*(s32*)(this_ + 0x248)==0) ((Actor*)this_)->v09();
+if(*(s32*)(this_ + 0x248)==0) ((Actor*)this_)->v07();
 break;
 }
 
