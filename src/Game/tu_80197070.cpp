@@ -823,23 +823,24 @@ next:
 }
 #pragma opt_propagation reset
 #else
-extern "C" void fn_8019C500(const Pos_8019* this_, s32 flag) {
-    for (int i = 0; i < 4; i++) {
-        if (fn_8023F264(i)) {
-            s32 id = this_->id;
-            if (id == fn_8023DE58(i)) {
-                Vec_8019 pos;
-                pos.x = this_->p[i].x;
-                pos.y = this_->p[i].y;
-                pos.z = this_->p[i].z;
-                if (flag == 0) {
-                    pos.y = 32.0f + *(f32*)((char*)this_ + 0x10);
-                }
-                fn_80230498(i, &pos, 0x3f, 0xff, -0x80, -0x80, 1);
+extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
+    s32 id;
+    Pos_8019* p;
+    int i;
+    Vec_8019 pos;
+    p=this_;
+    for(i=0;i<4;i++,p=(Pos_8019*)((char*)p+12)) {
+        if(fn_8023F264(i)) {
+            id=this_->id;
+            if(id==fn_8023DE58(i)) {
+                pos.x=p->p[0].x;
+                pos.y=p->p[0].y;
+                pos.z=p->p[0].z;
+                if(flag==0)pos.y=32.0f+*(f32*)((char*)this_+0x10);
+                fn_80230498(i,&pos,0x3f,0xff,-0x80,-0x80,1);
             }
         }
     }
-
 }
 #endif
 
