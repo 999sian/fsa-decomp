@@ -1161,6 +1161,9 @@ extern const u32 lbl_8046E178[6];
 extern const char lbl_8046E820[];
 extern const f32 lbl_8054112C;
 extern const f32 lbl_80541130;
+static inline u32 roomRecordWord8328(const u8* rec) {
+    return (u32)rec[0]<<24 | (u32)rec[1]<<16 | (u32)rec[2]<<8 | (u32)rec[3];
+}
 inline bool roomSpecial8328() {
     if (*(u8*)(lbl_8053AAF8+0x7f)==0) return false;
     char* g = *(char**)(lbl_8053AAF8+4);
@@ -1306,13 +1309,13 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             offset=0;
             out=end;
             for (;;) {
-                u8* rec=&data[offset];
+                u8* rec=data+offset;
                 id=(u32)rec[0]<<24|(u32)rec[1]<<16|(u32)rec[2]<<8|(u32)rec[3];
                 if (id==0x20202020) break;
                 param=(u32)rec[7]<<24|(u32)rec[8]<<16|(u32)rec[9]<<8|(u32)rec[10];
                 u8 layer=rec[4];
-                register u16 y;
-                register u16 x;
+                u16 y;
+                u16 x;
                 x=rec[5];y=rec[6];
                 offset+=11;
                 bool first=false;
@@ -1322,12 +1325,12 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
                 if ((first && pass==0)||(!first && pass!=0)) {
                     f32 ox,oy;
                     if (layer==0) {ox=*(f32*)(p+0xcc);oy=*(f32*)(p+0xd0);room=0;}
-                    else {ox=oy=lbl_8054111C;room=layer+7;}
+                    else {ox=oy=0.0f;room=layer+7;}
                     RoomArrays* rooms=roomArrays();
                     char* base=(char*)rooms;
                     if (!(rooms->flags3548[*(s32*)(base+0x18)][*(s32*)(base+0x14)][number/32] & (1<< (number%32)))) {
                         JGeometry::TVec3<f32> pos;
-            pos.set(lbl_8054112C*(u16)x+ox,lbl_8054112C*(u16)y+oy,lbl_8054111C);
+            pos.set(8.0f*(u16)x+ox,8.0f*(u16)y+oy,0.0f);
                         *out++=Actor_CreateByID(fn_801F856C(),id,room,(f32*)&pos,param,number,-1);
                         end++;count++;
                     } else {
@@ -1356,23 +1359,23 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             && !(*(s32*)(lbl_80529DEC+0x118)==5 && *(s32*)(lbl_80529DEC+0x11c)==1) && !(*(s32*)(lbl_80529DEC+0x118)==5 && *(s32*)(lbl_80529DEC+0x11c)==3) && !(*(s32*)(lbl_80529DEC+0x118)==6 && *(s32*)(lbl_80529DEC+0x11c)==1)
             && !(*(s32*)(lbl_80529DEC+0x118)==6 && *(s32*)(lbl_80529DEC+0x11c)==3) && !(*(s32*)(lbl_80529DEC+0x118)==7 && *(s32*)(lbl_80529DEC+0x11c)==0) && !(*(s32*)(lbl_80529DEC+0x118)==7 && *(s32*)(lbl_80529DEC+0x11c)==2) && !(*(s32*)(lbl_80529DEC+0x118)==7 && *(s32*)(lbl_80529DEC+0x11c)==3)) {
             JGeometry::TVec3<f32> pos;
-            pos.set(lbl_80541130+*(f32*)(p+0xcc),lbl_80541130+*(f32*)(p+0xd0),lbl_8054111C);
+            pos.set(100.0f+*(f32*)(p+0xcc),100.0f+*(f32*)(p+0xd0),0.0f);
             Actor_CreateByID(fn_801F856C(),0x54494e4b,0,(f32*)&pos,0,-1,-1);
         }
     }
     {
         JGeometry::TVec3<f32> pos;
-            pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),lbl_8054111C);
+            pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),0.0f);
         Actor_CreateByID(fn_801F856C(),0x4c46474e,0,(f32*)&pos,0,-1,-1);
     }
     {
         JGeometry::TVec3<f32> pos;
-            pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),lbl_8054111C);
+            pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),0.0f);
         Actor_CreateByID(fn_801F856C(),0x5442474e,0,(f32*)&pos,number,-1,-1);
     }
     if (*(u8*)(lbl_8053AAF8+0x7f)==1 && !swordStage8328()) {
         JGeometry::TVec3<f32> pos;
-            pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),lbl_8054111C);
+            pos.set(*(f32*)(p+0xcc),*(f32*)(p+0xd0),0.0f);
         Actor_CreateByID(fn_801F856C(),0x5357444c,0,(f32*)&pos,0,-1,-1);
     }
     {
@@ -1385,7 +1388,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
         if (tileX==*(s32*)(p+0x14) && tileY==*(s32*)(p+0x18)) {
             u32 param=*(u32*)(infoBase+0x13068);
             JGeometry::TVec3<f32> pos;
-            pos.set(*(f32*)(posBase+0x13088),*(f32*)(posBase+0x1308c),lbl_8054111C);
+            pos.set(*(f32*)(posBase+0x13088),*(f32*)(posBase+0x1308c),0.0f);
             Actor_CreateByID(fn_801F856C(),0x4c535449,info&255,(f32*)&pos,param|0x80|((info>>7)&0x1fe0000),-1,-1);
         }
     }
@@ -1400,7 +1403,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
         s32 tileY=(info>>8)&255;
         if (tileX==*(s32*)(p+0x14) && tileY==*(s32*)(p+0x18)) {
             JGeometry::TVec3<f32> pos;
-            pos.set(*(f32*)(posBase+0x130e8),*(f32*)(posBase+0x130ec),lbl_8054111C);
+            pos.set(*(f32*)(posBase+0x130e8),*(f32*)(posBase+0x130ec),0.0f);
             createdId=Actor_CreateByID(fn_801F856C(),0x4b455930,info&255,(f32*)&pos,((info>>24)&63)|0x980,-1,-1);
             char* actor=fn_801F666C(fn_801F856C(),createdId);
             *(f32*)(actor+0x230)=*(f32*)(posBase+0x13148);
