@@ -374,8 +374,7 @@ static inline bool EZZR_MoveToGate(EZZR* p) {
     } else {
         t.y -= 20.0f;
     }
-    f32 rad = JMath::atanTable_.atan2_(t.x - p->field_0C.x, t.y - p->field_0C.y);
-    u16 ang = (s32)(rad * 10430.378f);
+    u16 ang = EZZR_AngleTo(t.x - p->field_0C.x, t.y - p->field_0C.y);
     p->field_98 = ClassifyBamAngleToQuadrant(ang);
     f32 sx;
     f32 sy;
