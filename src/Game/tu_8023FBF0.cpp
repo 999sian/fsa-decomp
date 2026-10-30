@@ -5098,6 +5098,67 @@ void fn_802544B0(char* p) {
 }
 void fn_80254660(char* p) { initItemState(p); }
 
+extern u8 lbl_8050EC80[];
+extern u8 lbl_80529DEC[];
+extern "C" void* lbl_8053AD70;
+extern f32 lbl_80540048;
+extern f32 lbl_80540058;
+extern "C" u8 fn_802DE814(void);
+extern "C" u8 fn_802DEBF8(void);
+void fn_8026F710(void*);
+void fn_8027221C(char*, s32);
+void fn_8027023C(char*);
+void fn_8030BD3C(void*, s32);
+void fn_8037AE00(void*);
+
+inline BOOL stageCleared(s32 a, s32 b) {
+    if (a < 0 || a > 7) return FALSE;
+    if (b < 0 || b > 3) return FALSE;
+    return ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
+}
+
+inline s32 linkRankLive(char* p) {
+    if (S32(p, 0xd60) < 0) {
+        return 0;
+    }
+    s32 c = 0;
+    for (s32 i = 0; i < S32(p, 0x4); i++) {
+        if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+            c++;
+        }
+    }
+    return c + 1;
+}
+
+inline void warpTo(char* p, const JGeometry::TVec3<f32>& v, s32 frame, u8 a, u8 b, u8 c, u8 check) {
+    *(JGeometry::TVec3<f32>*)(p + 0x32c) = v;
+    if (frame >= 0) {
+        U16(p, 0x450) = frame;
+    }
+    U8(p, 0xca2) = a;
+    U8(p, 0xca3) = b;
+    U8(p, 0xca4) = c;
+    if (check == 1) {
+        JGeometry::TVec3<f32> d;
+        JGeometry::TVec3<f32> t(*(JGeometry::TVec3<f32>*)(p + 0x8));
+        t -= v;
+        d = t;
+        if (PSVECMag((Vec*)&d) >= 0.1f) {
+            fn_8024B2E0(p);
+        }
+    }
+    if (frame != 0xc3) {
+        U8(p, 0xcfe) = 0;
+    }
+}
+
+struct PlayerSlots {
+    u8 pad[0xdb0];
+    s32 a[80];
+    s32 b[80];
+    s32 c[80];
+};
+
 extern "C" void* fn_802558E4(u8* p, s16 flag) {
     if (p != 0) {
         *(void**)p = (void*)lbl_804A6F38;
