@@ -10,6 +10,7 @@ extern "C" void* fn_800CECCC(const void*, u32);
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "dolphin/gx.h"
+#include "JSystem/JUtility/JUTTexture.h"
 
 struct ActorVObj8016B0B0 {
     virtual void v00();
@@ -608,9 +609,9 @@ extern "C" void fn_8016B910(u8* self) {
     f32 fw, fh;
     f32 offX, offY;
     f32 sx, sy, k;
-    const u8* __restrict screen;
-    const u8* __restrict camera;
-    const u8* __restrict mode;
+    u8* screen;
+    u8* camera;
+    u8* mode;
 
     screen = *(u8**)(lbl_8053AB10 + 0x20);
     camera = *(u8**)(lbl_8053AB10 + 0x24);
@@ -620,12 +621,8 @@ extern "C" void fn_8016B910(u8* self) {
     sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
     sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
     k = 1.0f / *(f32*)(camera + 0x858);
-    pos.x = -*(f32*)(camera + 0x10) * sx;
-    pos.y = -*(f32*)(camera + 0x20) * sy;
-    pos.z = 0.0f;
-    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
-    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
-    size.z = 0.0f;
+    pos.set(-*(f32*)(camera + 0x10) * sx, -*(f32*)(camera + 0x20) * sy, 0.0f);
+    size.set(k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4))), k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6))), 0.0f);
     pos.mul(JGeometry::TVec3<f32>(lbl_8053D98C, lbl_8053D98C, 1.0f));
     pos.add(JGeometry::TVec3<f32>(lbl_8053D990, lbl_8053D990, 0.0f));
     size.mul(JGeometry::TVec3<f32>(lbl_8053D994, lbl_8053D998, 1.0f));
@@ -654,12 +651,8 @@ extern "C" void fn_8016B910(u8* self) {
     sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
     sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
     k = 1.0f / *(f32*)(camera + 0x858);
-    pos.x = -*(f32*)(camera + 0x10) * sx;
-    pos.y = -*(f32*)(camera + 0x20) * sy;
-    pos.z = 0.0f;
-    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
-    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
-    size.z = 0.0f;
+    pos.set(-*(f32*)(camera + 0x10) * sx, -*(f32*)(camera + 0x20) * sy, 0.0f);
+    size.set(k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4))), k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6))), 0.0f);
     pos.mul(JGeometry::TVec3<f32>(lbl_8053D98C, lbl_8053D98C, 1.0f));
     pos.x -= offX;
     pos.y -= offX;
@@ -689,12 +682,8 @@ extern "C" void fn_8016B910(u8* self) {
     sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
     sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
     k = 1.0f / *(f32*)(camera + 0x858);
-    pos.x = -*(f32*)(camera + 0x10) * sx;
-    pos.y = -*(f32*)(camera + 0x20) * sy;
-    pos.z = 0.0f;
-    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
-    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
-    size.z = 0.0f;
+    pos.set(-*(f32*)(camera + 0x10) * sx, -*(f32*)(camera + 0x20) * sy, 0.0f);
+    size.set(k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4))), k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6))), 0.0f);
     pos.mul(JGeometry::TVec3<f32>(lbl_8053D990, lbl_8053D990, 1.0f));
     pos.x -= offX;
     pos.y -= offY;
@@ -722,12 +711,8 @@ extern "C" void fn_8016B910(u8* self) {
     sx = lbl_8053D938 / (f32)*(s32*)(screen + 0x2380);
     sy = lbl_8053D938 / (f32)*(s32*)(screen + 0x2384);
     k = 1.0f / *(f32*)(camera + 0x858);
-    pos.x = -*(f32*)(camera + 0x10) * sx;
-    pos.y = -*(f32*)(camera + 0x20) * sy;
-    pos.z = 0.0f;
-    size.x = k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4)));
-    size.y = k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6)));
-    size.z = 0.0f;
+    pos.set(-*(f32*)(camera + 0x10) * sx, -*(f32*)(camera + 0x20) * sy, 0.0f);
+    size.set(k * (0.5f * (sx * (f32)(int)*(u16*)(mode + 4))), k * (0.5f * (sy * (f32)(int)*(u16*)(mode + 6))), 0.0f);
     pos.mul(JGeometry::TVec3<f32>(lbl_8053D9A8, lbl_8053D9A8, 1.0f));
     pos.x -= offX;
     pos.y -= offY;
