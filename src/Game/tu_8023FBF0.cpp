@@ -1940,8 +1940,7 @@ inline bool roomEnabled(char* p) {
 }
 
 s32 fn_80243234(char* p) {
-    int room=S32(p,0x3b4);
-    if(U8(fn_802D6A9C()+0x131df,room)==0) return 0;
+    if(!roomEnabled(p)) return 0;
     if ((S32(p,0x3dc)==0 && (!padActive(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034) ||
         (S32(p,0x3dc)==1 && (!padActive6(p) ? lbl_80540034 : fn_80309F20(lbl_8053AD30,fn_8030AAF4(S32(p,0x11ec))))>lbl_80540034)) {
         S32(p,0x3e8)=3;
@@ -2847,6 +2846,13 @@ s32 fn_802527B0(char* p, s32* out) {
 }
 
 #pragma opt_common_subs off
+static inline void resetPlayerTrail486(PlayerTrail* t) {
+    for(int i=0;i<0x31;i++) {
+        t->pos[i].x=t->x;t->pos[i].y=t->y;t->pos[i].z=t->z;
+        if(t->z>lbl_80540034)t->onGround[i]=1;
+        else t->onGround[i]=0;
+    }
+}
 void fn_80248604(char* const p) {
     if (U8(p, 0x1216) == 0) {
         if (U8(p, 0x454) != 0) {
@@ -4817,16 +4823,36 @@ void fn_80252F80(char* p, const JGeometry::TVec3<f32>& pos, s32 a, s32 b, u8 c) 
 void EmptyHook_80252FBC(void) {}
 
 void fn_80252FC0(char* p) {
+    s32 r;
     if (U8(p, 0x121f) || U8(p, 0xce8) || U8(p, 0x454)) {
         return;
     }
     if (fn_80270A8C(p)) {
         return;
     }
+    {
+        bool b = false;
+        if (S32(p, 0x1240) == 1 || (U16(p, 0x3c4) >= 0x1bf && U16(p, 0x3c4) < 0x1c6)) {
+            b = true;
+        }
+        if (b) {
+            return;
+        }
+    }
     if (fn_8025F448(p)) {
         return;
     }
     if (S32(p, 0x1240) == 0xe) {
+        return;
+    }
+    if (countSharing(p) <= 1) {
+        r = 5;
+    } else if (S32(p, 0xd60) >= 0) {
+        r = fn_8022CAF8(S32(p, 0xd60));
+    } else {
+        r = S32(p, 0x120c);
+    }
+    if (r == 4) {
         return;
     }
 }
