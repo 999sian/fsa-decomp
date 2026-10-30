@@ -197,7 +197,7 @@ struct CharFontVt {
     virtual void v09(int ch, s32* info);
 };
 
-static inline u8 fn_8037F580_getw(char* buf, s32* idx) {
+static inline s32 fn_8037F580_getw(char* buf, s32* idx) {
     s32 info;
     CharFontVt* font = *(CharFontVt**)((u8*)lbl_8053AD78 + 0x154);
     font->v09(buf[*idx], &info);
