@@ -1504,6 +1504,39 @@ extern "C" s32 fn_803066F0(void*,s32,s32);
 
 extern "C" u64 fn_802D7AC4(void*,s32);
 #pragma opt_lifetimes on
+static inline void packetPlayerSlots(u8* p, s32 owner) {
+    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
+    for(s32 i=0;i<4;i++) {
+        u32 slot=fn_802340A0(i);
+        if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
+        {
+            if(fn_8022BC38(owner,fn_8023DE58(i),fn_8023E724(i))) goto valid;
+            if(fn_8023DE58(owner)<=8 && fn_8023DE58(i)<=8) goto valid;
+        }
+empty:
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=1;
+        p[slot*4+0xa]=0x80;
+        p[slot*4+9]=0xe0;
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->mode=0;
+        p[slot*4+8]=0;
+        goto nextPlayer;
+valid:
+        if(fn_8023DE58(i)<8) {
+            firstFlags->y |=1<<slot;
+            ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=fn_8023D21C(i,owner)>>8;
+            p[slot*4+0xa]=fn_8023D21C(i,owner);
+            p[slot*4+9]=fn_8023CEAC(i,owner);
+        } else {
+            ((Ctl4_80301CD0*)(p+slot*4+0xb))->flag=fn_8023DAF4(i,owner)>>8;
+            p[slot*4+0xa]=fn_8023DAF4(i,owner);
+            p[slot*4+9]=fn_8023D644(i,owner);
+        }
+        ((Ctl4_80301CD0*)(p+slot*4+0xb))->mode=fn_8023CBC0(i)>>8;
+        p[slot*4+8]=fn_8023CBC0(i);
+nextPlayer:;
+    }
+}
+
 static inline void packetPrimaryFlag(Ctl4_80301CD0* header, s32 owner) {
     header->x=fn_8023CE10(owner)>>4;
 }
@@ -1591,18 +1624,7 @@ nextPlayer:;
         if(!fn_802D7804(fn_802D6A9C(),room,2)) active=1;
     }
     header3->x=active!=0;
-    s32 clearCount=lbl_80541618[lbl_8053AD08]-7;
-    u8* clear=p;
-    for(s32 remaining=clearCount;remaining>0;remaining--) {
-        ((Ctl3_80301CD0*)(clear+0x1b))->flag=1;
-        clear[0x1a]=0x80;
-        clear[0x19]=0xe0;
-        ((Ctl3_80301CD0*)(clear+0x1b))->mode=0;
-        clear[0x18]=0;
-        ((Ctl3_80301CD0*)(clear+0x1b))->yh=0;
-        ((Ctl3_80301CD0*)(clear+0x1b))->yl=0;
-        clear+=4;
-    }
+    tu80301_clearCtl(p,lbl_80541618[lbl_8053AD08]-7);
     s32 count=0;
     if(fn_8023F264(player)) count=fn_803066F0((void*)ctx,player,lbl_80541618[lbl_8053AD08]-7);
     if(fn_8023F264(player)) fn_803064A8((void*)ctx,player,lbl_80541618[lbl_8053AD08]-7-count,count);
