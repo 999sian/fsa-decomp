@@ -663,6 +663,7 @@ extern "C" void fn_8013B490(void*);
 extern "C" void fn_8013B414(void*,f32*,s32);
 extern "C" void fn_802F86CC(void*,void*,void*,s32,DrawRec*,f32,f32);
 extern "C" const f32 lbl_8054347C,lbl_80543480,lbl_80543484,lbl_80543488,lbl_8054348C,lbl_80543490;
+static inline void advanceMenuPulse(MenuSlots24* p) { p->pulseFrame++; }
 struct MenuResourceLookup {
     virtual void v00();
     virtual void v04();
@@ -678,10 +679,10 @@ static inline void* menuDrawResource(const char* name) {
 #pragma opt_loop_invariants off
 #pragma opt_common_subs off
 extern "C" void fn_803BE3D8(void* a) {
-    char* p=(char*)a;
+    u8* p=(u8*)a;
     JGeometry::TVec3<f32> pos1,pos2,pos;
     u8* base=(u8*)lbl_804765D0;
-    (*(s16*)(p+0xdc))++;
+    ((MenuSlots24*)p)->pulseFrame++;
     if(*(s16*)(p+0xdc)>=0x36) *(s16*)(p+0xdc)=0;
     if(*(s32*)(p+0xd0)!=0) {
         DrawRec rec1;
