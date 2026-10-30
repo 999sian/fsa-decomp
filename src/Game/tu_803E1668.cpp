@@ -880,12 +880,12 @@ static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, 
     ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(((void**)lbl_8053AB10)[8], &pos, res, id, &rec, lbl_80543668, lbl_80543668);
 }
 
-struct MenuFrame803E {u8 _00[0x230];s32 frame230[4];s32 frame240[4];};
+struct MenuFrameValue803E {s32 frame;};
+struct MenuFrame803E {u8 _00[0x230];MenuFrameValue803E frame230[4];MenuFrameValue803E frame240[4];};
 static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return (span-size)*half+origin;}
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
 #pragma opt_common_subs off
-#pragma opt_strength_reduction off
 extern "C" void fn_803E51C4(void* param_1) {
     u8* p=(u8*)param_1;
     f32 x,y,size;
@@ -911,8 +911,8 @@ extern "C" void fn_803E51C4(void* param_1) {
                 if(*(s16*)(p+0x25e)==0) p[0x26b]|=1<<i;
                 if(p[0x26b]&(1<<i)) {
                     s16 t=*(s16*)(p+0x25e);
-                    if(t<50) {s32 n=t;alpha=lbl_805436D0*((f32)(n*n)/lbl_805436D4)+lbl_80543690;}
-                    else {s32 n=50-(t-50);alpha=lbl_805436D0*((f32)(n*n)/lbl_805436D4)+lbl_80543690;}
+                    if(t<50) {s32 n=t;alpha=((f32)(n*n)/lbl_805436D4)*lbl_805436D0+lbl_80543690;}
+                    else {s32 n=50-(t-50);alpha=((f32)(n*n)/lbl_805436D4)*lbl_805436D0+lbl_80543690;}
                 } else alpha=150;
             }
             ((Pane803E4650*)(*(J2DPane**)(p+8))->search(*a))->setAlpha(alpha);
@@ -937,11 +937,11 @@ extern "C" void fn_803E51C4(void* param_1) {
     if(*(s32*)(p+0x1d4)!=5) {
         if(*(s32*)(p+0x230)==0&&*(s32*)(p+0x234)==0&&*(s32*)(p+0x238)==0&&*(s32*)(p+0x23c)==0) {
             *(s16*)(p+0x250)=MenuNext803E(*(s16*)(p+0x250),*(s32*)(p+0x1bc)+1);
-            if(*(s16*)(p+0x250)!=-1) ((MenuFrame803E*)p)->frame230[*(s16*)(p+0x250)]++;
+            if(*(s16*)(p+0x250)!=-1) ((MenuFrame803E*)p)->frame230[*(s16*)(p+0x250)].frame++;
         }
         if(*(s32*)(p+0x240)==0&&*(s32*)(p+0x244)==0&&*(s32*)(p+0x248)==0&&*(s32*)(p+0x24c)==0) {
             *(s16*)(p+0x252)=MenuNext803E(*(s16*)(p+0x252),*(s32*)(p+0x1bc)+1);
-            if(*(s16*)(p+0x252)!=-1) ((MenuFrame803E*)p)->frame240[*(s16*)(p+0x252)]++;
+            if(*(s16*)(p+0x252)!=-1) ((MenuFrame803E*)p)->frame240[*(s16*)(p+0x252)].frame++;
         }
     }
     {
@@ -963,7 +963,7 @@ extern "C" void fn_803E51C4(void* param_1) {
                 if(next!=-1 && next!=old) {
                     *(s16*)(p+0x250)=next;
                     u8* r=p+next*4;
-                    ((MenuFrame803E*)r)->frame230[0]++;
+                    ((MenuFrame803E*)r)->frame230[0].frame++;
                     *(f32*)(*(u8**)(q+0x38)+8)=(f32)*(s32*)(r+0x230);
                     (*(J2DPane**)(r+0x18))->search(0x4e554c4c5f303031ULL)->animationTransform();
                 }
@@ -981,7 +981,7 @@ extern "C" void fn_803E51C4(void* param_1) {
                 if(next!=-1 && next!=old) {
                     *(s16*)(p+0x252)=next;
                     u8* r=p+next*4;
-                    ((MenuFrame803E*)r)->frame240[0]++;
+                    ((MenuFrame803E*)r)->frame240[0].frame++;
                     *(f32*)(*(u8**)(q+0x48)+8)=(f32)*(s32*)(r+0x240);
                     (*(J2DPane**)(r+0x28))->search(0x4e64617461793030ULL)->animationTransform();
                 }
@@ -993,12 +993,12 @@ extern "C" void fn_803E51C4(void* param_1) {
         J2DPane* pane=(*(J2DPane**)(p+8))->search(*a);
         y=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(*a))[0];
         f32 root=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(0x4e554c4c5f303031ULL))[0];
-        x=(root+y)+((pane->getWidth()-size)*lbl_80543658);
+        x=MenuCenter803E(lbl_80543658,size,pane->getWidth(),root+y);
         size=(*(J2DPane**)(q+0x18))->search(0x4e554c4c5f303031ULL)->getHeight();
         pane=(*(J2DPane**)(p+8))->search(*a);
         y=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(*a))[1];
         root=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(0x4e554c4c5f303031ULL))[1];
-        y=(root+y)+((pane->getHeight()-size)*lbl_80543658);
+        y=MenuCenter803E(lbl_80543658,size,pane->getHeight(),root+y);
         MenuMove803E(*(J2DPane**)(q+0x18),0x4e554c4c5f303031ULL,x,y);
         y=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(*b))[0];
         root=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(0x004e646174613033ULL))[0];
@@ -1057,7 +1057,6 @@ extern "C" void fn_803E51C4(void* param_1) {
     fn_80440EE8(lbl_8053AED8);
 }
 #pragma opt_common_subs reset
-#pragma opt_strength_reduction reset
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
