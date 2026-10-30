@@ -396,6 +396,13 @@ void fn_801365E8(void*, s32, s32, s32);
 }
 extern const f32 lbl_8053EA64, lbl_8053EA68, lbl_8053EA6C, lbl_8053EA70, lbl_8053EA74, lbl_8053EA78;
 
+
+static inline u8 tlwpReady() {
+    if ((u8)lbl_8053AAF8[0x7e] != 0) return 1;
+    return 0;
+}
+static inline void tlwpArrival(bool arrived) {}
+
 static inline u8 tlwpSendPosition(char* p, s32* table, const JGeometry::TVec3f& pos) {
     s32 handle=*(s32*)(p+0x198);
     s32 room=*(s32*)(p+4);
@@ -441,7 +448,7 @@ extern "C" void fn_801B56A0(char* p) {
         if (*(s32*)(p+0x244)<0) break;
         if (!fn_802300EC(*(s32*)(p+0x244))) break;
         pos.y -= lbl_8053EA64;
-        if (!fn_8038AD24(*(s32*)(p+0x244),d->unk_0x68[*(s32*)(p+0x254)],*(s32*)(p+0x198),*(s32*)(p+4),pos,0x100)) break;
+        if (!tlwpSendPosition(p,d->unk_0x68,pos)) break;
         *(s32*)(p+0x230)=2;
     case 2:
         fn_8022FE80(*(s32*)(p+0x244),*(s32*)(p+4),*(s32*)(p+0x198),0,0);
@@ -528,7 +535,7 @@ else if (isnan(dist)) { dist=NAN; }
                     count++;
                     fn_80230498(i,(TlwpVec*)(q+0x264),0x3f,0xff,-0x80,-0x80,1);
                 } else {
-                    u16 angle=(s32)(JMath::atanTable_.atan2_(-dx,-dy)*lbl_8053EA70);
+                    u16 angle=(s32)(lbl_8053EA70 * JMath::atanTable_.atan2_(-dx,-dy));
                     fn_80230BF4(i,ClassifyBamAngleToQuadrant(angle));
                     fn_802303FC(i,q+0x264,0xff);
                 }
@@ -565,7 +572,8 @@ g=0.5*g*(3.0-g*g*dist);
 dist=dist*g;
 } else if (dist<0.0) { dist=NAN; }
 else if (isnan(dist)) { dist=NAN; }
-                    bool arrived=dist<lbl_8053EA60;
+                    s32 arrived=dist<lbl_8053EA60;
+                    if(arrived) { }
                     if(*(s32*)(p+0x240)==0) fn_80230498(i,(TlwpVec*)(q+0x264),0x3c,0xff,-0x80,-0x80,1);
                     else fn_80230498(i,(TlwpVec*)(q+0x264),0x3e,0xff,-0x80,-0x80,1);
                 }
