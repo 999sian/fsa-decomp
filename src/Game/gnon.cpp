@@ -81,6 +81,42 @@ extern "C" void fn_80192038(ActorVt_gnon* this_) {
 #include "Game/ItemBase.h"
 extern "C" void fn_801EFD34(void* this_, const ResTIMG* tex, DrawRec* rec, s32 mode, f32 x, f32 y, f32 z);
 extern "C" const ResTIMG* fn_804032E8(u32 type, const char* name);
+static inline void gnonSetRotScale(f32 (*m)[4], f32 angle, f32 scaleX, f32 scaleY) {
+    f32 sx, sy, sz, cx, cy, cz;
+    f32 ss, cc, cs;
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    sx = sin(0.0f);
+    sy = sin(angle);
+    sz = sin(0.0f);
+    cx = cos(0.0f);
+    cy = cos(angle);
+    cz = cos(0.0f);
+    ss = sx * sy;
+    cc = cx * cz;
+    cs = cx * sz;
+    m[0][0] = scaleX * (cy * cz);
+    m[1][0] = scaleX * (cy * sz);
+    m[2][0] = scaleX * -sy;
+    m[0][1] = scaleY * (ss * cz - cs);
+    m[1][1] = scaleY * (ss * sz + cc);
+    m[2][1] = scaleY * (sx * cy);
+    m[0][2] = scaleY * (cc * sy + sx * sz);
+    m[1][2] = scaleY * (cs * sy - sx * cz);
+    m[2][2] = scaleY * (cx * cy);
+}
+static inline void gnonSetScale(f32 (*m)[4], f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
 extern "C" void fn_80192090(char* this_) {
 	u8 tbl[16];
 	s32 idx;
