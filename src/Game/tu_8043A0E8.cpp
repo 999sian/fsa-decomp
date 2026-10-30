@@ -462,75 +462,50 @@ extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
 
 extern "C" void fn_8043ACE4(u8* self){
 static JUtility::TColor colors[4] = {JUtility::TColor(242,73,18,255),JUtility::TColor(242,73,18,255),JUtility::TColor(242,73,18,255),JUtility::TColor(216,255,161,255)};
-register u8* q;
 s32 i;
 J2DPicture* picture;
 f32 alpha;
 if(self[0x253]){
-q=self;for(i=0;i<self[0x253];i++,q+=4){
+for(i=0;i<self[0x253];i++){
 alpha=(f32)self[0x24e+i]/255.0f;
 fn_8013B490(lbl_8053AB10);
-switch(*(s32*)(q+0x1d0)){
+switch(*(s32*)(self+i*4+0x1d0)){
 case 1:
 (*(J2DPicture**)(self+0x280))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
-picture=(*(J2DPicture**)(self+0x280));menuCorner(picture,0,JUtility::TColor(255,255,255,255));
-menuCorner(picture,1,JUtility::TColor(255,255,255,255));
-menuCorner(picture,2,JUtility::TColor(255,255,255,255));
-menuCorner(picture,3,JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x280));picture->setCornerColor(JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
 (*(J2DPicture**)(self+0x280))->setAlpha((u8)(200.0f*alpha));
-(*(J2DPicture**)(self+0x280))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x280))->draw(3.0f+*(f32*)(self+i*4+0x190),3.0f+*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);
 (*(J2DPicture**)(self+0x280))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(255,255,255,255));
-picture=(*(J2DPicture**)(self+0x280));menuCorner(picture,0,JUtility::TColor(185,18,18,255));
-menuCorner(picture,1,JUtility::TColor(216,58,22,255));
-menuCorner(picture,2,JUtility::TColor(185,84,18,255));
-menuCorner(picture,3,JUtility::TColor(255,157,16,255));
+picture=(*(J2DPicture**)(self+0x280));picture->setCornerColor(JUtility::TColor(185,18,18,255),JUtility::TColor(216,58,22,255),JUtility::TColor(185,84,18,255),JUtility::TColor(255,157,16,255));
 (*(J2DPicture**)(self+0x280))->setAlpha(self[0x24e+i]);
-(*(J2DPicture**)(self+0x280))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+(*(J2DPicture**)(self+0x280))->draw(*(f32*)(self+i*4+0x190),*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);break;
 case 2:
 (*(J2DPicture**)(self+0x284))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
-picture=(*(J2DPicture**)(self+0x284));menuCorner(picture,0,JUtility::TColor(255,255,255,255));
-menuCorner(picture,1,JUtility::TColor(255,255,255,255));
-menuCorner(picture,2,JUtility::TColor(255,255,255,255));
-menuCorner(picture,3,JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x284));picture->setCornerColor(JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
 (*(J2DPicture**)(self+0x284))->setAlpha((u8)(200.0f*alpha));
-(*(J2DPicture**)(self+0x284))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x284))->draw(3.0f+*(f32*)(self+i*4+0x190),3.0f+*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);
 (*(J2DPicture**)(self+0x284))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(255,255,255,255));
-picture=(*(J2DPicture**)(self+0x284));menuCorner(picture,0,JUtility::TColor(242,72,9,255));
-menuCorner(picture,1,JUtility::TColor(242,72,9,255));
-menuCorner(picture,2,JUtility::TColor(242,171,36,255));
-menuCorner(picture,3,JUtility::TColor(252,255,33,255));
+picture=(*(J2DPicture**)(self+0x284));picture->setCornerColor(JUtility::TColor(242,72,9,255),JUtility::TColor(242,72,9,255),JUtility::TColor(242,171,36,255),JUtility::TColor(252,255,33,255));
 (*(J2DPicture**)(self+0x284))->setAlpha(self[0x24e+i]);
-(*(J2DPicture**)(self+0x284))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+(*(J2DPicture**)(self+0x284))->draw(*(f32*)(self+i*4+0x190),*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);break;
 case 3:
 (*(J2DPicture**)(self+0x288))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
-picture=(*(J2DPicture**)(self+0x288));menuCorner(picture,0,JUtility::TColor(255,255,255,255));
-menuCorner(picture,1,JUtility::TColor(255,255,255,255));
-menuCorner(picture,2,JUtility::TColor(255,255,255,255));
-menuCorner(picture,3,JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x288));picture->setCornerColor(JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
 (*(J2DPicture**)(self+0x288))->setAlpha((u8)(200.0f*alpha));
-(*(J2DPicture**)(self+0x288))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x288))->draw(3.0f+*(f32*)(self+i*4+0x190),3.0f+*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);
 (*(J2DPicture**)(self+0x288))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(255,255,119,255));
-picture=(*(J2DPicture**)(self+0x288));menuCorner(picture,0,JUtility::TColor(255,255,255,255));
-menuCorner(picture,1,JUtility::TColor(255,255,255,255));
-menuCorner(picture,2,JUtility::TColor(255,255,255,255));
-menuCorner(picture,3,JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x288));picture->setCornerColor(JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
 (*(J2DPicture**)(self+0x288))->setAlpha(self[0x24e+i]);
-(*(J2DPicture**)(self+0x288))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+(*(J2DPicture**)(self+0x288))->draw(*(f32*)(self+i*4+0x190),*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);break;
 case 4:
 (*(J2DPicture**)(self+0x28c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
-picture=(*(J2DPicture**)(self+0x28c));menuCorner(picture,0,JUtility::TColor(255,255,255,255));
-menuCorner(picture,1,JUtility::TColor(255,255,255,255));
-menuCorner(picture,2,JUtility::TColor(255,255,255,255));
-menuCorner(picture,3,JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x28c));picture->setCornerColor(JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
 (*(J2DPicture**)(self+0x28c))->setAlpha((u8)(200.0f*alpha));
-(*(J2DPicture**)(self+0x28c))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x28c))->draw(3.0f+*(f32*)(self+i*4+0x190),3.0f+*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);
 (*(J2DPicture**)(self+0x28c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(216,255,161,255));
-picture=(*(J2DPicture**)(self+0x28c));menuCorner(picture,0,JUtility::TColor(255,255,255,255));
-menuCorner(picture,1,JUtility::TColor(255,255,255,255));
-menuCorner(picture,2,JUtility::TColor(255,255,255,255));
-menuCorner(picture,3,JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x28c));picture->setCornerColor(JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255),JUtility::TColor(255,255,255,255));
 (*(J2DPicture**)(self+0x28c))->setAlpha(self[0x24e+i]);
-(*(J2DPicture**)(self+0x28c))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+(*(J2DPicture**)(self+0x28c))->draw(*(f32*)(self+i*4+0x190),*(f32*)(self+i*4+0x1a0),48.0f**(f32*)(self+i*4+0x1b0),48.0f**(f32*)(self+i*4+0x1b0),false,false,false);break;
 
 }
 }
