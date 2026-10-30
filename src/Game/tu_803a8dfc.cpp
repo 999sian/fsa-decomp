@@ -2892,9 +2892,6 @@ static inline void spawnMenuEmitter(void* self,u32 kind,f32 scale) {
     }
 }
 #pragma opt_common_subs off
-static inline s32 menuRandomCount(const s32 count) {
-    return (s32)(lbl_8053AAF8->rnd.get_ufloat_1()*(f32)count);
-}
 extern "C" void fn_803B236C(void* this_) {
     Menu_Main* menu=(Menu_Main*)this_;
     u8* self=(u8*)menu;
