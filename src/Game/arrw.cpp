@@ -360,6 +360,7 @@ extern "C" void fn_80165730(char* p) {
  }
 }
 
+#pragma opt_strength_reduction reset
 #pragma opt_lifetimes reset
 #pragma opt_propagation reset
 extern "C" u8* fn_8020D58C();
