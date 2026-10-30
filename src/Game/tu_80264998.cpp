@@ -349,6 +349,12 @@ extern "C" void fn_80267D30(char* p);
 extern "C" void fn_80267E18(char* p);
 extern "C" void fn_80267ECC(char* p);
 
+struct StageMgr80264998 {
+    u8 flag(u32 i) { return mFlags[i]; }
+    u8 pad[0x131df];
+    u8 mFlags[1];
+};
+
 // Picks the player's animation base by its 0x3dc posture (0..2, else).
 #define PLAYER_ANIM4(p, a0, a1, a2, a3)                    \
     do {                                                   \
@@ -366,32 +372,372 @@ extern "C" void fn_80267ECC(char* p);
 extern "C" void fn_80265E88(char* p)
 {
     *(unsigned short*)(p + 0x3c6) = *(unsigned short*)(p + 0x3c4);
-    if (p[0xcfe] == 0) {
-        if (p[0x456] == 1) {
-            *(unsigned short*)(p + 0x3c4) = *(unsigned short*)(p + 0x450);
-            p[0xca0] = p[0xca2];
-            p[0x456] = 0;
-            return;
-        }
-        if (Player_GetField_0x454(p) == 0) {
-            if (fn_80241230(p) == 0 && *(int*)(p + 0x488) == 0 && (*(u32*)(p + 0x464) & 2) == 2) {
-                *(unsigned short*)(p + 0x3c4) = 0x121;
-                return;
-            }
-        } else {
-            *(unsigned short*)(p + 0x3c4) = *(unsigned short*)(p + 0x450);
-            p[0xca0] = p[0xca2];
-            return;
-        }
-    } else {
-        if (*(float*)(p + 0x10) <= lbl_805401F0) {
-            *(unsigned short*)(p + 0x3c4) = 0xc3;
-        } else {
+    if (*(u8*)(p + 0xcfe) != 0) {
+        if (*(float*)(p + 0x10) > lbl_805401F0) {
             *(unsigned short*)(p + 0x3c4) = 0xc2;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0xc3;
         }
         return;
     }
-    fn_80268194(p);
+    if (*(u8*)(p + 0x456) == 1) {
+        *(unsigned short*)(p + 0x3c4) = *(unsigned short*)(p + 0x450);
+        p[0xca0] = p[0xca2];
+        p[0x456] = 0;
+        return;
+    }
+    if (Player_GetField_0x454(p)) {
+        *(unsigned short*)(p + 0x3c4) = *(unsigned short*)(p + 0x450);
+        p[0xca0] = p[0xca2];
+        return;
+    }
+    if (fn_80241230(p) == 0 && *(int*)(p + 0x488) == 0 && (*(int*)(p + 0x464) & 2) == 2) {
+        *(unsigned short*)(p + 0x3c4) = 0x121;
+        return;
+    }
+    switch (*(u32*)(p + 0x1240)) {
+    case 0:
+        fn_80268194(p);
+        break;
+    case 1:
+        *(unsigned short*)(p + 0x3c4) = 0x31d;
+        break;
+    case 2:
+    case 3:
+    case 56:
+        PLAYER_ANIM4(p, 0, 8, 0x10, 0x18);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 4:
+        fn_80267ECC(p);
+        break;
+    case 5:
+    case 6:
+        PLAYER_ANIM4(p, 0x1c6, 0x1c9, 0x1cc, 0x1cf);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 7:
+        PLAYER_ANIM4(p, 0x262, 0x268, 0x26e, 0x274);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 8:
+        fn_80267E18(p);
+        break;
+    case 9:
+    case 10:
+        fn_80267D30(p);
+        break;
+    case 11:
+        fn_80267C6C(p);
+        break;
+    case 12:
+        if (*(unsigned char*)(p + 0x3fd) == 0) {
+            *(unsigned short*)(p + 0x3c4) = 0x3e;
+        } else if (*(unsigned char*)(p + 0x3fd) == 1) {
+            *(unsigned short*)(p + 0x3c4) = 0x3d;
+        } else if (*(unsigned char*)(p + 0x3fd) == 2) {
+            *(unsigned short*)(p + 0x3c4) = 0x3f;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0x3c;
+        }
+        break;
+    case 17:
+        PLAYER_ANIM4(p, 0x2b0, 0x2b4, 0x2b8, 0x2bc);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 18:
+        PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 19:
+        PLAYER_ANIM4(p, 0x36d, 0x36f, 0x371, 0x373);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 20:
+        fn_80267BA8(p);
+        break;
+    case 21:
+        PLAYER_ANIM4(p, 0x322, 0x327, 0x32c, 0x331);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 22:
+    case 23:
+        PLAYER_ANIM4(p, 0x322, 0x327, 0x32c, 0x331);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 24:
+        PLAYER_ANIM4(p, 0x322, 0x327, 0x32c, 0x331);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 25:
+        if (*(unsigned char*)(p + 0x121c) != 0) {
+            *(unsigned short*)(p + 0x3c4) = 0x31d;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned char*)(p + 0x3fd) + 0x296;
+        }
+        break;
+    case 13:
+        PLAYER_ANIM4(p, 0x29a, 0x29e, 0x2a2, 0x2a9);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 14:
+        PLAYER_ANIM4(p, 0x29a, 0x29e, 0x2a2, 0x2a9);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 26:
+        PLAYER_ANIM4(p, 0x2d6, 0x2da, 0x2de, 0x2e2);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 27:
+        if (*(unsigned char*)(p + 0x43f) != 0) break;
+        if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else if (*(unsigned char*)(p + 0x3fd) == 0) {
+            PLAYER_ANIM4(p, 0, 8, 0x10, 0x18);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else if (*(unsigned char*)(p + 0x3fd) == 1) {
+            fn_802671C8(p);
+        } else if (*(unsigned char*)(p + 0x3fd) == 2) {
+            fn_802670CC(p);
+        } else {
+            PLAYER_ANIM4(p, 0x33a, 0x33d, 0x340, 0x343);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        }
+        break;
+    case 28:
+    case 29:
+        if (*(unsigned char*)(p + 0xceb) == 1) {
+            int idx = *(int*)(p + 0x3b4);
+            if (((u8(*)[0x10000])fn_802D6A9C())[1][idx + 0x31df] != 0) {
+                fn_802670CC(p);
+            } else {
+                fn_802671C8(p);
+            }
+        } else if (*(unsigned char*)(p + 0xcec) == 1) {
+            PLAYER_ANIM4(p, 0x33a, 0x33d, 0x340, 0x343);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else {
+            PLAYER_ANIM4(p, 0, 8, 0x10, 0x18);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        }
+        break;
+    case 30:
+        *(unsigned short*)(p + 0x3c4) = *(unsigned char*)(p + 0x3fd) + 0xb7;
+        break;
+    case 31:
+        fn_80268194(p);
+        break;
+    case 32:
+    case 33:
+        if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else if (*(unsigned char*)(p + 0x3fd) == 1) {
+            *(unsigned short*)(p + 0x3c4) = 0x31c;
+        } else if (*(int*)(p + 0x3b4) < 8) {
+            *(unsigned short*)(p + 0x3c4) = 0x121;
+        } else {
+            fn_80268194(p);
+        }
+        break;
+    case 34:
+    case 35:
+        if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else {
+            fn_80268194(p);
+        }
+        break;
+    case 38:
+        if (*(unsigned char*)(p + 0x3f9) >= 0xb) {
+            *(unsigned short*)(p + 0x3c4) = 0x121;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0x3c2;
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        }
+        break;
+    case 39:
+        fn_802670CC(p);
+        break;
+    case 40:
+        fn_802670CC(p);
+        break;
+    case 41:
+        fn_802671C8(p);
+        break;
+    case 36:
+        if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else if (*(unsigned char*)(p + 0x3fd) == 1) {
+            *(unsigned short*)(p + 0x3c4) = 0x31c;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0x121;
+        }
+        break;
+    case 37:
+        if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x2c0, 0x2c4, 0x2c8, 0x2cf);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else {
+            fn_80268194(p);
+        }
+        break;
+    case 42:
+    case 43:
+        fn_80268194(p);
+        break;
+    case 44:
+    case 45:
+        *(unsigned short*)(p + 0x3c4) = 0xb0;
+        break;
+    case 46:
+    case 47:
+        *(unsigned short*)(p + 0x3c4) = 0xb0;
+        break;
+    case 48:
+        *(unsigned short*)(p + 0x3c4) = 0x22c;
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 49:
+        if (*(int*)(p + 0x3b4) < 8) {
+            *(unsigned short*)(p + 0x3c4) = 0x358;
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0x3e;
+        }
+        break;
+    case 50:
+        fn_80267B18(p);
+        break;
+    case 15:
+    case 16:
+        PLAYER_ANIM4(p, 0xa7, 0xab, 0xaf, 0xb3);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 51:
+        if (*(unsigned char*)(p + 0xd2d) == 1 && *(int*)(p + 0xd30) >= 0x3c) {
+            *(unsigned short*)(p + 0x3c4) = 0x3e;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned char*)(p + 0x3fd) + 0xbd;
+        }
+        break;
+    case 52:
+        if (*(int*)(p + 0xd30) >= 0x1a4) {
+            *(unsigned short*)(p + 0x3c4) = 0x3e;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0xc3;
+        }
+        break;
+    case 53:
+        PLAYER_ANIM4(p, 0x28a, 0x28d, 0x290, 0x293);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 54:
+        fn_80267ECC(p);
+        break;
+    case 57:
+        fn_80267A54(p);
+        break;
+    case 58:
+        fn_80267990(p);
+        break;
+    case 59:
+        fn_802678CC(p);
+        break;
+    case 60:
+        fn_80267818(p);
+        break;
+    case 61:
+        PLAYER_ANIM4(p, 0x15b, 0x15f, 0x163, 0x167);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 62:
+        fn_80267598(p);
+        break;
+    case 63:
+        fn_80267470(p);
+        break;
+    case 64:
+        fn_80267384(p);
+        break;
+    case 65:
+        PLAYER_ANIM4(p, 0xa7, 0xab, 0xaf, 0xb3);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 66:
+        fn_80268194(p);
+        break;
+    case 67:
+        PLAYER_ANIM4(p, 0xa7, 0xab, 0xaf, 0xb3);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fd);
+        break;
+    case 68:
+    case 69:
+        fn_80267748(p);
+        break;
+    case 70:
+        fn_80267684(p);
+        break;
+    case 71:
+        PLAYER_ANIM4(p, 0x1a3, 0x1aa, 0x1b1, 0x1b8);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 72:
+        PLAYER_ANIM4(p, 0x362, 0x364, 0x366, 0x368);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 73:
+        if (*(int*)(p + 0x1178) == 0) {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned char*)(p + 0x3fd) + 0x35f;
+        } else if (*(int*)(p + 0x1178) == 1) {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned char*)(p + 0x3fd) + 0x3d0;
+        } else if (*(int*)(p + 0x1178) == 2) {
+            *(unsigned short*)(p + 0x3c4) = *(unsigned char*)(p + 0x3fd) + 0x296;
+        }
+        break;
+    case 55:
+        PLAYER_ANIM4(p, 0x111, 0x115, 0x119, 0x11d);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 74:
+        fn_802671C8(p);
+        break;
+    case 75:
+        fn_802670CC(p);
+        break;
+    case 76:
+        *(unsigned short*)(p + 0x3c4) = 0x3d0;
+        break;
+    case 77:
+        if (*(unsigned char*)(p + 0x3fc) != 0) {
+            *(unsigned short*)(p + 0x3c4) = 0x121;
+        } else if (fn_8025F684(p)) {
+            PLAYER_ANIM4(p, 0x36d, 0x36f, 0x371, 0x373);
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0xb0;
+        }
+        break;
+    case 78:
+        *(unsigned short*)(p + 0x3c4) = 0xb0;
+        break;
+    case 79:
+        PLAYER_ANIM4(p, 0x302, 0x308, 0x30e, 0x314);
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+        break;
+    case 80:
+        fn_80267018(p);
+        break;
+    case 81:
+        PLAYER_ANIM4(p, 0x31f, 0x31e, 0x321, 0x320);
+        break;
+    }
 }
 
 extern "C" void fn_80267018(char* p)
