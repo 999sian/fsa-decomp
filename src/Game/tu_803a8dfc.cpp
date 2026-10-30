@@ -2886,8 +2886,7 @@ static inline s32 findMenuEmitter(Menu_Main* self) {
 static inline void spawnMenuEmitter(Menu_Main* self,u32 kind,f32 scale) {
     s32 slot=findMenuEmitter(self);
     if(slot!=-1) {
-        u8* p=(u8*)self;
-        FVec3 pos(lbl_8054343C+*(f32*)(p+0x244),lbl_8054343C+*(f32*)(p+0x248),lbl_805433C8);
+        FVec3 pos(lbl_8054343C+self->position.x,lbl_8054343C+self->position.y,lbl_805433C8);
         self->emitters[slot]=(EffHandle*)fn_8013CC50(0,&pos,kind,0,0,0,0,1,scale);
         self->emitters[slot]->flags |= 0x40;
     }
