@@ -424,17 +424,12 @@ static inline void setPicBlackWhite(u8* p, const u64& key, JUtility::TColor blac
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
 
-static inline void blendSetPic(u8* p, const u64& key, const JUtility::TColor& black, const JUtility::TColor& white) {
-    ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
-}
-
 static inline u8 menuBlendChannel(s32 goal, u8 value, f32 t) {
     return (f32)(goal-value)*t+(f32)value;
 }
 
 #pragma opt_common_subs off
-void fn_803BC6F0(char* this_, u32 a, f32 t) {
-    f32 k=t;
+void fn_803BC6F0(char* this_, u32 a, f32 k) {
     const Tu803BKeyTbl* table=(const Tu803BKeyTbl*)lbl_804765D0;
     u8* p=(u8*)this_;
     if(k>lbl_80543478) k=lbl_80543478;
@@ -442,46 +437,45 @@ void fn_803BC6F0(char* this_, u32 a, f32 t) {
     JUtility::TColor black,white;
     black.r=menuBlendChannel(0x0,p[0xfc],k); black.g=menuBlendChannel(0x0,p[0xfd],k); black.b=menuBlendChannel(0x0,p[0xfe],k); black.a=0;
     white.r=menuBlendChannel(0x80,p[0xe8],k); white.g=menuBlendChannel(0x80,p[0xe9],k); white.b=menuBlendChannel(0x80,p[0xea],k); white.a=255;
-    setPicBlackWhite(p,table->keys[12][a],black,white);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[12][a]))->setBlackWhite(black,white);
     black.r=menuBlendChannel(0x82,p[0x100],k); black.g=menuBlendChannel(0x82,p[0x101],k); black.b=menuBlendChannel(0x82,p[0x102],k); black.a=0;
     white.r=menuBlendChannel(0xb4,p[0xec],k); white.g=menuBlendChannel(0xb4,p[0xed],k); white.b=menuBlendChannel(0xb4,p[0xee],k); white.a=255;
-    JUtility::TColor white1=white;
     JUtility::TColor black1=black;
+    JUtility::TColor white1=white;
     JUtility::TColor tmp1=black1;
-    setPicBlackWhite(p,table->keys[11][a],black1,white1);
-    setPicBlackWhite(p,table->keys[10][a],black1,white1);
-    setPicBlackWhite(p,table->keys[9][a],black1,white1);
-    setPicBlackWhite(p,table->keys[8][a],black1,white1);
-    setPicBlackWhite(p,table->keys[7][a],JUtility::TColor(tmp1.r,tmp1.g,tmp1.b,255),white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[11][a]))->setBlackWhite(black1,white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[10][a]))->setBlackWhite(black1,white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[9][a]))->setBlackWhite(black1,white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[8][a]))->setBlackWhite(black1,white1);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[7][a]))->setBlackWhite(JUtility::TColor(tmp1.r,tmp1.g,tmp1.b,255),white1);
     black.r=menuBlendChannel(0x50,p[0x104],k); black.g=menuBlendChannel(0x50,p[0x105],k); black.b=menuBlendChannel(0x50,p[0x106],k); black.a=0;
     white.r=menuBlendChannel(0x80,p[0xf0],k); white.g=menuBlendChannel(0x80,p[0xf1],k); white.b=menuBlendChannel(0x80,p[0xf2],k); white.a=255;
-    JUtility::TColor white2=white;
     JUtility::TColor black2=black;
-    setPicBlackWhite(p,table->keys[6][a],black2,white2);
-    setPicBlackWhite(p,table->keys[5][a],black2,white2);
-    setPicBlackWhite(p,table->keys[4][a],black2,white2);
-    setPicBlackWhite(p,table->keys[3][a],black2,white2);
-    setPicBlackWhite(p,table->keys[2][a],black2,white2);
+    JUtility::TColor white2=white;
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[6][a]))->setBlackWhite(black2,white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[5][a]))->setBlackWhite(black2,white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[4][a]))->setBlackWhite(black2,white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[3][a]))->setBlackWhite(black2,white2);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[2][a]))->setBlackWhite(black2,white2);
     black.r=menuBlendChannel(0x82,p[0x108],k); black.g=menuBlendChannel(0x82,p[0x109],k); black.b=menuBlendChannel(0x82,p[0x10a],k); black.a=0;
     white.r=menuBlendChannel(0xb4,p[0xf4],k); white.g=menuBlendChannel(0xb4,p[0xf5],k); white.b=menuBlendChannel(0xb4,p[0xf6],k); white.a=255;
-    JUtility::TColor white3=white;
     JUtility::TColor black3=black;
+    JUtility::TColor white3=white;
     JUtility::TColor tmp3=black3;
-    setPicBlackWhite(p,table->keys[22][a],black3,white3);
-    setPicBlackWhite(p,table->keys[21][a],black3,white3);
-    setPicBlackWhite(p,table->keys[20][a],black3,white3);
-    setPicBlackWhite(p,table->keys[19][a],black3,white3);
-    setPicBlackWhite(p,table->keys[18][a],JUtility::TColor(tmp3.r,tmp3.g,tmp3.b,255),white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[22][a]))->setBlackWhite(black3,white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[21][a]))->setBlackWhite(black3,white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[20][a]))->setBlackWhite(black3,white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[19][a]))->setBlackWhite(black3,white3);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[18][a]))->setBlackWhite(JUtility::TColor(tmp3.r,tmp3.g,tmp3.b,255),white3);
     black.r=menuBlendChannel(0xb4,p[0x10c],k); black.g=menuBlendChannel(0xb4,p[0x10d],k); black.b=menuBlendChannel(0xb4,p[0x10e],k); black.a=0;
     white.r=menuBlendChannel(0xb4,p[0xf8],k); white.g=menuBlendChannel(0xb4,p[0xf9],k); white.b=menuBlendChannel(0xb4,p[0xfa],k); white.a=255;
-    JUtility::TColor white4=white;
     JUtility::TColor black4=black;
-    setPicBlackWhite(p,table->keys[17][a],black4,white4);
-    setPicBlackWhite(p,table->keys[16][a],black4,white4);
-    setPicBlackWhite(p,table->keys[15][a],black4,white4);
-    setPicBlackWhite(p,table->keys[14][a],black4,white4);
+    JUtility::TColor white4=white;
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[17][a]))->setBlackWhite(black4,white4);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[16][a]))->setBlackWhite(black4,white4);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[15][a]))->setBlackWhite(black4,white4);
+    ((J2DPicture*)((J2DPane*)*(void**)(p+8))->search(table->keys[14][a]))->setBlackWhite(black4,white4);
 }
-#pragma opt_common_subs on
 static inline void setPicBlackWhiteKey(u8* p, u64 key, const JUtility::TColor& black, const JUtility::TColor& white) {
     ((J2DPicture*)((J2DPane*)*(void**)(p + 8))->search(key))->setBlackWhite(black, white);
 }
