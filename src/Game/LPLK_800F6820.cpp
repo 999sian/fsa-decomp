@@ -231,7 +231,7 @@ extern "C" void fn_80238548(s32,s32,void*,s32);
 extern "C" u32 fn_8022C5EC(s32,s32);
 extern "C" void fn_801F2B7C(void*,s32,s32,s32);
 extern "C" void fn_801F2618(void*,s32,s32);
-extern const u8 lbl_80539E78[];
+extern const u8 lbl_80539E78[8];
 extern const s32 lbl_8049C558[];
 extern const s32 lbl_8049C548[];
 extern const f32 lbl_8053BF58;
@@ -259,18 +259,19 @@ f32 rupeeDist;
 u16 angle;
 s32 id,priority,player,amount;
 bool grounded;
-f32 absX,oldV;
+f32 absY,absX,oldV;
+f32 vertical,gravity,zero;
 angle=0;dist=lbl_8053BF48;quad=0;target=-1;
 fn_801EEC98(self,(*(s32*)(self+0x198)),&angle,&quad,&dist,&target,0,0);
 ++(*(s32*)(self+0x24c));
 switch((*(s32*)(self+0x230))){
-case 4:if(((u8(*)(void*))(*(void***)self)[13])(self)){(*(s32*)(self+0x230))=0;}break;
+case 4:if(((LplkVirt*)self)->v11()){(*(s32*)(self+0x230))=0;}break;
 case 0:
-grounded=false;(*(f32*)(self+0x44))-=lbl_8053BF3C;
+grounded=false;vertical=(*(f32*)(self+0x44));gravity=lbl_8053BF3C;(*(f32*)(self+0x44))=vertical-gravity;
 if((*(f32*)(self+0x14))<lbl_8053BF48){
 if(self[0x23c]==0){
 fn_801F0E34(self,0x3000a,0);(*(f32*)(self+0x14))=lbl_8053BF48;
-(*(f32*)(self+0x44))=(lbl_8053BF30-lbl_8053BF58*lbl_8053AAF8->rnd.get())+lbl_8053BF58;
+(*(f32*)(self+0x44))=(lbl_8053BF30-lbl_8053BF58*((JMath::TRandom_fast_*)&lbl_8053AAF8->rnd)->get_ufloat_1())+lbl_8053BF58;
 (*(f32*)(self+0x3c))=lbl_8053BF34-lbl_8053AAF8->rnd.get();
 (*(f32*)(self+0x40))=lbl_8053BF34-lbl_8053AAF8->rnd.get();
 self[0x23c]=1;
@@ -290,7 +291,7 @@ if(fn_801F3D94(self,1)!=0)break;if(fn_801F305C(self))break;
 if(target!=-1 && dist<lbl_8053BF64 && !(u8)fn_8022DCD8(target)){
 *(u16*)(self+0x23e)=angle;
 absX=__fabsf((*(f32*)(self+0xc))-fn_8023E724(target)->x);
-f32 absY=__fabsf((*(f32*)(self+0x10))-fn_8023E724(target)->y);
+absY=__fabsf((*(f32*)(self+0x10))-fn_8023E724(target)->y);
 if(absX<lbl_8053BF68 && absY<lbl_8053BF68 && (u8)fn_8022DE10(target,1)==1){
 (*(s32*)(self+0x230))=2;(*(s32*)(self+0x238))=target;(*(s32*)(self+0x250))=0;(*(s32*)(self+0x248))=0;(*(s32*)(self+0x240))=0;self[0x235]=0;}
 }else{
