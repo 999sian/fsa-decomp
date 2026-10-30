@@ -87,41 +87,257 @@ extern "C" s32 fn_803BAE68(CARDFileInfo* fileInfo) {
     return 0;
 }
 
+static inline s32 cardBlockValid(const u8* data) {
+    u32 inv = 0;
+    u32 sum = 0;
+    const u8* p = data;
+    for (s32 i = 192; i > 0; i--) {
+        u8 b = *p++;
+        sum += b;
+        inv += ~b;
+    }
+    return ((sum ^ *(const u32*)(data + 0xc0)) | (inv ^ *(const u32*)(data + 0xc4))) == 0;
+}
+extern "C" s32 fn_803B933C(void* unused, void* slots, s32 idx);
+extern "C" u8 lbl_8050EC80[];
 extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 size) {
     u8* base = lbl_8051E2C0;
+    u8* blkA = base + 0;
     u8* blkB = base + 0x2000;
-    u32 sumA0, invA0, sumA1, invA1, sumA2, invA2;
-    u32 sumB0, invB0, sumB1, invB1, sumB2, invB2;
-    bool changed = false;
+    u8 changed = 0;
     s32 result;
+    bool vA0, vA1, vA2, vB0, vB1, vB2;
+    bool ok;
+    s32 i, j, k, p, q;
+    u32 s;
+    CARDStat stat;
+    u64 serial;
 
-    result = CARDRead(fileInfo, base, 0x2000, 0x2000);
+    result = CARDRead(fileInfo, blkA, 0x2000, 0x2000);
     if (result != 0) {
         return result;
     }
+    vA0 = fn_803BADAC(blkA + 0xa);
+    vA1 = fn_803BADAC(blkA + 0xd2);
+    vA2 = fn_803BADAC(blkA + 0x19a);
     result = CARDRead(fileInfo, blkB, 0x2000, 0x4000);
     if (result != 0) {
         return result;
     }
+    vB0 = fn_803BADAC(blkB + 0xa);
+    vB1 = fn_803BADAC(blkB + 0xd2);
+    vB2 = fn_803BADAC(blkB + 0x19a);
 
-    cardSumBlock(base + 0xa, &sumA0, &invA0);
-    cardSumBlock(base + 0xd2, &sumA1, &invA1);
-    cardSumBlock(base + 0x19a, &sumA2, &invA2);
-    cardSumBlock(blkB + 0xa, &sumB0, &invB0);
-    cardSumBlock(blkB + 0xd2, &sumB1, &invB1);
-    cardSumBlock(blkB + 0x19a, &sumB2, &invB2);
-
-    if (((sumA0 ^ *(u32*)(base + 0xca)) | (invA0 ^ *(u32*)(base + 0xce))) == 0) {
-        memcpy(blkB + 0xa, base + 0xa, 200);
-    } else if (((sumB0 ^ *(u32*)(blkB + 0xca)) | (invB0 ^ *(u32*)(blkB + 0xce))) == 0) {
-        memcpy(base + 0xa, blkB + 0xa, 200);
-        changed = true;
+    if (!vA0) {
+        s = 0;
+        for (k = 0; k < 200; k++) {
+            s += blkA[0xa + k];
+        }
+        if (s == 0) {
+            fn_803B933C(lbl_8050EC80, blkA + 0xa, 0);
+            fn_803BACF8(blkA + 0xa, 0);
+            fn_803BADAC(blkA + 0xa);
+        } else if (vB0) {
+            memcpy(blkA + 0xa, blkB + 0xa, 200);
+            changed = 1;
+        }
+    } else {
+        memcpy(blkB + 0xa, blkA + 0xa, 200);
+    }
+    if (!vA1) {
+        s = 0;
+        for (k = 0; k < 200; k++) {
+            s += blkA[0xd2 + k];
+        }
+        if (s == 0) {
+            fn_803B933C(lbl_8050EC80, blkA + 0xa, 1);
+            fn_803BACF8(blkA + 0xa, 1);
+            fn_803BADAC(blkA + 0xd2);
+        } else if (vB1) {
+            memcpy(blkA + 0xd2, blkB + 0xd2, 200);
+            changed = 1;
+        }
+    } else {
+        memcpy(blkB + 0xd2, blkA + 0xd2, 200);
+    }
+    if (!vA2) {
+        s = 0;
+        for (k = 0; k < 200; k++) {
+            s += blkA[0x19a + k];
+        }
+        if (s == 0) {
+            fn_803B933C(lbl_8050EC80, blkA + 0xa, 2);
+            fn_803BACF8(blkA + 0xa, 2);
+            fn_803BADAC(blkA + 0x19a);
+        } else if (vB2) {
+            memcpy(blkA + 0x19a, blkB + 0x19a, 200);
+            changed = 1;
+        }
+    } else {
+        memcpy(blkB + 0x19a, blkA + 0x19a, 200);
     }
 
-    (void)changed;
-    (void)dst;
-    (void)size;
-    (void)unused;
+    CARDGetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &stat);
+    if (!(stat.iconAddr == 0 && stat.commentAddr == 0x1c00 && (stat.bannerFormat & 3) == 1 &&
+          !(stat.bannerFormat & 4) && (stat.iconFormat & 3) == 1 &&
+          (stat.iconFormat >> 2 & 3) == 0 && (stat.iconFormat >> 4 & 3) == 0 &&
+          (stat.iconFormat >> 6 & 3) == 0 && (stat.iconFormat >> 8 & 3) == 0 &&
+          (stat.iconFormat >> 10 & 3) == 0 && (stat.iconFormat >> 12 & 3) == 0 &&
+          (stat.iconFormat >> 14 & 3) == 0 && (stat.iconSpeed & 3) == 3 &&
+          (stat.iconSpeed >> 2 & 3) == 0 && (stat.iconSpeed >> 4 & 3) == 0 &&
+          (stat.iconSpeed >> 6 & 3) == 0 && (stat.iconSpeed >> 8 & 3) == 0 &&
+          (stat.iconSpeed >> 10 & 3) == 0 && (stat.iconSpeed >> 12 & 3) == 0 &&
+          (stat.iconSpeed >> 14 & 3) == 0)) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return CARD_RESULT_FATAL_ERROR;
+    }
+    if (changed) {
+        result = CARDWrite(fileInfo, blkA, 0x2000, 0x2000);
+        if (result != 0) {
+            return result;
+        }
+        result = CARDWrite(fileInfo, blkA, 0x2000, 0x4000);
+        if (result != 0) {
+            return result;
+        }
+    }
+
+    for (i = 0; i < 3; i++) {
+        u8* rec = blkA + 0xa + i * 0xc8;
+        u8 gap = 0;
+        u8 dirty = 0;
+        u8 v = rec[0x65];
+        if (v & 1) {
+            if (!(v & 2)) {
+                *(u16*)(rec + 0x14) = 0;
+                gap = 1;
+                dirty = 1;
+                *(u16*)(rec + 0x16) = 0;
+                rec[0x58] = 0;
+                rec[0x59] = 0x32;
+                rec[0x66] = 0;
+                rec[0x67] = 0;
+            }
+        } else {
+            rec[0x65] = 0;
+            gap = 1;
+            *(u16*)(rec + 0x14) = 0;
+            *(u16*)(rec + 0x16) = 0;
+            rec[0x58] = 0;
+            rec[0x59] = 0x32;
+            rec[0x66] = 0;
+            rec[0x67] = 0;
+        }
+        for (j = 0; j < 8; j++) {
+            u8 hole = 0;
+            u8 mask;
+            for (k = 0; k < 4; k++) {
+                if ((j < 7 && k == 2) || (j == 7 && k == 1)) {
+                    *(u32*)(rec + 8) |= 1 << (j * 4 + k);
+                } else if (*(u32*)(rec + 8) & (1 << (j * 4 + k))) {
+                    if (gap == 1) {
+                        *(u32*)(rec + 8) &= ~(1 << (j * 4 + k));
+                        dirty = 1;
+                    }
+                } else if (!gap) {
+                    gap = 1;
+                    hole = 1;
+                }
+            }
+            mask = 1 << j;
+            if (rec[0x5a] & mask) {
+                if (j < 7) {
+                    if (!(*(u32*)(rec + 8) & (1 << (j * 4 + 1)))) {
+                        rec[0x5a] &= ~mask;
+                        dirty = 1;
+                    }
+                } else {
+                    if (!(*(u32*)(rec + 8) & (1 << (j * 4 + 2)))) {
+                        rec[0x5a] &= ~mask;
+                        dirty = 1;
+                    }
+                }
+            }
+            if ((rec[0x62] & mask) && gap == 1 && !hole) {
+                rec[0x62] &= ~mask;
+                dirty = 1;
+            }
+        }
+        if (*(s32*)(rec + 0xc) > 99999) {
+            *(s32*)(rec + 0xc) = 0;
+            dirty = 1;
+        }
+        if (*(s32*)(rec + 0x10) > 99999) {
+            *(s32*)(rec + 0x10) = 99999;
+            dirty = 1;
+        }
+        if (rec[0x5b] > 1) {
+            rec[0x5b] = 0;
+            dirty = 1;
+        }
+        if (rec[0x66] > 99) {
+            rec[0x66] = 0;
+            dirty = 1;
+        }
+        if (rec[0x67] > 1) {
+            rec[0x67] = 1;
+            dirty = 1;
+        }
+        if (rec[0x59] > 0x77) {
+            rec[0x59] = 0x32;
+            dirty = 1;
+        }
+        if (rec[0x58] > 99) {
+            rec[0x58] = 0;
+            dirty = 1;
+        }
+        for (p = 0; p < 2; p++) {
+            if (((u16*)(rec + 0x14))[p] > 999) {
+                ((u16*)(rec + 0x14))[p] = 999;
+                dirty = 1;
+            }
+            if (rec[0x5c + p] > 1) {
+                if (p == 0) {
+                    rec[0x5c + p] = 1;
+                } else {
+                    rec[0x5c + p] = 0;
+                }
+                dirty = 1;
+            }
+            if (rec[0x5e + p] > 1) {
+                rec[0x5e + p] = 0;
+                dirty = 1;
+            }
+            if (rec[0x68 + p] > 1) {
+                rec[0x68 + p] = 1;
+                dirty = 1;
+            }
+        }
+        for (q = 0; q < 4; q++) {
+            for (k = 0; k < 7; k++) {
+                if (((u16*)(rec + 0x18))[q * 7 + k] > 99999) {
+                    ((u16*)(rec + 0x18))[q * 7 + k] = 0;
+                    dirty = 1;
+                }
+            }
+        }
+        if (dirty) {
+            fn_803BADAC(rec);
+        }
+    }
+
+    memcpy(dst, blkA + 0xa, size);
+    *(u16*)(lbl_8051C1A0 + 0x2000) = *(u16*)blkA;
+    CARDGetSerialNo(lbl_8051C1A0[0x1ff4], &serial);
+    if (serial != *(u64*)(lbl_8051C1A0 + 0x1ff8)) {
+        memcpy(base + 0x6000, blkA + 0x262, 0x1d4c);
+        memcpy(base + 0x7d60, blkB + 0x262, 0x1d4c);
+    }
+    *(u64*)(lbl_8051C1A0 + 0x1ff8) = serial;
     return 0;
 }
 
