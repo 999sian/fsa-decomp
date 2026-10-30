@@ -921,6 +921,11 @@ struct T5B10;
 extern "C" void fn_804054B8(T5B10*);
 extern "C" void fn_80405B10(T5B10*,s32);
 extern "C" void fn_80405D00(u8*,s32);
+extern "C" int snprintf(char*,unsigned long,const char*,...);
+extern "C" void* fn_80403184(u32,const char*);
+extern "C" u32 fn_80309C4C(void*,s32,s32);
+extern "C" u32 fn_80309A9C(void*,s32,s32);
+extern "C" void fn_80458F9C(void*,s32);
 #pragma opt_propagation off
 extern "C" void fn_8040E3A0(u8* self) {
 	f32 baseSpeed = 3.4f;
