@@ -10,7 +10,7 @@ extern "C" {
 
 void Swdl_EmptyHook(void) {}
 
-extern "C" void fn_8023E724(s32 i);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
 extern "C" void fn_8030C210(void* p);
 extern "C" s32 fn_80236228(s32 i);
 extern "C" s32 fn_8023077C(void);
