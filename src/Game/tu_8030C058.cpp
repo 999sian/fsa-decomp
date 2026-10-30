@@ -327,13 +327,13 @@ extern "C" f32* fn_8023E3B8(s32);
 extern "C" f32* fn_8023E32C(s32);
 
 static inline f32 cameraCos(f32 x) {
-    if (x < 0.0f) x = -x;
-    return JMath::sincosTable_.mTable[(u16)(lbl_80541708 * x) & 2047].second;
+    if (x < lbl_805416C8) x = -x;
+    return JMath::sincosTable_.mTable[(u16)((2048.0f / 360.0f) * x) & 2047].second;
 }
 static inline f32 cameraBlend(s32 timer, f32 speed) {
-    f32 a = speed * (lbl_80541704 * (f32)timer);
-    f32 b = lbl_80541704 * (lbl_805416D8 - (lbl_805416E8 * cameraCos(a) + lbl_805416E8));
-    return lbl_805416E8 * cameraCos(b) + lbl_805416E8;
+    f32 a = speed * (180.0f * (f32)timer);
+    f32 b = 180.0f * (1.0f - (0.5f * cameraCos(a) + 0.5f));
+    return 0.5f * cameraCos(b) + 0.5f;
 }
 static inline f32 cameraClampDelta(f32 value, f32 lower, f32 upper) {
     if (value < lbl_805416C8) {
@@ -343,19 +343,302 @@ static inline f32 cameraClampDelta(f32 value, f32 lower, f32 upper) {
     }
     return value;
 }
-#pragma dont_inline on
-extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b) {
-    f32 scale = *(f32*)(p + 0x1d4);
-    f32 lo = *(f32*)(entry + 0x0);
-    f32 limit = lbl_805416C8;
-    if (scale >= limit) {
-        *(f32*)(p + 0x1d4) = lo;
-    } else {
-        *(f32*)(p + 0x1d4) = lo;
-    }
-}
 #pragma dont_inline reset
-
+extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b) {
+    f32* old = (f32*)zero;
+    f32* out = (f32*)a;
+    f32* center = (f32*)b;
+    f32 left, right, bottom, top, minY, maxY;
+    const GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
+    s32 fbWidth = mode->fbWidth;
+    s32 efbHeight = mode->efbHeight;
+    f32 aspect = (f32)efbHeight / (f32)fbWidth;
+    u8 first = 1;
+    s32 count = 0;
+    f32* cfg = (f32*)entry;
+    f32 value = *(f32*)(p + 0x1d4);
+    if (value < lbl_805416C8) {
+        *(f32*)(p + 0x1d4) = cfg[0];
+    } else {
+        f32 step = lbl_805416F4 * (cfg[0] - value);
+        if (step < lbl_805416C8) {
+            if (step < lbl_805416F8) step = lbl_805416F8;
+        } else {
+            if (step > lbl_805416FC) step = lbl_805416FC;
+        }
+        *(f32*)(p + 0x1d4) = value + step;
+    }
+    value = *(f32*)(p + 0x1d8);
+    if (value < lbl_805416C8) {
+        *(f32*)(p + 0x1d8) = cfg[1];
+    } else {
+        f32 step = lbl_805416F4 * (cfg[1] - value);
+        if (step < lbl_805416C8) {
+            if (step < lbl_805416F8) step = lbl_805416F8;
+        } else {
+            if (step > lbl_805416FC) step = lbl_805416FC;
+        }
+        *(f32*)(p + 0x1d8) = value + step;
+    }
+    if (old && !(lbl_805416C8 == old[0] && lbl_805416C8 == old[2] && lbl_805416C8 == old[1] && lbl_805416C8 == old[3])) {
+        count = *(s32*)(p + 0x7f0);
+        if (p[0x7f4]) {
+            s32 kind = *(s32*)(p + 0x7f8);
+            if (kind == 4) {
+                top = *(f32*)(p + 0x800);
+                first = 0;
+                left = *(f32*)(p + 0x7fc);
+                bottom = top; right = left; minY = top; maxY = top;
+            } else if (kind == 5) {
+                minY = *(f32*)(p + 0x80c);
+                first = 0;
+                maxY = *(f32*)(p + 0x814);
+                top = minY;
+                left = *(f32*)(p + 0x808);
+                bottom = maxY;
+                right = *(f32*)(p + 0x810);
+            }
+            *(s32*)(p + 0x1c4) = 0;
+            *(s32*)(p + 0x1c8) = 0;
+            *(s32*)(p + 0x1cc) = 0;
+            *(s32*)(p + 0x1d0) = 0;
+        }
+    } else {
+        p[0x7f4] = 0;
+    }
+    for (s32 i = 0; i < count + 4; i++) {
+        f32 x, y;
+        if (p[0x7f4] && *(s32*)(p + 0x7f8) >= 0) {
+            s32 kind = *(s32*)(p + 0x7f8);
+            if (!(kind == i && i < 4) && !(kind == 6 && i >= 4)) continue;
+        }
+        if (i < 4) {
+            if (!fn_8023F264(i)) continue;
+            s32 kind = fn_8023DE58(i);
+            f32* pos;
+            if (entry[0x20] && (fn_8022CAF8(0) != 4 || p[0x1e8] || fn_80234134(0))) {
+                if (i != 0 || (fn_8022CAF8(0) == 4 && !fn_80234134(0))) {
+                    if (!p[0x1e8] || fn_8022CAF8(0) != 4 || i != fn_8022EA0C(0)) continue;
+                }
+                if (kind <= 8) { pos = fn_8023E3B8(i); x = pos[0]; y = pos[1]; }
+                else { pos = fn_8023E32C(i); x = pos[0]; y = pos[1]; }
+            } else {
+                if (kind <= 8) { pos = fn_8023E3B8(i); x = pos[0]; y = pos[1]; }
+                else {
+                    if (i != 0 && !lbl_8053AAF8[0x7e]) continue;
+                    { pos = fn_8023E32C(i); x = pos[0]; y = pos[1]; }
+                }
+            }
+        } else {
+            f32* pos = (f32*)(p + i * 12 + 0x1c0);
+            if (entry[0x20] && !first) {
+                f32 step = *(f32*)(p + 0x1d4) - cfg[2];
+                x = pos[0]; y = pos[1];
+                if (lbl_805416C8 != step) {
+                    if (x < left) { if (x < left - step) x += step; else x = left; }
+                    else if (x > right) { if (x > right + step) x -= step; else x = right; }
+                    if (y < top) { if (y < top - step) y += step; else y = top; }
+                    else if (y > bottom) { if (y > bottom + step) y -= step; else y = bottom; }
+                }
+            } else { x = pos[0]; y = pos[1]; }
+        }
+        if (first) {
+            left = x;
+            first = 0;
+            right = x; top = y; bottom = y; minY = y; maxY = y;
+        } else {
+            if (left > x) left = x;
+            if (top > y) top = y;
+            if (minY > y) minY = y;
+            if (right < x) right = x;
+            if (bottom < y) bottom = y;
+            if (maxY < y) maxY = y;
+        }
+    }
+    if (p[0x7f5]) {
+        minY = rect[1];
+        maxY = rect[3];
+        top = minY + cfg[0];
+        bottom = maxY - cfg[0];
+        left = rect[0] + cfg[0];
+        right = rect[2] - cfg[0];
+    } else {
+        *(s32*)(p + 0x838) = -1;
+    }
+    if (!p[0x7f4]) *(s32*)(p + 0x83c) = -1;
+    if (old && !(lbl_805416C8 == old[0] && lbl_805416C8 == old[2] && lbl_805416C8 == old[1] && lbl_805416C8 == old[3])) {
+        f32 step;
+        if (p[0x7f4] || count > 0) step = lbl_805416C8;
+        else step = cfg[5];
+        if (left > old[0]) { if (left < old[0] + step) left = old[0]; else left -= step; }
+        if (right < old[2]) { if (right > old[2] - step) right = old[2]; else right += step; }
+        if (top > old[1]) { if (top < old[1] + step) top = old[1]; else top -= step; }
+        if (bottom < old[3]) { if (bottom > old[3] - step) bottom = old[3]; else bottom += step; }
+        u8 blended = 0;
+        if (p[0x7f5]) {
+            if (*(s32*)(p + 0x838) < 0) {
+                *(s32*)(p + 0x838) = 70;
+                *(f32*)(p + 0x818) = old[0];
+                *(f32*)(p + 0x81c) = old[1];
+                *(f32*)(p + 0x820) = old[2];
+                *(f32*)(p + 0x824) = old[3];
+            }
+            if (*(s32*)(p + 0x838) > 0) {
+                f32 w = cameraBlend(*(s32*)(p + 0x838), lbl_80541700);
+                blended = 1;
+                --*(s32*)(p + 0x838);
+                f32 inv = lbl_805416D8 - w;
+                left = *(f32*)(p + 0x818) * inv + left * w;
+                top = *(f32*)(p + 0x81c) * inv + top * w;
+                right = *(f32*)(p + 0x820) * inv + right * w;
+                bottom = *(f32*)(p + 0x824) * inv + bottom * w;
+            }
+        }
+        if (!blended && p[0x7f4] && p[0x7f6]) {
+            if (*(s32*)(p + 0x83c) < 0) {
+                *(s32*)(p + 0x83c) = 40;
+                *(f32*)(p + 0x828) = old[0];
+                *(f32*)(p + 0x82c) = old[1];
+                *(f32*)(p + 0x830) = old[2];
+                *(f32*)(p + 0x834) = old[3];
+            }
+            if (*(s32*)(p + 0x83c) > 0) {
+                f32 w = cameraBlend(*(s32*)(p + 0x83c), lbl_8054170C);
+                blended = 1;
+                --*(s32*)(p + 0x83c);
+                f32 inv = lbl_805416D8 - w;
+                left = *(f32*)(p + 0x828) * inv + left * w;
+                top = *(f32*)(p + 0x82c) * inv + top * w;
+                right = *(f32*)(p + 0x830) * inv + right * w;
+                bottom = *(f32*)(p + 0x834) * inv + bottom * w;
+            }
+        }
+        if (!blended) {
+            f32 diff[4];
+            f32 negative[4];
+            f32 positive[4];
+            diff[0] = old[0] - left;
+            diff[1] = right - old[2];
+            diff[2] = old[1] - top;
+            diff[3] = bottom - old[3];
+            f32 high = lbl_805416C8;
+            for (s32 k = 0; k < 4; k++) if (diff[k] > high) high = diff[k];
+            f32 low = lbl_805416C8;
+            for (s32 k = 0; k < 4; k++) if (diff[k] < low) low = diff[k];
+            f32 zeroValue = lbl_805416C8;
+            for (s32 k = 0; k < 4; k++) {
+                if (diff[k] < zeroValue) {
+                    if (*(s32*)(p + 0x1c4 + k * 4) == 0 || diff[k ^ 1] > zeroValue) {
+                        if (diff[k ^ 1] < lbl_805416F4) negative[k] = cfg[4] * diff[k] / low;
+                        else negative[k] = cfg[3] * diff[k] / low;
+                    } else negative[k] = zeroValue;
+                } else negative[k] = zeroValue;
+                if (*(s32*)(p + 0x1c4 + k * 4) > 0) --*(s32*)(p + 0x1c4 + k * 4);
+            }
+            zeroValue = lbl_805416C8;
+            f32 rate = cfg[3];
+            s32 delay = *(s32*)(entry + 0x18);
+            for (s32 k = 0; k < 4; k++) {
+                if (diff[k] > zeroValue) {
+                    positive[k] = rate * diff[k] / high;
+                    if (*(s32*)(p + 0x1c4 + k * 4) < delay) *(s32*)(p + 0x1c4 + k * 4) = delay;
+                } else positive[k] = zeroValue;
+            }
+            f32 speed = cfg[7];
+            left = old[0] + cameraClampDelta(speed * (left - old[0]), -positive[0], negative[0]);
+            right = old[2] + cameraClampDelta(speed * (right - old[2]), -negative[1], positive[1]);
+            top = old[1] + cameraClampDelta(speed * (top - old[1]), -positive[2], negative[2]);
+            bottom = old[3] + cameraClampDelta(speed * (bottom - old[3]), -negative[3], positive[3]);
+        }
+    }
+    if (p[0x840]) {
+        f32 w = *(f32*)(p + 0x854);
+        f32 inv = lbl_805416D8 - w;
+        top = *(f32*)(p + 0x848) * w + top * inv;
+        bottom = *(f32*)(p + 0x850) * w + bottom * inv;
+        left = *(f32*)(p + 0x844) * w + left * inv;
+        minY = top;
+        maxY = bottom;
+        right = *(f32*)(p + 0x84c) * w + right * inv;
+    }
+    if (old) { old[0] = left; old[1] = top; old[2] = right; old[3] = bottom; }
+    f32 pad = *(f32*)(p + 0x1d4);
+    left -= pad; top -= pad; right += pad; bottom += pad;
+    f32 x0 = rect[0];
+    if (left < x0) left = x0;
+    f32 y0 = rect[1];
+    if (top < y0) top = y0;
+    f32 x1 = rect[2];
+    if (right > x1) right = x1;
+    f32 y1 = rect[3];
+    if (bottom > y1) bottom = y1;
+    f32 minSize = *(f32*)(p + 0x1d8);
+    f32 twice = lbl_80541710 * minSize;
+    if (right - left < twice) {
+        f32 mid = lbl_805416E8 * (right + left);
+        left = mid - minSize; right = mid + minSize;
+        if (left < x0) { f32 d = x0 - left; left = x0; right += d; }
+        if (right > x1) { f32 d = right - x1; right = x1; left -= d; }
+    }
+    if (bottom - top < twice * aspect) {
+        f32 mid = lbl_805416E8 * (bottom + top);
+        minSize *= aspect;
+        top = mid - minSize; bottom = mid + minSize;
+        if (top < y0) { f32 d = y0 - top; top = y0; bottom += d; }
+        if (bottom > y1) { f32 d = bottom - y1; bottom = y1; top -= d; }
+    }
+    mode = JUTVideo::getManager()->getRenderMode();
+    s32 height = mode->efbHeight;
+    s32 width = mode->fbWidth;
+    f32 totalWidth = x1 - x0;
+    if ((bottom - top) * (f32)width > totalWidth * (f32)height) {
+        f32 mid = lbl_805416E8 * (top + bottom);
+        f32 half = aspect * (lbl_805416E8 * totalWidth);
+        top = mid - half; bottom = mid + half;
+    }
+    f32 spanX = right - left;
+    f32 spanY = bottom - top;
+    if (spanX * (f32)height > spanY * (f32)width) {
+        f32 mid = lbl_805416E8 * (top + bottom);
+        f32 half = (lbl_805416E8 * spanX) * aspect;
+        top = mid - half; bottom = mid + half;
+        if (top < y0) {
+            f32 d = y0 - top; top = y0; bottom += d;
+            if (bottom > y1) bottom = y1;
+        }
+        if (bottom > y1) {
+            f32 d = bottom - y1; bottom = y1; top -= d;
+            if (top < y0) top = y0;
+        }
+    } else {
+        f32 mid = lbl_805416E8 * (left + right);
+        f32 half = (lbl_805416E8 * spanY) / aspect;
+        left = mid - half; right = mid + half;
+        if (left < x0) {
+            f32 d = x0 - left; left = x0; right += d;
+            if (right > x1) right = x1;
+        }
+        if (right > x1) {
+            f32 d = right - x1; right = x1; left -= d;
+            if (left < x0) left = x0;
+        }
+    }
+    f32 dx = *(f32*)(p + 0x1dc);
+    f32 dy = *(f32*)(p + 0x1e0);
+    left += dx; top += dy; right += dx; bottom += dy;
+    if (left < x0) { f32 d = x0 - left; left = x0; right += d; }
+    if (top < y0) { f32 d = y0 - top; top = y0; bottom += d; }
+    if (right > x1) {
+        f32 d = right - x1; right = x1; left -= d;
+        if (left < x0) { f32 d = x0 - left; left += d; right = x1 + d; }
+    }
+    if (bottom > y1) {
+        f32 d = bottom - y1; bottom = y1; top -= d;
+        if (top < y0) { f32 d = y0 - top; top += d; bottom = y1 + d; }
+    }
+    if (out) { out[0] = left; out[1] = top; out[2] = right; out[3] = bottom; }
+    if (center) *center = lbl_805416E8 * (minY + maxY) + lbl_80541714;
+}
 extern "C" void fn_8030DD20(u8* param_1, Mtx param_2) {
     Mtx sp8;
     PSMTXConcat((MtxPtr)(param_1 + 0x74), param_2, sp8);
