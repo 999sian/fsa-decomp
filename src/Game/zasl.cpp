@@ -77,17 +77,17 @@ extern "C" void fn_8020C138(u8* this_) {
 }
 
 #pragma opt_propagation off
-extern "C" bool fn_8020C26C(void* this_, void* a, void* b) {
+extern "C" bool fn_8020C26C(ItemBase* self, void* a, void* b) {
     bool ret;
-    void* l;
-    u8* p = (u8*)this_;
-    l = 0;
-    if ((*(u32*)(p + 0x230) & 7) != 0) l = &lbl_8053F9E0;
-    ret = true;
-    if (!fn_802265DC(b, a, 0)) {
-        u32 v = *(u32*)(p + 0x198);
-        u8* m = fn_8020D58C();
-        if (!fn_8020D6AC(m + m[1] * 0x784 + 4, a, b, v, l)) ret = false;
+    s32 v;
+    void* l=0;
+    ItemBase* p=self;
+    if((p->m230&7)!=0) l=&lbl_8053F9E0;
+    ret=true;
+    if(!fn_802265DC(b,a,0)) {
+        v=((Actor*)p)->field_198;
+        u8* m=fn_8020D58C();
+        if(!fn_8020D6AC(m+m[1]*0x784+4,a,b,v,l)) ret=false;
     }
     return ret;
 }
