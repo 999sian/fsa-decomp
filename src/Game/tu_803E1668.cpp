@@ -882,6 +882,11 @@ static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, 
 
 struct MenuFrameValue803E {s32 frame;};
 struct MenuFrame803E {u8 _00[0x230];MenuFrameValue803E frame230[4];MenuFrameValue803E frame240[4];};
+static inline void MenuRestoreValue803E(u8* p,u64 a,const u64* b,const u64* c) {
+    ((Pane803E4650*)(*(J2DPane**)(p+8))->search(a))->setAlpha(p[0x265]);
+    ((Pane803E4650*)(*(J2DPane**)(p+8))->search(*b))->setAlpha(p[0x266]);
+    ((Pane803E4650*)(*(J2DPane**)(p+8))->search(*c))->setAlpha(p[0x267]);
+}
 static inline void MenuRestoreClear803E(u8* p,u64 a,const u64* b,const u64* c,s32 mask) {
     p[0x26b]&=~mask;
     ((Pane803E4650*)(*(J2DPane**)(p+8))->search(a))->setAlpha(p[0x265]);
@@ -906,7 +911,6 @@ static inline f32 MenuCenterAxis803E(J2DPane* root,J2DPane* screen,u64 tag,int a
 static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return (span-size)*half+origin;}
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
-#pragma optimization_level 3
 #pragma opt_common_subs off
 extern "C" void fn_803E51C4(void* param_1) {
     u8* p=(u8*)param_1;
@@ -982,7 +986,7 @@ extern "C" void fn_803E51C4(void* param_1) {
             if(i==*(s16*)(p+0x250) && *(s32*)(q+0x230)==*(s16*)(*(u8**)(q+0x38)+6)-10) {
                 s16 old=*(s16*)(p+0x250);
                 s16 next=MenuNext803E(old,*(s32*)(p+0x1bc)+1);
-                if(next!=-1 && next!=old) {
+                if(next!=-1 && old!=next) {
                     *(s16*)(p+0x250)=next;
                     u8* r=p+next*4;
                     ((MenuFrame803E*)r)->frame230[0].frame++;
@@ -1000,7 +1004,7 @@ extern "C" void fn_803E51C4(void* param_1) {
             if(i==*(s16*)(p+0x252) && *(s32*)(q+0x240)==*(s16*)(*(u8**)(q+0x48)+6)-10) {
                 s16 old=*(s16*)(p+0x252);
                 s16 next=MenuNext803E(old,*(s32*)(p+0x1bc)+1);
-                if(next!=-1 && next!=old) {
+                if(next!=-1 && old!=next) {
                     *(s16*)(p+0x252)=next;
                     u8* r=p+next*4;
                     ((MenuFrame803E*)r)->frame240[0].frame++;
@@ -1079,7 +1083,6 @@ extern "C" void fn_803E51C4(void* param_1) {
     fn_80440EE8(lbl_8053AED8);
 }
 #pragma opt_common_subs reset
-#pragma optimization_level reset
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
