@@ -1273,6 +1273,22 @@ static inline void msgMeasureChar2(MsgMeasure* m, int c, f32 ratio, f32 add) {
     m->lineChars[m->line]++;
 }
 
+static inline void msgMeasureCharK(MsgMeasure* m, int c, f32 ratio, f32 k, f32 add) {
+    JUTFont::TWidth w;
+    m->font->getWidthEntry(c, &w);
+    m->lineW[m->line] += k * (ratio * (m->scale * (f32)(s32)w.w1));
+    m->lineX[m->line] += add;
+    m->lineChars[m->line]++;
+}
+
+static inline void msgMeasureCharTab(MsgMeasure* m, int c, f32 ratio, f32 add) {
+    JUTFont::TWidth w;
+    m->font->getWidthEntry(c, &w);
+    m->lineW[m->line] += (f32)*(s16*)(lbl_8050DB0C + 0x2ee) * (ratio * (m->scale * (f32)(s32)w.w1));
+    m->lineX[m->line] += add;
+    m->lineChars[m->line]++;
+}
+
 extern "C" void fn_80398EF4(MsgMeasure* m, s32 a, s32 b) {
     f32 ratio = m->fontW / (f32)m->font->getCellWidth();
     if (a > 99) {
@@ -2071,14 +2087,206 @@ extern "C" void fn_8039934C(MsgMeasure* m, s32 a, s32 b) {
     msgMeasureChar2(m, '\'', ratio, 6.0f);
 }
 
-extern "C" void fn_803997B8(u8* this_, s32 id, s32 arg) {
-    f32 ratio = *(f32*)(this_ + 0x48) / (f32)(s32)(u16)*(u16*)(lbl_8050DB0C + 0);
-    if (id == 0x25) {
-        return;
+extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
+    u8* p = (u8*)m;
+    f32 ratio = m->fontW / (f32)m->font->getCellWidth();
+    switch (id) {
+    case 0:
+        if (((s8*)p)[0x202 + p[0x281]] != (s8)p[0x22c]) {
+            p[0x281]++;
+            p[0x202 + p[0x281]] = p[0x22c];
+            p[0x257 + p[0x281]] = 0;
+        }
+        return 1;
+    case 0x10000:
+    case 0x10001:
+    case 0x10002:
+    case 0x10003:
+    case 0x10007:
+    case 0x10008:
+    case 0x10009:
+    case 0x1000a:
+    {
+        *(f32*)(p + 0x1a8 + p[0x1fd] * 4) = m->lineW[m->line];
+        p[0x1f1 + p[0x1fd]] = m->line;
+        p[0x1fd]++;
+        JUTFont::TWidth w;
+        m->font->getWidthEntry(0x20, &w);
+        m->lineW[m->line] += 2.0f * (ratio * (m->scale * (f32)(s32)w.w1));
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line] += 2;
+        return 1;
     }
-    if (id > 0x25) {
-        return;
+    case 0x10004:
+    case 0x10005:
+    case 0x10006:
+        *(f32*)(p + 0x1a8 + p[0x1fd] * 4) = m->lineW[m->line];
+        p[0x1f1 + p[0x1fd]] = m->line;
+        p[0x1fd]++;
+        msgMeasureChar2(m, 0x20, ratio, 3.0f);
+        return 1;
+    case 0x1000b:
+    case 0x1000c:
+        m->lineChars[m->line]++;
+        return 1;
+    case 0x10010:
+        msgMeasureChar(m, 0xa7, ratio, 3.0f);
+        return 1;
+    case 0x10011:
+        msgMeasureChar(m, 0xa8, ratio, 3.0f);
+        return 1;
+    case 0x10012:
+        msgMeasureChar(m, 0xa6, ratio, 3.0f);
+        return 1;
+    case 0x10013:
+        msgMeasureChar(m, 0xa5, ratio, 3.0f);
+        return 1;
+    case 0x20000:
+    case 0x20001:
+    case 0x20002:
+    case 0x20003:
+    case 0x20011:
+    case 0x20012:
+    case 0x20013:
+    case 0x20014:
+    {
+        if (m->line < 32) {
+            *(u32*)(p + 0x3c) |= 1 << m->line;
+        } else if (m->line < 64) {
+            *(u32*)(p + 0x40) |= 1 << (m->line - 32);
+        }
+        *(f32*)(p + 0x19c + p[0x282] * 4) = m->lineW[m->line];
+        p[0x1ee + p[0x282]] = m->line;
+        p[0x1fe + p[0x282]] = m->lineChars[m->line];
+        JUTFont::TWidth w;
+        m->font->getWidthEntry(0x20, &w);
+        m->lineW[m->line] += 5.0f * (ratio * (m->scale * (f32)(s32)w.w1));
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
+        p[0x282]++;
+        return 1;
     }
+    case 0x20009:
+    case 0x2000a:
+    case 0x2000b:
+    case 0x2000c:
+    case 0x20019:
+    case 0x2001a:
+    case 0x2001b:
+    case 0x2001c:
+    {
+        if (m->line < 32) {
+            *(u32*)(p + 0x3c) &= ~(1 << m->line);
+        } else if (m->line < 64) {
+            *(u32*)(p + 0x40) &= ~(1 << m->line);
+        }
+        *(f32*)(p + 0x19c + p[0x282] * 4) = m->lineW[m->line];
+        p[0x1ee + p[0x282]] = m->line;
+        p[0x1fe + p[0x282]] = m->lineChars[m->line];
+        JUTFont::TWidth w;
+        m->font->getWidthEntry(0x20, &w);
+        m->lineW[m->line] += (f32)*(s16*)(lbl_8050DB0C + 0x2ee) * (ratio * (m->scale * (f32)(s32)w.w1));
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
+        p[0x282]++;
+        return 1;
+    }
+    case 0x20004:
+    case 0x20005:
+    case 0x20006:
+    case 0x20007:
+    case 0x20008:
+    case 0x2000d:
+    case 0x2000e:
+    case 0x2000f:
+    case 0x20010:
+    case 0x20016:
+    case 0x20017:
+    case 0x20018:
+    case 0x2001d:
+    case 0x2001e:
+    case 0x2001f:
+    case 0x20020:
+    case 0x20021:
+    case 0x20022:
+    case 0x20023:
+    case 0x20024:
+        return 1;
+    case 0x20015:
+        if (data + 4 != 0) {
+            return 1;
+        }
+    case 0x20025:
+        if (p[0x1e8] != 0) {
+            p[0x256 + p[0x281]] = 1;
+        } else {
+            p[0x257 + p[0x281]] = 1;
+        }
+        return 1;
+    case 0x20026:
+    case 0x20027:
+    case 0x20028:
+        return 1;
+    case 0x20029:
+        fn_8039934C(m, *(s32*)(p + 0x1d8), *(s32*)(p + 0x1dc));
+        return 1;
+    case 0x2002a:
+    case 0x2002b:
+        return 1;
+    case 0x2002c:
+        return 1;
+    case 0x2002d:
+        return 1;
+    case 0x2002e:
+        return 1;
+    case 0x2002f:
+        return 1;
+    case 0x20030:
+        return 1;
+    case 0x20031:
+        return 1;
+    case 0x20032:
+        return 1;
+    case 0x20033:
+        return 1;
+    case 0x30000:
+        fn_80398A34(m, *(s16*)(p + 0x1ea));
+        fn_80398700(m, data[0], *(s16*)(p + 0x1ea));
+        return 1;
+    case 0x30001:
+        return 1;
+    case 0x30002:
+        fn_80398A34(m, *(s16*)(p + 0x1ec));
+        fn_80398700(m, data[0], *(s16*)(p + 0x1ec));
+        return 1;
+    case 0x30003:
+        fn_80398A34(m, *(s32*)(p + 0x1e0));
+        fn_80398700(m, data[0], *(s32*)(p + 0x1e0));
+        return 1;
+    case 0x30004:
+        fn_80398A34(m, *(s32*)(p + 0x1e4));
+        fn_80398700(m, data[0], *(s32*)(p + 0x1e4));
+        return 1;
+    case 0x30005:
+    {
+        u8* e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200;
+        fn_80398EF4(m, e[0x79], e[0x78]);
+        return 1;
+    }
+    case 0x30006:
+        fn_80398A34(m, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x34));
+        fn_80398700(m, 4, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x34));
+        return 1;
+    case 0x30007:
+        fn_80398A34(m, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x36));
+        fn_80398700(m, 4, *(u16*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200 + 0x36));
+        return 1;
+    case 0x30008:
+        fn_80398A34(m, *(s32*)((u8*)lbl_8053AD78 + 0x10c));
+        fn_80398700(m, 6, *(s32*)((u8*)lbl_8053AD78 + 0x10c));
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" const char lbl_805432B8[3];
@@ -2420,14 +2628,14 @@ extern "C" const u32 lbl_805431D0[2];
 extern "C" s32 fn_8039FE78(MsgCounter& object,s32 event,u8* payload){
 u8* data=payload;
 MsgCounter* p = &object;
-u8 byte0;
-u8 byte2;
-u8 byte1;
-u8 byte3;
-u8 byte4;
-u8 byte5;
-u8 byte6;
-u8 byte9;
+u32 byte0;
+u32 byte2;
+u32 byte1;
+u32 byte3;
+u32 byte4;
+u32 byte5;
+u32 byte6;
+u32 byte9;
 s32 args[5];
 if(!fn_803A313C(p->m60)){
 switch((int)event){
@@ -2590,11 +2798,7 @@ return 1;
 case 0x20007:
 {
 
-s32 first = *(s32*)(data+1);
-s32 second = *(s32*)(data+5);
-u8 id = data[0];
-args[0] = first;
-args[1] = second;
+u8 id=readMessagePair(args,data);
 if (fn_8018E930(id)) fn_803A30DC(p->m60,args[0]);
 else fn_803A30DC(p->m60,args[1]);
 return 1;
@@ -3231,11 +3435,7 @@ return 1;
 case 0x20007:
 {
 
-s32 first = *(s32*)(data+1);
-s32 second = *(s32*)(data+5);
-u8 id = data[0];
-args[0] = first;
-args[1] = second;
+u8 id=readMessagePair(args,data);
 if (fn_8018E930(id)) fn_803A30DC(p->m60,args[0]);
 else fn_803A30DC(p->m60,args[1]);
 return 1;
