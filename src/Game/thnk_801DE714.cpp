@@ -264,7 +264,7 @@ extern "C" void fn_801E0CF4(char* this_);
 #pragma opt_propagation off
 static inline bool thnkPlayerActive(s32 player) {
     bool active = false;
-    if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) active = true;
+    if (fn_802375B0(player) == 0 && (u8)fn_801CCFE4(player)) active = true;
     return active;
 }
 static inline bool thnkPlayerValid(s32 player) {
