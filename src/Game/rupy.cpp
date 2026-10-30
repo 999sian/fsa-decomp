@@ -7,6 +7,7 @@
 #undef Vec
 #include "Game/ItemBase.h"
 #include "std/math.h"
+#include "sdk/stl/math.h"
 #include "JSystem/JMath/JMath.h"
 
 extern const f32 lbl_80541D88;
@@ -863,7 +864,8 @@ static inline f32 rupyDistance(f32 dx, f32 dy) { return std::sqrtf(dx * dx + dy 
 
 #pragma opt_propagation off
 #pragma opt_lifetimes off
-extern "C" void fn_8032C664(u8* p) {
+extern "C" void fn_8032C664(Actor* actor) {
+    u8* p=(u8*)actor;
     RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 i;
     s32 room;
@@ -915,7 +917,11 @@ extern "C" void fn_8032C664(u8* p) {
             break;
         }
         fn_801F71A4(p + 0x298, lbl_80541DF0 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x270) >> 5].first + lbl_80541DB4, lbl_80541DE4, lbl_80541DE4);
-        *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()) + 0x200;
+{ RupyRandomBits bits1; u32* rng=(u32*)lbl_8053AAF8;
+ rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
+ bits1.word=(rng[45]>>9)|0x3f800000U;
+        *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * (bits1.value-lbl_80541D90)) + 0x200;
+}
         for (i = 0; i < 4; i++) {
             if (fn_80230188(i) == 0) {
                 (*(s32*)(p + 0x24c))--;
@@ -996,10 +1002,9 @@ extern "C" void fn_8032C664(u8* p) {
         *(f32*)(p + 0x44) = lbl_80541DB4;
         *(s32*)(p + 0x24c) = 0x212;
         *(s32*)(p + 0x230) = 4;
-    case 4: {
-        f32 zero=lbl_80541D88;
-        *(f32*)(p + 0x44) = *(f32*)(p + 0x44) - lbl_80541DAC;
-        if (*(f32*)(p + 0x14) <= zero && *(f32*)(p + 0x44) < zero) {
+    case 4:
+        actor->field_3C.z -= lbl_80541DAC;
+        if (actor->field_0C.z <= lbl_80541D88 && actor->field_3C.z < lbl_80541D88) {
             *(f32*)(p + 0x44) = lbl_80541D88;
             *(f32*)(p + 0x40) = lbl_80541D88;
             *(f32*)(p + 0x3c) = lbl_80541D88;
@@ -1031,7 +1036,6 @@ extern "C" void fn_8032C664(u8* p) {
             p[0x11c] = 0;
         }
         break;
-    }
     case 6:
         for (i = 0; i < 4; i++) {
             if (fn_80230188(i) == 0) {
@@ -1078,7 +1082,11 @@ extern "C" void fn_8032C664(u8* p) {
         }
         if (*(u16*)(p + 0x94) != 0x23 && *(u16*)(p + 0x94) != 0x24) {
             fn_801F71A4(p + 0x298, lbl_80541DF0 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x270) >> 5].first + lbl_80541DB4, lbl_80541DE4, lbl_80541DE4);
-            *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()) + 0x200;
+{ RupyRandomBits bits2; u32* rng=(u32*)lbl_8053AAF8;
+ rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
+ bits2.word=(rng[45]>>9)|0x3f800000U;
+            *(s32*)(p + 0x270) += (s32)(lbl_80541DF4 * (bits2.value-lbl_80541D90)) + 0x200;
+}
         }
         room = *(s32*)(p + 4);
         tbl = (u8*)fn_802D6A9C() + 0x10000;
@@ -1101,7 +1109,11 @@ extern "C" void fn_8032C664(u8* p) {
                     Actor_CreateByID(fn_801F856C(), 0x52534e50, room, p + 0xc, 0, -1, -1);
                 }
             }
-            *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()) + 0x3c;
+{ RupyRandomBits bits3; u32* rng=(u32*)lbl_8053AAF8;
+ rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
+ bits3.word=(rng[45]>>9)|0x3f800000U;
+            *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits3.value-lbl_80541D90)) + 0x3c;
+}
             if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
                 *(s32*)(p + 0x24c) = 0x3d9;
             } else {
@@ -1115,7 +1127,11 @@ extern "C" void fn_8032C664(u8* p) {
         }
         break;
     case 0xe:
-        *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()) + 0x3c;
+{ RupyRandomBits bits4; u32* rng=(u32*)lbl_8053AAF8;
+ rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
+ bits4.word=(rng[45]>>9)|0x3f800000U;
+        *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits4.value-lbl_80541D90)) + 0x3c;
+}
         if (((u8*)lbl_8053AAF8)[0x7e] == 1) {
             *(s32*)(p + 0x24c) = 0x3d9;
         } else {
@@ -1137,7 +1153,7 @@ extern "C" void fn_8032C664(u8* p) {
             }
             dy = *(f32*)(p + 0x10) - *(f32*)(p + 0x14) - *(f32*)(o + 0x10);
             dx = *(f32*)(p + 0xc) - *(f32*)(o + 0xc);
-            if (rupyDistance(dx,dy) < lbl_80541D98) {
+            if (std::sqrtf(dx * dx + dy * dy) < lbl_80541D98) {
                 s32 j = *(s32*)(o + 0x26c);
                 if (j >= 0) {
                     u8* o2 = (u8*)fn_801F666C(fn_801F856C(), j);
@@ -1148,7 +1164,11 @@ extern "C" void fn_8032C664(u8* p) {
                 detach__5ActorFv(p);
                 break;
             }
-            *(s32*)(p + 0x258) += (s32)(lbl_80541DF4 * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()) + 0x200;
+{ RupyRandomBits bits5; u32* rng=(u32*)lbl_8053AAF8;
+ rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
+ bits5.word=(rng[45]>>9)|0x3f800000U;
+            *(s32*)(p + 0x258) += (s32)(lbl_80541DF4 * (bits5.value-lbl_80541D90)) + 0x200;
+}
             fn_801F71A4(p + 0x14, lbl_80541D98 * JMath::sincosTable_.mTable[(u16)*(s32*)(p + 0x258) >> 5].first + lbl_80541DF8, lbl_80541DAC, lbl_80541DBC);
             if (*(f32*)(p + 0x14) < lbl_80541DF8) {
                 break;
@@ -1191,7 +1211,11 @@ extern "C" void fn_8032C664(u8* p) {
             (*(s32*)(p + 0x254))++;
             *(s32*)(p + 0x254) &= 3;
             if (*(s32*)(p + 0x254) == 0) {
-                *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * ((JMath::TRandom_fast_*)((u8*)lbl_8053AAF8+0xb4))->get_ufloat_1()) + 0x3c;
+{ RupyRandomBits bits6; u32* rng=(u32*)lbl_8053AAF8;
+ rng[45]=rng[45]*0x19660dU+0x3c6ef35fU;
+ bits6.word=(rng[45]>>9)|0x3f800000U;
+                *(s32*)(p + 0x250) = (s32)(lbl_80541DFC * (bits6.value-lbl_80541D90)) + 0x3c;
+}
             } else {
                 *(s32*)(p + 0x250) = 2;
             }
