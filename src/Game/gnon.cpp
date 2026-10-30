@@ -83,6 +83,7 @@ extern "C" void fn_801EFD34(void* this_, const ResTIMG* tex, DrawRec* rec, s32 m
 extern "C" const ResTIMG* fn_804032E8(u32 type, const char* name);
 extern u8 lbl_804A1FF8[];
 extern const char lbl_80467F8C[];
+extern const f32 lbl_8053E278;
 extern f32 lbl_8053E27C;
 extern f32 lbl_8053E280;
 extern f32 lbl_8053E284;
@@ -164,8 +165,10 @@ extern "C" void fn_80192090(char* this_) {
     if (type == 0x1f) {
         return;
     }
-    f32 x = *(f32*)(this_ + 0xc);
-    f32 y = *(f32*)(this_ + 0x10);
+    f32 y;
+    f32 x;
+    x = *(f32*)(this_ + 0xc);
+    y = *(f32*)(this_ + 0x10);
     f32 z = *(f32*)(this_ + 0x14);
     if (type != 0) {
         if (type == 0x1e) {
