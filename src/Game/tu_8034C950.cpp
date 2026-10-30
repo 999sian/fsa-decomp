@@ -148,9 +148,9 @@ extern "C" void fn_8034CC98(Actor* a) {
 extern f32 lbl_8054257C;
 extern f32 lbl_80542580;
 extern f32 lbl_80542570;
-extern "C" void fn_80239914(f32* out, s32 room, void* pos);
-extern "C" void fn_8020D8C0(void* a, s32 b, void* c, s32 d);
-extern "C" void* fn_8020D58C(void* a);
+extern "C" void fn_80239914(f32* out, s32 room, s32 id);
+extern "C" void fn_8020D8C0(void* a, f32* box, s32 room, s32 id);
+extern "C" void* fn_8020D58C();
 extern "C" u8 fn_8023F264(s32 i);
 extern "C" void* fn_8023E724(s32 i);
 extern "C" s32 fn_80230CFC(s32 i);
