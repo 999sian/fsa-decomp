@@ -88,6 +88,16 @@ struct LplkRandom {
 };
 struct LplkGame { u8 pad[0xb4]; LplkRandom rnd; };
 extern LplkGame* lbl_8053AAF8;
+static inline void LplkApplyGravity(u8* self, f32 gravity) {
+    *(f32*)(self+0x44) -= gravity;
+}
+static inline s32 LplkRupeeKind(u8* item) {
+    s32 kind = -1;
+    switch (*(u16*)(item+0x94)) {
+    case 0: case 3: kind = *(u32*)(item+0x90)&255; break;
+    }
+    return kind;
+}
 static inline f32 LplkRand() {
     u32 multiplier = 0x19660d;
     LplkGame* game = lbl_8053AAF8;
@@ -272,24 +282,26 @@ s32 id,priority,player,amount;
 bool grounded;
 f32 absY,absX,oldV;
 f32 vertical,gravity,zero,dy,speed;
+f32 px,py,height;
+s32 kind;
 angle=0;dist=lbl_8053BF48;quad=0;target=-1;
 fn_801EEC98(self,(*(s32*)(self+0x198)),&angle,&quad,&dist,&target,0,0);
 ++(*(s32*)(self+0x24c));
 switch((*(s32*)(self+0x230))){
 case 4:if(((LplkVirt*)self)->v11()){(*(s32*)(self+0x230))=0;}break;
 case 0:
-grounded=false;vertical=(*(f32*)(self+0x44));gravity=lbl_8053BF3C;(*(f32*)(self+0x44))=vertical-gravity;
-zero=lbl_8053BF48;if((*(f32*)(self+0x14))<zero){
+grounded=false;zero=lbl_8053BF48;vertical=(*(f32*)(self+0x44))-lbl_8053BF3C;(*(f32*)(self+0x44))=vertical;
+if((*(f32*)(self+0x14))<zero){
 if(self[0x23c]==0){
 fn_801F0E34(self,0x3000a,0);(*(f32*)(self+0x14))=lbl_8053BF48;
-(*(f32*)(self+0x44))=(lbl_8053BF30-lbl_8053BF58*lbl_8053AAF8->rnd.get())+lbl_8053BF58;
-(*(f32*)(self+0x3c))=lbl_8053BF34-lbl_8053AAF8->rnd.get();
-(*(f32*)(self+0x40))=lbl_8053BF34-lbl_8053AAF8->rnd.get();
+(*(f32*)(self+0x44))=(lbl_8053BF30-lbl_8053BF58*LplkRand())+lbl_8053BF58;
+(*(f32*)(self+0x3c))=lbl_8053BF34-LplkRand();
+(*(f32*)(self+0x40))=lbl_8053BF34-LplkRand();
 self[0x23c]=1;
 }else{(*(f32*)(self+0x44))=lbl_8053BF48;(*(f32*)(self+0x40))=lbl_8053BF48;(*(f32*)(self+0x3c))=lbl_8053BF48;grounded=true;}}
 *(JGeometry::TVec3<f32>*)(self+0xc)+=*(JGeometry::TVec3<f32>*)(self+0x3c);
 --(*(s32*)(self+0x240));
-if((*(s32*)(self+0x240))<=0){++self[0x235];self[0x235]&=3;if(self[0x235]==0){(*(s32*)(self+0x240))=(s32)(lbl_8053BF5C*lbl_8053AAF8->rnd.get())+60;}else (*(s32*)(self+0x240))=2;}
+if((*(s32*)(self+0x240))<=0){++self[0x235];self[0x235]&=3;if(self[0x235]==0){(*(s32*)(self+0x240))=(s32)(lbl_8053BF5C*LplkRand())+60;}else (*(s32*)(self+0x240))=2;}
 if(target!=-1 && dist<lbl_8053BF60 && grounded==true){
 (*(s32*)(self+0x230))=1;(*(s32*)(self+0x240))=0;
 fn_8013CC50((*(s32*)(self+0x4)),self+0xc,0x3dc,0,0,0,0,1,lbl_8053BF30);
@@ -302,24 +314,24 @@ if(fn_801F3D94(self,1)!=0)break;if(fn_801F305C(self))break;
 if(target!=-1 && dist<lbl_8053BF64 && !(u8)fn_8022DCD8(target)){
 *(u16*)(self+0x23e)=angle;
 absX=__fabsf((*(f32*)(self+0xc))-fn_8023E724(target)->x);
-dy=(*(f32*)(self+0x10))-fn_8023E724(target)->y;absY=__fabsf(dy);
+dy=fn_8023E724(target)->y;absY=(*(f32*)(self+0x10));absY-=dy;absY=__fabsf(absY);
 if(absX<lbl_8053BF68 && absY<lbl_8053BF68 && (u8)fn_8022DE10(target,1)==1){
 (*(s32*)(self+0x230))=2;(*(s32*)(self+0x238))=target;(*(s32*)(self+0x250))=0;(*(s32*)(self+0x248))=0;(*(s32*)(self+0x240))=0;self[0x235]=0;}
 }else{
 id=fn_801F778C(fn_801F856C(),'RUPY',self+0xc,&rupeeDist);
 if(id!=-1){
 pos=*(JGeometry::TVec3<f32>*)(fn_801F666C(fn_801F856C(),id)+0xc);
-*(s16*)(self+0x23e)=JMAAtan2Radian(pos.x-(*(f32*)(self+0xc)),pos.y-(*(f32*)(self+0x10)))*lbl_8053BF6C;
+f32 ang=JMAAtan2Radian(pos.x-(*(f32*)(self+0xc)),pos.y-(*(f32*)(self+0x10)));ang*=lbl_8053BF6C;*(s16*)(self+0x23e)=ang;
 if(rupeeDist<lbl_8053BF70){
 u8* item=(u8*)fn_801F666C(fn_801F856C(),id);
-s32 kind=-1;
+kind=-1;
 if(*(u16*)(item+0x94)==0 || *(u16*)(item+0x94)==3)kind=*(u32*)(item+0x90)&255;
 if(kind!=-1){
 (*(s32*)(self+0x244))+=lbl_8049C558[kind];
 item=(u8*)fn_801F666C(fn_801F856C(),id);
 s32 st=*(s32*)(item+0x230);
 if(st==0 || (u32)(st-15)<=1 || (u32)(st-1)<=1 || st==9 || st==13)detach__5ActorFv(item);
-}}}else if(((*(s32*)(self+0x24c))&15)==0){*(s16*)(self+0x23e)+=(s32)(lbl_8053BF74*lbl_8053AAF8->rnd.get())-0x4000;}}
+}}}else if(((*(s32*)(self+0x24c))&15)==0){*(s16*)(self+0x23e)+=(s32)(lbl_8053BF74*LplkRand())-0x4000;}}
 (*(f32*)(self+0xc))+=lbl_8053BF3C*JMASSin(*(s16*)(self+0x23e));
 (*(f32*)(self+0x10))+=lbl_8053BF3C*JMASCos(*(s16*)(self+0x23e));break;
 case 2:
@@ -338,9 +350,8 @@ if(((*(s32*)(self+0x24c))&31)==0 && fn_80236228(player)-amount>0){fn_802362C4(pl
 if(!(u8)fn_8022DCD8((*(s32*)(self+0x238)))){
 (*(s32*)(self+0x230))=3;(*(s32*)(self+0x240))=0;pos2.x=(*(f32*)(self+0xc));pos2.y=(*(f32*)(self+0x10));fn_80238548((*(s32*)(self+0x238)),0,&pos2,1);}
 if(target!=-1){(*(f32*)(self+0x254))=(*(f32*)(self+0xc))-fn_8023E724(target)->x;(*(f32*)(self+0x258))=(*(f32*)(self+0x10))-fn_8023E724(target)->y;(*(f32*)(self+0x25c))=(*(f32*)(self+0x14))-fn_8023E724(target)->z;((JGeometry::TVec3<f32>*)(self+0x254))->normalize();}
-(*(f32*)(self+0xc))+=lbl_8053BF7C*(*(f32*)(self+0x254));
-(*(f32*)(self+0x10))+=lbl_8053BF7C*(*(f32*)(self+0x258));
-(*(f32*)(self+0x44))-=lbl_8053BF80;(*(f32*)(self+0x14))+=(*(f32*)(self+0x44));
+speed=lbl_8053BF7C;px=(*(f32*)(self+0x254));px=speed*px+(*(f32*)(self+0xc));(*(f32*)(self+0xc))=px;py=(*(f32*)(self+0x258));py=speed*py+(*(f32*)(self+0x10));(*(f32*)(self+0x10))=py;
+zero=lbl_8053BF48;vertical=(*(f32*)(self+0x44))-lbl_8053BF80;(*(f32*)(self+0x44))=vertical;height=(*(f32*)(self+0x14))+(*(f32*)(self+0x44));(*(f32*)(self+0x14))=height;
 if((*(f32*)(self+0x14))<=lbl_8053BF48){(*(f32*)(self+0x14))=lbl_8053BF48;(*(f32*)(self+0x44))=lbl_8053BF58;fn_801F0E34(self,0x50024,0);if(fn_80236228(player)>5){fn_802362C4(player,-5);Actor_CreateByID(fn_801F856C(),'GOLD',(*(s32*)(self+0x4)),self+0xc,5,-1,-1);}}
 (*(f32*)(self+0x264))=lbl_8053BF48;(*(f32*)(self+0x260))=lbl_8053BF48;
 if(fn_8022C5EC((*(s32*)(self+0x238)),8))(*(f32*)(self+0x264))=lbl_8053BF84;
@@ -357,13 +368,13 @@ fn_801F2B7C(self,-100,-1,1);
 if(self[0x235]!=0){
 if(lbl_8053BF48==(*(f32*)(self+0x14)) && self[0x235]!=0){
 (*(f32*)(self+0x44))=lbl_8053BF8C;fn_801F0E34(self,0x50025,0);
-if((s32)(lbl_8053BF38*lbl_8053AAF8->rnd.get())<1){
-(*(f32*)(self+0x254))=lbl_8053BF58-lbl_8053AAF8->rnd.get();(*(f32*)(self+0x258))=lbl_8053BF58-lbl_8053AAF8->rnd.get();
+if((s32)(lbl_8053BF38*LplkRand())<1){
+(*(f32*)(self+0x254))=lbl_8053BF58-LplkRand();(*(f32*)(self+0x258))=lbl_8053BF58-LplkRand();
 }else{(*(f32*)(self+0x254))=(*(f32*)(self+0xc))-fn_8023E724((*(s32*)(self+0x238)))->x;(*(f32*)(self+0x258))=(*(f32*)(self+0x10))-fn_8023E724((*(s32*)(self+0x238)))->y;}
 (*(f32*)(self+0x25c))=lbl_8053BF90;((JGeometry::TVec3<f32>*)(self+0x254))->normalize();}
 (*(f32*)(self+0xc))+=lbl_8053BF94*(*(f32*)(self+0x254));(*(f32*)(self+0x10))+=lbl_8053BF94*(*(f32*)(self+0x258));
 }}
-(*(f32*)(self+0x44))-=lbl_8053BF80;(*(f32*)(self+0x14))+=(*(f32*)(self+0x44));
+zero=lbl_8053BF48;vertical=(*(f32*)(self+0x44))-lbl_8053BF80;(*(f32*)(self+0x44))=vertical;height=(*(f32*)(self+0x14))+(*(f32*)(self+0x44));(*(f32*)(self+0x14))=height;
 if((*(f32*)(self+0x14))<=lbl_8053BF48){(*(f32*)(self+0x14))=lbl_8053BF48;(*(f32*)(self+0x44))=lbl_8053BF48;self[0x235]=0;}break;
 }
 fn_801F2618(self,0,0);
