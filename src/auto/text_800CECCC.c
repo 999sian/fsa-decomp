@@ -28,7 +28,7 @@ extern void* __vt__15J3DAnmTransform[];
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_800CFE2C(void*, void*, void*);
 extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
-extern "C" void fn_800CF828(void*, J3DAnmTexPattern*, const J3DAnmTexPatternFullData*);
+extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800D00F0(void*, J3DAnmColorKey*, const J3DAnmColorKeyData*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
@@ -274,7 +274,7 @@ extern "C" void fn_800CF510(void* param_1, unsigned char* param_2, unsigned char
             fn_800CF734(param_1, param_2, chunk);
             break;
         case 0x54505431:
-            fn_800CF828(param_1, (J3DAnmTexPattern*)param_2, (const J3DAnmTexPatternFullData*)chunk);
+            fn_800CF828(param_1, param_2, chunk);
             break;
         case 0x434c4631:
             fn_800CF998(param_1, param_2, chunk);
@@ -330,13 +330,15 @@ extern "C" void fn_800CF734(void* param_1, unsigned char* anm, const unsigned ch
 
 extern "C" void fn_800CF800(void** self, void* data)
 {
-    fn_800CF828(self, (J3DAnmTexPattern*)self[1], (const J3DAnmTexPatternFullData*)data);
+    fn_800CF828(self, self[1], data);
 }
 
 #pragma opt_propagation off
-extern "C" void fn_800CF828(void*, J3DAnmTexPattern* anm, const J3DAnmTexPatternFullData* data) {
+extern "C" void fn_800CF828(void*, void* anm_, void* data_) {
     f32 zero = lbl_8053BC80;
-    int attr = data->mAttribute;
+    int attr = ((const J3DAnmTexPatternFullData*)data_)->mAttribute;
+    const J3DAnmTexPatternFullData* data = (const J3DAnmTexPatternFullData*)data_;
+    J3DAnmTexPattern* anm = (J3DAnmTexPattern*)anm_;
     int frame = data->mTotalFrameCount;
     anm->mMaxFrame = frame;
     u32 count = data->mExtraInfo1;
