@@ -52,6 +52,11 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" void fn_80230FD0(s32, s32);
 extern "C" void fn_80230E1C(s32, s32);
 extern "C" u8 fn_80230534(s32);
+struct Swt4ActorList {
+    u32 field_00[2];
+    Actor* actors[1024];
+    s32 count;
+};
 extern "C" u8* fn_801F856C();
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AB10;
@@ -61,15 +66,18 @@ extern u8* lbl_8053AB10;
 static inline void swt4Set(void* p, s32 value) {
     ((void (*)(void*, s32, s32))(*(void***)p)[12])(p, 0xff, value);
 }
-extern "C" void fn_802A96B0(u8* this_) {
+extern "C" void fn_802A96B0(Swt4* p) {
+    int n = 0;
+    const s32 sentinel = 0xff;
+    int valid;
+    s32 i;
+    s32 j;
     s32 slots[4];
-    s32 n = 0;
-    Swt4* p = (Swt4*)this_;
     switch (p->state) {
     case 0: {
-        s32 valid = 1;
-        for (s32 i = 0; i < 4; i++) {
-            slots[i] = 0xff;
+        valid = 1;
+        for (i = 0; i < 4; i++) {
+            slots[i] = sentinel;
             if (fn_802D800C(fn_802D6A9C(), p->switchId[i])) {
                 slots[i] = fn_802D7E1C(fn_802D6A9C(), p->switchId[i]);
                 n++;
@@ -79,17 +87,17 @@ extern "C" void fn_802A96B0(u8* this_) {
         if (n != 4) break;
         s32 conflict = 0;
         if (lbl_8053AAF8[0x7e] == 1) {
-            for (s32 i=0;i<3;i++) {
+            for (i=0;i<3;i++) {
                 if (slots[i] != 0xff) {
-                    for (s32 j=i+1;j<4;j++) {
+                    for (j=i+1;j<4;j++) {
                         if (slots[j]!=0xff && p->switchId[i]!=p->switchId[j] && slots[i]==slots[j]) conflict=1;
                     }
                 } else conflict=1;
             }
         } else {
-            for (s32 i=0;i<3;i++) {
+            for (i=0;i<3;i++) {
                 if (slots[i] != 0xff) {
-                    for (s32 j=i+1;j<4;j++) {
+                    for (j=i+1;j<4;j++) {
                         if (slots[j]!=0xff && p->switchId[i]!=p->switchId[j] && slots[i]==slots[j]) conflict=1;
                     }
                 } else conflict=1;
@@ -97,11 +105,11 @@ extern "C" void fn_802A96B0(u8* this_) {
         }
         if(conflict) break;
         if(p->mode==3) {
-            fn_8022E2D8(15); swt4Set(p,1); p->state=1; break;
+            fn_8022E2D8(15); p->v10(0xff,1); p->state=1; break;
         }
         if(lbl_8053AAF8[0x7f]==0 || valid==-1) {
-            fn_8022E2D8(15); swt4Set(p,1);
-            for(s32 i=0;i<4;i++) fn_802D8050(fn_802D6A9C(),p->switchId[i],1,0xff);
+            fn_8022E2D8(15); p->v10(0xff,1);
+            for(i=0;i<4;i++) fn_802D8050(fn_802D6A9C(),p->switchId[i],1,0xff);
             if(p->mode!=0) {
                 if(p->mode==2) fn_801F0D20(p,3);
                 p->field_11C=0;
@@ -109,7 +117,7 @@ extern "C" void fn_802A96B0(u8* this_) {
             break;
         }
         if(fn_8023077C()) {
-            for(s32 i=0;i<4;i++) {
+            for(i=0;i<4;i++) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
                 pos.x = ((s32)pos.x / 16)*16+8;
                 pos.y = ((s32)pos.y / 16)*16+8;
@@ -120,16 +128,16 @@ extern "C" void fn_802A96B0(u8* this_) {
         break;
     }
     case 1: case 6: default:
-        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>22)&31)) {swt4Set(p,0);p->state=0;break;}
-        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>17)&31)) {swt4Set(p,0);p->state=0;break;}
-        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>12)&31)) {swt4Set(p,0);p->state=0;break;}
-        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>7)&31)) {swt4Set(p,0);p->state=0;}
+        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>22)&31)) {p->v10(0xff,0);p->state=0;break;}
+        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>17)&31)) {p->v10(0xff,0);p->state=0;break;}
+        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>12)&31)) {p->v10(0xff,0);p->state=0;break;}
+        if(!fn_802D800C(fn_802D6A9C(),(p->field_90>>7)&31)) {p->v10(0xff,0);p->state=0;}
         break;
     case 2:
         if(fn_8023077C()) {
             s32 count = SWT4_S32(fn_801F856C(),0x1008);
-            for(s32 i=0;i<4;i++) {
-                for(s32 j=0;j<count;j++) {
+            for(i=0;i<4;i++) {
+                for(j=0;j<count;j++) {
                     u8* actor = SWT4_PTR(fn_801F856C(),8+j*4);
                     if(actor && SWT4_U32(actor,0x1a0)==0x53575448 && p->switchId[i]==(SWT4_U32(actor,0x90)>>27)) {
                         JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
@@ -145,14 +153,14 @@ extern "C" void fn_802A96B0(u8* this_) {
         }
         break;
     case 3:
-        for(s32 i=0;i<4;i++) {
+        for(i=0;i<4;i++) {
             JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
             fn_8030C210(SWT4_PTR(lbl_8053AB10,0x24),&pos);
         }
         p->timer--;
         if(p->timer==0) {
             p->frame++;
-            for(s32 i=0;i<4;i++) {
+            for(i=0;i<4;i++) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
                 fn_80230498(i,&pos,p->frame+0xdb,0xff,-128,-128,1);
                 if(p->frame==1) fn_80230FD0(i,0x10001);
@@ -161,9 +169,9 @@ extern "C" void fn_802A96B0(u8* this_) {
             if(p->frame==13) {
                 p->state=4; p->timer=10;
                 if(p->mode==4) {
-                    if((lbl_8053AAF8[0x83]&3)==1) {
+                    if((u32)(lbl_8053AAF8[0x83]&3)==1) {
                         p->timer=120; p->delay=60;
-                        for(s32 i=0;i<4;i++) if(((lbl_8053AAF8[0x82]&(u8)(1<<i))!=0)==1) fn_80230E1C(i,0);
+                        for(s32 k=0;k<4;k++) if((u32)((lbl_8053AAF8[0x82]&(u8)(1<<k))!=0)==1) fn_80230E1C(k,0);
                     } else { p->timer=80; p->delay=40; }
                 }
             }
@@ -172,22 +180,22 @@ extern "C" void fn_802A96B0(u8* this_) {
     case 4:
         if(p->mode==4) {
             SWT4_PTR(lbl_8053AB10,0x20)[0x216]=1;
-            if(p->timer==p->delay) swt4Set(p,1);
+            if(p->timer==p->delay) p->v10(0xff,1);
         } else {
-            for(s32 i=0;i<4;i++) {
+            for(i=0;i<4;i++) {
                 JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
                 fn_8030C210(SWT4_PTR(lbl_8053AB10,0x24),&pos);
             }
         }
         if(p->timer==0) {
-            swt4Set(p,1);
-            for(s32 i=0;i<4;i++) fn_802D8050(fn_802D6A9C(),p->switchId[i],1,0xff);
+            p->v10(0xff,1);
+            for(i=0;i<4;i++) fn_802D8050(fn_802D6A9C(),p->switchId[i],1,0xff);
             p->state=5; p->timer=15;
             if(p->mode==2) fn_801F0D20(p,3);
         } else p->timer--;
         break;
     case 5:
-        for(s32 i=0;i<4;i++) {
+        for(i=0;i<4;i++) {
             JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)fn_8023E724(i));
             fn_8030C210(SWT4_PTR(lbl_8053AB10,0x24),&pos);
         }
@@ -199,14 +207,14 @@ extern "C" void fn_802A96B0(u8* this_) {
         } else p->timer--;
         break;
     case 7:
-        for(s32 i=0;i<4;i++) {
-            slots[i]=0xff;
+        for(i=0;i<4;i++) {
+            slots[i]=sentinel;
             if(fn_802D800C(fn_802D6A9C(),p->switchId[i])) {
                 slots[i]=fn_802D7E1C(fn_802D6A9C(),p->switchId[i]); n++;
                 if(slots[i]==0xff) slots[i]=i+4;
             }
         }
-        if(n==4) {swt4Set(p,1);p->state=1;}
+        if(n==4) {p->v10(0xff,1);p->state=1;}
         else if(n!=0) p->field_11C=0;
         break;
     }
