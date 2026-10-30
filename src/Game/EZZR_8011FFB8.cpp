@@ -296,7 +296,8 @@ extern f32 lbl_8053C9A0;
 extern f32 lbl_8053C9A4;
 
 static inline u16 EZZR_AngleTo(const Vec& from, const JGeometry::TVec3f& to) {
-    f32 rad = JMath::atanTable_.atan2_(to.x - from.x, to.y - from.y);
+    f32 dy = to.y - from.y;
+    f32 rad = JMath::atanTable_.atan2_(to.x - from.x, dy);
     return (s32)(rad * lbl_8053C96C);
 }
 
