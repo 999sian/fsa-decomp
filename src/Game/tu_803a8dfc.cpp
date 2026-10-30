@@ -3510,6 +3510,9 @@ public:
 private:
     u8 field_00[0x5c];
 };
+static inline f32 MsgAddMenuY(f32 y, const f32 offset) {
+    return y + offset;
+}
 static inline void MsgReportFontSize(const char* format, const J2DPane* pane) {
     OSReport(format, *(const u16*)((const u8*)pane + 0x132));
 }
@@ -3602,9 +3605,9 @@ picture=new J2DPicture(image); *(J2DPicture**)(p+0x170)=picture;
 (*(J2DPicture**)(p+0x170))->setBlackWhite(JUtility::TColor(255),JUtility::TColor(0));
 obj=(*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL);height=*(f32*)((u8*)obj+0x2c)-*(f32*)((u8*)obj+0x24);
 a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1];
-y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613035ULL))[1]; a=y+a;
+a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613035ULL))[1]+a;
 b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL))[1];
-y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]; b=y+b;
+b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]+b;
 *(f32*)(p+0x3f0)=height*lbl_805433E8+(getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1]+b-a);
 *(f32*)(p+1012)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x5074746c626b3035ULL))[1];
 *(f32*)(p+1016)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x50656d6273623036ULL))[1];
@@ -3641,8 +3644,8 @@ y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]
 (*(u8**)(p+164))[0xb0]=0;
 (*(u8**)(p+160))[0xb0]=0;
 *(f32*)(p+0x244)=lbl_805433C8;*(f32*)(p+0x248)=lbl_805433C8;*(f32*)(p+0x24c)=lbl_805433C8;
-for(i=0;i<4;i++){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(p+0x174+i*4)=obj;}
-obj=operator new(0x5c);if(obj)__ct__14WaveControllerFlll(obj,(s32)(p+0x244),0,8);*(void**)(p+0x184)=obj;
+{u8* row=p; s32 i; for(i=0;i<4;i++,row+=4){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(row+0x174)=obj;}}
+*(WaveController**)(p+0x184)=new WaveController((s32)(p+0x244),0,8);
 ((JGeometry::TVec3f*)(p+0x250))[0].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+712)=-1;
 ((JGeometry::TVec3f*)(p+0x250))[1].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+716)=-1;
 ((JGeometry::TVec3f*)(p+0x250))[2].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+720)=-1;
@@ -3800,8 +3803,8 @@ extern const u16 lbl_80543390[4];
 #pragma push
 #pragma dont_inline on
 extern "C" void fn_803AA8F8(void* this_) {
+    const u64* tbl = (const u64*)lbl_80476208;
     Menu_Intro* ip = (Menu_Intro*)this_;
-    IntroTags* tbl = (IntroTags*)lbl_80476208;
     s32 i;
     s32 j;
     s32 t;
@@ -3830,13 +3833,13 @@ extern "C" void fn_803AA8F8(void* this_) {
                 pane_ = ip->screens[ip->cur]->search(0x00506d6d776b3032ULL);
                 pane_->mIsVisible = 1;
                 if (ip->cur < 2) {
-                    const u64* k = tbl->title;
+                    const u64* k = tbl;
                     for (i = 0; i < 13; i++, k++) {
                         ip->screens[ip->cur]->search(*k)->setAlpha((u8)(ip->alphaTitle[i] * lbl_805433C8));
                     }
                 }
-                const u64* k3 = tbl->p3[0];
-                const u64* k2 = tbl->p2[0];
+                const u64* k3 = tbl + 13;
+                const u64* k2 = tbl + 25;
                 for (j = 0; j < ip->count; j++, k3 += 3, k2 += 2) {
                     if (ip->cur < 2) {
                         const u64* k = k3;
@@ -4053,8 +4056,7 @@ extern "C" void fn_803AA8F8(void* this_) {
     q3 = self;
     v = self;
     for (i = 0; i < *(s32*)(self + 0x454); q3 += 4, ++i, v += 12) {
-        s32 sum = *(s32*)(q3 + 0x340) + *(s32*)(q3 + 0x350) + *(s32*)(q3 + 0x360) + *(s32*)(q3 + 0x370);
-        *(s32*)(q3 + 0x3e0) = *(s32*)(q3 + 0x3a0) + (*(s32*)(q3 + 0x320) + sum - *(s32*)(q3 + 0x380) + *(s32*)(q3 + 0x3b0));
+        *(s32*)(q3 + 0x3e0) = *(s32*)(q3 + 0x3a0) + (*(s32*)(q3 + 0x320) + (*(s32*)(q3 + 0x340) + *(s32*)(q3 + 0x350) + *(s32*)(q3 + 0x360) + *(s32*)(q3 + 0x370)) - *(s32*)(q3 + 0x380) + *(s32*)(q3 + 0x3b0));
         if (*(s32*)(q3 + 0x3e0) < -5000) *(s32*)(q3 + 0x3e0) = -5000;
 
         if (*(s32*)(q3 + 0x3e0) < -500) {
