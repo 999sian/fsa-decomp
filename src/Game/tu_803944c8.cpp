@@ -2118,7 +2118,7 @@ extern "C" s32 fn_803997B8(MsgMeasure* m, s32 id, u8* data) {
     f32 ratio = m->fontW / (f32)m->font->getCellWidth();
     switch (id) {
     case 0:
-        if ((s8)p[0x22c] != (s8)(p + p[0x281])[0x202]) {
+        if (m->colorHist[p[0x281]] != m->color) {
             p[0x281]++;
             (p + p[0x281])[0x202] = p[0x22c];
             (p + p[0x281])[0x257] = 0;
