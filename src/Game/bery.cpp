@@ -397,7 +397,7 @@ extern "C" s32 fn_8022FD8C(void*);
 extern "C" u8 fn_8038AD24(s32,s32,void*,s32,void*,s32);
 extern "C" void fn_8022FEB8(void*,s32,void*,s32,s32);
 extern "C" u8 fn_803865B8(s32);
-extern "C" s32 fn_80237810(s32);
+extern "C" int fn_80237810(s32);
 extern "C" s32 fn_80237774(s32);
 extern "C" void fn_80236554(s32,s32,s32);
 extern "C" void fn_801F0E34(void*,s32,s32);
@@ -491,7 +491,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
                     break;
                 case 1: fn_8038DE74((Bery*)this_); break;
                 case 2:
-                    if (fn_80236E3C(fn_8022F340(this_->mPlayer)) || (this_->mSw[fn_8022F340(this_->mPlayer)] != 0 && beryCheckItem((Bery*)this_) == 1)) {
+                    if (fn_80236E3C(fn_8022F340(this_->mPlayer)) || (this_->mSw[fn_8022F340(this_->mPlayer)] != 0 && beryCheckFullItem(this_) == 1)) {
                         this_->mMsg = 0x267;
                         fn_8038470C(this_->mPlayer, this_->mMsg);
                         this_->mState = 2;
