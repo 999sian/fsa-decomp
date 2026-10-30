@@ -184,15 +184,6 @@ extern "C" void fn_80329468(char* this_) {
     }
 }
 
-extern "C" void fn_801F6874(void*);
-extern "C" void fn_80329640(u8* this_) {
-    u8* p = this_;
-    s32 state = *(s32*)(p + 0x230);
-    if (state == 0) {
-        fn_801F6874(*(void**)(p + 0x98));
-    }
-}
-
 struct GnldRandom {
     u32 seed;
     f32 get_ufloat_1() {
@@ -202,6 +193,16 @@ struct GnldRandom {
         return out.f - lbl_80541D18;
     }
 };
+
+
+extern "C" void fn_801F6874(void*);
+extern "C" void fn_80329640(u8* this_) {
+    u8* p = this_;
+    s32 state = *(s32*)(p + 0x230);
+    if (state == 0) {
+        fn_801F6874(*(void**)(p + 0x98));
+    }
+}
 
 extern "C" void* fn_801F856C(void);
 extern "C" char* fn_801F666C(void* mgr, s32 id);
