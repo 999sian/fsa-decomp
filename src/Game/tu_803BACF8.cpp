@@ -94,9 +94,9 @@ struct CardSaveRecord {
 };
 static inline s32 cardBlockValid(const u8* bytes) {
     const CardSaveRecord* data = (const CardSaveRecord*)bytes;
+    const u8* p = data->data;
     u32 inv = 0;
     u32 sum = 0;
-    const u8* p = data->data;
     for (s32 i = 192; i > 0; i--) {
         u8 b = *p++;
         sum += b;
