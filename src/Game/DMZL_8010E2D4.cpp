@@ -2,7 +2,9 @@
 #include "JSystem/JMath/JMath.h"
 extern const f32 lbl_8053C580;
 static inline f32 DMZLAngle(f32 x, f32 y) {
-    return lbl_8053C580*JMath::atanTable_.atan2_(x,y);
+    f32 angle = JMath::atanTable_.atan2_(x,y);
+    angle *= lbl_8053C580;
+    return angle;
 }
 static inline s32 DMZLElapsed(void* manager,const char* table) {
     return *(s32*)((u8*)manager+8)-*(const s32*)(table+0x84);
@@ -737,6 +739,7 @@ extern const f32 lbl_8053C57C;
 extern const f32 lbl_8053C580;
 extern const f32 lbl_8053C584;
 extern "C" void fn_80110E9C(void* this_) {
+u8* p=(u8*)this_;
 JGeometry::TVec3<f32>* v;
 s32 j;
 s32 i;
@@ -750,7 +753,7 @@ u16 angle;
 f32 zero,dz;
 f32 sine,speed;
 s32 result,kind;
-u8* p=(u8*)this_;
+
 box.set(*(JGeometry::TBox2<f32>*)(p+0x60));box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
 if(*(s32*)(p+0x238)==1 || *(s32*)(p+0x238)==2)fn_80239914(&box,*(s32*)(p+4),*(s32*)(p+0x198));
 fn_80110454(p);
