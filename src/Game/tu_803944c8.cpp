@@ -447,6 +447,7 @@ static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
         }
     }
 }
+#pragma opt_common_subs off
 static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
     for (s32 j = 0; j < 4; j++) {
         if (tags[j] != 0) {
@@ -467,7 +468,7 @@ extern "C" const u64 lbl_80475790[5][4];
 #pragma opt_propagation on
 extern "C" void fn_80395BE8(void* this_) {
 u8* p=(u8*)this_;
-int n=*(s32*)(p+0x160);
+s32 n=*(s32*)(p+0x160);
 if((*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x100) && ((u8*)lbl_8053AAF8)[0x7e]) n=4;
 if(!p[0x3af] && !p[0x1a9]) {
 *(s16*)(p+0x194)=0;
