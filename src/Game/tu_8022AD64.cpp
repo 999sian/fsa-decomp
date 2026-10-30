@@ -1809,15 +1809,13 @@ f32 fn_80233C08(JGeometry::TVec3<f32>& value);
 bool fn_80233C9C(const JGeometry::TBox2<f32>& left, const JGeometry::TBox2<f32>& right);
 void fn_80232A0C(void)
 {
-    int i;
-    int j;
+    JGeometry::TVec3<f32> hit;
 
-    if (lbl_8053AC90->players[0] != NULL) *((u8*)lbl_8053AC90->players[0] + 0xafc) = 0;
-    if (lbl_8053AC90->players[1] != NULL) *((u8*)lbl_8053AC90->players[1] + 0xafc) = 0;
-    if (lbl_8053AC90->players[2] != NULL) *((u8*)lbl_8053AC90->players[2] + 0xafc) = 0;
-    if (lbl_8053AC90->players[3] != NULL) *((u8*)lbl_8053AC90->players[3] + 0xafc) = 0;
+    for (int n = 0; n < 4; n++) {
+        if (lbl_8053AC90->players[n] != NULL) *((u8*)lbl_8053AC90->players[n] + 0xafc) = 0;
+    }
 
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         Player* a = lbl_8053AC90->players[i];
         if (a == NULL || !isPlayerEnabled(i)) continue;
         if (PF(a, 0x1240, s32) == 3) continue;
@@ -1843,7 +1841,7 @@ void fn_80232A0C(void)
         o.y = -off[1];
         boxA.addPos(o);
 
-        for (j = i + 1; j < 4; j++) {
+        for (int j = i + 1; j < 4; j++) {
             Player* b = lbl_8053AC90->players[j];
             if (b == NULL || !isPlayerEnabled(j)) continue;
             if (PF(b, 0x1240, s32) == 3) continue;
@@ -1896,10 +1894,7 @@ void fn_80232A0C(void)
                     push.y = lbl_80540020;
                 }
                 if ((u8)fn_8022CCAC(i)) {
-                    JGeometry::TVec3<f32> n;
-                    n.negate(push);
-                    JGeometry::TVec3<f32> back(n);
-                    fn_8023DFF4(j, &back);
+                    ((void (*)(int, JGeometry::TVec3<f32>))fn_8023DFF4)(j, negated8022(push));
                     o.x = -push.x;
                     o.y = -push.y;
                     boxB.addPos(o);
@@ -1915,10 +1910,7 @@ void fn_80232A0C(void)
                         PF(a, 0xafc, u8) = 1;
                     }
                     if (j != fn_80234004(j)) {
-                        JGeometry::TVec3<f32> n;
-                        n.negate(push);
-                        JGeometry::TVec3<f32> back(n);
-                        fn_8023DFF4(j, &back);
+                        ((void (*)(int, JGeometry::TVec3<f32>))fn_8023DFF4)(j, negated8022(push));
                         o.x = -push.x;
                         o.y = -push.y;
                         boxB.addPos(o);
@@ -1931,10 +1923,7 @@ void fn_80232A0C(void)
                         PF(a, 0xafc, u8) = 1;
                     }
                     if (!(u8)fn_80250D30(b)) {
-                        JGeometry::TVec3<f32> n;
-                        n.negate(push);
-                        JGeometry::TVec3<f32> back(n);
-                        fn_8023DFF4(j, &back);
+                        ((void (*)(int, JGeometry::TVec3<f32>))fn_8023DFF4)(j, negated8022(push));
                         o.x = -push.x;
                         o.y = -push.y;
                         boxB.addPos(o);
@@ -1946,11 +1935,11 @@ void fn_80232A0C(void)
         }
     }
 
-    for (i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         Player* a = lbl_8053AC90->players[i];
         if (a == NULL || !isPlayerEnabled(i)) continue;
         if (PF(a, 0xbd4, u8)) continue;
-        for (j = 0; j < 4; j++) {
+        for (int j = 0; j < 4; j++) {
             if (i == j) continue;
             if ((u8)fn_8022E438(i, j)) continue;
             Player* b = lbl_8053AC90->players[j];
@@ -1967,35 +1956,22 @@ void fn_80232A0C(void)
                 fn_8024F0E8(a, 0x20002);
                 fn_80238548(j, 0, PB(a)->m8, 0x10);
                 fn_8024F0E8(b, 0x20002);
-                JGeometry::TVec3<f32> d = fn_80233BC4(*fn_8023E724(i), *fn_8023E724(j));
-                PB(a)->m35c.x = d.x;
-                PB(a)->m35c.y = d.y;
-                PB(a)->m35c.z = d.z;
+                *(PlainVec8022*)&PB(a)->m35c = ((PlainVec8022 (*)(JGeometry::TVec3<f32>&, const JGeometry::TVec3<f32>&))fn_80233BC4)(*fn_8023E724(i), *fn_8023E724(j));
                 fn_80233C08(PB(a)->m35c);
                 PB(a)->m35c.scale(lbl_80540028);
-                d = fn_80233BC4(*fn_8023E724(j), *fn_8023E724(i));
-                PB(b)->m35c.x = d.x;
-                PB(b)->m35c.y = d.y;
-                PB(b)->m35c.z = d.z;
+                *(PlainVec8022*)&PB(b)->m35c = ((PlainVec8022 (*)(JGeometry::TVec3<f32>&, const JGeometry::TVec3<f32>&))fn_80233BC4)(*fn_8023E724(j), *fn_8023E724(i));
                 fn_80233C08(PB(b)->m35c);
                 PB(b)->m35c.scale(lbl_80540028);
                 continue;
             }
-            JGeometry::TVec3<f32> hit;
             if ((u8)fn_80273E7C(a, PB(b)->m4c0, PB(b)->m3b4, &hit, 1)) {
                 JGeometry::TBox2<f32> box;
                 fn_80233BA0(box, PB(b)->m5ec);
                 if ((u8)fn_80272224(b, &box, PB(a)->m3b4, PB(a)->m458 == 1 ? PB(a)->m3f0 : PB(a)->m3dc, 1, 1)) {
-                    JGeometry::TVec3<f32> d = fn_80233BC4(*fn_8023E724(i), *fn_8023E724(j));
-                    PB(a)->m35c.x = d.x;
-                    PB(a)->m35c.y = d.y;
-                    PB(a)->m35c.z = d.z;
+                    *(PlainVec8022*)&PB(a)->m35c = ((PlainVec8022 (*)(JGeometry::TVec3<f32>&, const JGeometry::TVec3<f32>&))fn_80233BC4)(*fn_8023E724(i), *fn_8023E724(j));
                     fn_80233C08(PB(a)->m35c);
                     PB(a)->m35c.scale(lbl_80540028);
-                    d = fn_80233BC4(*fn_8023E724(j), *fn_8023E724(i));
-                    PB(b)->m35c.x = d.x;
-                    PB(b)->m35c.y = d.y;
-                    PB(b)->m35c.z = d.z;
+                    *(PlainVec8022*)&PB(b)->m35c = ((PlainVec8022 (*)(JGeometry::TVec3<f32>&, const JGeometry::TVec3<f32>&))fn_80233BC4)(*fn_8023E724(j), *fn_8023E724(i));
                     fn_80233C08(PB(b)->m35c);
                     PB(b)->m35c.scale(lbl_80540028);
                 } else if (((u8*)lbl_8053AAF8)[0x7f]) {
@@ -2048,6 +2024,7 @@ void fn_80232A0C(void)
     }
 }
 
+#pragma opt_common_subs reset
 JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGeometry::TBox2<f32>& source)
 {
     destination.i.x = source.i.x;
