@@ -378,8 +378,8 @@ static inline bool EZZR_MoveToGate(EZZR* p) {
     p->field_98 = ClassifyBamAngleToQuadrant(ang);
     f32 sx;
     f32 sy;
-    sx = JMath::sincosTable_.mTable[ang >> 5].first * 0.7f;
-    sy = JMath::sincosTable_.mTable[ang >> 5].second * 0.7f;
+    sx = 0.7f * JMath::sincosTable_.sinShort(ang);
+    sy = 0.7f * JMath::sincosTable_.cosShort(ang);
     bool done = true;
     if (fn_801CD950(&p->field_0C.x, t.x, sx) != 0 && 0.0f != sx) {
         done = false;
