@@ -89,8 +89,7 @@ static inline void key0Register(char* p) {
 
 static inline void key0RegisterPt(char* p) {
     u32 id = *(u32*)(p + 0x238);
-    Key0Pt pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
-    fn_802D6C10(fn_802D6A9C(), pt, id);
+    fn_802D6C10(fn_802D6A9C(), key0Point(p + 0x230), id);
 }
 
 extern "C" void fn_802D6D70(void* rec, Key0Pt a, Key0Pt b, u32 packed, u32 id);
@@ -858,10 +857,7 @@ create:
             u32 x18=*(u32*)((u8*)fn_802D6A9C()+0x18);
             packed|=((x18&0xff)<<8) | ((*(u32*)((u8*)fn_802D6A9C()+0x14)&0xff)<<16);
         } else packed=*(u16*)(p+0x2aa)<<8;
-        Key0Pt key=key0Point(p+0x230);
-        Key0Pt pos=key0Point(p+0xc);
-        u32 id=*(u32*)(p+0x238);
-        fn_802D6D70(fn_802D6A9C(),pos,key,packed,id);
+        key0LinkSelf(p, packed);
     }
     tile=fn_8022461C(p+0xc,*(s32*)(p+4));
     if (*(s32*)(p+0x298)!=-1) tile=0;
