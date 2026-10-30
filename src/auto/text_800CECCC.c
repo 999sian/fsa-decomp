@@ -26,7 +26,7 @@ extern void* lbl_8049AE5C[];
 extern void* __vt__10J3DAnmBase[];
 extern void* __vt__15J3DAnmTransform[];
 extern "C" void __dl__FPv(void*);
-extern "C" void fn_800CFE2C(void*, void*, void*);
+extern "C" void fn_800CFE2C(void*, J3DAnmTransformKey*, const J3DAnmTransformKeyData*);
 extern "C" void fn_800CF8F4(void*, J3DAnmVisibilityFull*, const J3DAnmVisibilityFullData*);
 extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
@@ -463,7 +463,7 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
     for (u32 i = 0; i < count; i++) {
         switch (*(u32*)p) {
         case 0x414e4b31:
-            fn_800CFE2C(param_1, param_2, p);
+            fn_800CFE2C(param_1, (J3DAnmTransformKey*)param_2, (const J3DAnmTransformKeyData*)p);
             break;
         case 0x50414b31:
             fn_800D00F0(param_1, (J3DAnmColorKey*)param_2, (const J3DAnmColorKeyData*)p);
@@ -487,13 +487,11 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
 
 extern "C" void fn_800CFE04(void** self, void* data)
 {
-    fn_800CFE2C(self, self[1], data);
+    fn_800CFE2C(self, (J3DAnmTransformKey*)self[1], (const J3DAnmTransformKeyData*)data);
 }
 
 #pragma opt_propagation reset
-extern "C" void fn_800CFE2C(void* self, void* anm, void* src) {
-    J3DAnmTransformKey* a = (J3DAnmTransformKey*)anm;
-    const J3DAnmTransformKeyData* s = (const J3DAnmTransformKeyData*)src;
+extern "C" void fn_800CFE2C(void* self, J3DAnmTransformKey* a, const J3DAnmTransformKeyData* s) {
     f32 f = lbl_8053BC80;
     int h;
     int w;
