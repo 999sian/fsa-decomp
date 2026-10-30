@@ -40,19 +40,20 @@ static inline void DdgoChangeState(char* t, s32 state) {
         }
     }
 }
-static inline void DdgoSetVelocity(char* t, f32 a, f32 b) {
-    f32 zero=0.0f;
-    *(f32*)(t+0x44)=*(f32*)(t+0x40)=*(f32*)(t+0x3c)=0.0f;
+static inline void DdgoSetVelocity(char* t, const f32& a, const f32& b) {
+    f32 zero=lbl_8053E7D8;
+    *(f32*)(t+0x44)=zero; *(f32*)(t+0x40)=zero; *(f32*)(t+0x3c)=zero;
     switch (*(s32*)(t+0x98)) {
-    case 0: *(f32*)(t+0x268)=a; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
-    case 1: *(f32*)(t+0x268)=b; *(f32*)(t+0x26c)=0; *(f32*)(t+0x270)=0; break;
-    case 2: *(f32*)(t+0x268)=0; *(f32*)(t+0x26c)=a; *(f32*)(t+0x270)=0; break;
-    case 3: *(f32*)(t+0x268)=0; *(f32*)(t+0x26c)=b; *(f32*)(t+0x270)=0; break;
+    case 0: *(f32*)(t+0x268)=a; *(f32*)(t+0x26c)=zero; *(f32*)(t+0x270)=zero; break;
+    case 1: *(f32*)(t+0x268)=b; *(f32*)(t+0x26c)=zero; *(f32*)(t+0x270)=zero; break;
+    case 2: *(f32*)(t+0x268)=zero; *(f32*)(t+0x26c)=a; *(f32*)(t+0x270)=zero; break;
+    case 3: *(f32*)(t+0x268)=zero; *(f32*)(t+0x26c)=b; *(f32*)(t+0x270)=zero; break;
     }
 }
 static inline void DdgoStop(char* t) {
-    *(f32*)(t+0x270)=0.0f; *(f32*)(t+0x26c)=0.0f; *(f32*)(t+0x268)=0.0f;
-    *(f32*)(t+0x44)=0.0f; *(f32*)(t+0x40)=0.0f; *(f32*)(t+0x3c)=0.0f;
+    f32 zero=lbl_8053E7D8;
+    *(f32*)(t+0x270)=zero; *(f32*)(t+0x26c)=zero; *(f32*)(t+0x268)=zero;
+    *(f32*)(t+0x44)=zero; *(f32*)(t+0x40)=zero; *(f32*)(t+0x3c)=zero;
 }
 static inline s32 DdgoOldDirection(char* t) {
     s32 dir=3;
@@ -433,22 +434,23 @@ extern "C" void fn_801ACCF0(char* t) {
 }
 
 extern "C" void fn_801ACFF4(void* this_) {
-    char* t=(char*)this_;
-    f32 left=*(f32*)(t+0x60), top=*(f32*)(t+0x64), right=*(f32*)(t+0x68), bottom=*(f32*)(t+0x6c);
-    f32 x=*(f32*)(t+0xc), y=*(f32*)(t+0x10);
     f32* table=lbl_804A3108;
+    char* t=(char*)this_;
+    f32 bottom, right, top, left;
+    f32 x, y;
+    y=*(f32*)(t+0x10); x=*(f32*)(t+0xc);
+    left=*(f32*)(t+0x60);top=*(f32*)(t+0x64);right=*(f32*)(t+0x68);bottom=*(f32*)(t+0x6c);
     f32 p[3], q[3], scale;
     s32 dir, handle;
     char* other;
     fn_8030C210(*(void**)((char*)lbl_8053AB10+0x24),t+0xc);
     left+=x; top+=y; right+=x; bottom+=y;
-    scale=1.0f;
+    scale=lbl_8053E7D0;
     if (*(s32*)(t+0x294)==1) scale=lbl_8053E7E8;
-    DdgoBox(t,table+16+*(s32*)(t+0x98)*4,scale);
-    *(u32*)(t+0x80)=*(u32*)(t+0x60); *(u32*)(t+0x84)=*(u32*)(t+0x64);
-    *(u32*)(t+0x88)=*(u32*)(t+0x68); *(u32*)(t+0x8c)=*(u32*)(t+0x6c);
-    fn_801F71A4((f32*)(t+0x3c),*(f32*)(t+0x268),lbl_8053E7EC,1.0f);
-    fn_801F71A4((f32*)(t+0x40),*(f32*)(t+0x26c),lbl_8053E7EC,1.0f);
+    DdgoIndexedBox(t,table+16,*(s32*)(t+0x98),scale);
+    *(JGeometry::TBox2<f32>*)(t+0x80)=*(JGeometry::TBox2<f32>*)(t+0x60);
+    fn_801F71A4((f32*)(t+0x3c),*(f32*)(t+0x268),lbl_8053E7EC,lbl_8053E7D0);
+    fn_801F71A4((f32*)(t+0x40),*(f32*)(t+0x26c),lbl_8053E7EC,lbl_8053E7D0);
     fn_801F71A4((f32*)(t+0x274),*(f32*)(t+0x280),lbl_8053E7F0,lbl_8053E7F0);
     fn_801F3D94(t,0);
     *(f32*)(t+0x278)=*(f32*)(t+0x274);
@@ -464,8 +466,8 @@ extern "C" void fn_801ACFF4(void* this_) {
         if (id>=0) {
             f32 pt[2]; pt[0]=x;pt[1]=y;
             if (fn_80237948(id,pt)) {
-                fn_8013CC50(*(u32*)(t+4),t+0xc,1.0f,0x117,0,1,0,0,1);
-                fn_8013CC50(*(u32*)(t+4),t+0xc,1.0f,0x118,0,1,0,0,1);
+                fn_8013CC50(*(u32*)(t+4),t+0xc,lbl_8053E7D0,0x117,0,1,0,0,1);
+                fn_8013CC50(*(u32*)(t+4),t+0xc,lbl_8053E7D0,0x118,0,1,0,0,1);
                 fn_801F0E34(t,0x400d1,0);
             }
         }
@@ -479,7 +481,7 @@ extern "C" void fn_801ACFF4(void* this_) {
         *(s32*)(t+0x23c)=(s32)(lbl_8053E800*DdgoRandom())+50;
         *(s32*)(t+0xbc)=3;
         if (*(s32*)(t+0x294)==1) *(s32*)(t+0xbc)=4;
-        if (*(s32*)(t+0x244)==0 && ++*(s32*)(t+0x250)>3 && DdgoRandom()<lbl_8053E7F4) {
+        if (*(s32*)(t+0x244)==0 && (*(s32*)(t+0x250)=*(s32*)(t+0x250)+1, *(s32*)(t+0x250)>3) && DdgoRandom()<lbl_8053E7F4) {
             s32 out=-1;
             dir=*(s32*)(t+0x98);
             *(s32*)(t+0x250)=0;
@@ -538,9 +540,9 @@ extern "C" void fn_801ACFF4(void* this_) {
                 *(s32*)(other+0x98)=*(s32*)(t+0x98);
                 break;
             }
-            scale=1;
+            scale=lbl_8053E7D0;
             if(*(s32*)(t+0x294)==1)scale=lbl_8053E810;
-            DdgoBox(t,table+32+*(s32*)(t+0x98)*4,scale);
+            DdgoIndexedBox(t,table+32,*(s32*)(t+0x98),scale);
             *(s32*)(t+0x264)=fn_801F2718(t,0x48424d42);
             handle=*(s32*)(t+0x264);
             if(handle<0)break;
@@ -570,14 +572,14 @@ extern "C" void fn_801ACFF4(void* this_) {
                 f32 size=*(f32*)(other+0x274);
                 q[0]=*(f32*)(other+0xc);q[1]=*(f32*)(other+0x10);q[2]=*(f32*)(other+0x14);
                 p[0]=*(f32*)(t+0xc);p[1]=*(f32*)(t+0x10);p[2]=*(f32*)(t+0x14);
-                scale=1;
+                scale=lbl_8053E7D0;
                 if(*(s32*)(t+0x294)==1) scale=lbl_8053E7E0;
                 f32* offset=table+*(s32*)(t+0x98)*2;
                 p[0]+=scale*offset[0];p[1]+=scale*offset[1];
                 if(!(*(u32*)(t+0x98)&2))p[1]+=lbl_8053E818*scale;
                 fn_801F71A4(&q[0],p[0],lbl_8053E7EC,lbl_8053E81C);
                 fn_801F71A4(&q[1],p[1],lbl_8053E7EC,lbl_8053E81C);
-                fn_801F71A4(&size,0.0f,lbl_8053E7F4,lbl_8053E7F4);
+                fn_801F71A4(&size,lbl_8053E7D8,lbl_8053E7F4,lbl_8053E7F4);
                 *(JGeometry::TVec3f*)(other+0xc)=*(JGeometry::TVec3f*)q;
                 *(f32*)(other+0x274)=size;
             }
@@ -592,9 +594,10 @@ extern "C" void fn_801ACFF4(void* this_) {
         *(s32*)(t+0x23c)=60;*(s32*)(t+0x230)=7;
     case 7:
         if(*(s32*)(t+0x23c)==1) {
-            *(f32*)(t+0x274)=*(f32*)(t+0x278)=*(f32*)(t+0x27c)=lbl_8053E81C;
+            *(f32*)(t+0x274)=lbl_8053E81C;*(f32*)(t+0x278)=lbl_8053E81C;*(f32*)(t+0x27c)=lbl_8053E81C;
             DdgoChangeState(t,3);
-            if(--*(s32*)(t+0x25c)<=0) {
+            *(s32*)(t+0x25c)-=1;
+            if(*(s32*)(t+0x25c)<=0) {
                 s32 param=7;
                 if(*(s32*)(t+0x294)==1)param=13;
                 handle=Actor_CreateByID(fn_801F856C(),0x48424d42,*(u32*)(t+4),(f32*)(t+0xc),param,-1,-1);
@@ -609,7 +612,7 @@ extern "C" void fn_801ACFF4(void* this_) {
             } else fn_801F0E34(t,0x40005,0);
         }
         if(*(s32*)(t+0x23c)==0) {
-            scale=1;
+            scale=lbl_8053E7D0;
             if(*(s32*)(t+0x294)==1)scale=lbl_8053E81C;
             if(*(f32*)(t+0x274)<lbl_8053E824) {
                 fn_8013CC50(*(u32*)(t+4),t+0xc,scale,lbl_8053A110[*(s32*)(t+0x98)],0,0,0,0,1);
@@ -769,3 +772,4 @@ extern "C" void fn_801ACB50(char* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Box.h"
