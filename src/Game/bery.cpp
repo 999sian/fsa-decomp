@@ -121,6 +121,7 @@ static inline u8 beryLevel2(s32 p) {
     return (((BeryGameState*)lbl_8053AAF8)->m83 >> (fn_8022F340(p) * 2)) & 3;
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8038F464(BeryFull* this_) {
     this_->m60 = lbl_80543148;
     this_->m64 = lbl_80543148;
@@ -149,15 +150,17 @@ extern "C" void fn_8038F464(BeryFull* this_) {
         this_->mKind = (this_->mParam >> 4) & 0xf;
         this_->mPlayer = (this_->mParam >> 8) & 3;
         if (this_->mKind == 0xb) {
-            JGeometry::TVec3<f32> dst = *fn_8023E724(this_->mPlayer);
+            f32 divisor;
+            f32 height;
+            JGeometry::TVec3<f32> dst(*fn_8023E724(this_->mPlayer));
             this_->mStart.x = this_->mPos.x;
             this_->mStart.y = this_->mPos.y;
             this_->mStart.z = this_->mPos.z;
             this_->mStart.z += lbl_8054314C;
-            dst.z = lbl_80543130;
-            this_->mStep.set((dst.x - this_->mStart.x) / lbl_80543150,
-                             (dst.y - this_->mStart.y) / lbl_80543150,
-                             (dst.z - this_->mStart.z) / lbl_80543150);
+            divisor = lbl_80543150;
+            height = lbl_80543130;
+            dst.z = height;
+            this_->mStep.set((dst.x - this_->mStart.x) / divisor, (dst.y - this_->mStart.y) / divisor, (dst.z - this_->mStart.z) / divisor);
             this_->mState = 9;
         } else {
             this_->m264 = 0x78;
@@ -224,7 +227,7 @@ extern "C" void fn_8038F464(BeryFull* this_) {
     this_->m2A4 = 0;
     this_->mParam &= 0xf;
 }
-
+#pragma opt_propagation reset
 static inline u8 beryCheckItem(Bery* this_) {
     s32 id = this_->mItemId[fn_8022F340(this_->mPlayer)];
     return fn_802D800C(fn_802D6A9C(), id);
@@ -369,6 +372,84 @@ extern "C" void fn_8038E0A0(BeryFull* this_) {
         fn_801F06F0(this_, lbl_80475658, id, &prm, mode, lbl_80543100, lbl_80543100);
         fn_803075AC(this_->m198, this_->mRoom, &this_->mPos, id, 0, 2, -1, 1, 0, 0);
         this_->mPos = pos;
+    }
+}
+
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" u8 fn_80236B50(s32 i);
+extern "C" void fn_80239914(f32* box, s32 room, void* p);
+extern "C" s32 fn_80138A30(void* p);
+extern const f32 lbl_80543104;
+extern const f32 lbl_80543108;
+extern const f32 lbl_8054310C;
+extern const f32 lbl_80543110;
+#include "JSystem/JGeometry/Box.h"
+extern const f32 lbl_80543118, lbl_8054311C, lbl_80543120, lbl_80543124, lbl_80543128, lbl_8054312C, lbl_80543134, lbl_80543138, lbl_8054313C, lbl_80543140, lbl_80543144;
+extern const s32 lbl_804755E0[];
+extern u8 lbl_80529DEC[];
+extern "C" u8 fn_8023EFEC(s32);
+extern "C" u8 fn_8023EA28(s32);
+extern "C" s32 fn_80237060(s32);
+extern "C" void fn_8022FF8C(s32, void*, s32, void*, s32, s32);
+extern "C" u8 fn_8023B0F4(s32, void*, s32, s32, f32);
+extern "C" s32 fn_8022FD8C(void*);
+extern "C" u8 fn_8038AD24(s32,s32,void*,s32,void*,s32);
+extern "C" void fn_8022FEB8(void*,s32,void*,s32,s32);
+extern "C" u8 fn_803865B8(s32);
+extern "C" s32 fn_80237810(s32);
+extern "C" s32 fn_80237774(s32);
+extern "C" void fn_80236554(s32,s32,s32);
+extern "C" void fn_801F0E34(void*,s32,s32);
+extern "C" u8 fn_80236E3C(s32);
+extern "C" void fn_80230498(s32,void*,s32,s32,s32,s32,s32);
+extern "C" u8 fn_8023061C(s32,s32);
+extern "C" void fn_80230EB8(s32,s32);
+extern "C" void* fn_801F666C(void*,s32);
+extern "C" u8 fn_8022E438(s32,s32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" void* fn_8013CC50(s32,void*,f32,s32,s32,s32,s32,s32,s32);
+extern "C" void fn_80230F44(s32,s32);
+extern "C" u8 fn_8038BD08(s32,s32,s32,void*,s32);
+extern "C" void fn_80236ED8(s32,s32);
+extern "C" void fn_80236DB0(s32);
+extern "C" void fn_802370FC(s32,s32);
+extern "C" void detach__5ActorFv(void*);
+extern "C" void fn_8038E368(BeryFull* this_) {
+    if (this_->m248 != 1) {
+        if (this_->mParam != 3) {
+            if (fn_80138A30(lbl_8053AAF8) > 1 && this_->mRoom >= 8) {
+                s32 room = this_->mRoom;
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8023DE58(i) == room) {
+                        if (!fn_8022F478(i) && !fn_80236B50(i)) {
+                            if ((&this_->m24C)[fn_8022F340(i)] == 0) {
+                                fn_803037D4(fn_8022F340(i), 0x11);
+                                (&this_->m24C)[fn_8022F340(i)] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+            f32 box[4];
+            box[0] = this_->m60 + this_->mPos.x;
+            box[1] = this_->m64 + this_->mPos.y;
+            box[2] = this_->m68 + this_->mPos.x;
+            box[3] = this_->m6C + this_->mPos.y;
+            fn_80239914(box, this_->mRoom, this_->m198);
+        }
+        f32 pts[8];
+        f32 f24 = *(f32*)((u8*)this_ + 0x24);
+        f32 f28 = *(f32*)((u8*)this_ + 0x28);
+        pts[0] = lbl_8054310C + f24;
+        pts[1] = lbl_8054310C + f28;
+        pts[2] = lbl_80543110 + f24;
+        pts[3] = lbl_80543110 + f28;
+        pts[4] = lbl_80543104 + f24;
+        pts[5] = lbl_80543104 + f28;
+        pts[6] = lbl_80543108 + f24;
+        pts[7] = lbl_80543108 + f28;
+        /* TODO: switch on mState (jumptable_804AF3B8, cases 0..13) and the rest of the function */
     }
 }
 
