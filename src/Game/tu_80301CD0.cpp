@@ -1503,7 +1503,7 @@ extern "C" u32 fn_8023CD74(s32);
 extern "C" s32 fn_803066F0(void*,s32,s32);
 
 extern "C" u64 fn_802D7AC4(void*,s32);
-#pragma opt_lifetimes off
+#pragma opt_lifetimes on
 static inline void packetPrimaryFlag(Ctl4_80301CD0* header, s32 owner) {
     header->x=fn_8023CE10(owner)>>4;
 }
@@ -1511,20 +1511,15 @@ static inline void packetSecondaryFlag(Ctl4_80301CD0* header, s32 owner) {
     header->x=fn_8023CD74(owner)>>4;
 }
 extern "C" void fn_80306A94(s32 ctx,s32 player) {
-    s32 owner;
-    Hi_80301CD0* firstFlags;
-    u8* p;
-    s32 i;
-    u32 slot;
     if(((u8*)lbl_8053AAF8)[0x82] & (u8)(1<<player))
         ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
     else ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=14;
     fn_803085A4(ctx,player);
-    owner=fn_8022EA0C(player);
-    p=lbl_80506DE8+player*0x68;
-    firstFlags=(Hi_80301CD0*)(p+1);
-    for(i=0;i<4;i++) {
-        slot=fn_802340A0(i);
+    s32 owner=fn_8022EA0C(player);
+    u8* p=lbl_80506DE8+player*0x68;
+    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
+    for(s32 i=0;i<4;i++) {
+        u32 slot=fn_802340A0(i);
         if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
         {
             if(fn_8022BC38(owner,fn_8023DE58(i),fn_8023E724(i))) goto valid;
@@ -1579,12 +1574,12 @@ nextPlayer:;
     }
     ((Ctl4_80301CD0*)(p+0xb))->y=fn_8023CE10(owner)>>5;
     Ctl4_80301CD0* header0=(Ctl4_80301CD0*)(p+0xb);
-    header0->x=fn_8023CE10(owner)>>4;
+    packetPrimaryFlag(header0,owner);
     ((Ctl4_80301CD0*)(p+0xf))->y=fn_8023CE10(owner);
     Ctl4_80301CD0* header1=(Ctl4_80301CD0*)(p+0xf);
     ((Ctl4_80301CD0*)(p+0x13))->y=fn_8023CD74(owner)>>5;
     Ctl4_80301CD0* header2=(Ctl4_80301CD0*)(p+0x13);
-    header2->x=fn_8023CD74(owner)>>4;
+    packetSecondaryFlag(header2,owner);
     ((Ctl4_80301CD0*)(p+0x17))->y=fn_8023CD74(owner);
     Ctl4_80301CD0* header3=(Ctl4_80301CD0*)(p+0x17);
     u8 active=0;
