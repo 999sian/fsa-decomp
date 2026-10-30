@@ -107,6 +107,32 @@ static inline void setRotZ_80339AEC(Mtx m, s16 angle) {
     m[2][0] = 0.0f;
     m[0][2] = 0.0f;
 }
+static inline void rotZa_80339AEC(Mtx m, s16 angle) {
+    f32 c = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+    f32 s = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    m[0][0] = c;
+    m[0][1] = -s;
+    m[1][0] = s;
+    m[1][1] = c;
+    m[2][2] = 1.0f;
+    m[2][1] = 0.0f;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[0][2] = 0.0f;
+}
+static inline void rotYa_80339AEC(Mtx m, s16 angle) {
+    f32 c = JMath::sincosTable_.mTable[(u16)angle >> 5].second;
+    f32 s = JMath::sincosTable_.mTable[(u16)angle >> 5].first;
+    m[0][0] = c;
+    m[1][1] = 1.0f;
+    m[0][2] = s;
+    m[2][0] = -s;
+    m[2][2] = c;
+    m[2][1] = 0.0f;
+    m[1][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[0][1] = 0.0f;
+}
 static inline void rotZsc_80339AEC(Mtx m, f32 s, f32 c) {
     m[0][0] = c;
     m[0][1] = -s;
