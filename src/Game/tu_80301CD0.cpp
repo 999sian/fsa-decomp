@@ -1384,7 +1384,7 @@ extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
     return 1;
 }
 
-extern "C" void fn_80304D64() {
+extern "C" void fn_80304D64(s32 unused = 0) {
     Elem28_80301CD0 (*b)[40] = lbl_80505438;
     Elem28_80301CD0 (*a)[16] = lbl_80504A38;
     for (s32 i = 0; i < 4; i++) {
@@ -1535,7 +1535,7 @@ lbl_8053AD0C[i]+=2;
 if(lbl_8053AD0C[i]>=lbl_8053AD14[i]){
 lbl_8053AD24[i]=1;lbl_8053AD1C[i]=0;((Packet_80301CD0*)p)->code=12;n++;break;
 }}
-for(;n<limit;n++,dst+=4)*(u32*)(dst+8)=0;
+for(;n<limit;n++)((u32*)p)[n+2]=0;
 tu80301_packetChecksum(p,entries,lbl_80504A18[i]);
 }else fn_8030801C(param_1,i);
 }
@@ -1549,7 +1549,7 @@ lbl_8053AD0C[i]+=2;
 if(lbl_8053AD0C[i]>=lbl_8053AD14[i]){
 lbl_8053AD24[i]=1;lbl_8053AD1C[i]=0;((Packet_80301CD0*)p)->code=12;n++;break;
 }}
-for(;n<limit;n++,dst+=4)*(u32*)(dst+8)=0;
+for(;n<limit;n++)((u32*)p)[n+2]=0;
 tu80301_packetChecksum(p,entries,lbl_80504A18[i]);
 }else fn_80307B58(param_1,i,0);
 }else{
