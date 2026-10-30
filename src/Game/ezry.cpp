@@ -29,7 +29,7 @@ extern "C" void fn_8013CB44(void* emitter, f32* pos, u32 a, u32 b, u32 c);
 extern "C" void fn_801F71A4(void* obj, f32 a, f32 b, f32 c);
 
 static inline u8 ezryCount() {
-    return *(volatile u8*)&lbl_80529DEC[0x24f];
+    return lbl_80529DEC[0x24f];
 }
 
 static inline void ezryPlaySe(s32 id) {
