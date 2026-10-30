@@ -25,10 +25,12 @@ extern "C" f32 lbl_8053F578;
 extern "C" f32 lbl_8053F580;
 
 static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
+    int i;
     u8 found = 0;
+    u8* slot;
     if (*(u32*)(actor + 0x1a0) == 0x48424d42) {
-        u8* slot = self;
-        for (int i = 0; i < 16; i++, slot += 0x14) {
+        slot = self;
+        for (i = 0; i < 16; slot += 0x14, i++) {
             if (*(s32*)(slot + 0x308) == *(s32*)(actor + 0x198) && slot[flag]) {
                 found = 1;
                 break;
@@ -47,8 +49,8 @@ extern "C" void fn_801E4D88(u8* this_) {
     JGeometry::TVec3<f32> zero2;
     JGeometry::TVec3<f32> movePos;
     s32 count;
-    s32 i;
     s32 id;
+    s32 i;
     u8* p;
     u8* e;
     count = fn_801F7818(fn_801F856C(), 0x48424D42, *(s32*)(this_ + 4), list, -1);
