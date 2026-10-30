@@ -52,7 +52,9 @@ extern "C" void fn_80140E84(void* this_) {
     }
 }
 
-extern "C" int fn_801F3D94(void* this_);
+#include "JSystem/JGeometry/Box.h"
+#include "sdk/stl/math.h"
+extern "C" int fn_801F3D94(void* this_, int = 1);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
@@ -68,7 +70,29 @@ extern "C" f32 lbl_8053CEBC;
 extern "C" f32 lbl_8053CEC0;
 extern "C" f32 lbl_8053CEAC;
 extern "C" f32 lbl_8053CEB0;
-extern "C" f32 PSVECDistance(void* a, void* b);
+
+extern "C" u8 fn_8023F264(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" void fn_801F2B7C(void*, s32, s32, s32);
+extern "C" void fn_801EEC98(void*, s32, s32, s32*, s32, s32*, s32, s32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" void fn_801EE8F4(void*, void*, s32, s32);
+extern "C" u8* fn_8020D58C();
+extern "C" void fn_8020D7D0(void*, s32);
+extern "C" u8 fn_802265DC(void*, s32, s32);
+extern "C" u16 fn_80226850(void*, s32);
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F7818(void*, u32, s32, void*, s32);
+extern "C" s32 fn_80239558(void*, s32, s32);
+extern "C" s32 fn_80239470(void*, s32, s32);
+extern "C" u8 fn_800FE3EC(void*, s32, void*, s32);
+extern "C" void fn_800FDEA0(void*, void*, void*, void*, void*, s32, f32);
+extern "C" void* fn_801F8108(void*, u32, s32, f32);
+extern "C" void* fn_801F666C(void*, void*);
+extern "C" void fn_801BEDBC(void*);
+extern f32 lbl_8053CEC4, lbl_8053CECC, lbl_8053CEE8;
+extern JGeometry::TVec3f lbl_80465A98[4];
 extern "C" void fn_80141064(u8* this_) {
     f32 pos[3];
     f32 box[6];
