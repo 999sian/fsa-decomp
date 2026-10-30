@@ -1,8 +1,9 @@
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
-
-class Actor;
+#include "JSystem/JParticle/JPAEmitter.h"
 
 
 extern "C" char lbl_804ABA90[];
@@ -88,15 +89,88 @@ extern "C" s32 fn_80336040(Actor* self) {
 extern "C" void fn_80336294(void) {
 }
 
+extern "C" JPABaseEmitter* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" void fn_8013CB44(JPABaseEmitter* e, void* pos, s32 a, s32 b, s32 c);
+extern "C" void fn_8038BD08(s32 a, s32 b, s32 c, void* d, s32 e);
+extern "C" u8 fn_80230224(s32 i, s32 b);
 extern "C" void fn_80336298(Actor* self) {
-    u8* p = (u8*)self;
+    s32 ok;
     s32 i;
-    s32 state = *(s32*)(p + 0x230);
+    s32 j;
+    s32 k;
+    u8* p = (u8*)self;
+    JGeometry::TVec3<f32> pos;
 
-    if (state == 2) {
-        if (*(s32*)(p + 0x234) < 1) {
+    switch (*(s32*)(p + 0x230)) {
+    case 0:
+        if (p[0x285] == 1) {
+            *(s32*)(p + 0x230) = 1;
+            for (i = 0; i < 4; i++) {
+                if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
+                    (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(i) != 4 || !fn_8022F478(i)))) {
+                    *(s32*)(p + 0x278) = *(s32*)(p + 0x278) + 1;
+                }
+            }
+        } else {
+            p[0x285] = 1;
+            for (i = 0; i < 4; i++) {
+                if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
+                    (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(i) != 4 || !fn_8022F478(i)))) {
+                    if (!fn_802300EC(i)) {
+                        p[0x285] = 0;
+                        break;
+                    }
+                }
+            }
+            if (p[0x285] == 1) {
+                for (i = 0; i < 4; i++) {
+                    if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
+                        (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(i) != 4 || !fn_8022F478(i)))) {
+                        fn_80230AD4(i);
+                    }
+                }
+            }
+        }
+        break;
+    case 1:
+        if ((u8)fn_80336040(self) == 1) {
+            for (i = 0; i < 4; i++) {
+                if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
+                    (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(i) != 4 || !fn_8022F478(i)))) {
+                    if (*(JPABaseEmitter**)(p + 0x2a0 + i * 4) == 0) {
+                        switch (i) {
+                        case 0:
+                            *(JPABaseEmitter**)(p + 0x2a0 + i * 4) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x477, 0, -1, 0, 0, 1, 1.0f);
+                            break;
+                        case 1:
+                            *(JPABaseEmitter**)(p + 0x2a0 + i * 4) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x479, 0, -1, 0, 0, 1, 1.0f);
+                            break;
+                        case 2:
+                            *(JPABaseEmitter**)(p + 0x2a0 + i * 4) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x476, 0, -1, 0, 0, 1, 1.0f);
+                            break;
+                        case 3:
+                            *(JPABaseEmitter**)(p + 0x2a0 + i * 4) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x478, 0, -1, 0, 0, 1, 1.0f);
+                            break;
+                        }
+                    }
+                    if (*(JPABaseEmitter**)(p + 0x2b0 + i * 4) == 0) {
+                        *(JPABaseEmitter**)(p + 0x2b0 + i * 4) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 0x475, 0, -1, 0, 0, 1, 1.0f);
+                    }
+                    p[0x281 + i] = 0;
+                }
+            }
+            *(s32*)(p + 0x230) = 2;
+            *(s32*)(p + 0x234) = 0x5a;
+            *(s32*)(p + 0x25c) = 10;
+            *(JGeometry::TVec3<f32>*)(p + 0x294) = *(JGeometry::TVec3<f32>*)fn_8023E724(*(s32*)(p + 0x24c));
+        }
+        break;
+    case 2: {
+        if (*(s32*)(p + 0x234) <= 0) {
             if (*(s32*)(p + 0x254) == 0) {
-                return;
+                s32 room = *(s32*)(p + 4);
+                JGeometry::TVec3<f32> here = *(JGeometry::TVec3<f32>*)(p + 0xc);
+                fn_8038BD08(*(s32*)(p + 0x24c), 0xd4, room, &here, 1);
             }
             *(s32*)(p + 0x230) = 3;
         } else {
@@ -107,60 +181,82 @@ extern "C" void fn_80336298(Actor* self) {
                     *(s32*)(p + 0x25c) = 8;
                 } else if (*(s32*)(p + 0x258) == 1) {
                     *(s32*)(p + 0x25c) = 3;
-                    fn_80230FD0(*(s32*)(p + 0x24c), 0);
+                    fn_80230FD0(*(s32*)(p + 0x24c), (void*)0x10008);
                     fn_80230F44(*(s32*)(p + 0x24c), 0x1000002);
                 } else if (*(s32*)(p + 0x258) == 2) {
                     *(s32*)(p + 0x258) = 2;
                     *(s32*)(p + 0x25c) = 0x1e;
-                } else if (*(s32*)(p + 0x258) > 2) {
+                } else if (*(s32*)(p + 0x258) >= 3) {
                     *(s32*)(p + 0x258) = 2;
                     *(s32*)(p + 0x25c) = 0x5a;
                 }
             }
         }
-    } else if (state < 2) {
-        if (state == 0) {
-            if (p[0x285] == 1) {
-                *(s32*)(p + 0x230) = 1;
-                for (i = 0; i < 4; i++) {
-                    if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250)) {
-                        *(s32*)(p + 0x278) = *(s32*)(p + 0x278) + 1;
-                    } else if (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1) {
-                        if (fn_8022CAF8(i) != 4 || fn_8022F478(i) == 0) {
-                            *(s32*)(p + 0x278) = *(s32*)(p + 0x278) + 1;
-                        }
+        j = 0;
+        for (k = 0; k < 4; k++) {
+            if (k == *(s32*)(p + 0x24c) || k == *(s32*)(p + 0x250) ||
+                (fn_8022E438(k, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(k) != 4 || !fn_8022F478(k)))) {
+                JGeometry::TVec3<f32> tmp(
+                    *(f32*)(p + 0x294) + *(f32*)(p + 0x27c) * ((f32)j - ((f32)*(s32*)(p + 0x278) - 1.0f) / 2.0f),
+                    *(f32*)(p + 0x298), *(f32*)(p + 0x29c));
+                pos = tmp;
+                fn_80230498(k, &pos, *(s32*)(p + 0x258) + 0x31a, 0xff, -0x80, -0x80, 1);
+                if (*(JPABaseEmitter**)(p + 0x2a0 + k * 4) != 0) {
+                    fn_8013CB44(*(JPABaseEmitter**)(p + 0x2a0 + k * 4), &pos, 0, -1, 1);
+                }
+                if (*(JPABaseEmitter**)(p + 0x2b0 + k * 4) != 0) {
+                    JGeometry::TVec3<f32> pos2(
+                        *(f32*)(p + 0x294) + *(f32*)(p + 0x27c) * ((f32)j - ((f32)*(s32*)(p + 0x278) - 1.0f) / 2.0f),
+                        *(f32*)(p + 0x298), *(f32*)(p + 0x29c));
+                    fn_8013CB44(*(JPABaseEmitter**)(p + 0x2b0 + k * 4), &pos2, 0, -1, 1);
+                }
+                if (p[0x280] == 0) {
+                    JGeometry::TVec3<f32> pos3(
+                        *(f32*)(p + 0x294) + (0.5f + *(f32*)(p + 0x27c)) * ((f32)j - ((f32)*(s32*)(p + 0x278) - 1.0f) / 2.0f),
+                        *(f32*)(p + 0x298), *(f32*)(p + 0x29c));
+                    if (((u8 (*)(Actor*, s32, void*))(*(void***)p)[19])(self, *(s32*)(p + 4), &pos3)) {
+                        p[0x280] = 1;
                     }
                 }
-            } else {
-                p[0x285] = 1;
-                for (i = 0; i < 4; i++) {
-                    if ((i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
-                         (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 &&
-                          (fn_8022CAF8(i) != 4 || fn_8022F478(i) == 0))) &&
-                        fn_802300EC(i) == 0) {
-                        p[0x285] = 0;
+                if (*(f32*)(p + 0x27c) < 16.0f && *(s32*)(p + 0x258) >= 2 && p[0x280] == 0) {
+                    *(f32*)(p + 0x27c) += 0.5f;
+                } else if ((*(s32*)(p + 0x258) >= 2 || p[0x280] == 1) && p[0x281 + k] == 0) {
+                    JGeometry::TVec3<f32> a(6.0f + pos.x, pos.y - 29.0f, pos.z);
+                    fn_8013CC50(*(s32*)(p + 4), &a, 0xcb, 0, 1, 0, 0, 1, 1.0f);
+                    JGeometry::TVec3<f32> b(6.0f + pos.x, pos.y - 29.0f, pos.z);
+                    fn_8013CC50(*(s32*)(p + 4), &b, 0xcc, 0, 1, 0, 0, 1, 1.0f);
+                    p[0x281 + k] = 1;
+                }
+                j++;
+            }
+        }
+        break;
+    }
+    case 3:
+        if (*(s32*)(p + 0x234) <= 0 && fn_80388EEC(*(s32*)(p + 0x24c))) {
+            ok = 1;
+            for (i = 0; i < 4; i++) {
+                if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
+                    (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 && (fn_8022CAF8(i) != 4 || !fn_8022F478(i)))) {
+                    if (!fn_80230224(i, 0)) {
+                        ok = 0;
                         break;
                     }
                 }
-                if (p[0x285] == 1) {
-                    for (i = 0; i < 4; i++) {
-                        if (i == *(s32*)(p + 0x24c) || i == *(s32*)(p + 0x250) ||
-                            (fn_8022E438(i, *(s32*)(p + 0x24c)) == 1 &&
-                             (fn_8022CAF8(i) != 4 || fn_8022F478(i) == 0))) {
-                            fn_80230AD4(i);
-                        }
+            }
+            if (ok == 1) {
+                for (i = 0; i < 4; i++) {
+                    if (*(JPABaseEmitter**)(p + 0x2a0 + i * 4) != 0) {
+                        (*(JPABaseEmitter**)(p + 0x2a0 + i * 4))->becomeInvalidEmitter();
+                    }
+                    if (*(JPABaseEmitter**)(p + 0x2b0 + i * 4) != 0) {
+                        (*(JPABaseEmitter**)(p + 0x2b0 + i * 4))->becomeInvalidEmitter();
                     }
                 }
+                p[0x11c] = 0;
             }
-        } else if (state >= 0 && fn_80336040((Actor*)self) == 1) {
-            *(s32*)(p + 0x230) = 2;
-            *(s32*)(p + 0x234) = 0x5a;
-            *(s32*)(p + 0x25c) = 10;
-            fn_8023E724(*(s32*)(p + 0x24c));
-            return;
         }
-    } else if (state < 4 && *(s32*)(p + 0x234) < 1 && fn_80388EEC(*(s32*)(p + 0x24c))) {
-        return;
+        break;
     }
 
     if (*(s32*)(p + 0x234) > 0) {
