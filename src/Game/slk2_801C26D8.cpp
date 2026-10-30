@@ -396,7 +396,7 @@ extern "C" void fn_801C2ED4(u8* this_, u8 flag) {
     if (flag && (u8)((Actor*)this_)->v17(*(s32*)(this_ + 4), (f32*)(this_ + 0xc))) {
         *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x18);
         *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x1c);
-        ((void (*)(u8*, void*, f32*, f32))fn_801D01A0)(this_, this_ + 0x32c, delta, lbl_8053EE14);
+        fn_801D01A0(this_, this_ + 0x32c, delta, lbl_8053EE14);
         *(f32*)(this_ + 0xc) += delta[0];
         *(f32*)(this_ + 0x10) += delta[1];
     }
