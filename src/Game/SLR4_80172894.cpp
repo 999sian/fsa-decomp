@@ -188,6 +188,24 @@ extern "C" s32 fn_801F3D94(void* this_, s32 a);
 extern "C" void fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80174220(void* this_);
 extern void* lbl_8053AED0;
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16);
+extern "C" void fn_801F71A4(void*,f32,f32,f32);
+extern "C" void fn_801EEC98(void*,s32,void*,void*,void*,s32,s32,s32);
+extern "C" u8 fn_801F2FAC(void*);
+extern "C" u8 fn_801F2DB4(void*,u32,u32,s32);
+extern "C" void fn_801F0E34(void*,u32,s32);
+extern "C" void fn_80458FF0(void*,u32,s32,s32);
+extern void* lbl_8053AF80;
+extern const f32 lbl_8053DAC4,lbl_8053DAD4,lbl_8053DAD8,lbl_8053DADC,lbl_8053DAE0,lbl_8053DAE4,lbl_8053DAE8,lbl_8053DAEC,lbl_8053DAF0,lbl_8053DAF4,lbl_8053DAF8,lbl_8053DAFC,lbl_8053DB08,lbl_8053DB0C;
+extern s32 lbl_804A0920[];
+static inline f32 slr4Random() {
+    union { u32 bits; f32 value; } out;
+    u32* seed=(u32*)((u8*)lbl_8053AAF8+0xb4);
+    *seed=*seed*0x19660d+0x3c6ef35f;
+    out.bits=(*seed>>9)|0x3f800000;
+    return out.value-1.0f;
+}
 extern "C" void fn_80172DC4(void* this_) {
     char* p = (char*)this_;
     if (lbl_8053AB60 == 1) {
