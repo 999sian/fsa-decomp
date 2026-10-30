@@ -295,6 +295,20 @@ extern f32 lbl_8053C99C;
 extern f32 lbl_8053C9A0;
 extern f32 lbl_8053C9A4;
 
+static inline void EZZR_SetMove(EZZR* p, f32 speed, f32 accel) {
+    *(f32*)((u8*)p + 0x380) = speed;
+    *(f32*)((u8*)p + 0x37c) = accel;
+}
+
+static inline void EZZR_SetAllState(s32 state) {
+    for (s32 i = 0; i < *(s32*)fn_80131F0C(); i++) {
+        EZZR* a = (EZZR*)fn_80131E30(fn_80131F0C(), i);
+        if (a != 0) {
+            a->v25(state);
+        }
+    }
+}
+
 static inline bool EZZR_IsNearBarrier(EZZR* p) {
     s32 id;
     if (*(s32*)fn_80131F0C() <= 1) {
@@ -535,8 +549,8 @@ extern "C" void fn_80120570(EZZR* p) {
             p->v25(7);
             break;
         }
-        f32 speed = lbl_8053C970;
         f32 accel = lbl_8053C9A4;
+        f32 speed = lbl_8053C970;
         *(f32*)((u8*)p + 0x380) = speed;
         *(f32*)((u8*)p + 0x37c) = accel;
         if (p->v48((Vec*)&(const JGeometry::TVec3f&)JGeometry::TVec3f(lbl_8053C964, lbl_8053C964, lbl_8053C964), *(f32*)((u8*)p + 0x380))) {
