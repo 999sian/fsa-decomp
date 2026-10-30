@@ -1167,7 +1167,7 @@ static inline u32 roomRecordWord8328(const u8* rec) {
 inline bool roomSpecial8328() {
     if (*(u8*)(lbl_8053AAF8+0x7f)==0) return false;
     char* g = *(char**)(lbl_8053AAF8+4);
-    if ((*(s32*)(*(char* volatile*)(g+0xc)+4)==9 && *(s32*)(*(char**)(g+0xc)+8)==3)
+    if ((*(s32*)(*(char**)(g+0xc)+4)==9 && *(s32*)(*(char**)(g+0xc)+8)==3)
         || *(s32*)(*(char* volatile*)(g+0xc)+4)>=13) return true;
     return false;
 }
