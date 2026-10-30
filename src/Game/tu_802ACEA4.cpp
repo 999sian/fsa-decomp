@@ -85,7 +85,7 @@ extern "C" double cos(double);
 extern "C" double sin(double);
 extern "C" const f32 sincosTable___5JMath[];
 static inline void platformRotation(f32 m[3][4], const f32 ry) {
-    f32 sz, sy, sx, cz, cy, cx;
+    f32 sz, sx, cz, cy, cx, sy;
     cx=cos(0.0);
     cy=cos(ry);
     cz=cos(0.0);
@@ -117,6 +117,7 @@ static inline f32 platformCos(f32 angle) {
 }
 
 extern "C" void fn_802ACF04(Actor* a) {
+f32 rotation;
 Actor* self=a;
 DrawRec rec;
 f32 m[3][4];
@@ -133,7 +134,8 @@ pos.y=self->field_0C.y+platformCenterY[*(s32*)((u8*)self+0x234)];
 pos.x=self->field_0C.x+platformCenterX[*(s32*)((u8*)self+0x234)];
 if((s32)self->field_04<8)fn_802F745C(*(void**)((u8*)lbl_8053AB10+0x20),&pos,texture,&rec);
 m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-platformRotation(m,*(f32*)((u8*)self+0x248));
+rotation=*(f32*)((u8*)self+0x248);
+platformRotation(m,rotation);
 rec.b1c=-1;rec.b1d=-1;rec.b21=1;rec.w18=m;
 switch(*(s32*)((u8*)self+0x234)) {
 default:if((s32)self->field_04<8) fn_802F6CF4(*(void**)((u8*)lbl_8053AB10+0x20),&self->field_0C,(*(JKRFileLoader**)((u8*)lbl_8053AAF8+0xa4))->getResource('SMP ',platformFloor),&rec);break;
