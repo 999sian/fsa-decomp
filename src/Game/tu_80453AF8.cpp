@@ -130,10 +130,244 @@ extern "C" const f32 lbl_80543E44;
 extern "C" const f32 lbl_80543E40;
 extern "C" const u32 lbl_80491470[];
 extern "C" void fn_80402E08(void* p, f32 x, f32 y);
+extern "C" u8 lbl_8050DB0C[];
+extern "C" void* lbl_8053AD30;
+extern "C" const f32 lbl_80543E48;
+extern "C" const f32 lbl_80543E4C;
+extern "C" const f32 lbl_80543E50;
+extern "C" void fn_80402628(void*, s32, s32, s32);
+extern "C" u8 fn_80402940(void*, s32, s32, f32, f32);
+extern "C" u32 fn_80309A9C(void*, s32, s32);
+extern "C" u32 fn_80309C4C(void*, s32, s32);
+extern "C" void fn_80458880(void*, s32, s32);
+extern "C" void fn_80458F9C(void*, s32);
+extern "C" void fn_80431A9C(void*, s32, s32, u8*);
+extern "C" void fn_80431174(void*, u8);
+extern "C" s32 fn_80431740(void*);
+extern "C" s32 fn_804317AC(void*);
+extern "C" void fn_804310BC(void*);
+static inline void MenuUpdateColors8045(T80454DEC* self) {
+    for (int i = 0; i < 3; i++) {
+        if (i == self->selected) {
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
+        } else {
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
+            ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
+        }
+    }
+}
 extern "C" s32 fn_80453B14(u8* this_) {
+    T80454DEC* self = (T80454DEC*)this_;
+    s32 i;
+    s32 v;
+    f32 off;
     *(s32*)(this_ + 0x58) = 9;
     switch (*(s16*)(this_ + 0x1e)) {
-    default:
+    case 2:
+        fn_80402628(*(void**)(this_ + 8), *(s16*)(lbl_8050DB0C + 0x8c), 0, *(u8*)(*(u8**)(this_ + 8) + 0x28));
+        if (fn_80402940(*(void**)(this_ + 0xc), *(s16*)(lbl_8050DB0C + 0x8c), 0, lbl_80543E40, (f32)*(s16*)(lbl_8050DB0C + 0x90))) {
+            *(s16*)(*(u8**)(this_ + 0xc) + 0x22) = 0;
+            *(s16*)(this_ + 0x1e) = 3;
+        }
+        break;
+    case 3:
+        if (fn_80402940(*(void**)(this_ + 0xc), *(s16*)(lbl_8050DB0C + 0x8e), 2, (f32)*(s16*)(lbl_8050DB0C + 0x90), lbl_80543E44)) {
+            *(s16*)(this_ + 0x1e) = 5;
+        }
+        break;
+    case 5:
+        if (*(s16*)(this_ + 0x20) != 0) {
+            (*(s16*)(this_ + 0x20))++;
+            if (*(s16*)(this_ + 0x20) > 10) {
+                *(s16*)(this_ + 0x20) = 0;
+            }
+        }
+        if (*(s16*)(this_ + 0x1c) > 0 && fn_80309A9C(lbl_8053AD30, 8, -1)) {
+            (*(s16*)(this_ + 0x1c))--;
+            *(s16*)(this_ + 0x20) = 1;
+            for (i = 0; i < 3; i++) {
+                if (i == *(s16*)(this_ + 0x1c)) {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
+                } else {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
+                }
+            }
+            fn_80458880(lbl_8053AF80, 0, -1);
+        } else if (*(s16*)(this_ + 0x1c) < 2 && fn_80309A9C(lbl_8053AD30, 4, -1)) {
+            (*(s16*)(this_ + 0x1c))++;
+            *(s16*)(this_ + 0x20) = 1;
+            for (i = 0; i < 3; i++) {
+                if (i == *(s16*)(this_ + 0x1c)) {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
+                } else {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
+                }
+            }
+            fn_80458880(lbl_8053AF80, 0, -1);
+        } else if (fn_80309C4C(lbl_8053AD30, 0x1100, -1)) {
+            if (*(s16*)(this_ + 0x1c) == 0) {
+                *(s16*)(this_ + 0x1e) = 0xa;
+            } else {
+                *(s16*)(this_ + 0x1e) = 0xa;
+            }
+            *(s16*)(this_ + 0x20) = 1;
+            fn_80458880(lbl_8053AF80, 0xb, -1);
+        } else if (fn_80309C4C(lbl_8053AD30, 0x200, -1)) {
+            *(s16*)(this_ + 0x1c) = 0;
+            for (i = 0; i < 3; i++) {
+                if (i == *(s16*)(this_ + 0x1c)) {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
+                } else {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
+                }
+            }
+            *(s16*)(this_ + 0x1e) = 0xa;
+            *(s16*)(this_ + 0x20) = 1;
+            fn_80458880(lbl_8053AF80, 0xb, -1);
+        }
+        {
+            s16 t = *(s16*)(this_ + 0x20);
+            v = t >= 5 ? 10 - t : t;
+        }
+        off = lbl_80543E48 * (f32)(v * v) / lbl_80543E4C;
+        self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected] + off);
+        self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected] + off);
+        for (i = 0; i < 3; i++) {
+            if (i == *(s16*)(this_ + 0x1c)) {
+                fn_80402E08(self->entries[i], lbl_80543E44, off);
+            } else {
+                fn_80402E08(self->entries[i], lbl_80543E44, lbl_80543E44);
+            }
+        }
+        break;
+    case 0xa:
+        (*(s16*)(this_ + 0x20))++;
+        {
+            s16 t = *(s16*)(this_ + 0x20);
+            if (t < 5) {
+                v = t;
+            } else if (t < 10) {
+                v = 10 - t;
+            } else {
+                v = 0;
+            }
+        }
+        off = lbl_80543E48 * (f32)(v * v) / lbl_80543E4C;
+        self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected] + off);
+        self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected] + off);
+        for (i = 0; i < 3; i++) {
+            if (i == *(s16*)(this_ + 0x1c)) {
+                fn_80402E08(self->entries[i], lbl_80543E44, off);
+            } else {
+                fn_80402E08(self->entries[i], lbl_80543E44, lbl_80543E44);
+            }
+        }
+        if (*(s16*)(this_ + 0x20) >= 0xf) {
+            if (*(s16*)(this_ + 0x1c) == 0) {
+                *(s16*)(this_ + 0x1e) = 0xb;
+                *(s16*)(*(u8**)(this_ + 8) + 0x26) = 0;
+            } else {
+                *(s16*)(this_ + 0x1e) = 0xd;
+            }
+            *(s16*)(this_ + 0x20) = 0;
+            *(s16*)(*(u8**)(this_ + 0xc) + 0x22) = 0;
+        }
+        break;
+    case 0xb:
+        if (fn_80402940(*(void**)(this_ + 0xc), *(s16*)(lbl_8050DB0C + 0x92), 2, lbl_80543E44, (f32)*(s16*)(lbl_8050DB0C + 0x90))) {
+            *(s16*)(*(u8**)(this_ + 0xc) + 0x22) = 0;
+            *(s16*)(this_ + 0x1e) = 0xc;
+        }
+        break;
+    case 0xc:
+        fn_80402628(*(void**)(this_ + 8), *(s16*)(lbl_8050DB0C + 0x94), *(u8*)(*(u8**)(this_ + 8) + 0x28), 0);
+        if (fn_80402940(*(void**)(this_ + 0xc), *(s16*)(lbl_8050DB0C + 0x94), 0, (f32)*(s16*)(lbl_8050DB0C + 0x90), lbl_80543E40)) {
+            *(s16*)(this_ + 0x1e) = 2;
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543E44, lbl_80543E40);
+            *(s16*)(*(u8**)(this_ + 0xc) + 0x22) = 0;
+            *(s32*)(this_ + 0x58) = 7;
+            fn_80458880(lbl_8053AF80, 2, -1);
+            fn_80459274(lbl_8053AF80);
+        }
+        break;
+    case 0xd:
+        if (fn_80402940(*(void**)(this_ + 0xc), 0xa, 0, lbl_80543E44, lbl_80543E50)) {
+            *(s16*)(this_ + 0x1e) = 7;
+            fn_80431A9C(lbl_8053AEC0, 0x10a, 0, this_ + 0x55);
+        }
+        break;
+    case 7:
+        if (fn_804317AC(lbl_8053AEC0) != 0) {
+            *(s16*)(this_ + 0x1e) = 8;
+        }
+        break;
+    case 8:
+        if (fn_80309A9C(lbl_8053AD30, 2, -1)) {
+            if (this_[0x55] == 0) {
+                this_[0x55] = 1;
+                fn_80458880(lbl_8053AF80, 0, -1);
+            }
+        } else if (fn_80309A9C(lbl_8053AD30, 1, -1)) {
+            if (this_[0x55] == 1) {
+                this_[0x55] = 0;
+                fn_80458880(lbl_8053AF80, 0, -1);
+            }
+        } else if (fn_80309C4C(lbl_8053AD30, 0x1100, -1)) {
+            *(s16*)(this_ + 0x1e) = 9;
+            if (this_[0x55] == 1) {
+                fn_80458880(lbl_8053AF80, 0xb, -1);
+            }
+        } else if (fn_80309C4C(lbl_8053AD30, 0x200, -1)) {
+            this_[0x55] = 1;
+            *(s16*)(this_ + 0x1e) = 9;
+            if (this_[0x55] == 1) {
+                fn_80458880(lbl_8053AF80, 0xb, -1);
+            }
+        }
+        fn_80431174(lbl_8053AEC0, this_[0x55]);
+        break;
+    case 9:
+        if (fn_80431740(lbl_8053AEC0) == 0) {
+            break;
+        }
+        if (this_[0x55] == 0) {
+            if (*(s16*)(this_ + 0x1c) == 1) {
+                fn_80458880(lbl_8053AF80, 0xc, -1);
+                fn_80458F9C(lbl_8053AF80, 0);
+                fn_80459274(lbl_8053AF80);
+                *(s32*)(this_ + 0x58) = 6;
+            } else {
+                *(s32*)(this_ + 0x58) = 2;
+                fn_80458880(lbl_8053AF80, 0xc, -1);
+                fn_80458F9C(lbl_8053AF80, 0);
+                fn_80459274(lbl_8053AF80);
+            }
+        } else {
+            *(s16*)(this_ + 0x1e) = 2;
+            *(s16*)(this_ + 0x20) = 0;
+            fn_80402E08(*(void**)(this_ + 0xc), lbl_80543E44, lbl_80543E40);
+            *(s16*)(*(u8**)(this_ + 0xc) + 0x22) = 0;
+            *(s16*)(this_ + 0x1c) = 0;
+            for (i = 0; i < 3; i++) {
+                if (i == *(s16*)(this_ + 0x1c)) {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(255, 237, 160, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(39, 16, 0, 0));
+                } else {
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setWhite(JUtility::TColor(167, 76, 42, 255));
+                    ((J2DPicture*)self->screen->search(((u64*)lbl_80491470)[i]))->setBlack(JUtility::TColor(0, 0, 0, 0));
+                }
+            }
+            self->screen->search(0x506b656e633031ULL)->move(self->left[self->selected], self->top[self->selected]);
+            self->screen->search(0x506b656e633032ULL)->move(self->right[self->selected], self->bottom[self->selected]);
+        }
+        fn_804310BC(lbl_8053AEC0);
         break;
     }
     return 0;
