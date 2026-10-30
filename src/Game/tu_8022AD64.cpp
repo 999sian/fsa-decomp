@@ -1591,7 +1591,7 @@ int fn_802DD3D4(void*, s32*);
 void fn_80457F60(void*);
 void fn_802DCE5C(void*, s32*);
 void fn_802520C0(Player*, s32*);
-int fn_8025F590(void);
+int fn_8025F590(Player*);
 int fn_8025F418(Player*);
 int fn_80270A8C(Player*);
 int fn_80270A04(Player*);
