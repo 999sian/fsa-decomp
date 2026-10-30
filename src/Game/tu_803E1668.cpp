@@ -883,11 +883,17 @@ static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, 
 struct MenuFrameValue803E {s32 frame;};
 struct MenuFrame803E {u8 _00[0x230];MenuFrameValue803E frame230[4];MenuFrameValue803E frame240[4];};
 
+#pragma opt_propagation off
+static inline void MenuIncrement803E(u8* p,s16 index,int offset) {
+    u8* entry=p+index*4;
+    ++*(s32*)(entry+offset);
+}
+#pragma opt_propagation reset
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
 #pragma opt_common_subs off
-extern "C" void fn_803E51C4(u8* param_1) {
-    u8* p=param_1;
+extern "C" void fn_803E51C4(void* param_1) {
+    u8* p=(u8*)param_1;
     f32 x,y,size;
     JGeometry::TVec3f pos;
     JGeometry::TBox2f box;
@@ -900,7 +906,7 @@ extern "C" void fn_803E51C4(u8* param_1) {
     const u64* d=(u64*)(base+0x880);
     s32 mask;
     s32 i;
-    for(i=0;i<4;i++,a++,b++,c++,d++,q+=4) {
+    for(i=0;i<4;i++,q+=4,d++,c++,b++,a++) {
         mask=1<<(i+4);
         if(MenuEnabled803E(i)&1) {
             s32 v=*(s32*)(q+0x220);
@@ -1022,7 +1028,7 @@ extern "C" void fn_803E51C4(u8* param_1) {
     const u64* b=(u64*)(base+0x530);
     u8* q=p;
     s32 i;
-    for(i=0;i<4;i++,b+=9,row+=9,q+=4,a++) {
+    for(i=0;i<4;i++,a++,q+=4,row+=9,b+=9) {
         DrawRec rec;
         rec.b26=0;
         J2DPane* pane=(*(J2DPane**)(p+8))->search(*a);
