@@ -269,15 +269,13 @@ extern "C" int fn_80215E98(HrmnTable* t) {
     return t->countSet();
 }
 
-extern "C" void fn_80215ECC(HrmnTable* t) {
-    s32 n = t->mCount;
-    HrmnTable* p = t;
-    int i = 0;
-    for (; i < n; i++) {
-        s32 a = p->mEntry[0].mA;
-        s32 id = p->mEntry[0].mId;
-        fn_801ED3DC(p->mEntry[0].mSub2, a, id);
-        p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
+extern "C" void fn_80215ECC(const HrmnTable* t) {
+    s32 n=t->mCount;
+    HrmnTable* p=(HrmnTable*)t;
+    int i=0;
+    for(; i<n; i++) {
+        fn_801ED3DC(p->mEntry[0].mSub2,p->mEntry[0].mA,p->mEntry[0].mId);
+        p=(HrmnTable*)((u8*)p+sizeof(HrmnEntry));
     }
 }
 
