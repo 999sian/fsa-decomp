@@ -2,6 +2,8 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 // ---- fn_80214900.cpp ----
 extern "C" void* SpatialRegistry_GetBase();
@@ -90,10 +92,10 @@ extern "C" void fn_80214994(void* this_)
 extern "C" void fn_80214AF8(void* this_)
 {
 	char* p = (char*)this_;
-	s32 id = *(s32*)(p + 0x30);
-	if (id >= 0) {
+	register s32 id = *(s32*)(p + 0x30);
+	if (0 <= id) {
 		char* found = (char*)fn_801F666C(fn_801F856C(), id);
-		if (found != 0) {
+		if (found) {
 			*(u8*)(found + 0x11c) = 0;
 		}
 		*(s32*)(p + 0x30) = -1;
@@ -116,8 +118,8 @@ extern "C" void fn_80214AF8(void* this_)
 		s32 b = 1;
 		s32 a = 0;
 		if (v.z > lbl_8053FBC0) {
-			a = b;
 			b = 0;
+			a = b;
 		}
 		f32 off = (a << 10) + (b << 7);
 		f32 x = v.x;
@@ -301,18 +303,21 @@ void fn_80214578(u8* this_) {
     fn_8013CC50(lbl_8053FBA4, *(u32*)(*(u8**)(this_ + 0x34) + 4), &pos, 0xcc, 0, 1, 0, 0, 1);
 }
 
-void fn_802146A4(u8* this_) {
-    u8* o = *(u8**)(this_ + 0x34);
-    s32 f = 0;
-    u32 flags = *(u32*)(o + 0x524);
-    if (flags & 0x400) {
+#pragma opt_propagation off
+void fn_802146A4(const u8* this_) {
+    const u8* self = this_;
+    u8* o = *(u8* const*)(this_ + 0x34);
+    int f = 0;
+    if (*(u32*)(o + 0x524) & 0x400) {
         f = 1;
     }
-    fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x416, 0, f - 1, 0, 0, 1);
-    o = *(u8**)(this_ + 0x34);
-    fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x417, 0, f, 0, 0, 1);
+    ((u8* (*)(u32, void*, s32, s32, s32, s32, s32, s32, f32))fn_8013CC50)(*(u32*)(o + 4), o + 0xc, 0x416, 0, f - 1, 0, 0, 1, lbl_8053FBA4);
+    o = *(u8* const*)(self + 0x34);
+    void* pos = o + 0xc;
+    s32 owner = *(s32*)(o + 4);
+    ((u8* (*)(u32, void*, s32, s32, s32, s32, s32, s32, f32))fn_8013CC50)(owner, pos, 0x417, 0, f, 0, 0, 1, lbl_8053FBA4);
 }
-
+#pragma opt_propagation reset
 extern "C" u8* fn_801C0D70(void* o);
 extern "C" void fn_801CDCD0(u8* o, u32 owner, void* pos, s32 id);
 extern const u16 lbl_8053FB90[3];
