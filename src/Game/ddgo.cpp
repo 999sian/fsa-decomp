@@ -64,6 +64,7 @@ static inline s32 DdgoOldDirection(char* t) {
     return dir;
 }
 static inline f32 DdgoRandom() {
+    const f32 one = lbl_8053E7D0;
     u32* seed=(u32*)((char*)lbl_8053AAF8+0xb4);
     *seed=*seed*0x19660d+0x3c6ef35f;
     u32 bits=(*seed>>9)|0x3f800000;
@@ -434,11 +435,16 @@ extern "C" void fn_801ACCF0(char* t) {
 }
 
 extern "C" void fn_801ACFF4(void* this_) {
-    f32* table=lbl_804A3108;
+    f32* table;
     char* t=(char*)this_;
-    f32 bottom, right, top, left;
+    f32 centerY, centerX;
+    f32 left;
+    f32 top;
+    f32 right;
+    f32 bottom;
     f32 x, y;
     y=*(f32*)(t+0x10); x=*(f32*)(t+0xc);
+    table=lbl_804A3108;
     left=*(f32*)(t+0x60);top=*(f32*)(t+0x64);right=*(f32*)(t+0x68);bottom=*(f32*)(t+0x6c);
     f32 p[3], q[3], scale;
     s32 dir, handle;
@@ -447,7 +453,13 @@ extern "C" void fn_801ACFF4(void* this_) {
     left+=x; top+=y; right+=x; bottom+=y;
     scale=lbl_8053E7D0;
     if (*(s32*)(t+0x294)==1) scale=lbl_8053E7E8;
-    DdgoIndexedBox(t,table+16,*(s32*)(t+0x98),scale);
+    {
+        f32* box=table+16+*(s32*)(t+0x98)*4;
+        f32 l=box[0], topEdge=box[1], b=box[3], r=box[2];
+        l=scale*l;topEdge=scale*topEdge;b=scale*b;
+        *(f32*)(t+0x60)=l;*(f32*)(t+0x64)=topEdge;
+        *(f32*)(t+0x68)=scale*r;*(f32*)(t+0x6c)=b;
+    }
     *(JGeometry::TBox2<f32>*)(t+0x80)=*(JGeometry::TBox2<f32>*)(t+0x60);
     fn_801F71A4((f32*)(t+0x3c),*(f32*)(t+0x268),lbl_8053E7EC,lbl_8053E7D0);
     fn_801F71A4((f32*)(t+0x40),*(f32*)(t+0x26c),lbl_8053E7EC,lbl_8053E7D0);
@@ -459,12 +471,12 @@ extern "C" void fn_801ACFF4(void* this_) {
         fn_801F2B7C(t,-100,-1,1);
     fn_801EF510(t);
     u8 hit=fn_801F2618(t,0,0);
-    x=lbl_8053E7F4*(left-right)+right;
-    y=lbl_8053E7F4*(top-bottom)+bottom;
+    y=lbl_8053E7F4*(left-right)+right;
+    x=lbl_8053E7F4*(top-bottom)+bottom;
     for (s32 i=0;i<4;i++) {
         s32 id=fn_801F285C(t,0,0,0,i);
         if (id>=0) {
-            f32 pt[2]; pt[0]=x;pt[1]=y;
+            f32 pt[2]; pt[0]=y;pt[1]=x;
             if (fn_80237948(id,pt)) {
                 fn_8013CC50(*(u32*)(t+4),t+0xc,lbl_8053E7D0,0x117,0,1,0,0,1);
                 fn_8013CC50(*(u32*)(t+4),t+0xc,lbl_8053E7D0,0x118,0,1,0,0,1);
@@ -478,7 +490,7 @@ extern "C" void fn_801ACFF4(void* this_) {
         *(s32*)(t+0x230)=1;
     case 1:
         DdgoSetVelocity(t,lbl_8053E7F8,lbl_8053E7FC);
-        *(s32*)(t+0x23c)=(s32)(lbl_8053E800*DdgoRandom())+50;
+        *(s32*)(t+0x23c)=(s32)(lbl_8053E800*((JMARandFast*)((char*)lbl_8053AAF8+0xb4))->get_ufloat_1())+50;
         *(s32*)(t+0xbc)=3;
         if (*(s32*)(t+0x294)==1) *(s32*)(t+0xbc)=4;
         if (*(s32*)(t+0x244)==0 && (*(s32*)(t+0x250)=*(s32*)(t+0x250)+1, *(s32*)(t+0x250)>3) && DdgoRandom()<lbl_8053E7F4) {
@@ -527,10 +539,13 @@ extern "C" void fn_801ACFF4(void* this_) {
         if(*(s32*)(t+0x23c)!=0) {
             if(*(s32*)(t+0x23c)==1) {
                 p[0]=*(f32*)(t+0xc);p[1]=*(f32*)(t+0x10);p[2]=*(f32*)(t+0x14);
-                f32* offset=table;
-                if(*(s32*)(t+0x294)==1) offset=table+8;
-                offset+=*(s32*)(t+0x98)*2;
-                p[0]+=offset[0];p[1]+=offset[1];
+                if(*(s32*)(t+0x294)==1) {
+                    f32* offset=table+8+*(s32*)(t+0x98)*2;
+                    p[0]+=offset[0];p[1]+=offset[1];
+                } else {
+                    f32* offset=table+*(s32*)(t+0x98)*2;
+                    p[0]+=offset[0];p[1]+=offset[1];
+                }
                 *(s32*)(t+0x260)=Actor_CreateByID(fn_801F856C(),0x4444474f,*(u32*)(t+4),p,(*(s32*)(t+0x294)<<4)|1,-1,-1);
                 handle=*(s32*)(t+0x260);
                 if(handle<0) break;
@@ -594,7 +609,7 @@ extern "C" void fn_801ACFF4(void* this_) {
         *(s32*)(t+0x23c)=60;*(s32*)(t+0x230)=7;
     case 7:
         if(*(s32*)(t+0x23c)==1) {
-            *(f32*)(t+0x274)=lbl_8053E81C;*(f32*)(t+0x278)=lbl_8053E81C;*(f32*)(t+0x27c)=lbl_8053E81C;
+            f32 small=lbl_8053E81C; *(f32*)(t+0x274)=small;*(f32*)(t+0x278)=small;*(f32*)(t+0x27c)=small;
             DdgoChangeState(t,3);
             *(s32*)(t+0x25c)-=1;
             if(*(s32*)(t+0x25c)<=0) {
