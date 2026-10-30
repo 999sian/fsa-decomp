@@ -4,6 +4,8 @@
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 
 extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern char lbl_8046A3AC[];
