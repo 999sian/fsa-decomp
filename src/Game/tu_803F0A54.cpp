@@ -118,7 +118,6 @@ extern const f32 lbl_80543730;
 extern const f64 lbl_80543738;
 extern const f64 lbl_80543740;
 static inline f32 MenuSquare803F(s32 n) { return n * n; }
-static inline f32 MenuSquareScale803F(s32 n, const f32 scale) { return (f32)(n * n) * scale; }
 static inline s32 MenuDelayIndex803F(const s32 index) { return index * 5; }
 static inline f32 MenuSelectionOffset803F(const u8* p) { return *(const f32*)(p + 0x130); }
 extern const f32 lbl_80543784;
@@ -1147,6 +1146,7 @@ extern const f32 lbl_80543748;
 extern "C" void fn_803F726C(u8* p){
 u8* base=lbl_80478A60;
 f32 fade;
+f32 y;
 s16 buf[3];s16* order;s16* dest;
 s32 start,stop,offset,j,i;
 T803FC46C* obj=(T803FC46C*)p;
@@ -1226,7 +1226,7 @@ fn_80402E08(*(void**)(p+0x74),lbl_8054372C,*(f32*)(p+0x168));
 (*(J2DPane**)(p+0xc))->search(0x005068616e623034ULL)->move(*(f32*)(p+0x170)+*(f32*)(p+0x188),*(f32*)(p+0x17c));
 (*(J2DPane**)(p+0xc))->search(0x0000507275623034ULL)->move(*(f32*)(p+0x174)+*(f32*)(p+0x18c),*(f32*)(p+0x180));
 (*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL)->move(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
-f32 y=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL)->getBounds()->i.y;
+y=(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL)->getBounds()->i.y;
 (*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL)->move(*(f32*)(p+0xf4)+obj->groupMotion[*(s32*)(p+0x1a8)],y);
 }
 #pragma opt_common_subs reset
