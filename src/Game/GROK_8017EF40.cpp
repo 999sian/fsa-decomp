@@ -46,9 +46,9 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     f32 cz,cy,cx,sz,sy,sx;
     sx=sin(lbl_8053DDD8);sy=sin(lbl_8053DDD8);sz=sin(lbl_8053DDD8);
     cx=cos(lbl_8053DDD8);cy=cos(lbl_8053DDD8);cz=cos(lbl_8053DDD8);
+    f32 cc=cx*cz;
     f32 ss=sx*sy;
     f32 cs=cx*sz;
-    f32 cc=cx*cz;
     f32 sxsz=sx*sz;
     f32 sxcz=sx*cz;
     f32 cycz=cy*cz;
@@ -72,7 +72,8 @@ extern "C" void fn_8017EF98(u8* p) {
     JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(p+0xc);
     m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
     if(*(s32*)(p+0x230)!=0 && *(s32*)(p+0x230)!=1 && *(s32*)(p+0x230)!=23) {
-    if(*(u32*)(p+0x90)!=1) {
+    switch(*(u32*)(p+0x90)) {case 1U: return; default: break;}
+    {
     
     f32 offset;
     if(*(u32*)(p+0x90)==2 || *(u32*)(p+0x90)==3) {
@@ -90,21 +91,22 @@ extern "C" void fn_8017EF98(u8* p) {
     s32 room=*(s32*)(p+4);
     u8* mgr=fn_802D6A9C();
     if((mgr+0x10000)[0x31df+room]!=0) {
-        if(*(u32*)(p+0x90)==8) {
+        u32 type=*(u32*)(p+0x90);
+        if(type==8) {
             if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
             fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
             return;
         }
-        if(*(u32*)(p+0x90)==4 || *(u32*)(p+0x90)==5) {
-            if((s32)lbl_8053AB70==*(s32*)(p+0x90)) fn_80307AC8(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x29,0,0,-1);
+        if(type==4 || type==5) {
+            if((s32)lbl_8053AB70==(s32)type) fn_80307AC8(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x29,0,0,-1);
             return;
         }
-        if(*(u32*)(p+0x90)==10) {
+        if(type==10) {
             if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
             fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
             return;
         }
-        if(*(u32*)(p+0x90)==9) {
+        if(type==9) {
             if(*(s32*)(p+0x250)!=0 && (*(s32*)(p+0x24c)&2)) return;
             fn_803075AC(*(s32*)(p+0x198),*(s32*)(p+4),p+0xc,*(s32*)(p+0x26c)+0x192,0,2,-1,1,0,0);
             ((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);
