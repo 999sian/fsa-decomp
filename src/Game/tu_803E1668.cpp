@@ -118,6 +118,13 @@ class J2DGrafContext;
 struct Tu803E1668Obj {
     u8 _00[0x120];
     f32 slide[4];
+    u8 _130[0x8c];
+    s32 selection;
+    u8 _1c0[0x94];
+    s16 timer;
+    u8 _256[0x19];
+    u8 panelAlpha[17];
+    u8 rowAlpha[4][6];
 };
 typedef void (Tu803E1668Obj::*Tu803E1668Fn)();
 struct T803ED83C;
@@ -1870,8 +1877,9 @@ if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
 }}
 time=*(s16*)(p+0x254);
 if(time>0){if(time<8){*(f32*)(p+0xfc)=(lbl_8054368C*(MenuSquare803E(time)/64.0f));}else{*(f32*)(p+0xfc)=lbl_8054368C;}}
-lo=0;group=0;lo2=lo;hi=8;
-for(;group<3;group++,lo+=5,hi+=5,lo2+=5,selected++){
+lo=0;group=0;
+for(;group<3;group++,lo+=5,selected++){
+lo2=group*5;hi=group*5+8;
 time=*(s16*)(p+0x254);
 if(time>lo){if(time<hi){
 s32 id=*selected;
@@ -1879,11 +1887,11 @@ s32 id=*selected;
 t=(f32)(8-(*(s16*)(p+0x254)-lo2))/8.0f;
 if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
 {u64* names=(u64*)(base+0x140);names+=id*6;
-u8* alpha=p+id*6;for(int k=0;k<6;k++,names++,alpha++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=t;((Pane803E4650*)pane)->setAlpha((int)value);}}
+u8* alpha=p+id*6;for(int k=0;k<6;k++,alpha++,names++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=t;((Pane803E4650*)pane)->setAlpha((int)value);}}
 
 }else{
 ((Tu803E1668Obj*)p)->slide[*selected]=lbl_805436AC;
-{u8* alpha=p+(*selected)*6;u64* names=(u64*)(base+0x140)+(*selected)*6;for(int k=0;k<6;k++,names++,alpha++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=lbl_80543664;((Pane803E4650*)pane)->setAlpha((int)value);}}
+{u8* alpha=p+(*selected)*6;u64* names=((u64(*)[6])(base+0x140))[*selected];for(int k=0;k<6;k++,alpha++,names++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=lbl_80543664;((Pane803E4650*)pane)->setAlpha((int)value);}}
 
 }}}
 time=*(s16*)(p+0x254);
@@ -1893,11 +1901,11 @@ s32 id=*(s32*)(p+0x1bc);
 t=(f32)(8-(*(s16*)(p+0x254)-15))/8.0f;
 if(t<0.0f)t=0.0f;else if(t>1.0f)t=1.0f;
 {
-u64* names=(u64*)(base+0x140);names+=id*6;u8* alpha=p+id*6;for(int k=0;k<6;k++,names++,alpha++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=t;((Pane803E4650*)pane)->setAlpha((int)value);}}
+u64* names=(u64*)(base+0x140);names+=id*6;u8* alpha=p+id*6;for(int k=0;k<6;k++,alpha++,names++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=t;((Pane803E4650*)pane)->setAlpha((int)value);}}
 
 }else{
 ((Tu803E1668Obj*)(p+*(s32*)(p+0x1bc)*4))->slide[0]=lbl_805436AC;
-{u8* alpha=p+(*(s32*)(p+0x1bc))*6;u64* names=(u64*)(base+0x140)+(*(s32*)(p+0x1bc))*6;for(int k=0;k<6;k++,names++,alpha++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=lbl_80543664;((Pane803E4650*)pane)->setAlpha((int)value);}}
+{u8* alpha=p+(*(s32*)(p+0x1bc))*6;u64* names=((u64(*)[6])(base+0x140))[*(s32*)(p+0x1bc)];for(int k=0;k<6;k++,alpha++,names++){J2DPane* pane=(*(J2DPane**)(p+4))->search(*names);f32 value=alpha[0x280];value*=lbl_80543664;((Pane803E4650*)pane)->setAlpha((int)value);}}
 
 }}
 time=*(s16*)(p+0x254);
