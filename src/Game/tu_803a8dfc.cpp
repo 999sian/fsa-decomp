@@ -3503,11 +3503,10 @@ extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
 
 extern "C" void __construct_array(void* p, void* ctor, void* dtor, s32 size, s32 count);
 extern "C" void __ct__Q29JGeometry8TVec3_f_Fv(void);
-struct MsgMenuVectorArrays {
-    JGeometry::TVec3f positions[10];
-    s32 indices[10];
-    JGeometry::TVec3f playerPositions[4];
-};
+extern "C" void OSReport(const char*, ...);
+static inline void MsgReportFontSize(const char* format, const J2DPane* pane) {
+    OSReport(format, *(const u16*)((const u8*)pane + 0x132));
+}
 extern void fn_803B7B90(void* thisPtr);
 extern "C" void __mtspr(u32,u32);
 extern "C" void OSReport(const char*,...);
