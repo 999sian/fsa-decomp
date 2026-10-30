@@ -72,6 +72,13 @@ extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
 extern "C" void* lbl_8053AAF8;
 extern "C" u8 lbl_8050EC80[];
+struct MenuOptionRecord {
+    u8 field_00[0x7c];
+    u8 flag_7C, flag_7D, field_7E, flag_7F;
+    u8 field_80[8];
+    u8 flag_88, flag_89;
+    u8 field_8A[0x3e];
+};
 extern "C" void fn_80458880(void* mgr, u32 p, int v);
 extern "C" void fn_80434370(char* this_);
 extern "C" void fn_80434724(char* this_);
@@ -518,8 +525,11 @@ static inline void* allocateMenuPane() {
 }
 extern "C" void* fn_804372C4(void* this_) {
     char* self = (char*)this_;
+    J2DScreen* screen;
     *(char**)this_ = lbl_804B16A8;
-    *(J2DScreen**)(self + 0x4) = new J2DScreen;
+    screen = (J2DScreen*)__nw__FUl(0x118);
+    if (screen) __ct__9J2DScreenFv(screen);
+    *(J2DScreen**)(self + 0x4) = screen;
     if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) == 1) {
         setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), "rule.blo", 0x1100000, *(void**)(lbl_80529DEC + 0x28));
     } else {
@@ -555,7 +565,8 @@ extern "C" void* fn_804372C4(void* this_) {
     *(void**)(self + 0x34) = allocateMenuPane();
     fn_80402F04(*(void**)(self + 0x34), ((VtSlots*)*(void**)(self + 0x4))->s13(0x50746f7062623037ULL));
     *(void**)(self + 0x38) = *(void**)((char*)lbl_8053AED8 + 0x8);
-    fn_80440D78(lbl_8053AED8, fn_804030C4(0x54494d47, "kk_kettei_01.bti"));
+    void* image = fn_804030C4(0x54494d47, "kk_kettei_01.bti");
+    fn_80440D78(lbl_8053AED8, image);
     fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, "kk_modoru_01.bti"));
     {
         void* font = *(void**)((char*)lbl_8053AD78 + 0x154);
