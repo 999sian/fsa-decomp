@@ -58,6 +58,13 @@ struct T80416BD0_Tags {
     u64 third[9];
     u64 fourth[6];
     u64 grid[10][10];
+    u64 selected[10];
+    u64 locked[10];
+    u64 wrappers[15];
+    s32 message[12];
+    char layout[24];
+    char confirm[20];
+    char back[20];
 };
 extern const f32 lbl_805439C8;
 extern const f32 lbl_805439CC;
@@ -810,11 +817,112 @@ static inline void dataSelectChild(u8* p, s32 offset, u64 key) {
 static inline void dataSelectFont(J2DScreen* screen, u64 key, JUTFont* font) {
     ((J2DTextBox*)screen->search(key))->setFont(font);
 }
-extern "C" void fn_8041787C(void* this_) {
+#pragma opt_common_subs off
+extern "C" void* fn_8041787C(void* this_) {
+    f32 x; f32 y;
     u8* p = (u8*)this_;
+    const u8* t = (const u8*)lbl_8048CD50;
+    const u64* a;
+    const u64* b;
+    s32 i;
     *(void**)p = lbl_804B1378;
+    lbl_8053AE00 = (s32)p;
     p[0xe4] = 0;
     *(J2DScreen**)(p + 0x24) = new J2DScreen();
+    (*(J2DScreen**)(p + 0x24))->setPriority((const char*)t+0x590,0x1100000,*(JKRArchive**)(lbl_80529DEC+0x34));
+    dataSelectFont(*(J2DScreen**)(p+0x24),0x546f6d3031ULL,*(JUTFont**)(lbl_8053AD78+0x154));
+    dataSelectFont(*(J2DScreen**)(p+0x24),0x546f6d3032ULL,*(JUTFont**)(lbl_8053AD78+0x154));
+    dataSelectFont(*(J2DScreen**)(p+0x24),0x54736e3031ULL,*(JUTFont**)(lbl_8053AD78+0x154));
+    dataSelectFont(*(J2DScreen**)(p+0x24),0x54736e3032ULL,*(JUTFont**)(lbl_8053AD78+0x154));
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x546f6d3031ULL)),0x100,0,0,0);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x546f6d3032ULL)),0x100,0,0,0);
+    for(a=(const u64*)t,b=(const u64*)(t+0x58),i=0;i<11;i++,a++,b++){
+        p[0x123+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*a))[0xb2];
+        p[0x12e+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    }
+    for(i=0,b=(const u64*)(t+176);i<9;i++,b++) p[313+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=(const u64*)(t+248);i<6;i++,b++) p[322+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    for(i=0,b=(const u64*)(t+296);i<10;i++,b++) p[328+i]=((u8*)(*(J2DScreen**)(p+0x24))->search(*b))[0xb2];
+    dataSelectChild(p,40,0x506273626b3032ULL);
+    dataSelectChild(p,44,0x506273626b3031ULL);
+    dataSelectChild(p,48,0x506273623039ULL);
+    dataSelectChild(p,52,0x4e646174613033ULL);
+    dataSelectChild(p,56,0x4e646174613032ULL);
+    dataSelectChild(p,60,0x4e646174613036ULL);
+    dataSelectChild(p,108,0x50627371623031ULL);
+    dataSelectChild(p,64,0x4e646174613037ULL);
+    dataSelectChild(p,112,0x50627371623032ULL);
+    dataSelectChild(p,68,0x4e646174613038ULL);
+    dataSelectChild(p,116,0x50627371623033ULL);
+    dataSelectChild(p,72,0x4e646174613039ULL);
+    dataSelectChild(p,120,0x50627371623034ULL);
+    dataSelectChild(p,76,0x4e646174613130ULL);
+    dataSelectChild(p,124,0x50627371623035ULL);
+    dataSelectChild(p,80,0x4e646174613131ULL);
+    dataSelectChild(p,128,0x50627371623036ULL);
+    dataSelectChild(p,84,0x4e646174613132ULL);
+    dataSelectChild(p,132,0x50627371623037ULL);
+    dataSelectChild(p,88,0x4e646174613133ULL);
+    dataSelectChild(p,136,0x50627371623038ULL);
+    dataSelectChild(p,92,0x4e646174613134ULL);
+    dataSelectChild(p,140,0x50627371623039ULL);
+    dataSelectChild(p,96,0x4e646174613135ULL);
+    dataSelectChild(p,144,0x50627371623130ULL);
+    dataSelectChild(p,0x9c,0x4e646174613035ULL);
+    for(i=0,a=(const u64*)(t+0x4e8);i<15;i++,a++){
+        dataSelectChild(p,0xa4+i*4,*a);
+        ((T80416BD0_Child*)*(void**)((u8*)*(void**)(p+0xa4+i*4)+4))->slot9(0);
+    }
+    *(void**)(p+0xa0)=*(void**)((u8*)lbl_8053AED8+8);
+    fn_80440D78(lbl_8053AED8,fn_804030C4(0x54494d47,(const char*)t+0x5a8));
+    fn_80440CE4(lbl_8053AED8,fn_804030C4(0x54494d47,(const char*)t+0x5bc));
+    *(u16*)(p+0x106)=3;
+    ((u8*)(*(J2DScreen**)(p+0x24))->search(*(const u64*)(t+0x498)))[0xb0]=0;
+    ((u8*)(*(J2DScreen**)(p+0x24))->search(*(const u64*)(t+0x4a0)))[0xb0]=0;
+    for(i=0,b=(const u64*)(t+0x498);i<8;i++,b++){
+        if(fn_803B9120(i)){
+            ((u8*)(*(J2DScreen**)(p+0x24))->search(b[2]))[0xb0]=0;
+            *(u16*)(p+0x106)|=(u16)(1<<(i+2));
+        }else ((u8*)(*(J2DScreen**)(p+0x24))->search(b[2]))[0xb0]=1;
+    }
+    *(s16*)(p+0x104)=0;
+    for(s32 j=0;j<10;j++){
+        p[0x10b+j]=0;p[0x117+j]=0;
+        if(*(u16*)(p+0x106)&(u16)(1<<j)){
+            p[0x117+*(s16*)(p+0x104)]=j;
+            p[0x10b+*(s16*)(p+0x104)]=j;
+            ++*(s16*)(p+0x104);
+        }
+    }
+    p[0x108]=156;
+    *(f32*)(p+4)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(0x4e646174613035ULL))->i.y;
+    *(f32*)(p+8)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(0x506f6375723032ULL))->i.y;
+    if(!lbl_80529DEC[0x252]){
+        s32 choice=*(s32*)(lbl_80529DEC+0x12c)+*(s32*)(lbl_80529DEC+0x128)*4;
+        *(s32*)(p+0x10)=choice%5;*(s32*)(p+0xc)=choice/5;
+    }else{*(s32*)(p+0x10)=0;*(s32*)(p+0xc)=2;}
+    *(s32*)(p+0x14)=0;*(s32*)(p+0x18)=0;*(s32*)(p+0x1c)=-1;*(s32*)(p+0x20)=0;
+    s32 selected=*(s32*)(p+0x10)+*(s32*)(p+0xc)*5;
+if(selected>=10){
+*(s32*)(p+0x14)=30;*(s32*)(p+0x18)=1;fn_803832BC(p+0xe4,0x109,0,0,0);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+}else{
+if(*(s32*)(p+0x14)>30)*(s32*)(p+0x14)=0;
+if(*(u16*)(p+0x106)&(u16)(1<<selected))fn_803832BC(p+0xe4,((const s32*)(t+0x560))[selected],0,0,0);else p[0xe4]=0;
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3031ULL)),(char*)p+0xe4);
+strcpy(getStringPtr__10J2DTextBoxCFv((*(J2DScreen**)(p+0x24))->search(0x54736e3032ULL)),(char*)p+0xe4);
+
+
+const u64* tag = &((const u64*)(t+0x448))[selected];
+x=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.x;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x24))->search(*tag))->i.y;
+(*(J2DScreen**)(p+0x24))->search(0x4e646174613034ULL)->move(x,y);
 }
 
+    *(s32*)(p+0xe0)=6;
+    return p;
+}
+#pragma opt_common_subs reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
