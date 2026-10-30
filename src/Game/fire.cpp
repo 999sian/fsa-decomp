@@ -35,6 +35,8 @@ extern f32 lbl_80540B64;
 extern f32 lbl_80540B68;
 extern "C" u32 __cvt_fp2unsigned(f64);
 extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern s32 lbl_8046D388[];
+void JPAGetXYZRotateMtx(s16 x, s16 y, s16 z, float (*m)[4]);
 
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
