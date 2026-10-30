@@ -363,8 +363,12 @@ int Actor::v18(int a, f32* b) {
 #pragma opt_propagation reset
 extern u32 lbl_80469F78[];
 extern f32 lbl_8053F740;
+extern u32 lbl_80469F84[];
+extern u32 lbl_80469F90[];
+extern u32 lbl_80469F9C[];
+extern f32 lbl_8053F7A8;
+extern f32 lbl_8053F7AC;
 
-#pragma dont_inline on
 extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c)
 {
     Vec v;
