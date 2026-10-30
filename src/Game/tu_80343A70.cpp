@@ -115,7 +115,7 @@ extern "C" void fn_801EEC98(void*,s32,s32,s32,s32,s32*,s32,s32);
 #pragma opt_loop_invariants off
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
-static inline f32 beeeOffset(const f32 base, const f32 scale, const f32 value) {
+static inline f32 beeeOffset(const f32 base, const f32 value, const f32 scale) {
     return scale * value + base;
 }
 
