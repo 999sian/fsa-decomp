@@ -53,9 +53,12 @@ extern "C" const f32 lbl_80540840,lbl_80540844,lbl_80540848,lbl_8054084C,lbl_805
 
 #pragma push
 #pragma opt_propagation off
+static inline s32 SpawnRadiusNonZero(f32 value) {
+    return value!=lbl_80540854;
+}
+
 static inline u8 SpawnRadiusZero(f32 value) {
-    s32 nonzero=value!=lbl_80540854;
-    u8 zero=!nonzero;
+    u8 zero=!SpawnRadiusNonZero(value);
     return zero;
 }
 
@@ -157,8 +160,8 @@ if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540
     case 2: {
         { u8* camera=*(u8**)(lbl_8053AB10+0x24);if(!camera[0x7f4])camera[0x7f5]=1; }
         pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
-        s32 i=0;
-        do {
+        s32 i;
+        for(i=0;i<2;i++) {
             s32 room=a->field_04;
             if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {
                 if(a->m244==6||a->m244==7||a->m244==12){
@@ -184,9 +187,9 @@ pos.y=y;pos.z=z;pos.x=x;}
             fn_801F8544(fn_801F856C(),0x52555059,a->field_04,&pos,type);
             ++a->m23C;
             if((s32)a->m23C>=a->m240)break;
-        } while(++i<2);
+        }
         if((s32)a->m23C>=a->m240) {
-            for(s32 i=0;i<(s32)a->m234;i++) {
+            for(i=0;i<(s32)a->m234;i++) {
                 pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
                 s32 room=a->field_04;
                 if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
