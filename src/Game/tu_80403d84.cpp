@@ -990,9 +990,11 @@ extern "C" void fn_8040F16C(u8* self) {
 
 struct J2DGrafContext;
 #include "JSystem/J2D/J2DPicture.h"
+#pragma inline_depth(0)
 static inline void menuSetCornerColor(PaneRef* ref, const JUtility::TColor color) {
     ((J2DPicture*)ref->pane)->setCornerColor(color);
 }
+#pragma inline_depth(8)
 
 #include "JSystem/J2D/J2DScreen.h"
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
@@ -2938,12 +2940,12 @@ if(*(s32*)(self+0x340)<=7){
  else{
  s32 slot=i%3;
  if(slot<0||slot>=3)style=255;
- else style=lbl_80529DEC[0x1fc+group*3+slot];
+ else {s32 offset=group*3;u8* row=(u8*)lbl_80529DEC+offset;style=row[slot+0x1fc];}
  }
  s32 slot=i%3;
  if(group==7){if(slot>0)slot++;}
  else if(slot>1)slot++;
- s32 idx=slot+group*4;
+ u32 idx=slot+group*4;
  switch(style){
  case 0: {
  ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,50,0,0),JUtility::TColor(255,255,255,255));
