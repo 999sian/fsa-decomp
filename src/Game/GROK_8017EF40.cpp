@@ -30,11 +30,35 @@ extern "C" void fn_8017EF40(ActorVt_grok* this_) {
     this_->setShadow(2, 0.0f, 16.0f);
 }
 
-extern "C" void fn_801F06F0(void* p, s32 a, f32 b, f32 c, f32 d, s32 e);
-extern "C" void fn_803075AC(s32 a, u8* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-extern "C" void fn_80307AC8(s32 a, u8* b, s32 c, s32 d, s32 e, s32 f, s32 g);
-extern "C" s32 fn_804032E8(s32 a);
-extern "C" void fn_801EFD34(u8* a, s32 b, s32 c, f32 d, f32 e, f32 f, s32 g, s32 h, s32 i);
+#include "Game/ItemBase.h"
+extern "C" void fn_801F06F0(void*,const char*,s32,DrawRec*,s32,f32,f32);
+extern "C" void fn_803075AC(s32,s32,void*,s32,s32,s32,s32,s32,s32,s32);
+extern "C" void fn_80307AC8(s32,s32,void*,s32,s32,s32,s32);
+extern "C" void* fn_804032E8(u32,const char*);
+extern "C" void fn_801EFD34(void*,void*,DrawRec*,s32,f32,f32,f32);
+extern "C" u32 lbl_8053AB70;
+extern "C" s32 lbl_80539F98;
+extern const char lbl_80466E50[],lbl_80466E60[];
+struct GrokDrawTable {u8 pad[0x80];const char* normal[30];f32 normalY[30];const char* special[28];f32 specialY[28];};
+extern GrokDrawTable lbl_804A13E0;
+static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
+    f32 cz,cy,cx,sz,sy,sx;
+    sx=sin(0.0f);sy=sin(0.0f);sz=sin(0.0f);
+    cx=cos(0.0f);cy=cos(0.0f);cz=cos(0.0f);
+    f32 ss=sx*sy;
+    f32 cs=cx*sz;
+    f32 cc=cx*cz;
+    m[0][0]=scaleX*(cy*cz);
+    m[1][0]=scaleX*(cy*sz);
+    m[2][0]=scaleX*-sy;
+    m[0][1]=scaleY*(ss*cz-cs);
+    m[1][1]=scaleY*(ss*sz+cc);
+    m[2][1]=scaleY*(sx*cy);
+    m[0][2]=scaleZ*(cc*sy+sx*sz);
+    m[1][2]=scaleZ*(cs*sy-sx*cz);
+    m[2][2]=scaleZ*(cx*cy);
+}
+
 extern "C" void fn_8017EF98(u8* this_) {
     s32 idx;
     s32 type;
@@ -202,6 +226,7 @@ struct GrokResources {
     virtual void v03();
     virtual void* getResource(u32 type, void* name);
 };
+#pragma opt_propagation off
 extern "C" void fn_801820B4(void* this_) {
     u8* self = (u8*)this_;
     u8* vec = (u8*)this_;
@@ -209,6 +234,7 @@ extern "C" void fn_801820B4(void* this_) {
     s32 idx = 0;
     s32 i;
     u32 mode;
+    s32 zero;
 
     *(u32*)(self + 0x90) &= 0xf;
     *(u16*)(self + 0x94) = 0;
@@ -245,7 +271,8 @@ extern "C" void fn_801820B4(void* this_) {
         self[idx + 0x304] = 0;
     }
 
-    *(u32*)(self + 0x98) = 0;
+    zero = 0;
+    *(u32*)(self + 0x98) = zero;
     *(u32*)(self + 0x26c) = 0;
     *(f32*)(self + 0x314) = 0.0f;
     *(u32*)(self + 0x318) = 0;
@@ -300,7 +327,7 @@ extern "C" void fn_801820B4(void* this_) {
             u32 value = 0x9040004;
             *(u32*)(self + 0xb0) = value;
             value = 0x10;
-            *(u8*)(self + 0x1a8) = 0;
+            *(u8*)(self + 0x1a8) = zero;
             *(f32*)(self + 0x60) = -16.0f;
             *(f32*)(self + 0x64) = -16.0f;
             *(f32*)(self + 0x68) = 16.0f;
@@ -401,7 +428,7 @@ extern "C" void fn_801820B4(void* this_) {
         break;
     }
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_80182640(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x0) = x;
 	*(f32*)((char*)thisObj + 0x4) = y;
