@@ -1029,6 +1029,7 @@ static inline void MenuSprite803F(JGeometry::TVec3f& pos,s32 id,DrawRec& rec,con
     fn_802F86CC(((void**)lbl_8053AB10)[8],&pos,res,id,&rec,lbl_80543730,lbl_80543730);
 }
 struct MenuFrameValue803F {s32 frame;};
+struct MenuCounters803F {u8 _00[0x220];s32 frame220;u8 _224[0xc];s32 frame230;};
 struct MenuFrame803F {u8 _00[0x220];MenuFrameValue803F frame220[4];MenuFrameValue803F frame230[4];};
 static inline void MenuMove803F(J2DPane* screen,u64 tag,f32 x,f32 y) {screen->search(tag)->move(x,y);}
 
@@ -1038,7 +1039,7 @@ extern "C" void fn_803F4120(void* param_1) {
     f32 x,y,size;
     JGeometry::TVec3f pos;
     JGeometry::TBox2f box;
-    const u8* base=(const u8*)((u32)lbl_80479238-0x7d8);
+    const u8* base=lbl_80478A60;
     {
     u8* q=p;
     const u64* a=(u64*)(base+0x858);
@@ -1047,7 +1048,7 @@ extern "C" void fn_803F4120(void* param_1) {
     const u64* d=(u64*)(base+0x838);
     s32 mask;
     s32 i;
-    for(i=0;i<4;i++,q+=4,d++,c++,b++,a++) {
+    for(i=0;i<4;i++,q+=4,a++,b++,c++,d++) {
         mask=1<<(i+4);
         if(MenuEnabled803F(i)&1) {
             s32 v=*(s32*)(q+0x210);
@@ -1084,11 +1085,11 @@ extern "C" void fn_803F4120(void* param_1) {
     if(*(s32*)(p+0x1c4)!=3) {
         if(*(s32*)(p+0x220)==0&&*(s32*)(p+0x224)==0&&*(s32*)(p+0x228)==0&&*(s32*)(p+0x22c)==0) {
             *(s16*)(p+0x24e)=MenuNext803F(*(s16*)(p+0x24e),*(s32*)(p+0x1ac)+1);
-            if(*(s16*)(p+0x24e)!=-1) ((MenuFrame803F*)p)->frame220[*(s16*)(p+0x24e)].frame++;
+            if(*(s16*)(p+0x24e)!=-1) ((MenuFrame803F*)(p+*(s16*)(p+0x24e)*4))->frame220[0].frame++;
         }
         if(*(s32*)(p+0x230)==0&&*(s32*)(p+0x234)==0&&*(s32*)(p+0x238)==0&&*(s32*)(p+0x23c)==0) {
             *(s16*)(p+0x250)=MenuNext803F(*(s16*)(p+0x250),*(s32*)(p+0x1ac)+1);
-            if(*(s16*)(p+0x250)!=-1) ((MenuFrame803F*)p)->frame230[*(s16*)(p+0x250)].frame++;
+            if(*(s16*)(p+0x250)!=-1) ((MenuFrame803F*)(p+*(s16*)(p+0x250)*4))->frame230[0].frame++;
         }
     }
     {
@@ -1169,7 +1170,7 @@ extern "C" void fn_803F4120(void* param_1) {
     const u64* b=(u64*)(base+0x4d0);
     u8* q=p;
     s32 i;
-    for(i=0;i<4;i++,a++,q+=4,row+=9,b+=9) {
+    for(i=0;i<4;i++,a++,b+=9,row+=9,q+=4) {
         DrawRec rec;
         rec.ids[7]=i+12;
         rec.b26=0;
