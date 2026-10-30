@@ -14,6 +14,9 @@ extern const f32 lbl_80543D10;
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DPicture.h"
+static inline void menuCorner(J2DPicture* picture, u32 corner, JUtility::TColor color) {
+    picture->mCornerColors[corner] = color;
+}
 
 struct FsaMenuNumber {
     u8 unk_0x0[0x118];
@@ -457,16 +460,83 @@ extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
     param_1[0x10d] = 0;
 }
 
-extern "C" void fn_8043ACE4(u8* self)
-{
-    switch (*(s32*)(self + 0x1d0)) {
-    case 0x3:
-        break;
-    case 0x1:
-        break;
-    case 0x5:
-        break;
-    }
+extern "C" void fn_8043ACE4(u8* self){
+static JUtility::TColor colors[4] = {JUtility::TColor(242,73,18,255),JUtility::TColor(242,73,18,255),JUtility::TColor(242,73,18,255),JUtility::TColor(216,255,161,255)};
+s32 idx;
+u8* q;
+s32 i;
+J2DPicture* picture;
+f32 alpha;
+if(self[0x253]){
+q=self;for(i=0;i<self[0x253];i++,q+=4){
+idx=0x24e+i;alpha=(f32)self[idx]/255.0f;
+fn_8013B490(lbl_8053AB10);
+switch(*(s32*)(q+0x1d0)){
+case 1:
+(*(J2DPicture**)(self+0x280))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+picture=(*(J2DPicture**)(self+0x280));picture->mCornerColors[0].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[1].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[2].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,255,255,255));
+(*(J2DPicture**)(self+0x280))->setAlpha((u8)(200.0f*alpha));
+(*(J2DPicture**)(self+0x280))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x280))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x280));picture->mCornerColors[0].set(JUtility::TColor(185,18,18,255));
+picture->mCornerColors[1].set(JUtility::TColor(216,58,22,255));
+picture->mCornerColors[2].set(JUtility::TColor(185,84,18,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,157,16,255));
+(*(J2DPicture**)(self+0x280))->setAlpha(self[idx]);
+(*(J2DPicture**)(self+0x280))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+case 2:
+(*(J2DPicture**)(self+0x284))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+picture=(*(J2DPicture**)(self+0x284));picture->mCornerColors[0].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[1].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[2].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,255,255,255));
+(*(J2DPicture**)(self+0x284))->setAlpha((u8)(200.0f*alpha));
+(*(J2DPicture**)(self+0x284))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x284))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(255,255,255,255));
+picture=(*(J2DPicture**)(self+0x284));picture->mCornerColors[0].set(JUtility::TColor(242,72,9,255));
+picture->mCornerColors[1].set(JUtility::TColor(242,72,9,255));
+picture->mCornerColors[2].set(JUtility::TColor(242,171,36,255));
+picture->mCornerColors[3].set(JUtility::TColor(252,255,33,255));
+(*(J2DPicture**)(self+0x284))->setAlpha(self[idx]);
+(*(J2DPicture**)(self+0x284))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+case 3:
+(*(J2DPicture**)(self+0x288))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+picture=(*(J2DPicture**)(self+0x288));picture->mCornerColors[0].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[1].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[2].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,255,255,255));
+(*(J2DPicture**)(self+0x288))->setAlpha((u8)(200.0f*alpha));
+(*(J2DPicture**)(self+0x288))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x288))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(255,255,119,255));
+picture=(*(J2DPicture**)(self+0x288));picture->mCornerColors[0].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[1].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[2].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,255,255,255));
+(*(J2DPicture**)(self+0x288))->setAlpha(self[idx]);
+(*(J2DPicture**)(self+0x288))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+case 4:
+(*(J2DPicture**)(self+0x28c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(0,0,0,255));
+picture=(*(J2DPicture**)(self+0x28c));picture->mCornerColors[0].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[1].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[2].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,255,255,255));
+(*(J2DPicture**)(self+0x28c))->setAlpha((u8)(200.0f*alpha));
+(*(J2DPicture**)(self+0x28c))->draw(3.0f+*(f32*)(q+0x190),3.0f+*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);
+(*(J2DPicture**)(self+0x28c))->setBlackWhite(JUtility::TColor(0,0,0,0),JUtility::TColor(216,255,161,255));
+picture=(*(J2DPicture**)(self+0x28c));picture->mCornerColors[0].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[1].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[2].set(JUtility::TColor(255,255,255,255));
+picture->mCornerColors[3].set(JUtility::TColor(255,255,255,255));
+(*(J2DPicture**)(self+0x28c))->setAlpha(self[idx]);
+(*(J2DPicture**)(self+0x28c))->draw(*(f32*)(q+0x190),*(f32*)(q+0x1a0),48.0f**(f32*)(q+0x1b0),48.0f**(f32*)(q+0x1b0),false,false,false);break;
+
+}
+}
+self[0x253]=0;
+}
 }
 
 extern "C" void fn_8043BB84(u8* self)
