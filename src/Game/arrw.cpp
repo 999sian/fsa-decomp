@@ -2,6 +2,7 @@
 // TU 8016545C-80166BD0 (ARRW). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/HitRect.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JMath/JMath.h"
 
 // from src/Game/fn_801662D8_dtor.cpp
@@ -252,7 +253,8 @@ extern "C" void fn_80165730(char* p) {
    if((*(s32*)(p+0x260))==0) {(*(void**)(p+0x278))=fn_8013CC50((*(s32*)(p+0x4)),p+0xc,0xbd,lbl_8053D7C0,0,1,0,0,1); (*(s32*)(p+0x260))=1;}
    if((*(void**)(p+0x278))) {
      pos.set(*(JGeometry::TVec3<f32>*)(p+0xc));
-     pos.x+=((JGeometry::TVec2<f32>*)table)[(*(s32*)(p+0x98))].x; pos.y+=((JGeometry::TVec2<f32>*)table)[(*(s32*)(p+0x98))].y;
+     const JGeometry::TVec2<f32>* offsets=(const JGeometry::TVec2<f32>*)(table+0);
+     pos.x+=offsets[(*(s32*)(p+0x98))].x; pos.y+=offsets[(*(s32*)(p+0x98))].y;
      fn_8013CB44((*(void**)(p+0x278)),&pos,0,2,1);
      s32 dir=(*(s32*)(p+0x98)); s32 rot=0; if(dir==2) rot=lbl_804662FC[dir];
      JPAGetXYZRotateMtx__FsssPA4_f(-1,rot,lbl_804662FC[dir],(char*)(*(void**)(p+0x278))+0x68);
@@ -319,7 +321,7 @@ extern "C" void fn_80165730(char* p) {
    }
    break;
  case 1:
-   if(!((*(s32*)(p+0x248))&1)){(*(s32*)(p+0x258))++;(*(s32*)(p+0x258))&=3;(*(s32*)(p+0x98))=((s32*)(table+0x20))[(*(s32*)(p+0x258))];}
+   if(!((*(s32*)(p+0x248))&1)){const s32* directions=(const s32*)(table+0x20);(*(s32*)(p+0x258))++;(*(s32*)(p+0x258))&=3;(*(s32*)(p+0x98))=directions[(*(s32*)(p+0x258))];}
    if((*(void**)(p+0x278))){char* emitter=(char*)(*(void**)(p+0x278));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x278))=0;} if((*(void**)(p+0x27c))){char* emitter=(char*)(*(void**)(p+0x27c));*(u32*)(emitter+0xf4)|=1;*(s32*)(emitter+0x24)=1;(*(void**)(p+0x27c))=0;}
    fn_801F71A4(&(*(f32*)(p+0x234)),lbl_8053D7C8,lbl_8053D7D4,lbl_8053D7E4);
    (*(f32*)(p+0x44))-=lbl_8053D7E8;
@@ -344,7 +346,7 @@ extern "C" void fn_80165730(char* p) {
        (*(s32*)(p+0x268))=(*(s32*)(p+0x98))*3;(*(s32*)(p+0x268))+=(*(s32*)(p+0x264));
        if((*(s32*)(p+0x244))==0){(*(s32*)(p+0x244))=2;(*(s32*)(p+0x264))++;if((*(s32*)(p+0x264))>2)(*(s32*)(p+0x264))=0;}
      }
-   }else (*(s32*)(p+0x268))=((s32*)(table+0x30))[(*(s32*)(p+0x98))*8+(*(s32*)(p+0x258))];
+   }else {const s32* frames=(const s32*)(table+0x30); (*(s32*)(p+0x268))=frames[(*(s32*)(p+0x98))*8+(*(s32*)(p+0x258))];}
  }
 }
 
