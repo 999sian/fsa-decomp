@@ -15,7 +15,7 @@ extern "C" u8 fn_802DEB58();
 extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
 
 
-extern "C" u8* fn_8013CC50(u32 owner, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8* fn_8013CC50(int owner, const void* pos, f32 scale, int id, int a, int b, int c, int d, int e);
 
 extern "C" bool fn_801E1D9C();
 extern "C" u8 fn_801E1D7C(u8* o);
@@ -88,7 +88,7 @@ extern "C" void fn_8020CCA8(u8* o0) {
 
 #pragma optimization_level 2
 extern "C" void fn_8020CF7C(Actor* o) {
-    fn_8013CC50(o->field_04, &o->field_0C, lbl_8053FA08, 0x48d, 0, 0, 0, 0, 1);
+    fn_8013CC50(*(volatile u32*)&o->field_04, &o->field_0C, lbl_8053FA08, 0x48d, 0, 0, 0, 0, 1);
 }
 #pragma optimization_level 4
 extern "C" void fn_8020CFC4(u8* o) {
