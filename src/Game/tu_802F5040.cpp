@@ -2554,7 +2554,7 @@ static inline f32 WarpSqrt802F(f32 x) {
     return x;
 }
 static inline f32 WarpCos802F(f32 angle) {
-    if(angle<0.0f) angle=-angle;
+    if(angle<lbl_805414F8) angle=-angle;
     return sincosTable___5JMath[(((s32)(lbl_805415A4*angle))&0x7ff)*2+1];
 }
 static inline f32 WarpSin802F(f32 angle) {
