@@ -92,7 +92,7 @@ struct CardSaveRecord {
     u32 sum;
     u32 inv;
 };
-static inline s32 cardBlockValid(const u8* data) {
+static inline s32 cardBlockValid(const u8* const data) {
     u32 inv = 0;
     u32 sum = 0;
     const u8* p = data;
