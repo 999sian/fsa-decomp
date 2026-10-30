@@ -2,6 +2,15 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
+#undef GAME_ACTOR_USE_SDK_VEC
+
+class Swt4 : public Actor {
+public:
+    s32 state, mode, frame, timer, delay;
+    u32 switchId[4];
+};
 
 // ---- fn_802A964C_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
