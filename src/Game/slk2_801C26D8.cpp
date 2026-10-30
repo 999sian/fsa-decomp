@@ -368,9 +368,6 @@ extern const f32 lbl_8053EE30;
 extern const f32 lbl_8053EE34;
 extern const f32 lbl_8053EE38;
 
-struct Slk2Flags230 {
-    u32 word;
-};
 
 static inline void slk2ResetHitRect(u8* this_) {
     if (*(u8*)(this_ + 0x34d) == 7) {
