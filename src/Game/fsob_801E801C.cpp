@@ -1,6 +1,7 @@
 // Game TU 801E801C-801E9AFC (FSOB). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include <dolphin/gx.h>
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Util.h"
 #include "JSystem/JGeometry/Vec.h"
@@ -37,23 +38,19 @@ extern "C" void fn_801E801C(char* p) {
 static s8 lbl_8053AC44;
 static f32 lbl_8053AC40;
 extern "C" void fn_801E8B1C(void* p0, f32* pos, s16 a, s16 b, f32 scale, f32 tilt) {
-    f32 px = pos[0];
-    f32 py = pos[1];
     if (lbl_8053AC44 == 0) {
         lbl_8053AC44 = 1;
         lbl_8053AC40 = -256.0f;
     }
     u16 ua = (u16)a;
     f32 t = 0.5f * (f32)(ua + (u16)b);
-    f32 h;
-    if (t > 0.0f) {
-        h = 0.5f;
-    } else {
-        h = -0.5f;
-    }
-    s32 idx = (s32)(t + h);
+    s32 idx = (s32)(t + (t > 0.0f ? 0.5f : -0.5f));
+    f32 px = pos[0];
+    f32 py = pos[1];
     s16 d = (s16)((s16)idx - a);
+    f32 base = lbl_8053AC40;
     f32 k = 1.0f / (4.0f * tilt);
+    f32 sk = scale * k;
     f32 ic = 1.0f / JMath::sincosTable_.mTable[(u16)d >> 5].second;
     f32 sA = JMath::sincosTable_.mTable[ua >> 5].first;
     f32 cA = JMath::sincosTable_.mTable[ua >> 5].second;
@@ -64,15 +61,15 @@ extern "C" void fn_801E8B1C(void* p0, f32* pos, s16 a, s16 b, f32 scale, f32 til
     f32 X = (sA * sq + cA * cq) * f;
     f32 Y = (sA * cq - cA * sq) * f;
     *(volatile f32*)0xCC008000 = px + Y;
-    *(volatile f32*)0xCC008000 = lbl_8053AC40 + (py + X);
-    *(volatile f32*)0xCC008000 = lbl_8053AC40;
+    *(volatile f32*)0xCC008000 = base + (py + X);
+    *(volatile f32*)0xCC008000 = base;
     *(volatile f32*)0xCC008000 = 1.0f;
-    *(volatile f32*)0xCC008000 = scale * k;
+    *(volatile f32*)0xCC008000 = sk;
     *(volatile f32*)0xCC008000 = px - Y;
-    *(volatile f32*)0xCC008000 = lbl_8053AC40 + (py - X);
-    *(volatile f32*)0xCC008000 = lbl_8053AC40;
+    *(volatile f32*)0xCC008000 = base + (py - X);
+    *(volatile f32*)0xCC008000 = base;
     *(volatile f32*)0xCC008000 = 0.0f;
-    *(volatile f32*)0xCC008000 = scale * k;
+    *(volatile f32*)0xCC008000 = sk;
 }
 
 extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t);
@@ -85,6 +82,8 @@ extern f32 lbl_8053F644;
 extern "C" void fn_801E8C74(char* p, s32 a) {
     u8 flag = 1;
     s32 i;
+    f32 x2;
+    f32 y2;
     *(s32*)(p + 0x3b8) = a;
     *(u8*)(p + 0x2ad) = 0;
     for (i = 0; i < 32; i++) {
@@ -96,16 +95,16 @@ extern "C" void fn_801E8C74(char* p, s32 a) {
             flag = 0;
         }
     }
-    f32 x0 = *(f32*)(p + 0x2b0);
     f32 y0 = *(f32*)(p + 0x2b4);
+    f32 x0 = *(f32*)(p + 0x2b0);
     *(f32*)(p + 0xc) = x0;
     *(f32*)(p + 0x10) = y0;
     *(f32*)(p + 0x14) = 0.0f;
 
+    x0 = *(f32*)(p + 0x2b0);
+    y0 = *(f32*)(p + 0x2b4);
     f32 x1 = *(f32*)(p + 0x2b8);
     f32 y1 = *(f32*)(p + 0x2bc);
-    f32 x2;
-    f32 y2;
     if (*(u8*)(p + 0x2ad) - 2 == 0) {
         x2 = x1;
         y2 = y1;
@@ -117,7 +116,8 @@ extern "C" void fn_801E8C74(char* p, s32 a) {
     f32 xc = fn_801CD6D8(x0, x0, x1, x2, 0.0625f);
     f32 dx = *(f32*)(p + 0xc) - xc;
     f32 dy = *(f32*)(p + 0x10) - yc;
-    *(s16*)(p + 0x3bc) = (s16)(JMath::atanTable_.atan2Radian(dx, dy) * 10430.4f);
+    f32 ang = JMath::atanTable_.atan2Radian(dx, dy);
+    *(s16*)(p + 0x3bc) = (s16)(ang * 10430.4f);
 
     f32 out[2];
     fn_801E9C00(*(s16*)(p + 0x3bc), out);
@@ -138,12 +138,11 @@ struct FsobPath {
     JGeometry::TVec2<f32> points[32];
 };
 
-extern "C" void fn_801E8EB4(char* p, u8 idx, s32 unused, FsobVec2* v) {
+extern "C" void fn_801E8EB4(FsobPath* p, u8 idx, s32 unused, FsobVec2* v) {
     f32 y = v->y;
     f32 x = v->x;
-    *(u32*)(p + 0x2a8) |= 1U << idx;
-    ((FsobVec2*)(p + 0x2b0))[idx].x = x;
-    ((FsobVec2*)(p + 0x2b0))[idx].y = y;
+    p->flags |= 1 << idx;
+    p->points[idx].set(x, y);
 }
 
 extern "C" void fn_801E8EE8(char* p) {
@@ -286,51 +285,49 @@ extern "C" void fn_801E9224(char* p) {
     f32 zero = lbl_8053F5FC;
     f32 rem = lbl_8053F60C;
     rem = __fsel(rem, rem, zero);
-    while (rem > zero) {
+    while (zero < rem) {
         u8 segment = *(u8*)(p + 0x3b0);
         s32 ti = (s32)*(f32*)(p + 0x3b4);
         f32 ax;
         f32 ay;
         switch ((u8)ti) {
         case 0: {
-            f32* q = (f32*)(p + segment * 8);
-            ax = q[172];
-            ay = q[173];
+            char* q = p + segment * 8;
+            ax = *(f32*)(q + 0x2b0);
+            ay = *(f32*)(q + 0x2b4);
             break;
         }
         case 16: {
-            f32* q = (f32*)(p + segment * 8);
-            ax = q[174];
-            ay = q[175];
+            char* q = p + segment * 8;
+            ax = *(f32*)(q + 0x2b8);
+            ay = *(f32*)(q + 0x2bc);
             break;
         }
         default: {
-            f32 p0x;
-            f32 p0y;
+            f32 u, p2x, p3x, p0x, p1x;
+            f32 p0y, p1y, p2y, p3y;
             if (segment == 0) {
                 p0x = *(f32*)(p + 0x2b0);
                 p0y = *(f32*)(p + 0x2b4);
             } else {
-                f32* q = (f32*)(p + segment * 8);
-                p0x = q[170];
-                p0y = q[171];
+                char* q = p + segment * 8;
+                p0x = *(f32*)(q + 0x2a8);
+                p0y = *(f32*)(q + 0x2ac);
             }
             u8 count = *(u8*)(p + 0x2ad);
-            f32* q = (f32*)(p + segment * 8);
-            f32 p2x = q[174];
-            f32 p2y = q[175];
-            f32 p1x = q[172];
-            f32 p1y = q[173];
-            f32 p3x;
-            f32 p3y;
+            char* q = p + segment * 8;
+            p2x = *(f32*)(q + 0x2b8);
+            p2y = *(f32*)(q + 0x2bc);
+            p1x = *(f32*)(q + 0x2b0);
+            p1y = *(f32*)(q + 0x2b4);
             if (segment == count - 2) {
                 p3x = p2x;
                 p3y = p2y;
             } else {
-                p3x = q[176];
-                p3y = q[177];
+                p3x = *(f32*)(q + 0x2c0);
+                p3y = *(f32*)(q + 0x2c4);
             }
-            f32 u = 0.0625f * (f32)(u8)ti;
+            u = 0.0625f * (f32)(u8)ti;
             ay = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
             ax = fn_801CD6D8(p0x, p1x, p2x, p3x, u);
             break;
@@ -352,54 +349,51 @@ extern "C" void fn_801E9224(char* p) {
         f32 bx;
         switch (next) {
         case 0: {
-            f32* q = (f32*)(p + seg * 8);
-            bx = q[172];
-            by = q[173];
+            char* q = p + seg * 8;
+            bx = *(f32*)(q + 0x2b0);
+            by = *(f32*)(q + 0x2b4);
             break;
         }
         case 16: {
-            f32* q = (f32*)(p + seg * 8);
-            bx = q[174];
-            by = q[175];
+            char* q = p + seg * 8;
+            bx = *(f32*)(q + 0x2b8);
+            by = *(f32*)(q + 0x2bc);
             break;
         }
         default: {
-            f32 p0x;
-            f32 p0y;
+            f32 u, p2x, p3x, p0x, p1x;
+            f32 p0y, p1y, p2y, p3y;
             if (seg == 0) {
                 p0x = *(f32*)(p + 0x2b0);
                 p0y = *(f32*)(p + 0x2b4);
             } else {
-                f32* q = (f32*)(p + seg * 8);
-                p0x = q[170];
-                p0y = q[171];
+                char* q = p + seg * 8;
+                p0x = *(f32*)(q + 0x2a8);
+                p0y = *(f32*)(q + 0x2ac);
             }
             u8 count = *(u8*)(p + 0x2ad);
-            f32* q = (f32*)(p + seg * 8);
-            f32 p2x = q[174];
-            f32 p2y = q[175];
-            f32 p1x = q[172];
-            f32 p1y = q[173];
-            f32 p3x;
-            f32 p3y;
+            char* q = p + seg * 8;
+            p2x = *(f32*)(q + 0x2b8);
+            p2y = *(f32*)(q + 0x2bc);
+            p1x = *(f32*)(q + 0x2b0);
+            p1y = *(f32*)(q + 0x2b4);
             if (seg == count - 2) {
                 p3x = p2x;
                 p3y = p2y;
             } else {
-                p3x = q[176];
-                p3y = q[177];
+                p3x = *(f32*)(q + 0x2c0);
+                p3y = *(f32*)(q + 0x2c4);
             }
-            f32 u = 0.0625f * (f32)next;
+            u = 0.0625f * (f32)next;
             by = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
             bx = fn_801CD6D8(p0x, p1x, p2x, p3x, u);
             break;
         }
         }
 
-        JGeometry::TVec2<f32> d;
         JGeometry::TVec2<f32> ab;
-        ab.x = bx - ax;
-        ab.y = by - ay;
+        JGeometry::TVec2<f32> d;
+        ab.set(bx - ax, by - ay);
         d.x = bx - *(f32*)(p + 0xc);
         d.y = by - *(f32*)(p + 0x10);
         f32 len = d.length();
