@@ -2323,11 +2323,13 @@ void fn_8039FE6C(void) {}
 
 int fn_8039FE70(void) { return 1; }
 
-static inline void readMessagePair(s32* out,const u8* data) {
+static inline u8 readMessagePair(s32* out,const u8* data) {
     s32 a=*(const s32*)(data+1);
     s32 b=*(const s32*)(data+5);
+    u8 id=data[0];
     out[0]=a;
     out[1]=b;
+    return id;
 }
 
 struct MsgCounter {
