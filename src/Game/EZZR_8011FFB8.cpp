@@ -35,6 +35,29 @@ public:
     virtual void v23();
     virtual void v24();
     virtual void v25(s32);
+    virtual void v26();
+    virtual void v27();
+    virtual void v28();
+    virtual void v29();
+    virtual void v30();
+    virtual void v31();
+    virtual void v32();
+    virtual void v33();
+    virtual void v34();
+    virtual void v35();
+    virtual void v36(s32, f32, s32);
+    virtual void v37(s32, f32, f32, f32, f32, f32);
+    virtual void v38();
+    virtual void v39();
+    virtual void v40();
+    virtual void v41();
+    virtual void v42();
+    virtual void v43();
+    virtual void v44();
+    virtual void v45();
+    virtual void v46();
+    virtual void v47();
+    virtual u8 v48(Vec*, f32);
     u8 field_230[0x38];
 };
 
@@ -115,6 +138,7 @@ extern "C" void fn_80127E20(void*, void*);
 extern "C" s32 fn_80123E80(u8*, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, u32, f32*, u32, s32, s32);
 extern s32 lbl_80539F30;
+#pragma fp_contract off
 extern "C" void fn_80120174(EZZR* p, s32 param) {
     *((u8*)p + 0x330) = 0;
     switch (param) {
@@ -133,7 +157,7 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
     case 4:
         *((u8*)p + 0x331) = 0;
         break;
-    case 5: {
+    case 5:
         *((u8*)p + 0x330) = 1;
         if (((EzzrMgr*)fn_802D6A9C())->flag(p->field_04) != 0) {
             fn_801D22DC((u8*)p + 0x230, 6, 2, 0);
@@ -141,7 +165,6 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
             fn_801D22DC((u8*)p + 0x230, 7, 2, 0);
         }
         break;
-    }
     case 7:
         *((u8*)p + 0x11e) = 1;
         break;
@@ -176,32 +199,31 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
             if (other == 0) {
                 break;
             }
-            {
-                s32 kind = (*(u32*)((u8*)other + 0x90) >> 8) & 0xff;
-                if (kind == *(s32*)((u8*)p + 0x35c)) {
-                    a = *(JGeometry::TVec3f*)((u8*)other + 0xc);
-                } else if (kind == *(s32*)((u8*)p + 0x3d0)) {
-                    b = *(JGeometry::TVec3f*)((u8*)other + 0xc);
-                }
+            s32 kind = (*(u32*)((u8*)other + 0x90) >> 8) & 0xff;
+            if (kind == *(s32*)((u8*)p + 0x35c)) {
+                a = *(JGeometry::TVec3f*)((u8*)other + 0xc);
+            } else if (kind == *(s32*)((u8*)p + 0x3d0)) {
+                b = *(JGeometry::TVec3f*)((u8*)other + 0xc);
             }
             id = fn_801F78F4(fn_801F856C(), 0x5241494c, id);
         }
-        {
-            f32 distA = EZZR_Sqrt(EZZR_Sqr(p->field_0C.x - a.x) + EZZR_Sqr(p->field_0C.y - a.y));
-            f32 distB = EZZR_Sqrt(EZZR_Sqr(p->field_0C.x - b.x) + EZZR_Sqr(p->field_0C.y - b.y));
-            if (distA > distB) {
-                if (*((u8*)p + 0x3c4) != 0) {
-                    fn_80127ED8(fn_801283E8(), &b);
-                } else {
-                    fn_80127E20(fn_801283E8(), &b);
-                }
-                *(s32*)((u8*)p + 0x35c) = *(s32*)((u8*)p + 0x3d0);
+        f32 dx = p->field_0C.x - a.x;
+        f32 dy = p->field_0C.y - a.y;
+        f32 distA = EZZR_Sqrt(dx * dx + dy * dy);
+        dx = p->field_0C.x - b.x;
+        dy = p->field_0C.y - b.y;
+        if (distA > EZZR_Sqrt(dx * dx + dy * dy)) {
+            if (*((u8*)p + 0x3c4) != 0) {
+                fn_80127ED8(fn_801283E8(), &b);
             } else {
-                if (*((u8*)p + 0x3c4) != 0) {
-                    fn_80127ED8(fn_801283E8(), &a);
-                } else {
-                    fn_80127E20(fn_801283E8(), &a);
-                }
+                fn_80127E20(fn_801283E8(), &b);
+            }
+            *(s32*)((u8*)p + 0x35c) = *(s32*)((u8*)p + 0x3d0);
+        } else {
+            if (*((u8*)p + 0x3c4) != 0) {
+                fn_80127ED8(fn_801283E8(), &a);
+            } else {
+                fn_80127E20(fn_801283E8(), &a);
             }
         }
         fn_80121D68(p);
@@ -211,7 +233,7 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
     case 14:
         *(s32*)((u8*)p + 0x3c8) = 0;
         break;
-    case 15: {
+    case 15:
         fn_802D8050(fn_802D6A9C(), p->v13(), 1, 0xff);
         *((u8*)p + 0x11e) = 0;
         *((u8*)p + 0x11d) = 0;
@@ -221,11 +243,10 @@ extern "C" void fn_80120174(EZZR* p, s32 param) {
         fn_80131EE4();
         break;
     }
-    }
     fn_801D1F14((u8*)p + 0x230, lbl_8053C964);
     fn_80123E80((u8*)p, param);
 }
-
+#pragma fp_contract reset
 extern "C" void fn_80120570(EZZR* p) {
     f32 box[4];
     box[0] = p->field_0C.x;
