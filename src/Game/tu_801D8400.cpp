@@ -324,26 +324,7 @@ struct T84List {
     s32 n;
 };
 
-static inline void t84PickTarget(char* p) {
-    if (*(u8*)(p + 0x33f) == 3) {
-                                            s32 l[12];
-                  s32 n = 1;
-          l[0] = 1;
-          l[n++] = 2;
-          l[n++] = 5;
-          l[n++] = 6;
-          l[n++] = 9;
-          l[n++] = 10;
-            if (n > 0) {
-              *(u8*)(p + 0x334) = l[fn_801CD664(n)];
-          } else {
-              *(u8*)(p + 0x334) = 0;
-          }
-    } else {
-        *(u8*)(p + 0x334) = fn_801CD664(0xc);
-    }
-    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
-}
+static inline void t84PickTarget(char* p);
 
 s32 l[6];
 extern "C" void fn_801D85B0(char* p) {
@@ -745,8 +726,7 @@ extern "C" void fn_801D9960(char* p) {
         }
     }
 }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
+#pragma opt_propagation off
 extern "C" BOOL fn_801D95F4(char* p) {
     BOOL ok = FALSE;
     JGeometry::TVec2<f32> dir;
@@ -784,5 +764,5 @@ extern "C" BOOL fn_801D95F4(char* p) {
     }
     return ok;
 }
-
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
