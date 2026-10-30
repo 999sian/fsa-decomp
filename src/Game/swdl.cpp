@@ -17,7 +17,7 @@ extern "C" s32 fn_8023077C(void);
 extern "C" void fn_80230498(s32 i, void* vec, s32 id, s32 a, s32 b, s32 c, s32 d);
 extern "C" void* fn_8013CC50(void* obj, void* vec, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" void fn_80134D14(void* p, s32 mode);
-extern "C" void fn_801B7550(void);
+extern "C" u8 fn_801B7550(void);
 extern "C" s32 fn_8023DE58(s32 i);
 extern "C" void fn_8043D67C(void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_80230F44(s32 a, s32 b);
