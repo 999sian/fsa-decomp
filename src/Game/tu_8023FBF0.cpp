@@ -2850,8 +2850,8 @@ static inline void resetTrailFrom486(char* p,int i) {
     char* q=p;
     for(;i<0x31;i++) {
         F32(q,0x38)=F32(p,8);F32(q,0x3c)=F32(p,0xc);F32(q,0x40)=F32(p,0x10);
-        if(F32(p,0x10)>0.0f)U8(p,0x284+i)=1;
-        else U8(p,0x284+i)=0;
+        if(F32(p,0x10)>0.0f)p[0x284+i]=1;
+        else p[0x284+i]=0;
         q+=0xc;
     }
 }
