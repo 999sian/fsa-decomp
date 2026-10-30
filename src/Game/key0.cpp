@@ -735,6 +735,10 @@ static inline void key0LinkHere(char* p) {
     key0LinkPoints(key, pos, packed, id);
 }
 
+static inline void key0LinkPosKey(const Key0Pt& pos, const Key0Pt& key, u32 packed, u32 id) {
+    fn_802D6D70(fn_802D6A9C(), pos, key, packed, id);
+}
+
 static inline void key0LinkHere2(char* p) {
     u32 x18;
     u32 packed = key0PackActorFlags((u8*)p);
