@@ -469,34 +469,39 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
     const u8* base = (const u8*)lbl_8048D320;
     u8* p;
     s32 off;
+    f32 v29;
+    f32 v31;
+    f32 v30;
     off = idx * 4;
     p = self + off;
-    f32 v29 = *(f32*)(p + 0x118);
-    f32 v30 = *(f32*)(p + 0x138);
-    f32 v31 = *(f32*)(p + 0x148);
+    v29 = *(f32*)(p + 0x118);
+    v30 = *(f32*)(p + 0x138);
+    v31 = *(f32*)(p + 0x148);
     s32 k;
     s32 j;
     const u64* a;
     const u64* b;
     const u64* one;
     if (idx >= 2) {
-        fn_80402E08(*(u8**)(p + 0x74), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
+        u8* q = self + idx * 4;
+        fn_80402E08(*(u8**)(p + 0x74), *(f32*)(q + 0xf8), fn_8043D57C(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0x84), lbl_80543A00, fn_8043D57C(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0x94), lbl_80543A00, fn_8043D57C(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0xa4), lbl_80543A00, fn_8043D57C(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xb4), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xc4), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xd4), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xe4), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xb4), *(f32*)(q + 0xf8), fn_8043D57C(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xc4), *(f32*)(q + 0xf8), fn_8043D57C(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xd4), *(f32*)(q + 0xf8), fn_8043D57C(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xe4), *(f32*)(q + 0xf8), fn_8043D57C(lbl_8053AED0));
     } else {
-        fn_80402E08(*(u8**)(p + 0x74), *(f32*)(p + 0xf8), fn_8043D514(lbl_8053AED0));
+        u8* q = self + idx * 4;
+        fn_80402E08(*(u8**)(p + 0x74), *(f32*)(q + 0xf8), fn_8043D514(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0x84), lbl_80543A00, fn_8043D514(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0x94), lbl_80543A00, fn_8043D514(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0xa4), lbl_80543A00, fn_8043D514(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xb4), *(f32*)(p + 0xf8), fn_8043D514(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xc4), *(f32*)(p + 0xf8), fn_8043D514(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xd4), *(f32*)(p + 0xf8), fn_8043D514(lbl_8053AED0));
-        fn_80402E08(*(u8**)(p + 0xe4), *(f32*)(p + 0xf8), fn_8043D514(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xb4), *(f32*)(q + 0xf8), fn_8043D514(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xc4), *(f32*)(q + 0xf8), fn_8043D514(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xd4), *(f32*)(q + 0xf8), fn_8043D514(lbl_8053AED0));
+        fn_80402E08(*(u8**)(p + 0xe4), *(f32*)(q + 0xf8), fn_8043D514(lbl_8053AED0));
     }
     fn_8037EB4C();
     u8 mask = (u8)(1 << idx);
@@ -662,19 +667,185 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
 
 #pragma dont_inline on
 extern "C" void fn_8041A868(u8* self, s32 arg) {
-    s32 flag = (lbl_8053AAF8[0x83] & 3) == 2;
-    s32 r25 = 0;
+    const u8* base = (const u8*)lbl_8048D320;
+    f32 old118 = *(f32*)(self + 0x118);
+    f32 old158 = *(f32*)(self + 0x158);
+    s32 flag = 0;
+    if ((lbl_8053AAF8[0x83] & 3U) == 2) {
+        flag = 1;
+    }
     s32 r = fn_80418B64(self);
+    u8 busy = 0;
     if (*(s16*)(self + 0x222) != (s16)r) {
-        if (*(f32*)(self + 0x118) > 0.0f) {
-            r25 = 1;
+        if (*(f32*)(self + 0x118) > lbl_80543A00) {
+            busy = 1;
         } else {
-            *(s16*)(self + 0x222) = (s16)r;
+            *(s16*)(self + 0x222) = r;
         }
     }
     s32 off = flag * 10;
-    (void)off;
-    (void)r25;
+    const u8* dac = base + 0xdac + off;
+    s16 x = *(s16*)(lbl_8050DB0C + 0x232) + *(const s16*)(base + 0xdc0 + (off + *(s16*)(self + 0x222) * 2));
+    s16 y = *(s16*)(lbl_8050DB0C + 0x234) + *(const s16*)(base + 0xdd4 + (off + *(s16*)(self + 0x222) * 2));
+    if (*(const s16*)(dac + *(s16*)(self + 0x222) * 2) == 0) {
+        y = y + fn_8043D514(lbl_8053AED0);
+    } else {
+        y = y + fn_8043D57C(lbl_8053AED0);
+    }
+    const u8* d98 = base + 0xd98 + off;
+    fn_80402E08(*(u8**)(self + 0x54),
+                (f32)(x + (*(const s16*)(d98 + *(s16*)(self + 0x222) * 2) + *(s16*)(lbl_8050DB0C + 0x2d2) +
+                           *(const s16*)(base + 0xde8 + (off + *(s16*)(self + 0x222) * 2)))),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2d4) +
+                    ((f32)y + (*(f32*)(self + 0x108) + (f32)*(const s16*)(dac + *(s16*)(self + 0x222) * 2))));
+    const u8* e10 = base + 0xe10 + off;
+    fn_80402E08(*(u8**)(self + 0x58),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2d6) +
+                    ((f32)x + (*(f32*)(self + 0xf8) + (f32)*(const s16*)(d98 + *(s16*)(self + 0x222) * 2))) +
+                    (f32)*(const s16*)(e10 + *(s16*)(self + 0x222) * 2),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2d8) +
+                    ((f32)y + (*(f32*)(self + 0x108) + (f32)*(const s16*)(dac + *(s16*)(self + 0x222) * 2))));
+    fn_80402E08(*(u8**)(self + 0x5c),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2d6) +
+                    ((f32)x + (*(f32*)(self + 0xf8) + (f32)*(const s16*)(d98 + *(s16*)(self + 0x222) * 2))) +
+                    (f32)*(const s16*)(e10 + *(s16*)(self + 0x222) * 2),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2d8) +
+                    ((f32)y + (*(f32*)(self + 0x108) + (f32)*(const s16*)(dac + *(s16*)(self + 0x222) * 2))));
+    fn_80402E08(*(u8**)(self + 0x6c),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2da) +
+                    ((f32)x + (*(f32*)(self + 0xf8) + (f32)*(const s16*)(d98 + *(s16*)(self + 0x222) * 2))) +
+                    (f32)*(const s16*)(base + 0xdfc + (off + *(s16*)(self + 0x222) * 2)),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2dc) +
+                    ((f32)y + (*(f32*)(self + 0x108) + (f32)*(const s16*)(dac + *(s16*)(self + 0x222) * 2))));
+    fn_80402E08(*(u8**)(self + 0x70),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2de) +
+                    ((f32)x + (*(f32*)(self + 0xf8) + (f32)*(const s16*)(d98 + *(s16*)(self + 0x222) * 2))) +
+                    (f32)*(const s16*)(base + 0xe24 + (off + *(s16*)(self + 0x222) * 2)),
+                (f32)*(s16*)(lbl_8050DB0C + 0x2e0) +
+                    ((f32)y + (*(f32*)(self + 0x108) + (f32)*(const s16*)(dac + *(s16*)(self + 0x222) * 2))));
+    fn_8037EB4C();
+    if ((self[0x28f] & 1) == 0 || (*(u8**)(lbl_8053AB10 + 0x30))[0x284] != 0 || lbl_8053AAF8[0x85] != 0 ||
+        *(s16*)(self + 0x222) == 4 || busy) {
+        if (*(f32*)(self + 0x118) > lbl_80543A04) {
+            *(f32*)(self + 0x118) = *(f32*)(self + 0x118) - lbl_80543A04;
+        } else {
+            *(f32*)(self + 0x118) = lbl_80543A00;
+        }
+        if (*(f32*)(self + 0x158) > lbl_80543A04) {
+            *(f32*)(self + 0x158) = *(f32*)(self + 0x158) - lbl_80543A04;
+        } else {
+            *(f32*)(self + 0x158) = lbl_80543A00;
+        }
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x217] = 1;
+    } else if (*(s32*)(lbl_80529DEC + 0xd8) == 0 && lbl_8053AEC8[0x5e] == 0) {
+        if (*(f32*)(self + 0x118) > 0.6f) {
+            *(f32*)(self + 0x118) = *(f32*)(self + 0x118) - lbl_80543A04;
+            if (*(f32*)(self + 0x118) <= 0.6f) {
+                *(f32*)(self + 0x118) = 0.6f;
+            }
+        } else if (*(f32*)(self + 0x118) < 0.6f) {
+            *(f32*)(self + 0x118) = *(f32*)(self + 0x118) + lbl_80543A04;
+            if (*(f32*)(self + 0x118) >= 0.6f) {
+                *(f32*)(self + 0x118) = 0.6f;
+            }
+        }
+        if (lbl_8053AED0[0x10e] & 1) {
+            if (*(f32*)(self + 0x158) > 0.6f) {
+                *(f32*)(self + 0x158) = *(f32*)(self + 0x158) - lbl_80543A04;
+                if (*(f32*)(self + 0x158) <= 0.6f) {
+                    *(f32*)(self + 0x158) = 0.6f;
+                }
+            } else if (*(f32*)(self + 0x158) < 0.6f) {
+                *(f32*)(self + 0x158) = *(f32*)(self + 0x158) + lbl_80543A04;
+                if (*(f32*)(self + 0x158) >= 0.6f) {
+                    *(f32*)(self + 0x158) = 0.6f;
+                }
+            }
+        } else {
+            if (*(f32*)(self + 0x158) > lbl_80543A04) {
+                *(f32*)(self + 0x158) = *(f32*)(self + 0x158) - lbl_80543A04;
+            } else {
+                *(f32*)(self + 0x158) = lbl_80543A00;
+            }
+        }
+    } else {
+        if (*(f32*)(self + 0x118) < lbl_80543A18) {
+            *(f32*)(self + 0x118) = *(f32*)(self + 0x118) + lbl_80543A04;
+        } else {
+            *(f32*)(self + 0x118) = lbl_80543A0C;
+        }
+        if (lbl_8053AED0[0x10e] & 1) {
+            if (*(f32*)(self + 0x158) < lbl_80543A18) {
+                *(f32*)(self + 0x158) = *(f32*)(self + 0x158) + lbl_80543A04;
+            } else {
+                *(f32*)(self + 0x158) = lbl_80543A0C;
+            }
+        } else {
+            if (*(f32*)(self + 0x158) > lbl_80543A04) {
+                *(f32*)(self + 0x158) = *(f32*)(self + 0x158) - lbl_80543A04;
+            } else {
+                *(f32*)(self + 0x158) = lbl_80543A00;
+            }
+        }
+    }
+    f32 cur = *(f32*)(self + 0x118);
+    if (old118 != cur || old158 != *(f32*)(self + 0x158) || (u8)arg != 0) {
+        const u64* one;
+        const u64* a;
+        const u64* b;
+        const u64* c;
+        const u64* d;
+        s32 j;
+        one = (const u64*)(base + 0x388);
+        (*(SubObj**)(self + 4))->w13(one[0])->w07((s32)((f32)self[0x24c] * cur));
+        one = (const u64*)(base + 0x388);
+        (*(SubObj**)(self + 4))->w13(one[1])->w07((s32)((f32)self[0x24d] * *(f32*)(self + 0x118)));
+        a = (const u64*)(base + 0x338);
+        b = (const u64*)(base + 0x360);
+        for (j = 0; j < 5; j++) {
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x24e] * *(f32*)(self + 0x118)));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x24f] * *(f32*)(self + 0x118)));
+            b++;
+            a++;
+        }
+        a = (const u64*)(base + 0x308);
+        b = (const u64*)(base + 0x320);
+        for (j = 0; j < 3; j++) {
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x258 + j] * *(f32*)(self + 0x118)));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25b + j] * *(f32*)(self + 0x118)));
+            b++;
+            a++;
+        }
+        a = (const u64*)(base + 0x248);
+        b = (const u64*)(base + 0x2a8);
+        for (j = 0; j < 12; j++) {
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x25e] * *(f32*)(self + 0x118)));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25f] * *(f32*)(self + 0x118)));
+            b++;
+            a++;
+        }
+        a = (const u64*)(base + 0x148);
+        b = (const u64*)(base + 0x188);
+        c = (const u64*)(base + 0x1c8);
+        d = (const u64*)(base + 0x208);
+        for (j = 0; j < 8; j++) {
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x250] * *(f32*)(self + 0x118)));
+            (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x251] * *(f32*)(self + 0x118)));
+            (*(SubObj**)(self + 4))->w13(*c)->w07((s32)((f32)self[0x252] * *(f32*)(self + 0x118)));
+            (*(SubObj**)(self + 4))->w13(*d)->w07((s32)((f32)self[0x253] * *(f32*)(self + 0x118)));
+            b++;
+            c++;
+            d++;
+            a++;
+        }
+        (*(SubObj**)(self + 4))->w13(0x506870316e693032ULL)->w07((s32)((f32)self[0x26a] * *(f32*)(self + 0x118)));
+        (*(SubObj**)(self + 4))->w13(0x506870316e693031ULL)->w07((s32)((f32)self[0x26b] * *(f32*)(self + 0x118)));
+        a = (const u64*)(base + 0x398);
+        for (j = 0; j < 4; j++) {
+            (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x26c + j] * *(f32*)(self + 0x118)));
+            a++;
+        }
+    }
 }
 #pragma dont_inline reset
 
@@ -2000,6 +2171,16 @@ extern "C" void* fn_804201E0(void* this_, s16 how) {
         if(how>0) __dl__FPv(this_);
     }
     return this_;
+}
+
+extern "C" void* __nw__FUl(u32);
+extern "C" void fn_80441778(void*);
+extern "C" void fn_80402F04(void*, J2DPane*);
+extern u8 lbl_804AF86C[];
+static inline u8* HudNewPaneState8041() {
+    u8* p = (u8*)__nw__FUl(0x2c);
+    if (p) *(u8**)p = lbl_804AF86C;
+    return p;
 }
 
 extern u8 lbl_804B1390[];
