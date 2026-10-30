@@ -801,7 +801,7 @@ inline f32 hitInvSqrt(f32 x) {
     y = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
     return y;
 }
-inline u8 isHitBusy(char* p) {
+inline BOOL isHitBusy(char* p) {
     if (fn_80241200(p)) {
         return 1;
     }
@@ -810,8 +810,13 @@ inline u8 isHitBusy(char* p) {
     }
     return fn_80270ABC(p);
 }
-bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
+bool fn_802710C8(char* p_, s32 id_, s32 n_, Vec2f* pt_, s32 action_) {
+    char* p = p_;
+    s32 n = n_;
     u8 ok;
+    s32 action = action_;
+    Vec2f* pt = pt_;
+    s32 id = id_;
     if (fn_80240B5C(p)) {
         n = 0;
     }
@@ -846,18 +851,8 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
             if (fn_80240670(p)) {
                 return false;
             }
-        } else {
-            u8 busy;
-            if (fn_80241200(p)) {
-                busy = 1;
-            } else if (fn_802486A0(p) == 4 && fn_80248778(p) != fn_80240888(p)) {
-                busy = 1;
-            } else {
-                busy = fn_80270ABC(p);
-            }
-            if (busy) {
-                return false;
-            }
+        } else if (isHitBusy(p)) {
+            return false;
         }
     }
     if (action == 0x16 && fn_80240B70(p)) {
@@ -903,9 +898,9 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
                 v.x = F32(p, 0x8);
                 v.y = F32(p, 0xc);
                 v.z = F32(p, 0x10);
-                v.y += 6.0f;
-                fn_8013CC50(PTR(p, 0x3b4), &v, 0x28d, 0, 1, 0, 0, 1, 1.0f);
-                fn_8013CC50(PTR(p, 0x3b4), &v, 0x28e, 0, 1, 0, 0, 1, 1.0f);
+                v.y += lbl_80540290;
+                fn_8013CC50(PTR(p, 0x3b4), &v, 0x28d, 0, 1, 0, 0, 1, lbl_80540288);
+                fn_8013CC50(PTR(p, 0x3b4), &v, 0x28e, 0, 1, 0, 0, 1, lbl_80540288);
                 fn_8024F0E8(p, 0x2003d);
                 return true;
             }
@@ -918,7 +913,7 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
             JGeometry::TVec2<f32> d(F32(p, 0x8), F32(p, 0xc));
             d.x -= pt->x;
             d.y -= pt->y;
-            s16 a = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * 10430.378f);
+            s16 a = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * lbl_80540294);
             if (a < -0x6000) {
                 S32(p, 0x3dc) = 1;
                 S32(p, 0x3e8) = 1;
@@ -944,29 +939,29 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
             JGeometry::TVec2<f32> d(F32(p, 0x8), F32(p, 0xc));
             d.x -= pt->x;
             d.y -= pt->y;
-            s16 a = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * 10430.378f);
+            s32 a = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * lbl_80540294);
             s32 room = S32(p, 0x3b4);
             if (*(u8*)((u32)fn_802D6A9C() + 0x131df + room)) {
-                if (a < -0x4000) {
+                if ((s16)a < -0x4000) {
                     S32(p, 0x3dc) = 1;
                     S32(p, 0x3e8) = 1;
-                } else if (a < 0x4000) {
+                } else if ((s16)a < 0x4000) {
                     S32(p, 0x3dc) = 0;
                     S32(p, 0x3e8) = 0;
                 } else {
                     S32(p, 0x3dc) = 1;
                     S32(p, 0x3e8) = 1;
                 }
-            } else if (a < -0x6000) {
+            } else if ((s16)a < -0x6000) {
                 S32(p, 0x3dc) = 1;
                 S32(p, 0x3e8) = 1;
-            } else if (a < -0x2000) {
+            } else if ((s16)a < -0x2000) {
                 S32(p, 0x3dc) = 3;
                 S32(p, 0x3e8) = 3;
-            } else if (a < 0x2000) {
+            } else if ((s16)a < 0x2000) {
                 S32(p, 0x3dc) = 0;
                 S32(p, 0x3e8) = 0;
-            } else if (a < 0x6000) {
+            } else if ((s16)a < 0x6000) {
                 S32(p, 0x3dc) = 2;
                 S32(p, 0x3e8) = 2;
             } else {
@@ -993,64 +988,70 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
     JGeometry::TVec2<f32> d(F32(p, 0x8), F32(p, 0xc));
     d.x -= pt->x;
     d.y -= pt->y;
-    if (d.squared() <= JGeometry::TUtilf::epsilon()) {
-        d.set(0.0f, 1.0f);
-    } else {
-        d.normalize();
+    f32 sq = d.x * d.x + d.y * d.y;
+    f32 eps = lbl_80540298 * FLT_EPSILON;
+    if (sq <= eps) {
+        d.x = lbl_8054028C;
+        d.y = lbl_80540288;
+    } else if (!(sq <= eps)) {
+        f32 inv = hitInvSqrt(sq);
+        d.x *= inv;
+        d.y *= inv;
     }
-    JGeometry::TVec3<f32> dir(d.x, d.y, 0.0f);
+    JGeometry::TVec3<f32> dir(d.x, d.y, lbl_8054028C);
     if (action == 1 || action == 0x19 || action == 0x1c) {
-        dir.scale(1.5f);
+        dir.scale(lbl_805402A4);
         if (n > 4) {
-            dir.z = 4.0f;
+            dir.z = lbl_805402A8;
         } else {
-            dir.z = 3.0f;
+            dir.z = lbl_805402A0;
         }
     } else if (action == 2 || action == 0x17) {
-        dir.scale(3.0f);
+        dir.scale(lbl_805402A0);
         if (n > 4) {
-            dir.z = 4.0f;
+            dir.z = lbl_805402A8;
         } else {
-            dir.z = 3.0f;
+            dir.z = lbl_805402A0;
         }
     } else if (action == 3) {
-        dir.scale(6.0f);
+        dir.scale(lbl_80540290);
         if (n > 4) {
-            dir.z = 4.0f;
+            dir.z = lbl_805402A8;
         } else {
-            dir.z = 3.0f;
+            dir.z = lbl_805402A0;
         }
     } else if (action == 4 || action == 7) {
-        dir.scale(0.75f);
-        dir.z = 4.0f;
+        dir.scale(lbl_805402AC);
+        dir.z = lbl_805402A8;
     } else if (action == 5 || action == 8) {
-        dir.scale(1.0f);
-        dir.z = 4.0f;
+        dir.scale(lbl_80540288);
+        dir.z = lbl_805402A8;
     } else if (action == 6 || action == 9 || action == 0x13) {
-        dir.scale(1.5f);
-        dir.z = 4.0f;
+        dir.scale(lbl_805402A4);
+        dir.z = lbl_805402A8;
     } else if (action == 0x14 || action == 0x15) {
-        dir.set(0.0f, 0.0f, 0.0f);
+        dir.set(lbl_8054028C, lbl_8054028C, lbl_8054028C);
     } else if (action == 0x1b) {
-        dir.scale(6.0f);
+        dir.scale(lbl_80540290);
     } else if (action == 0xb || action == 0xc) {
-        dir.set(0.0f, 0.0f, 0.0f);
+        dir.set(lbl_8054028C, lbl_8054028C, lbl_8054028C);
     } else if (action == 0x1a) {
-        dir.scale(0.5f);
-        dir.z = 2.0f;
+        dir.scale(lbl_8054029C);
+        dir.z = lbl_805402B0;
     }
     if (action == 0xa) {
         S32(p, 0x464) = 0x3c;
         ok = fn_80251AEC(p, 0x35);
     } else if (action == 0xd) {
-        JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0x8);
-        JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x35c);
-        if (vel.length() < 1.4f) {
-            JGeometry::TVec3<f32> t(pt->x, pt->y, 0.0f);
-            vel.set(pos - t);
-            vel.z = 0.0f;
-            vel.normalize();
-            vel.scale(1.4f);
+        if (PSVECMag((Vec*)(p + 0x35c)) < lbl_805402B4) {
+            JGeometry::TVec3<f32> t(pt->x, pt->y, lbl_8054028C);
+            ((JGeometry::TVec3<f32>*)(p + 0x35c))->set(*(JGeometry::TVec3<f32>*)(p + 0x8) - t);
+            F32(p, 0x364) = lbl_8054028C;
+            f32 sq3 = JMathInlineVEC::PSVECSquareMag((Vec*)(p + 0x35c));
+            if (!(sq3 <= lbl_80540298 * FLT_EPSILON)) {
+                ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(hitInvSqrt(sq3));
+            }
+            ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(lbl_805402B4);
         }
         if (S32(p, 0x1240) == 8) {
             fn_80251AEC(p, 0x37);
@@ -1058,14 +1059,15 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
             fn_80251AEC(p, 2);
         }
     } else if (action == 0xe) {
-        JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0x8);
-        JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x35c);
-        if (vel.length() < 2.0f) {
-            JGeometry::TVec3<f32> t(pt->x, pt->y, 0.0f);
-            vel.set(pos - t);
-            vel.z = 0.0f;
-            vel.normalize();
-            vel.scale(2.0f);
+        if (PSVECMag((Vec*)(p + 0x35c)) < lbl_805402B0) {
+            JGeometry::TVec3<f32> t(pt->x, pt->y, lbl_8054028C);
+            ((JGeometry::TVec3<f32>*)(p + 0x35c))->set(*(JGeometry::TVec3<f32>*)(p + 0x8) - t);
+            F32(p, 0x364) = lbl_8054028C;
+            f32 sq3 = JMathInlineVEC::PSVECSquareMag((Vec*)(p + 0x35c));
+            if (!(sq3 <= lbl_80540298 * FLT_EPSILON)) {
+                ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(hitInvSqrt(sq3));
+            }
+            ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(lbl_805402B0);
         }
         if (S32(p, 0x1240) == 8) {
             fn_80251AEC(p, 0x37);
@@ -1073,14 +1075,15 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
             fn_80251AEC(p, 2);
         }
     } else if (action == 0xf) {
-        JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0x8);
-        JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x35c);
-        if (vel.length() < 4.0f) {
-            JGeometry::TVec3<f32> t(pt->x, pt->y, 0.0f);
-            vel.set(pos - t);
-            vel.z = 0.0f;
-            vel.normalize();
-            vel.scale(4.0f);
+        if (PSVECMag((Vec*)(p + 0x35c)) < lbl_805402A8) {
+            JGeometry::TVec3<f32> t(pt->x, pt->y, lbl_8054028C);
+            ((JGeometry::TVec3<f32>*)(p + 0x35c))->set(*(JGeometry::TVec3<f32>*)(p + 0x8) - t);
+            F32(p, 0x364) = lbl_8054028C;
+            f32 sq3 = JMathInlineVEC::PSVECSquareMag((Vec*)(p + 0x35c));
+            if (!(sq3 <= lbl_80540298 * FLT_EPSILON)) {
+                ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(hitInvSqrt(sq3));
+            }
+            ((JGeometry::TVec3<f32>*)(p + 0x35c))->scale(lbl_805402A8);
         }
         if (S32(p, 0x1240) == 8) {
             fn_80251AEC(p, 0x37);
@@ -1088,7 +1091,7 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
             fn_80251AEC(p, 2);
         }
     } else if (action == 0x10) {
-        dir.scale(0.25f);
+        dir.scale(lbl_805402B8);
         ok = fn_80251AEC(p, 0x37);
     } else if (action == 0x12) {
         S32(p, 0x464) = 0;
@@ -1121,7 +1124,7 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
         S32(p, 0x464) = 0x3c;
         if (ok == 1) {
             S32(p, 0xc9c) = 0x12c;
-            F32(p, 0xc8c) = 0.5f;
+            F32(p, 0xc8c) = lbl_8054029C;
         }
     } else if (action == 0xb || action == 0xc) {
         ok = fn_80251AEC(p, 0xc);
@@ -1134,9 +1137,9 @@ bool fn_802710C8(char* p, s32 id, s32 n, Vec2f* pt, s32 action) {
         F32(p, 0x354) = dir.y;
         F32(p, 0x358) = dir.z;
     }
-    if ((action >= 1 && action <= 9) || (action >= 0x13 && action <= 0x15) || action == 0x1a || action == 0x1b || action == 0x1c) {
-        fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x24a, 1, 1, 0, 0, 1, 1.0f);
-        fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x24b, 1, 1, 0, 0, 1, 1.0f);
+    if ((u32)(action - 1) <= 8 || (u32)(action - 0x13) <= 2 || (u32)(action - 0x1a) <= 1 || action == 0x1c) {
+        fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x24a, 1, 1, 0, 0, 1, lbl_80540288);
+        fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x24b, 1, 1, 0, 0, 1, lbl_80540288);
         s32 room = S32(p, 0x3b4);
         if (room >= 8) {
             s32 no = S32(p, 0x4);
