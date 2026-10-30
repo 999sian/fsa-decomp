@@ -642,11 +642,13 @@ inline bool actionReady(char* p) {
         }
     }
     if (t == 4) {
-        linked = S32(p, 0xd60);
-        target = (linked >= 0) ? fn_80234004(linked) : S32(p, 0x1224);
-        if (linked >= 0) {
+        target = S32(p, 0xd60) >= 0 ? fn_80234004(S32(p, 0xd60)) : S32(p, 0x1224);
+        if (S32(p, 0xd60) < 0) {
+            own = 0;
+        } else {
             own = 0;
             for (i = 0; i < S32(p, 0x4); i++) {
+                linked = S32(p, 0xd60);
                 if (linked == fn_8022F3DC(i)) {
                     own++;
                 }
@@ -1952,6 +1954,9 @@ fail:
     return 0;
 }
 
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_lifetimes off
 u8 fn_80243C64(char* p) {
     f32 f;
     if (!actionReady(p)) {
@@ -1983,7 +1988,9 @@ u8 fn_80243C64(char* p) {
     }
     return 0;
 }
-
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 inline bool padActive(char* p);
 inline bool padActive6(char* p);
 
