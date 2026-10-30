@@ -89,7 +89,11 @@ extern const f32 lbl_805407F4;
 extern const f32 lbl_805407F8;
 extern const f32 lbl_805407FC;
 extern const f32 lbl_80540800;
-#pragma opt_lifetimes off
+#pragma opt_propagation off
+static inline void setSwitchPlayer(Tu2A6A4CActor* actor, u8 player, u32 state) {
+    actor->v10(player, state);
+}
+
 extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
     u8* p = (u8*)self;
     JGeometry::TVec3<f32> pos;
@@ -103,7 +107,7 @@ extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
     s32 player = fn_8023AF14(&box, *(s32*)(p + 4), 1, lbl_805407F4);
     s32 kind = 0;
     s32 actor = -1;
-    if (*(s32*)(p + 0x234) != 7) {
+    if (self->field_234 != 7) {
         actor = fn_801F8108(p, 'AMOS', -1, lbl_805407F0);
         if (actor < 0) {
             actor = fn_801F8108(p, 'BRBL', -1, lbl_805407F0); kind = 1;
@@ -118,26 +122,26 @@ extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
             }
         }
     }
-    if (player >= 0 && (*(s32*)(p + 0x234) == 2 || *(s32*)(p + 0x234) == 3)) {
+    if (player >= 0 && (self->field_234 == 2 || self->field_234 == 3)) {
         pos = *(JGeometry::TVec3<f32>*)fn_8023E724(player);
         f32 dx = *(f32*)(p + 0xc) - pos.x;
-        if (dx <= lbl_805407FC || dx >= lbl_80540800) player = -1;
+        if (!(dx > lbl_805407FC && dx < lbl_80540800)) player = -1;
     }
-    switch ((u32)*(s32*)(p + 0x230)) {
+    switch ((u32)self->field_230) {
     case 1:
         if ((u8)self->v11()) {
-            *(s32*)(p + 0x244) = fn_80226AE0(p + 0xc, *(s32*)(p + 4));
-*(u16*)(p + 0x258) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), *(s32*)(p + 0x244)) & 0x3ff;
+            self->field_244 = fn_80226AE0(p + 0xc, *(s32*)(p + 4));
+self->field_258 = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), self->field_244) & 0x3ff;
             self->v19(player); *(u8*)(p + 0x11c) = 0; break;
         }
-        *(s32*)(p + 0x244) = fn_80226AE0(p + 0xc, *(s32*)(p + 4));
-*(u16*)(p + 0x258) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), *(s32*)(p + 0x244)) & 0x3ff;
-        if (*(u16*)(p + 0x258) == 0x12 || *(u16*)(p + 0x258) == 0x50 || *(u16*)(p + 0x258) == 0x14 ||
-            *(u16*)(p + 0x258) == 0x52 || *(u16*)(p + 0x258) == 0x15a || *(u16*)(p + 0x258) == 0x41) *(s32*)(p + 0x230) = 2;
+        self->field_244 = fn_80226AE0(p + 0xc, *(s32*)(p + 4));
+self->field_258 = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), *(s32*)(p + 4), self->field_244) & 0x3ff;
+        if (self->field_258 == 0x12 || self->field_258 == 0x50 || self->field_258 == 0x14 ||
+            self->field_258 == 0x52 || self->field_258 == 0x15a || self->field_258 == 0x41) self->field_230 = 2;
         break;
     case 2:
         if (player >= 0) {
-            if (*(s32*)(p + 0x234) != 4 && *(s32*)(p + 0x234) != 7) {
+            if (self->field_234 != 4 && self->field_234 != 7) {
             if (fn_8023513C(player) == 1 || fn_802353AC(player) == 1 ||
                 fn_80233DA4(player) == 1 || fn_80235004(player) == 1) break;
             s32 id = self->v13();
@@ -156,77 +160,77 @@ extern "C" void fn_802A6BC4(Tu2A6A4CActor* self) {
                     if (found) break;
                     if (fn_8022E39C(player, 10) != 1) break;
                     self->v10((u8)player, 1); fn_801F0E34(p, 0x30009, 0); self->v19(player);
-                    *(s32*)(p + 0x230) = 3; *(s32*)(p + 0x248) = 5; *(s32*)(p + 0x250) = player; break;
+                    self->field_230 = 3; self->field_248 = 5; self->field_250 = player; break;
                 }
                 if (player == 0) {
-                    if (fn_8022E39C(player, 5) == 1) { self->v10((u8)player, 1); fn_801F0E34(p, 0x30009, 0); self->v19(player); *(s32*)(p + 0x248) = 5; }
-                } else { self->v10((u8)player, 1); fn_801F0E34(p, 0x30009, 0); self->v19(player); *(s32*)(p + 0x248) = 0; }
-                *(s32*)(p + 0x230) = 3; *(s32*)(p + 0x250) = player; break;
+                    if (fn_8022E39C(player, 5) == 1) { self->v10((u8)player, 1); fn_801F0E34(p, 0x30009, 0); self->v19(player); self->field_248 = 5; }
+                } else { self->v10((u8)player, 1); fn_801F0E34(p, 0x30009, 0); self->v19(player); self->field_248 = 0; }
+                self->field_230 = 3; self->field_250 = player; break;
             }
-            self->v19(player); *(s32*)(p + 0x250) = player; *(s32*)(p + 0x230) = 4;
-            } else { self->v10((u8)player, 1); *(s32*)(p + 0x230) = 6; }
+            self->v19(player); self->field_250 = player; self->field_230 = 4;
+            } else { self->v10((u8)player, 1); self->field_230 = 6; }
         } else {
             if (actor < 0) break;
             u8* other = (u8*)fn_801F666C(fn_801F856C(), actor);
             if (!other) break;
             if (lbl_8046C838[kind] != *(u32*)(other + 0x1a0)) break;
-            *(s32*)(p + 0x250) = -1; *(s32*)(p + 0x254) = kind;
-            self->v10(0xff, 1); fn_801F0E34(p, 0x30009, 0); self->v19(*(s32*)(p + 0x250));
-            *(s32*)(p + 0x230) = 7; *(s32*)(p + 0x248) = 10;
+            self->field_250 = -1; self->field_254 = kind;
+            self->v10(0xff, 1); fn_801F0E34(p, 0x30009, 0); self->v19(self->field_250);
+            self->field_230 = 7; self->field_248 = 10;
         }
         break;
     case 3:
-        fn_802302C4(*(s32*)(p + 0x250), 0xe8, 0xff);
-        if (*(s32*)(p + 0x248) == 0) *(s32*)(p + 0x230) = 4; else --*(s32*)(p + 0x248);
-        if (*(s32*)(p + 0x248) == 2 && (*(s32*)(p + 0x234) == 2 || *(s32*)(p + 0x234) == 3 || *(s32*)(p + 0x234) == 6)) fn_801F0E34(p, 0x30009, 0);
+        fn_802302C4(self->field_250, 0xe8, 0xff);
+        if (self->field_248 == 0) self->field_230 = 4; else --self->field_248;
+        if (self->field_248 == 2 && (self->field_234 == 2 || self->field_234 == 3 || self->field_234 == 6)) fn_801F0E34(p, 0x30009, 0);
         break;
     case 4:
         if (player < 0) {
-            if (fn_80230188(*(s32*)(p + 0x250))) break;
-            if ((u8)self->v11() && (*(s32*)(p + 0x234) == 1 || *(s32*)(p + 0x234) == 3)) { *(u8*)(p + 0x11c) = 0; break; }
-            if (*(s32*)(p + 0x234) == 8) { *(s32*)(p + 0x230) = 5; *(s32*)(p + 0x24c) = *(s32*)(p + 0x240); break; }
-            if ((u32)*(s32*)(p + 0x234) <= 1 || *(s32*)(p + 0x234) == 5) {
-                actor = *(s32*)(p + 0x264);
+            if (fn_80230188(self->field_250)) break;
+            if ((u8)self->v11() && (self->field_234 == 1 || self->field_234 == 3)) { *(u8*)(p + 0x11c) = 0; break; }
+            if (self->field_234 == 8) { self->field_230 = 5; self->field_24C = self->field_240; break; }
+            if ((u32)self->field_234 <= 1 || self->field_234 == 5) {
+                actor = self->field_264;
                 if (actor >= 0) {
                     if (fn_802D800C(fn_802D6A9C(), actor)) { *(u8*)(p + 0x11c) = 0; break; }
                 } else {
-                    actor = *(s32*)(p + 0x260);
+                    actor = self->field_260;
                     if (actor >= 0 && fn_802D800C(fn_802D6A9C(), actor)) { *(u8*)(p + 0x11c) = 0; break; }
                 }
-                if (*(s32*)(p + 0x234) == 0 || *(s32*)(p + 0x234) == 5) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), *(u16*)(p + 0x258)); }
-                else { fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), *(u16*)(p + 0x258)); }
+                if (self->field_234 == 0 || self->field_234 == 5) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), self->field_258); }
+                else { fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), self->field_258); }
             } else {
-                if (*(s32*)(p + 0x234) == 2 || *(s32*)(p + 0x234) == 6) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), *(u16*)(p + 0x258)); }
-                else { fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), *(u16*)(p + 0x258)); }
+                if (self->field_234 == 2 || self->field_234 == 6) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), self->field_258); }
+                else { fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), self->field_258); }
             }
-            *(s32*)(p + 0x230) = 2;
+            self->field_230 = 2;
         } else {
             fn_802302C4(player, 0xe8, 0xff);
-            if (player == *(s32*)(p + 0x250)) {
-                if (*(s32*)(p + 0x234) == 5 || *(s32*)(p + 0x234) == 6) self->v10((u8)*(s32*)(p + 0x250), 1);
-            } else { *(s32*)(p + 0x250) = player; self->v10((u8)*(s32*)(p + 0x250), 1); }
+            if (player == self->field_250) {
+                if (self->field_234 == 5 || self->field_234 == 6) self->v10((u8)self->field_250, 1);
+            } else { self->field_250 = player; self->v10((u8)self->field_250, 1); }
         }
         break;
     case 5:
-        if (*(s32*)(p + 0x24c) == 0) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), *(u16*)(p + 0x258)); *(s32*)(p + 0x230) = 2; }
-        else --*(s32*)(p + 0x24c);
+        if (self->field_24C == 0) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, player, *(s32*)(p + 4), self->field_258); self->field_230 = 2; }
+        else --self->field_24C;
         break;
     case 7:
-        if (*(s32*)(p + 0x248) == 0) *(s32*)(p + 0x230) = 8; else --*(s32*)(p + 0x248);
+        if (self->field_248 == 0) self->field_230 = 8; else --self->field_248;
         break;
     case 8:
-        if (actor < 0 || (actor >= 0 && *(s32*)(p + 0x254) != kind)) { if (*(s32*)(p + 0x234) == 0 || *(s32*)(p + 0x234) == 1 || *(s32*)(p + 0x234) == 5 || *(s32*)(p + 0x234) == 8) {
-    if (*(s32*)(p + 0x234) == 0 || *(s32*)(p + 0x234) == 5) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, *(s32*)(p + 0x250), *(s32*)(p + 4), *(u16*)(p + 0x258)); }
-    else { fn_802A3884(lbl_8053AC98, p + 0xc, *(s32*)(p + 0x250), *(s32*)(p + 4), *(u16*)(p + 0x258)); }
+        if (actor < 0 || (actor >= 0 && self->field_254 != kind)) { if (self->field_234 == 0 || self->field_234 == 1 || self->field_234 == 5 || self->field_234 == 8) {
+    if (self->field_234 == 0 || self->field_234 == 5) { self->v10(0xff, 0); fn_802A3884(lbl_8053AC98, p + 0xc, self->field_250, *(s32*)(p + 4), self->field_258); }
+    else { fn_802A3884(lbl_8053AC98, p + 0xc, self->field_250, *(s32*)(p + 4), self->field_258); }
 } else {
-    if (*(s32*)(p + 0x234) == 2 || *(s32*)(p + 0x234) == 6) self->v10(0xff, 0);
-    fn_802A3884(lbl_8053AC98, p + 0xc, *(s32*)(p + 0x250), *(s32*)(p + 4), *(u16*)(p + 0x258));
+    if (self->field_234 == 2 || self->field_234 == 6) self->v10(0xff, 0);
+    fn_802A3884(lbl_8053AC98, p + 0xc, self->field_250, *(s32*)(p + 4), self->field_258);
 }
-*(s32*)(p + 0x230) = 2; }
+self->field_230 = 2; }
         break;
     }
 }
-#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 extern "C" void fn_802A75F4(Tu2A6A4CActor* p) {
     if (*(s32*)((u8*)p + 0x230) != 1) {
         return;
