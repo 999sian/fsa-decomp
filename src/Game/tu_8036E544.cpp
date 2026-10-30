@@ -83,10 +83,13 @@ static inline bool inArea(const JGeometry::TBox2f& area, const JGeometry::TVec3f
 
 static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
     s32 slots[3];
+    s32* out;
+    s32 i;
+    s32 n;
     slots[0] = slots[1] = slots[2] = 0;
-    s32 n = 0;
-    s32* out = slots;
-    for (s32 i = 0; i < 20; i++) {
+    n = 0;
+    out = slots;
+    for (i = 0; i < 20; i++) {
         if (*(void**)(p + 0x258 + i * 4) == 0) {
             n++;
             *out++ = i;
@@ -134,7 +137,11 @@ extern "C" const f32 lbl_80542D8C;
 extern "C" const f32 lbl_80542D90;
 extern "C" const f32 lbl_80542D94;
 extern "C" const f32 lbl_80542D98;
+#pragma opt_common_subs off
 extern "C" void fn_8036E5E8(void* this_) {
+    char* q;
+    s32 i;
+    s32 count;
     char* p = (char*)this_;
     JGeometry::TVec3f pos;
     if (*(s32*)(p + 0x234)) {
@@ -148,15 +155,16 @@ extern "C" void fn_8036E5E8(void* this_) {
     }
     *(JGeometry::TVec3f*)(*(char**)(p + 0x250) + 0xc) = *(JGeometry::TVec3f*)(p + 0xc);
     u16* rm = *(u16**)(sManager__8JUTVideo + 4);
-    JGeometry::TVec3f center((f32)(s32)rm[2] * lbl_80542D5C, (f32)(s32)rm[3] * lbl_80542D5C, lbl_80542D60);
-    s32 count = 0;
-    char* q = p;
-    for (s32 i = 0; i < 20; i++, q += 4) {
+    f32 cy = (f32)(s32)rm[3] * lbl_80542D5C;
+    f32 cx = (f32)(s32)rm[2] * lbl_80542D5C;
+    JGeometry::TVec3f center(cx, cy, lbl_80542D60);
+    count = 0;
+    q = p;
+    for (i = 0; i < 20; i++, q += 4) {
         if (*(char**)(q + 0x258)) {
             count++;
             if (canDeleteEmitter(*(char**)(q + 0x258))) {
-                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(q + 0x258));
-                *(void**)(q + 0x258) = 0;
+                killEmitter((void**)(q + 0x258));
             }
         }
     }
@@ -174,12 +182,14 @@ extern "C" void fn_8036E5E8(void* this_) {
             }
         }
         if (*(s32*)(p + 0x238) < 0) {
-            s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
-            for (s32 j = 0; j < n; j++) {
+            void* mgr = fn_801F856C();
+            s32 j = 0;
+            s32 n = *(s32*)((char*)mgr + 0x1008);
+            for (; j < n; j++) {
                 char* a = *(char**)((char*)fn_801F856C() + j * 4 + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
                     s32 s = *(s32*)(a + 0x238);
-                    if (s == 0x26 || (s == 0x27 || s == 0x28) || s == 0x29) {
+                    if (s == 0x26 || (u32)(s - 0x27) <= 1 || s == 0x29) {
                         *(s32*)(p + 0x238) = j;
                         break;
                     }
@@ -274,7 +284,7 @@ extern "C" void fn_8036E5E8(void* this_) {
     }
     fn_80230498(0, p + 0xc, *(s32*)(p + 0x24c) + *(s32*)(p + 0x244), 0xff, -0x80, -0x80, 1);
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8023077C(void);
 extern "C" void* fn_801F856C(void);
