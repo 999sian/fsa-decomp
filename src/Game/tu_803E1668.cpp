@@ -882,6 +882,16 @@ static inline void MenuSprite803E(JGeometry::TVec3f& pos, s32 id, DrawRec& rec, 
 
 struct MenuFrameValue803E {s32 frame;};
 struct MenuFrame803E {u8 _00[0x230];MenuFrameValue803E frame230[4];MenuFrameValue803E frame240[4];};
+static inline void MenuRestoreClear803E(u8* p,u64 a,const u64* b,const u64* c,s32 mask) {
+    p[0x26b]&=~mask;
+    ((Pane803E4650*)(*(J2DPane**)(p+8))->search(a))->setAlpha(p[0x265]);
+    ((Pane803E4650*)(*(J2DPane**)(p+8))->search(*b))->setAlpha(p[0x266]);
+    ((Pane803E4650*)(*(J2DPane**)(p+8))->search(*c))->setAlpha(p[0x267]);
+}
+static inline f32 MenuPulse803E(s32 n,const f32 magnitude,const f32 denominator,const f32 base) {
+    f32 value=(f32)(n*n);
+    return magnitude*(value/denominator)+base;
+}
 static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return (span-size)*half+origin;}
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
