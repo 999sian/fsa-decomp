@@ -5109,8 +5109,6 @@ void fn_8027023C(char*);
 void fn_8030BD3C(void*, s32);
 void fn_8037AE00(void*);
 
-void fn_80254660(char* p) { initItemState(p); }
-
 inline BOOL stageCleared(s32 a, s32 b) {
     if (a < 0 || a > 7) return FALSE;
     if (b < 0 || b > 3) return FALSE;
@@ -5158,6 +5156,8 @@ struct PlayerSlots {
     s32 b[80];
     s32 c[80];
 };
+
+void fn_80254660(char* p) { initItemState(p); }
 
 extern "C" void* fn_802558E4(u8* p, s16 flag) {
     if (p != 0) {
