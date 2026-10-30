@@ -797,7 +797,7 @@ static inline u32 messageIndexById(const u32 id) {
 }
 static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
     typedef u8 (*ShowFn)(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u32);
-    u32 index = fn_803846BC(id);
+    u32 index = messageIndexById(id);
     return ((ShowFn)fn_8038A42C)(manager, player, source, index, value, &pos, flags);
 }
 extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
