@@ -83,9 +83,9 @@ static inline bool inArea(const JGeometry::TBox2f& area, const JGeometry::TVec3f
 
 static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
     s32 slots[3];
-    s32* out;
     s32 i;
     s32 n;
+    s32* out;
     slots[0] = slots[1] = slots[2] = 0;
     n = 0;
     out = slots;
@@ -158,9 +158,9 @@ extern "C" void fn_8036E5E8(void* this_) {
     }
     *(JGeometry::TVec3f*)(*(char**)(p + 0x250) + 0xc) = *(JGeometry::TVec3f*)(p + 0xc);
     u16* rm = *(u16**)(sManager__8JUTVideo + 4);
-    f32 cy = (f32)(s32)rm[3] * lbl_80542D5C;
-    f32 cx = (f32)(s32)rm[2] * lbl_80542D5C;
-    JGeometry::TVec3f center(cx, cy, lbl_80542D60);
+    s32 w = rm[2];
+    s32 h = rm[3];
+    JGeometry::TVec3f center((f32)w * lbl_80542D5C, (f32)h * lbl_80542D5C, lbl_80542D60);
     count = 0;
     q = p;
     for (i = 0; i < 20; i++, q += 4) {
@@ -185,9 +185,11 @@ extern "C" void fn_8036E5E8(void* this_) {
             }
         }
         if (*(s32*)(p + 0x238) < 0) {
+            s32 n;
+            s32 j;
             void* mgr = fn_801F856C();
-            s32 j = 0;
-            s32 n = *(s32*)((char*)mgr + 0x1008);
+            j = 0;
+            n = *(s32*)((char*)mgr + 0x1008);
             for (; j < n; j++) {
                 char* a = *(char**)((char*)fn_801F856C() + j * 4 + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
