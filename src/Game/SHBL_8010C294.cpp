@@ -261,6 +261,52 @@ extern f32 lbl_8053C4E4;
 extern "C" void v03__5ActorFv(void* this_);
 extern "C" s32 fn_8023AB94(f32* box, s32 room, u8* out);
 extern "C" void fn_801F2DB4(void* this_, u32 a, s32 b, u32 c);
+#include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
+#define I(p,o) (*(s32*)((u8*)(p)+(o)))
+#define U(p,o) (*(u32*)((u8*)(p)+(o)))
+#define S(p,o) (*(s16*)((u8*)(p)+(o)))
+#define B(p,o) (*(u8*)((u8*)(p)+(o)))
+#define F(p,o) (*(f32*)((u8*)(p)+(o)))
+#define P(p,o) (*(u8**)((u8*)(p)+(o)))
+#define V(p,o) (*(JGeometry::TVec3<f32>*)((u8*)(p)+(o)))
+extern f32 lbl_8053C498,lbl_8053C49C,lbl_8053C4AC,lbl_8053C4B0,lbl_8053C4B4,lbl_8053C4B8;
+extern f32 lbl_8053C4C0,lbl_8053C4C8,lbl_8053C4CC,lbl_8053C4D0,lbl_8053C4E8,lbl_8053C4EC;
+extern "C" s32 fn_801CD930(s16*,s16,s16);
+extern "C" s32 fn_801CD950(f32*,f32,f32);
+extern "C" void fn_8013CB44(void*,void*,s32,s32,s32);
+extern "C" u8 fn_801F2B7C(void*,s32,s32,s32);
+extern "C" u8 fn_801F2618(void*,void*,s32);
+extern "C" u8 fn_801F2B20(void*,s32);
+extern "C" void fn_80239914(void*,s32,s32);
+extern "C" void fn_800FE3EC(void*,s32,JGeometry::TVec3<f32>*,s32);
+extern "C" void fn_800FDEA0(void*,void*,void*,s32*,s16*,s32,f32);
+extern "C" JGeometry::TVec3<f32>* fn_8023E7B0(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u8 fn_801D21F0(void*);
+extern "C" void fn_801D1C18(void*);
+#pragma auto_inline off
+static inline void SHBL_updateTrail(u8* p) {
+    if(I(p,4)==0) {
+        if(P(p,0x374)==0)
+            P(p,0x374)=(u8*)fn_8013CC50(I(p,4),p+0xc,0x3d3,0,0,0,0,1,lbl_8053C494);
+        JGeometry::TVec3<f32> pos(V(p,0xc));
+        pos.y=lbl_8053C498*F(p,0x260)+F(p,0x10);
+        fn_8013CB44(P(p,0x374),&pos,0,0,1);
+        B(P(p,0x374),0xbb)=0x80;
+        if(F(p,0x264)<lbl_8053C49C) U(P(p,0x374),0xf4)|=1;
+        else U(P(p,0x374),0xf4)&=~1;
+    }
+}
+static inline bool SHBL_ground(u8* p) {
+    if(F(p,0x14)<=lbl_8053C490) {
+        F(p,0x14)=lbl_8053C490;
+        F(p,0x44)=lbl_8053C490;
+        return true;
+    }
+    return false;
+}
+
 extern "C" void fn_8010CA44(u8* this_) {
     f32 box[4];
     u8 buf[0x74];
