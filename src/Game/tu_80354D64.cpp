@@ -96,15 +96,14 @@ extern "C" void fn_80354FE8(void* this_) {
     JGeometry::TBox2f box;
     u16 effect;
     u8* p=(u8*)this_;
-    const f32* __restrict steps;
+    const char* __restrict steps;
     s32 first;
     s32 second;
     s32 index;
     const f32* __restrict step;
     s32 chosen;
     s32 direction;
-    f32 magnitude=((JGeometry::TVec3f*)(p+0x2d4))->squared();
-    if(!(magnitude<=JGeometry::TUtilf::epsilon())) return;
+    if(((JGeometry::TVec3f*)(p+0x2d4))->squared()<=lbl_80542794 * FLT_EPSILON) {
     if(p[0x2cc]==1) { p[0x2cc]=0; return; }
     box.set(*(JGeometry::TBox2f*)(p+0x80));
     box.addPos(*(JGeometry::TVec2f*)(p+0xc));
@@ -124,13 +123,11 @@ extern "C" void fn_80354FE8(void* this_) {
     if(first!=-1) chosen=first;
     else if(second!=-1) chosen=second;
     else return;
-    steps=(const f32*)lbl_804722B0;
-    index=chosen*2;
-    step=steps+index;
-    offset.x=steps[index];
-    offset.y=*++step;
+    steps=lbl_804722B0;
+    index=chosen*8;
+    step=(const f32*)(steps+index);
     saved=*(JGeometry::TVec3f*)(p+0xc);
-    offset.z=lbl_80542790;
+    offset.set(*(const f32*)(steps+index),*++step,lbl_80542790);
     *(JGeometry::TVec3f*)(p+0xc)+=offset;
     u8 hit=fn_801F2618((Actor*)p,0,0);
     *(JGeometry::TVec3f*)(p+0xc)=saved;
@@ -140,12 +137,12 @@ extern "C" void fn_80354FE8(void* this_) {
     *(f32*)(p+0x44)=lbl_80542790;
     *(f32*)(p+0x40)=lbl_80542790;
     *(f32*)(p+0x3c)=lbl_80542790;
-    const f32* __restrict velocities=(const f32*)lbl_804722D0;
-    f32 vx=velocities[chosen*2];
-    f32 vy=velocities[chosen*2+1];
-    ((JGeometry::TVec3f*)(p+0x3c))->set(vx,vy,lbl_80542790);
+    const char* __restrict velocities=lbl_804722D0;
+    const f32* v=(const f32*)(velocities+index);
+    ((JGeometry::TVec2f*)(p+0x3c))->set(*(const f32*)(velocities+index),v[1]);
+    *(f32*)(p+0x44)=lbl_80542790;
     fn_801F0E34(p,0x30004,0);
-    ((JGeometry::TVec3f*)(p+0x2d4))->x=steps[index];
+    ((JGeometry::TVec3f*)(p+0x2d4))->x=*(const f32*)(steps+index);
     ((JGeometry::TVec3f*)(p+0x2d4))->y=*step;
     ((JGeometry::TVec3f*)(p+0x2d4))->z=lbl_80542790;
     if(*(s32*)(p+0x2c8)==0) {
@@ -159,6 +156,7 @@ extern "C" void fn_80354FE8(void* this_) {
         }
         if(*(void**)(p+0x2e0)==0)
             *(void**)(p+0x2e0)=fn_8013CC50(*(u32*)(p+4),p+0xc,effect,0,lbl_80542798,-2,0,0,1);
+    }
     }
 }
 
@@ -294,6 +292,30 @@ extern "C" void* fn_8020D58C(s32 room);
 extern "C" void fn_8020D8C0(void* a, s32 b, s32 c, s32 d);
 extern "C" void fn_80354FE8(void* this_);
 extern "C" void fn_8013CB44(void* this_, s32 a, s32 b, s32 c);
+extern "C" u8 fn_8023F264(s32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" u8 fn_8022C004(s32);
+extern "C" u8 fn_8023E8F0(s32);
+extern "C" u8 fn_8023188C(s32);
+extern "C" u8 fn_802319B4(s32, s32);
+extern "C" u8 fn_80234D94(s32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" u8 fn_8022F9E4(s32, s32, s32, s32);
+extern "C" u8 fn_8022E438(s32,s32);
+extern "C" void fn_80230C6C(s32);
+extern "C" void fn_8023DFF4(s32,const JGeometry::TVec3f&);
+extern "C" void* fn_8023E7B0(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u16 fn_80226850(void*,s32);
+extern "C" void* lbl_8053AC98;
+extern "C" void fn_802A381C(void*,void*,s32,s32);
+extern "C" u8 fn_801F2740(void*,s32);
+extern "C" u8 fn_80238548(s32,s32,void*,s32);
+extern "C" u8 fn_801F2B20(void*,s32);
+extern const f32 lbl_805427A8;
+extern const f32 lbl_805427AC;
+extern const f32 lbl_805427B0;
+
 extern "C" void fn_803558A4(void* this_) {
     u8* p = (u8*)this_;
     f32 box[4];
