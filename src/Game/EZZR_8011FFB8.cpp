@@ -296,11 +296,12 @@ extern f32 lbl_8053C9A0;
 extern f32 lbl_8053C9A4;
 
 static inline bool EZZR_IsNearBarrier(EZZR* p) {
+    s32 id;
     if (*(s32*)fn_80131F0C() <= 1) {
         return false;
     }
     f32 dist = lbl_8053C980;
-    s32 id = fn_801F778C(fn_801F856C(), 0x42415249, &p->field_0C, &dist);
+    id = fn_801F778C(fn_801F856C(), 0x42415249, &p->field_0C, &dist);
     if (id < 0) {
         return false;
     }
