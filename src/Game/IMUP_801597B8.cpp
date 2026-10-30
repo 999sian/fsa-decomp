@@ -260,25 +260,25 @@ extern s32 lbl_80465F78[];
 extern u32 lbl_80465E38[];
 extern void* lbl_8053AD30;
 extern u8* lbl_8053AF80;
-extern "C" f32 lbl_8053D460;
-extern "C" f32 lbl_8053D464;
-extern "C" f32 lbl_8053D468;
-extern "C" f32 lbl_8053D46C;
-extern "C" f32 lbl_8053D470;
-extern "C" f32 lbl_8053D474;
-extern "C" f32 lbl_8053D478;
-extern "C" f32 lbl_8053D47C;
-extern "C" f32 lbl_8053D484;
-extern "C" f32 lbl_8053D488;
-extern "C" f32 lbl_8053D48C;
-extern "C" f32 lbl_8053D490;
-extern "C" f32 lbl_8053D494;
-extern "C" f32 lbl_8053D498;
-extern "C" f32 lbl_8053D49C;
-extern "C" f32 lbl_8053D4A0;
-extern "C" f32 lbl_8053D4A4;
-extern "C" f32 lbl_8053D4A8;
-extern "C" f32 lbl_8053D4B0;
+extern "C" const f32 lbl_8053D460;
+extern "C" const f32 lbl_8053D464;
+extern "C" const f32 lbl_8053D468;
+extern "C" const f32 lbl_8053D46C;
+extern "C" const f32 lbl_8053D470;
+extern "C" const f32 lbl_8053D474;
+extern "C" const f32 lbl_8053D478;
+extern "C" const f32 lbl_8053D47C;
+extern "C" const f32 lbl_8053D484;
+extern "C" const f32 lbl_8053D488;
+extern "C" const f32 lbl_8053D48C;
+extern "C" const f32 lbl_8053D490;
+extern "C" const f32 lbl_8053D494;
+extern "C" const f32 lbl_8053D498;
+extern "C" const f32 lbl_8053D49C;
+extern "C" const f32 lbl_8053D4A0;
+extern "C" const f32 lbl_8053D4A4;
+extern "C" const f32 lbl_8053D4A8;
+extern "C" const f32 lbl_8053D4B0;
 
 static inline void spawnSparkle(char* p, f32 dy) {
     JGeometry::TVec3f c(*(JGeometry::TVec3f*)(p + 0xc));
@@ -311,7 +311,7 @@ extern "C" void fn_8015A374(char* this_) {
                 }
                 s32 id = *(s32*)(this_ + 0x234);
                 if (lbl_80465E38[id] == 0x27f) {
-                    if (((lbl_8053AAF8[0x83] >> (*(s32*)(this_ + 0x274) * 2)) & 3) == 2) {
+                    if (((u32)(lbl_8053AAF8[0x83] >> (*(s32*)(this_ + 0x274) * 2)) & 3) == 2) {
                         s32 player = *(s32*)(this_ + 0x250);
                         if (player == *(s32*)(this_ + 0x24c)) {
                             *(s32*)(this_ + 0x278) = Actor_CreateByID(fn_801F856C(), 0x50454646, *(void**)(this_ + 4), this_ + 0xc, (player & 3) | 0x24, -1, -1);
@@ -440,18 +440,14 @@ extern "C" void fn_8015A374(char* this_) {
                                 JGeometry::TVec3f b(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - lbl_8053D470, *(f32*)(this_ + 0x14));
                                 *(void**)(this_ + 0x2a8) = fn_8013CC50(*(s32*)(this_ + 4), &b, lbl_8053D4A0, 0x563, 0, 1, 0, 0, 1);
                                 if (*(s32*)(this_ + 0x25c) == 0) {
-                                    JGeometry::TVec3f c(*(JGeometry::TVec3f*)(this_ + 0xc));
-                                    c.y -= lbl_8053D4A4;
-                                    fn_801F6718(fn_801F856C(), *(void**)(this_ + 0x274), *(s32*)(this_ + 4), &c, *(s32*)(this_ + 0x234), 2);
+                                    spawnSparkle(this_, lbl_8053D4A4);
                                 }
                             } else {
                                 JGeometry::TVec3f a(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - lbl_8053D470, *(f32*)(this_ + 0x14));
                                 *(void**)(this_ + 0x2b0) = fn_8013CC50(*(s32*)(this_ + 4), &a, lbl_8053D478, 0x562, 0, 1, 0, 0, 1);
                                 *(void**)(this_ + 0x2a8) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, lbl_8053D47C, 0x563, 0, 1, 0, 0, 1);
                                 if (*(s32*)(this_ + 0x25c) == 0) {
-                                    JGeometry::TVec3f c(*(JGeometry::TVec3f*)(this_ + 0xc));
-                                    c.y -= lbl_8053D46C;
-                                    fn_801F6718(fn_801F856C(), *(void**)(this_ + 0x274), *(s32*)(this_ + 4), &c, *(s32*)(this_ + 0x234), 2);
+                                    spawnSparkle(this_, lbl_8053D46C);
                                 }
                             }
                         }
@@ -616,6 +612,8 @@ extern "C" void fn_8015A374(char* this_) {
         fn_80230498(*(s32*)(this_ + 0x250), this_ + 0x27c, *(s32*)(this_ + 0x288) + 0x322, 0xff, -0x80, -0x80, 1);
         break;
     }
+    case 3:
+        break;
     }
     if (*(s32*)(this_ + 0x234) == 0x20) {
         if (*(s32*)(this_ + 0x23c) <= 0) {
