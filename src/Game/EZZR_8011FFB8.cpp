@@ -363,7 +363,7 @@ static inline bool EZZR_IsNearBarrier(EZZR* p) {
 
 static inline u16 EZZR_AngleTo(f32 dx, f32 dy) {
     f32 rad = JMath::atanTable_.atan2_(dx, dy);
-    return (s32)(rad * 10430.378f);
+    return (s32)(10430.378f * rad);
 }
 
 static inline bool EZZR_MoveToGate(EZZR* p) {
