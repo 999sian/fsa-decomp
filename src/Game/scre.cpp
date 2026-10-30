@@ -118,7 +118,7 @@ static inline void screDigitInner(int n, const JGeometry::TVec3f pos, const JUti
 static inline void screDigit(int n, const JGeometry::TVec3f pos, const JUtility::TColor color) {
     screDigitInner(n,pos,color);
 }
-static inline void screDigitPos(u8* p, int n, const JGeometry::TVec3f pos, f32 alpha) {
+static inline void screDigitPos(u8* p, int n, const JGeometry::TVec3f& pos, f32 alpha) {
     if (*(s32*)(p + 4) < 8) {
         JUtility::TColor color(0xff, 0xd2, 0, (u8)(s32)alpha);
         screDigit(n, pos, color);
