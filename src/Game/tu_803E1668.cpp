@@ -892,9 +892,21 @@ static inline f32 MenuPulse803E(s32 n,const f32 magnitude,const f32 denominator,
     f32 value=(f32)(n*n);
     return magnitude*(value/denominator)+base;
 }
+static inline f32 MenuCenterAxis803E(J2DPane* root,J2DPane* screen,u64 tag,int axis) {
+    f32 size;
+    f32 offset;
+    J2DPane* pane=screen->search(0x4e554c4c5f303031ULL);
+    size=axis ? pane->getHeight() : pane->getWidth();
+    pane=root->search(tag);
+    offset=getBounds__7J2DPaneFv(root->search(tag))[axis];
+    f32 origin=getBounds__7J2DPaneFv(root->search(0x4e554c4c5f303031ULL))[axis];
+    f32 span=axis ? pane->getHeight() : pane->getWidth();
+    return (span-size)*lbl_80543658+(origin+offset);
+}
 static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return (span-size)*half+origin;}
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
+#pragma optimization_level 3
 #pragma opt_common_subs off
 extern "C" void fn_803E51C4(void* param_1) {
     u8* p=(u8*)param_1;
@@ -921,7 +933,7 @@ extern "C" void fn_803E51C4(void* param_1) {
                 if(*(s16*)(p+0x25e)==0) p[0x26b]|=1<<i;
                 if(p[0x26b]&(1<<i)) {
                     s16 t=*(s16*)(p+0x25e);
-                    if(t<50) {s32 n=t;alpha=MenuPulse803E(n,lbl_805436D0,lbl_805436D4,lbl_80543690);}
+                    if(t<50) {s32 n=t;alpha=((f32)(n*n)/lbl_805436D4)*lbl_805436D0+lbl_80543690;}
                     else {s32 n=50-(t-50);alpha=((f32)(n*n)/lbl_805436D4)*lbl_805436D0+lbl_80543690;}
                 } else alpha=150;
             }
@@ -1003,12 +1015,12 @@ extern "C" void fn_803E51C4(void* param_1) {
         J2DPane* pane=(*(J2DPane**)(p+8))->search(*a);
         y=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(*a))[0];
         f32 root=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(0x4e554c4c5f303031ULL))[0];
-        x=MenuCenter803E(lbl_80543658,size,pane->getWidth(),root+y);
+        {f32 origin=root+y;f32 delta=pane->getWidth()-size;x=delta*lbl_80543658+origin;}
         size=(*(J2DPane**)(q+0x18))->search(0x4e554c4c5f303031ULL)->getHeight();
         pane=(*(J2DPane**)(p+8))->search(*a);
         y=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(*a))[1];
         root=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(0x4e554c4c5f303031ULL))[1];
-        y=MenuCenter803E(lbl_80543658,size,pane->getHeight(),root+y);
+        {f32 origin=root+y;f32 delta=pane->getHeight()-size;y=delta*lbl_80543658+origin;}
         MenuMove803E(*(J2DPane**)(q+0x18),0x4e554c4c5f303031ULL,x,y);
         y=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(*b))[0];
         root=getBounds__7J2DPaneFv((*(J2DPane**)(p+8))->search(0x004e646174613033ULL))[0];
@@ -1067,6 +1079,7 @@ extern "C" void fn_803E51C4(void* param_1) {
     fn_80440EE8(lbl_8053AED8);
 }
 #pragma opt_common_subs reset
+#pragma optimization_level reset
 extern "C" void fn_803E64A0(u8* p) {
     s32 i;
     s32 k;
