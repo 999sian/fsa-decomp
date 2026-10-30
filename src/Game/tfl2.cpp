@@ -19,6 +19,7 @@ extern "C" void* fn_802F184C(void* this_, short how) {
 }
 
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 struct Tfl2Rect { f32 x0,y0,x1,y1; };
 struct Tfl2RoomCfg { u8 pad[0xcc]; Tfl2Rect rectA,rectB; };
 struct Tfl2Root { u8 pad[0x20]; void* x20; };
