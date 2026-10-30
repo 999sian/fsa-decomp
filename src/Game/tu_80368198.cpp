@@ -487,12 +487,12 @@ extern const f32 lbl_80542C9C;
 extern const f32 lbl_80542CAC;
 extern const f32 lbl_80542CB0;
 
-static inline void cutsceneBurst(char* self, const JGeometry::TVec3f* at, u16 idA, u16 idB) {
+static inline void cutsceneBurst(char* self, const JGeometry::TVec3f* at, const u16* idA, const u16* idB) {
     JGeometry::TVec3f pos = *at;
     pos.z += lbl_80542C5C;
-    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, idA, 0, 0, 0, 0, 1);
+    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idA, 0, 0, 0, 0, 1);
     pos.z += lbl_80542C60;
-    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, idB, 0, 0, 0, 0, 1);
+    fn_8013CC50(*(u32*)(self + 4), &pos, lbl_80542C58, *idB, 0, 0, 0, 0, 1);
 }
 
 void Unk8036C300::state1() {
