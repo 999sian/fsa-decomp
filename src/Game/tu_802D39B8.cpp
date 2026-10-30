@@ -7,10 +7,11 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 #pragma auto_inline off
-static inline u32 RoomResourceTag802D(const char* name, u32 key = 0x4d202020) {
+static inline u32 RoomResourceTag802D(const char* name) {
     s32 a = name[0] - 0x20;
     s32 b = name[1] - 0x20;
     s32 c = name[2];
+    u32 key = 0x4d202020;
     key += (a << 16) + (b << 8) + c;
     return key - 0x20;
 }
@@ -1264,7 +1265,7 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     u8* data;
     s32* out;
     s32* end;
-    u32 tag;
+    s32 tag;
     s32 number = 0;
     s32 count;
     s32 pass;
@@ -1272,8 +1273,6 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
     s32 room;
     u32 id;
     u32 param;
-    u16 y;
-    u16 x;
     *(u8*)(p+0x131f6) = flag;
     if (*(s32*)(p+0x14)>=0 && *(s32*)(p+0x14)<10
         && *(s32*)(p+0x18)>=0 && *(s32*)(p+0x18)<10) {
@@ -1314,12 +1313,14 @@ extern "C" void fn_802D8328(char* p, u8 reset, u8 flag) {
             offset=0;
             out=end;
             for (;;) {
-                u8* rec=data+offset;
-                id=(u32)rec[0]<<24|(u32)rec[1]<<16|(u32)rec[2]<<8|(u32)rec[3];
+                const RoomActorRecord8328* rec=(const RoomActorRecord8328*)(data+offset);
+                id=(u32)rec->id[0]<<24|(u32)rec->id[1]<<16|(u32)rec->id[2]<<8|(u32)rec->id[3];
                 if (id==0x20202020) break;
-                param=(u32)rec[7]<<24|(u32)rec[8]<<16|(u32)rec[9]<<8|(u32)rec[10];
-                u8 layer=rec[4];
-                x=rec[5];y=rec[6];
+                param=(u32)rec->param[0]<<24|(u32)rec->param[1]<<16|(u32)rec->param[2]<<8|(u32)rec->param[3];
+                u8 layer=rec->layer;
+                u16 y;
+                u16 x;
+                x=rec->x;y=rec->y;
                 offset+=11;
                 bool first=false;
                 for (s32 j=0;j<6;j++) {
