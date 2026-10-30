@@ -83,14 +83,16 @@ static inline bool inArea(const JGeometry::TBox2f& area, const JGeometry::TVec3f
 
 static inline bool spawnTriple(char* p, JGeometry::TVec3f pos) {
     s32* out;
+    char* q;
     s32 slots[3];
     s32 i;
     s32 n;
     slots[0] = slots[1] = slots[2] = 0;
     n = 0;
     out = slots;
-    for (i = 0; i < 20; i++) {
-        if (*(void**)(p + 0x258 + i * 4) == 0) {
+    q = p;
+    for (i = 0; i < 20; i++, q += 4) {
+        if (*(void**)(q + 0x258) == 0) {
             n++;
             *out++ = i;
             if (n == 3) break;
