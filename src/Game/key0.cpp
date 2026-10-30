@@ -756,6 +756,25 @@ static inline void key0LinkHere2(char* p) {
                    packed, *(u32*)(p + 0x238));
 }
 
+static inline void key0Land(char* p) {
+    JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x3c);
+    *(u8*)(p + 0x2b3) = 0;
+    *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+    *(f32*)(p + 0x14) = 0.0f;
+    vel.z = 0.0f;
+    if (vel.y >= lbl_80540C94) {
+        vel.y = lbl_80540C94;
+    } else if (vel.y <= lbl_80540C9C) {
+        vel.y = lbl_80540C9C;
+    }
+    if (*(s32*)(p + 0x280) == 6) {
+        if (vel.x != lbl_80540C74 || vel.y != lbl_80540C74) {
+            vel.x = lbl_80540CB0 * vel.x;
+            vel.y = lbl_80540CB0 * vel.y;
+        }
+    }
+}
+
 static inline void key0RegisterAt(const Key0Pt& pt, u32 id) {
     fn_802D6C10(fn_802D6A9C(), pt, id);
 }
@@ -820,8 +839,7 @@ extern "C" void fn_802C2C30(char* p) {
         if (*(u8*)(p + 0x2b3) == 1) {
             *(u8*)(p + 0x2b3) = 0;
             *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
-            *(f32*)(p + 0x14) = 0.0f;
-            vel.z = 0.0f;
+            vel.z = *(f32*)(p + 0x14) = 0.0f;
             if (vel.y >= lbl_80540C94) {
                 vel.y = lbl_80540C94;
             } else if (vel.y <= lbl_80540C9C) {
