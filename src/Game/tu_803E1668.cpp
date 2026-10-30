@@ -65,6 +65,7 @@ static inline f32 MenuSlideExit803E(s32 elapsed, const f32 magnitude, const f32 
     return magnitude*(square*multiplier);
 }
 static inline f32 MenuSquare803E(s32 n) { return n * n; }
+static inline u64* MenuSpriteTags803E(u8* base, s32 row) { return (u64*)(base + 0xf20) + row * 4; }
 static inline int MenuFadeAlpha803E(u8 alpha, const f32 factor) { return (f32)alpha * factor; }
 static inline void MenuSetSlide803E(u8* entry, f32 value) { *(f32*)(entry + 0x120) = value; }
 static inline f32 MenuGetSlide803E(u8* entry) { return *(f32*)(entry + 0x120); }
@@ -183,29 +184,198 @@ public:
     virtual void* get(u32, const void*);
 };
 extern "C" void fn_802F86CC(void* a, s32 b, s32 c, s32 d, s32 e, s32 f);
-#pragma dont_inline on
-extern "C" void fn_803E1668(u8* p) {
-    s32 i;
-    s32 j = 0;
-    s32 k;
-    f32 t;
-    f32 a;
-    f32 b;
-    if (*(s32*)(p + 0x220) >= 100) {
-        return;
+#pragma dont_inline reset
+extern "C" void fn_803E1668(u8* self) {
+    u8* base = (u8*)lbl_80477970;
+    u8* p = (u8*)self;
+    JGeometry::TVec3f pos;
+    f32 ratio = (f32)(*(J2DPane**)(p + 0xc))->search(*(u64*)(base + 0x750))->getAlpha() / (f32)p[0x342];
+    if (*(s32*)(p + 0x220) < 0x64) {
+        f32 alpha = lbl_80543650 * ratio;
+        s32 i;
+        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        for (i = 0; i < 4; i++) {
+            if (tags[*(s32*)(p + 0x1bc)][i] != 0) {
+                DrawRec rec;
+                rec.b26 = 0;
+                ((u8*)&rec)[0x13] = alpha;
+                J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                f32 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                pos.x = (lbl_80543654 * (span * lbl_80543658 + *(f32*)((u8*)r + 0x30))) /
+                        (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                span = *(f32*)((u8*)r + 0x2c) - *(f32*)((u8*)r + 0x24);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                pos.y = (lbl_8054365C * (lbl_80543660 + (span * lbl_80543658 + *(f32*)((u8*)r + 0x34)))) /
+                        (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+                pos.z = lbl_80543664;
+                rec.ids[7] = i + 12;
+                s32 id = ((s32*)(base + 0x40))[*(s32*)(p + 0x220) % 30] + 0x10;
+                void* res = (*(MenuResource803E**)(lbl_8053AAF8 + 0xa4))->get(0x534F4220, base + 0xfa0);
+                ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, res, id, &rec, 1.0f, 1.0f);
+            }
+        }
+    } else if (*(s32*)(p + 0x220) < 0x70) {
+        f32 alpha = lbl_80543650 * ratio;
+        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        for (s32 i = 3; i >= 0; i--) {
+            DrawRec rec;
+            rec.b26 = 0;
+            ((u8*)&rec)[0x13] = alpha;
+            f32 x0, x1;
+            switch (*(s32*)(p + 0x1bc)) {
+            case 0: {
+ J2DPane* r=(*(J2DPane**)(p+0xc))->search(tags[*(s32*)(p+0x1bc)][0]);
+ f32 span=*(f32*)((u8*)r+0x28)-*(f32*)((u8*)r+0x20);
+ r=(*(J2DPane**)(p+0xc))->search(tags[*(s32*)(p+0x1bc)][0]);
+ x0=span*lbl_80543658+*(f32*)((u8*)r+0x30);
+ r=(*(J2DPane**)(p+0xc))->search(tags[3][i]);
+ span=*(f32*)((u8*)r+0x28)-*(f32*)((u8*)r+0x20);
+ r=(*(J2DPane**)(p+0xc))->search(tags[3][i]);
+ x1=span*lbl_80543658+*(f32*)((u8*)r+0x30); break;
+ }
+case 1: {
+                J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i % 2]);
+                f32 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i % 2]);
+                x0 = span * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[3][i / 2 + (i % 2) * 2]);
+                span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[3][i / 2 + (i % 2) * 2]);
+                x1 = span * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                break;
+            }
+            case 2: {
+                if (i != 3) {
+                    J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                    f32 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                    x0 = span * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    x1 = span * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                } else {
+                    J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][2]);
+                    f32 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][2]);
+                    x0 = span * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    x1 = span * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                }
+                break;
+            }
+            }
+            pos.x = (lbl_80543654 * ((x1 - x0) * ((f32)(*(s32*)(p + 0x220) - 0x64) / lbl_8054366C) + x0)) /
+                    (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+            J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            f32 span = *(f32*)((u8*)r + 0x2c) - *(f32*)((u8*)r + 0x24);
+            r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            pos.y = (lbl_8054365C * (lbl_80543660 + (span * lbl_80543658 + *(f32*)((u8*)r + 0x34)))) /
+                    (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+            pos.z = lbl_80543664;
+            rec.ids[7] = i + 12;
+            void* res = (*(MenuResource803E**)(lbl_8053AAF8 + 0xa4))->get(0x534F4220, base + 0xfa0);
+            ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, res, 0x10, &rec, 1.0f, 1.0f);
+        }
+    } else if (*(s32*)(p + 0x220) < 0xd4) {
+        f32 alpha = lbl_80543650 * ratio;
+        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        s32* tbl = (s32*)(base + 0x40);
+        for (s32 i = 0; i < 4; i++) {
+            DrawRec rec;
+            rec.b26 = 0;
+            ((u8*)&rec)[0x13] = alpha;
+            J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            f32 span = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+            r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            pos.x = (lbl_80543654 * (span * lbl_80543658 + *(f32*)((u8*)r + 0x30))) /
+                    (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+            r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            span = *(f32*)((u8*)r + 0x2c) - *(f32*)((u8*)r + 0x24);
+            r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            pos.y = (lbl_8054365C * (lbl_80543660 + (span * lbl_80543658 + *(f32*)((u8*)r + 0x34)))) /
+                    (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+            pos.z = lbl_80543664;
+            if (*(s32*)(p + 0x1bc) == 1) {
+                rec.ids[7] = 12 + (i / 2) + (i % 2) * 2;
+            } else {
+                rec.ids[7] = i + 12;
+            }
+            s32 id = tbl[*(s32*)(p + 0x220) % 30] + 0x10;
+            void* res = (*(MenuResource803E**)(lbl_8053AAF8 + 0xa4))->get(0x534F4220, base + 0xfa0);
+            ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, res, id, &rec, 1.0f, 1.0f);
+        }
+    } else {
+        f32 alpha = lbl_80543650 * ratio;
+        const u64 (*tags)[4] = (const u64 (*)[4])(base + 0xf20);
+        for (s32 i = 3; i >= 0; i--) {
+            DrawRec rec;
+            rec.b26 = 0;
+            ((u8*)&rec)[0x13] = alpha;
+            f32 x1, x0;
+            switch (*(s32*)(p + 0x1bc)) {
+            case 0: {
+ J2DPane* r=(*(J2DPane**)(p+0xc))->search(tags[3][i]);
+ f32 span=*(f32*)((u8*)r+0x28)-*(f32*)((u8*)r+0x20);
+ r=(*(J2DPane**)(p+0xc))->search(tags[3][i]);
+ x0=span*lbl_80543658+*(f32*)((u8*)r+0x30);
+ r=(*(J2DPane**)(p+0xc))->search(tags[*(s32*)(p+0x1bc)][0]);
+ span=*(f32*)((u8*)r+0x28)-*(f32*)((u8*)r+0x20);
+ r=(*(J2DPane**)(p+0xc))->search(tags[*(s32*)(p+0x1bc)][0]);
+ x1=span*lbl_80543658+*(f32*)((u8*)r+0x30); break;
+ }
+case 1: {
+                J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[3][i / 2 + (i % 2) * 2]);
+                f32 s0 = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[3][i / 2 + (i % 2) * 2]);
+                x0 = s0 * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i % 2]);
+                f32 s1 = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i % 2]);
+                x1 = s1 * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                break;
+            }
+            case 2: {
+                if (i != 3) {
+                    J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    f32 s0 = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    x0 = s0 * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                    f32 s1 = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][i]);
+                    x1 = s1 * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                } else {
+                    J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    f32 s0 = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+                    x0 = s0 * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][2]);
+                    f32 s1 = *(f32*)((u8*)r + 0x28) - *(f32*)((u8*)r + 0x20);
+                    r = (*(J2DPane**)(p + 0xc))->search(tags[*(s32*)(p + 0x1bc)][2]);
+                    x1 = s1 * lbl_80543658 + *(f32*)((u8*)r + 0x30);
+                }
+                break;
+            }
+            }
+            pos.x = (lbl_80543654 * ((x1 - x0) * ((f32)(*(s32*)(p + 0x220) - 0xd4) / lbl_8054366C) + x0)) /
+                    (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4);
+            J2DPane* r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            f32 span = *(f32*)((u8*)r + 0x2c) - *(f32*)((u8*)r + 0x24);
+            r = (*(J2DPane**)(p + 0xc))->search(tags[3][i]);
+            pos.y = (lbl_8054365C * (lbl_80543660 + (span * lbl_80543658 + *(f32*)((u8*)r + 0x34)))) /
+                    (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
+            pos.z = lbl_80543664;
+            rec.ids[7] = i + 12;
+            void* res = (*(MenuResource803E**)(lbl_8053AAF8 + 0xa4))->get(0x534F4220, base + 0xfa0);
+            ((void(*)(void*,const JGeometry::TVec3f*,void*,s32,DrawRec*,f32,f32))fn_802F86CC)(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, res, 0x10, &rec, 1.0f, 1.0f);
+        }
     }
-    for (i = 0; i < 4; i++) {
-        j += 8;
-    }
-    k = *(s32*)(p + 0x1bc);
-    a = (f32)k;
-    b = a - 1.0f;
-    t = b;
-    fn_802F86CC(p, t, a, j, 0, 0);
 }
-#pragma dont_inline reset
-
-#pragma dont_inline reset
 extern "C" s32 fn_80403414(s32);
 extern "C" s32 fn_804033D4(s32);
 extern "C" s32 fn_8040336C(s32);
