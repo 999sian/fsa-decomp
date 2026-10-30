@@ -741,7 +741,8 @@ static inline void key0LinkPosKey(const Key0Pt& pos, const Key0Pt& key, u32 pack
 
 static inline u32 key0MgrBits() {
     u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-    return ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+    u32 x14 = *(u32*)((u8*)fn_802D6A9C() + 0x14);
+    return ((x18 & 0xff) << 8) | ((x14 & 0xff) << 16);
 }
 
 static inline void key0LinkHere2(char* p) {
