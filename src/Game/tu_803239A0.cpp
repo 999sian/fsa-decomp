@@ -1,3 +1,5 @@
+#define GAME_ACTOR_USE_SDK_VEC
+#include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JGeometry/Vec.h"
