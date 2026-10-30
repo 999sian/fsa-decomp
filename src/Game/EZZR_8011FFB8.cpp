@@ -300,6 +300,11 @@ static inline void EZZR_SetMove(EZZR* p, f32 accel, f32 speed) {
     *(f32*)((u8*)p + 0x37c) = accel;
 }
 
+static inline u8 EZZR_StartMove(EZZR* p, const JGeometry::TVec3f& v) {
+    *(f32*)((u8*)p + 0x37c) = lbl_8053C9A4;
+    return p->v48((Vec*)&v, *(f32*)((u8*)p + 0x380));
+}
+
 static inline void EZZR_SetAllState(s32 state) {
     for (s32 i = 0; i < *(s32*)fn_80131F0C(); i++) {
         EZZR* a = (EZZR*)fn_80131E30(fn_80131F0C(), i);
