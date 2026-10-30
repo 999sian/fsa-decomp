@@ -110,7 +110,9 @@ extern u8 lbl_8053ABF8;
 extern s32 lbl_8053A118;
 struct TlwpData {
     u16 ids[20];      // 0x00
-    u8 pad[0x88 - 0x28];
+    s32 unk_0x28[8];
+    s32 unk_0x48[8];
+    s32 unk_0x68[8];
     s32 model[3][4];  // 0x88
     s32 timer[3][4];  // 0xb8
     s32 kind[3];      // 0xe8
@@ -447,8 +449,9 @@ extern "C" void fn_801B56A0(char* p) {
         }
         break;
     case 3: {
+        s32 i=0;
         s32 count=0;
-        for (s32 i=0; i<fn_80138A30(lbl_8053AAF8); i++) {
+        for (; i<fn_80138A30(lbl_8053AAF8); i++) {
             f32 dx=fn_8023E724(i)->x-*(f32*)(p+0xc);
             f32 dy=fn_8023E724(i)->y-*(f32*)(p+0x10);
             f32 dist=dx*dx+dy*dy;
@@ -466,11 +469,13 @@ else if (isnan(dist)) { dist=NAN; }
         break;
     }
     case 4: {
-        char* q;
+        s32 i;
         s32 room;
+        char* q;
         if (!fn_801F68E0(fn_801F856C())) break;
+        i=0;
         q=p;
-        for(s32 i=0;i<4;i++,q+=0xc) {
+        for(;i<4;i++,q+=0xc) {
             if(fn_8023F264(i)) {
                 room=*(s32*)(p+4);
                 if(room==fn_8023DE58(i)) {
@@ -489,11 +494,13 @@ else if (isnan(dist)) { dist=NAN; }
     }
     case 5: {
         char* q;
+        s32 i;
         s32 count;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
-        count=0;
+        i=0;
+        count=i;
         q=p;
-        for(s32 i=0;i<4;i++,q+=0xc) {
+        for(;i<4;i++,q+=0xc) {
             if(fn_8023F264(i)) {
                 if(i!=0) target.y-=lbl_8053EA6C;
                 fn_801F71A4((f32*)(q+0x264),target.x,lbl_8053EA28,lbl_8053EA10);
@@ -523,8 +530,9 @@ else if (isnan(dist)) { dist=NAN; }
         break;
     }
     case 6: {
-        char* q;
+        s32 i;
         s32 room;
+        char* q;
         if(*(s32*)(p+0x234)!=0) break;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
         q=p;
@@ -547,7 +555,7 @@ g=0.5*g*(3.0-g*g*dist);
 dist=dist*g;
 } else if (dist<0.0) { dist=NAN; }
 else if (isnan(dist)) { dist=NAN; }
-                    bool arrived = dist<lbl_8053EA60;
+                    bool arrived=dist<lbl_8053EA60;
                     if(*(s32*)(p+0x240)==0) fn_80230498(i,(TlwpVec*)(q+0x264),0x3c,0xff,-0x80,-0x80,1);
                     else fn_80230498(i,(TlwpVec*)(q+0x264),0x3e,0xff,-0x80,-0x80,1);
                 }
