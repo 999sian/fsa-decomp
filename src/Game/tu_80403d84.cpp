@@ -624,6 +624,17 @@ extern "C" void fn_80408114(u8* self);
 extern "C" void fn_8040732C(u8* self);
 extern "C" void fn_80409014(u8* self);
 extern "C" u8* lbl_8053AD78;
+extern void* lbl_8053AED8;
+
+// States in which the menu cursor animates.
+static inline bool Tu410PlayState(s32 st) {
+	if (st == 2 || (u32)(st - 3) <= 1 || (u32)(st - 6) <= 3 || (u32)(st - 15) <= 3 ||
+	    (u32)(st - 20) <= 1 || st == 22) {
+		return true;
+	}
+	return false;
+}
+
 extern "C" void fn_804108B4(u8* self) {
 	s32 st;
 	s32 i;
