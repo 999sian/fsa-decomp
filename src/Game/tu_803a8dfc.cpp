@@ -3503,6 +3503,11 @@ extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
 
 extern "C" void __construct_array(void* p, void* ctor, void* dtor, s32 size, s32 count);
 extern "C" void __ct__Q29JGeometry8TVec3_f_Fv(void);
+struct MsgMenuVectorArrays {
+    JGeometry::TVec3f positions[10];
+    s32 indices[10];
+    JGeometry::TVec3f playerPositions[4];
+};
 extern void fn_803B7B90(void* thisPtr);
 extern "C" void __mtspr(u32,u32);
 extern "C" void OSReport(const char*,...);
@@ -3514,7 +3519,7 @@ extern "C" void __ct__14WaveControllerFlll(void*,s32,s32,s32);
 extern "C" void* fn_803B6FD8(void* this_) {
     u8* p = (u8*)this_;
  const char* base=(const char*)lbl_80476208;
- s32 i;
+ 
  f32 b,a,height;
  void* obj; J2DScreen* screen; J2DPicture* picture;
     *(void**)p = lbl_804AF9A0;
@@ -3631,7 +3636,7 @@ b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]
 (*(u8**)(p+164))[0xb0]=0;
 (*(u8**)(p+160))[0xb0]=0;
 *(f32*)(p+0x244)=lbl_805433C8;*(f32*)(p+0x248)=lbl_805433C8;*(f32*)(p+0x24c)=lbl_805433C8;
-for(i=0;i<4;i++){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(p+0x174+i*4)=obj;}
+for(s32 i=0;i<4;i++){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(p+0x174+i*4)=obj;}
 obj=operator new(0x5c);if(obj)__ct__14WaveControllerFlll(obj,(s32)(p+0x244),0,8);*(void**)(p+0x184)=obj;
 ((JGeometry::TVec3f*)(p+0x250))[0].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+712)=-1;
 ((JGeometry::TVec3f*)(p+0x250))[1].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+716)=-1;
