@@ -4,6 +4,7 @@
 #include "types.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "Game/ItemBase.h"
+#include "Game/HitRect.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Vec.h"
 #define GAME_ACTOR_USE_SDK_VEC
@@ -321,16 +322,20 @@ extern "C" s32 fn_801F2718(void*, u32);
 extern "C" void fn_801EF510(void*);
 extern "C" double fabs(double);
 extern "C" void fn_801AB6A8(void* this_) {
+    f32 c, a, d, b;
+    s32 innerRoom;
     char* p = (char*)this_;
-    f32 a = *(f32*)(p+0x64) + *(f32*)(p+0x10);
-    f32 b = *(f32*)(p+0x6c) + *(f32*)(p+0x10);
-    f32 c = *(f32*)(p+0x60) + *(f32*)(p+0xc);
-    f32 d = *(f32*)(p+0x68) + *(f32*)(p+0xc);
+    s32 i;
+    s32 player;
     s32 room;
+    a = *(f32*)(p+0x64); b = *(f32*)(p+0x6c);
+    c = *(f32*)(p+0x60); d = *(f32*)(p+0x68);
+    a += *(f32*)(p+0x10); b += *(f32*)(p+0x10);
+    c += *(f32*)(p+0xc); d += *(f32*)(p+0xc);
     if (fn_801F3D94(p,1)) {fn_801F2618(p,0,0); return;}
     if (*(s32*)(p+0x108)<1000) {((Actor*)p)->v07(); return;}
     room=*(s32*)(p+4);
-    if ((fn_802D6A9C()+0x131df)[room]) {
+    if (((GnmaCfg*)fn_802D6A9C())->flags[room]) {
         *(f32*)(p+0x10)-=*(f32*)(p+0x14);
         *(f32*)(p+0x14)=0.0f;
         *(f32*)(p+0x44)=0.0f;
@@ -341,15 +346,15 @@ extern "C" void fn_801AB6A8(void* this_) {
     ((JGeometry::TVec3<f32>*)(p+0xc))->add(*(JGeometry::TVec3<f32>*)(p+0x3c));
     if (*(s32*)(p+0x230)!=6) {
         c=0.5f*(c-d)+d; b=0.5f*(a-b)+b;
-        for(s32 i=0;i<4;++i) {
-            s32 player=fn_801F285C(p,0,0,0,i);
+        for(i=0;i<4;++i) {
+            player=fn_801F285C(p,0,0,0,i);
             if(player>=0) {
                 s32 index;
                 u16 angle;
                 fn_801EEC98(p,*(void**)(p+0x198),&angle,&index,0,0,player,2);
                 if(index>=0) {
-                    room=*(s32*)(p+4);
-                    if(!fn_802D6A9C()[room+0x131df]) *(s32*)(p+0x98)=index;
+                    innerRoom=*(s32*)(p+4);
+                    if(!gnma_cfgFlagId(innerRoom)) *(s32*)(p+0x98)=index;
                     else if(!(index&2)) *(s32*)(p+0x98)=index;
                     else if(angle<0x8000) *(s32*)(p+0x98)=0;
                     else *(s32*)(p+0x98)=1;
@@ -416,7 +421,7 @@ case 3: *(f32*)(p+0x264)=0.0f; *(f32*)(p+0x268)=-1.0f; *(f32*)(p+0x26c)=0.0f; br
         if((u8)hit) {
             u8 turn=0;
             room=*(s32*)(p+4);
-            if(!(fn_802D6A9C()+0x131df)[room]) turn=1;
+            if(!((GnmaCfg*)fn_802D6A9C())->flags[room]) turn=1;
             else if(collision.y!=0.0f) {
                 if((collision.x>0.0f && *(f32*)(p+0x3c)<0.0f) ||
                    (collision.x<0.0f && *(f32*)(p+0x3c)>0.0f)) turn=1;
@@ -425,7 +430,7 @@ case 3: *(f32*)(p+0x264)=0.0f; *(f32*)(p+0x268)=-1.0f; *(f32*)(p+0x26c)=0.0f; br
                 if(*(s32*)(p+0x238)<5) *(s32*)(p+0x238)=5;
                 if(*(s32*)(p+0x240)==0) {
                     room=*(s32*)(p+4);
-                    if(!(fn_802D6A9C()+0x131df)[room]) {
+                    if(!((GnmaCfg*)fn_802D6A9C())->flags[room]) {
                         *(s32*)(p+0x98)^=2;
                         if(gnmaRand01()<0.5f) *(s32*)(p+0x98)^=1;
                         c=*(f32*)(p+0xc); b=*(f32*)(p+0x10); d=*(f32*)(p+0x14);
@@ -472,7 +477,7 @@ case 3: *(f32*)(p+0x264)=0.0f; *(f32*)(p+0x268)=-1.0f; *(f32*)(p+0x26c)=0.0f; br
             *(s32*)(p+0x98)=(s32)(4.0f*gnmaRand01());
             *(s32*)(p+0x98)&=3;
             room=*(s32*)(p+4);
-            if(!(fn_802D6A9C()+0x131df)[room]) {c=*(f32*)(p+0xc); b=*(f32*)(p+0x10); d=*(f32*)(p+0x14);
+            if(!((GnmaCfg*)fn_802D6A9C())->flags[room]) {c=*(f32*)(p+0xc); b=*(f32*)(p+0x10); d=*(f32*)(p+0x14);
 *(f32*)(p+0x44)=0.0f; *(f32*)(p+0x40)=0.0f; *(f32*)(p+0x3c)=0.0f;
 switch(*(s32*)(p+0x98)) {
 case 0: *(f32*)(p+0x264)=16.0f; *(f32*)(p+0x268)=0.0f; *(f32*)(p+0x26c)=0.0f; break;
