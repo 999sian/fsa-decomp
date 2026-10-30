@@ -4,6 +4,21 @@
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JFramework/JFWDisplay.h"
+extern u8* lbl_8053AAF8;
+extern void* lbl_8053AF80;
+extern u8 lbl_80529DEC[];
+extern u8 lbl_8050EC80[];
+extern const u64 lbl_8048D198[];
+extern const s32 lbl_8048D2B0[];
+extern "C" void fn_803832BC(void*,s32,s32,s32,s32);
+extern "C" char* getStringPtr__10J2DTextBoxCFv(void*);
+extern "C" JGeometry::TBox2f* getBounds__7J2DPaneFv(void*);
+extern "C" char* strcpy(char*,const char*);
+extern "C" void fn_80458880(void*,s32,s32);
+extern "C" void fn_80458F9C(void*,s32);
+extern "C" void* fn_80309A9C(void*,s32,s32);
+extern "C" void fn_8042EDAC(void*,s32,s32);
+
 
 // ---- from src/Game/fn_8041769C_dtor.cpp ----
 // vtable slot 2 (byte offset 8) - see [[reference_fsa_virtual_dispatch_codegen_trick]]
@@ -148,7 +163,11 @@ static inline void fadeKeys(u8* p, const u64* keys, s32 n, s32 flag, f32 rate) {
         pane->slot9((s32)((f32)p[flag + i] * rate));
     }
 }
+#pragma opt_common_subs off
 void TU80414F6C::fn_80416038() {
+    f32 rate;
+    f32 full;
+    f32 raw;
     u8* p = (u8*)this;
     const T80416BD0_Tags* t = (const T80416BD0_Tags*)lbl_8048CD50;
     u8 done0 = 0;
@@ -161,9 +180,6 @@ void TU80414F6C::fn_80416038() {
     s32 i;
     s32 j;
     const u64* k;
-    f32 raw;
-    f32 rate;
-    f32 full;
 
     *(s16*)(p + 0x102) = *(s16*)(p + 0x102) + 1;
 
@@ -264,16 +280,16 @@ void TU80414F6C::fn_80416038() {
                 } else if (rate > lbl_805439B8) {
                     rate = lbl_805439B8;
                 }
-                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
-                    if (*k != 0) {
-                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                for (j = 0; j < 0xa; j++) {
+                    if (t->grid[i][j] != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(t->grid[i][j]);
                         pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * rate));
                     }
                 }
             } else {
-                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
-                    if (*k != 0) {
-                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                for (j = 0; j < 0xa; j++) {
+                    if (t->grid[i][j] != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(t->grid[i][j]);
                         pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439B8));
                     }
                 }
@@ -297,16 +313,16 @@ void TU80414F6C::fn_80416038() {
                 } else if (rate > lbl_805439B8) {
                     rate = lbl_805439B8;
                 }
-                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
-                    if (*k != 0) {
-                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                for (j = 0; j < 0xa; j++) {
+                    if (t->grid[i][j] != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(t->grid[i][j]);
                         pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * rate));
                     }
                 }
             } else {
-                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
-                    if (*k != 0) {
-                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                for (j = 0; j < 0xa; j++) {
+                    if (t->grid[i][j] != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(t->grid[i][j]);
                         pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439B8));
                     }
                 }
@@ -345,8 +361,7 @@ void TU80414F6C::fn_80416038() {
         p[0x109] = 1;
     }
 }
-
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 extern "C" void fn_80416BD0(u8* p) {
     u8* slot;
     u8* slotA;
