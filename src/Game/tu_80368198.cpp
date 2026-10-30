@@ -439,6 +439,9 @@ extern void* lbl_8053AD30;
 extern "C" void fn_8010DF78(void* p);
 extern "C" void* fn_8016A3AC(void);
 extern "C" void* fn_8013CC50(s32 room, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+static inline void* cutsceneEmitter(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale) {
+    return fn_8013CC50(room,pos,scale,id,a,b,c,d,e);
+}
 extern "C" s32 fn_80309C4C(void* p, s32 a, s32 b);
 extern "C" void fn_80387494(s32 a);
 extern "C" void fn_803676CC(void* = 0);
@@ -969,6 +972,8 @@ extern "C" void fn_8036B03C(u8* this_,s32 param){
 s32 i, n;
 u8* dst;
 u16* ids;
+const u16* __restrict idTable;
+const s32* __restrict wordTable;
 const char* tbl;
 u8* self;
 s32 state;
@@ -984,11 +989,11 @@ case 2: { self[0x238]=0;{ u8* e = *(u8**)(self + 0x384); *(u32*)(e + 0xf4) |= 1;
 { u8* e = *(u8**)(self + 0x38c); *(u32*)(e + 0xf4) |= 1; *(s32*)(e + 0x24) = 1; *(u8**)(self + 0x38c) = 0; }
 { u8* e = *(u8**)(self + 0x390); *(u32*)(e + 0xf4) |= 1; *(s32*)(e + 0x24) = 1; *(u8**)(self + 0x390) = 0; }
 { u8* e = *(u8**)(self + 0x394); *(u32*)(e + 0xf4) |= 1; *(s32*)(e + 0x24) = 1; *(u8**)(self + 0x394) = 0; } break; }
-case 3: { self[0x238]=1; *(s32*)(self + 0x244)=1; *(s32*)(self + 0x254)=cutsceneTable32((s32*)(tbl+0x54),1);
+case 3: { self[0x238]=1; *(s32*)(self + 0x244)=1; wordTable=(s32*)(tbl+0x54);*(s32*)(self+0x254)=wordTable[1];
 *(u8**)(self + 0x378) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, 0x2ae, 0, 1, 0, 0, 1);
-*(u8**)(self + 0x37c) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0xf8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
-*(u8**)(self + 0x380) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0x108),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
-*(u8**)(self + 0x358) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0x118),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x37c) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, (idTable=(u16*)(tbl+0xf8),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x380) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, (idTable=(u16*)(tbl+0x108),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x358) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, (idTable=(u16*)(tbl+0x118),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
 fn_801F0E34(self,0x400d5,0);
 { n = *(s32*)((u8*)fn_801F856C()+0x1008);
 for (i=0;i<n;i++) { u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
@@ -1035,8 +1040,8 @@ case 12: { *(s32*)(self + 0x258)=150; break; }
 case 14: { self[0x237]=0;
 {ids=(u16*)(tbl+0xc8); dst=self; for(i=0;i<7;i++,ids++,dst+=4){ *(void**)(dst+0x35c)=fn_8013CC50(*(s32*)(self + 4),self+0xc,lbl_80542CA4,*ids,0,1,0,0,1); }}
 *(s32*)(self + 0x2f0)=300;fn_801F0E34(self,0x30082,0);
-*(u8**)(self + 0x350) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0xd8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
-*(u8**)(self + 0x354) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0xe8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x350) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, (idTable=(u16*)(tbl+0xd8),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x354) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, (idTable=(u16*)(tbl+0xe8),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
 *(s32*)(self + 0x26c)=400; break; }
 case 15: { self[0x234]=0;self[0x236]=1; break; }
 case 16: { self[0x236]=0;fn_80119998(fn_80119DD0(),180,0,0,0,1,0,0);*(s32*)(self + 0x24c)=1;
@@ -1052,11 +1057,11 @@ case 21: { self[0x238]=0;{ u8* e = *(u8**)(self + 0x384); *(u32*)(e + 0xf4) |= 1
 { u8* e = *(u8**)(self + 0x38c); *(u32*)(e + 0xf4) |= 1; *(s32*)(e + 0x24) = 1; *(u8**)(self + 0x38c) = 0; }
 { u8* e = *(u8**)(self + 0x390); *(u32*)(e + 0xf4) |= 1; *(s32*)(e + 0x24) = 1; *(u8**)(self + 0x390) = 0; }
 { u8* e = *(u8**)(self + 0x394); *(u32*)(e + 0xf4) |= 1; *(s32*)(e + 0x24) = 1; *(u8**)(self + 0x394) = 0; } break; }
-case 22: { self[0x238]=1; *(s32*)(self + 0x244)=1; *(s32*)(self + 0x254)=cutsceneTable32((s32*)(tbl+0x54),1);
+case 22: { self[0x238]=1; *(s32*)(self + 0x244)=1; wordTable=(s32*)(tbl+0x54);*(s32*)(self+0x254)=wordTable[1];
 *(u8**)(self + 0x378) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, 0x2ae, 0, 1, 0, 0, 1);
-*(u8**)(self + 0x37c) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0xf8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
-*(u8**)(self + 0x380) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0x108),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
-*(u8**)(self + 0x358) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0x118),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x37c) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, (idTable=(u16*)(tbl+0xf8),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x380) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, (idTable=(u16*)(tbl+0x108),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x358) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, (idTable=(u16*)(tbl+0x118),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
 fn_801F0E34(self,0x400d5,0);
 { n = *(s32*)((u8*)fn_801F856C()+0x1008);
 for (i=0;i<n;i++) { u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
@@ -1080,8 +1085,8 @@ case 25: { *(s32*)(self + 0x294)=((s32*)(tbl+0x78))[0]+70;
 case 26: { self[0x237]=0;
 {ids=(u16*)(tbl+0xc8); dst=self; for(i=0;i<7;i++,ids++,dst+=4){ *(void**)(dst+0x35c)=fn_8013CC50(*(s32*)(self + 4),self+0xc,lbl_80542CA4,*ids,0,1,0,0,1); }}
 *(s32*)(self + 0x2f0)=300;fn_801F0E34(self,0x30082,0);
-*(u8**)(self + 0x350) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0xd8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
-*(u8**)(self + 0x354) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0xe8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x350) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, (idTable=(u16*)(tbl+0xd8),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
+*(u8**)(self + 0x354) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, (idTable=(u16*)(tbl+0xe8),idTable[*(s32*)(self+0x23c)]), 0, 1, 0, 0, 1);
 *(s32*)(self + 0x26c)=400; break; }
 case 27: { self[0x234]=0;self[0x236]=1; break; }
 case 28: { *(s32*)(self + 0x24c)=1; fn_80119998(fn_80119DD0(),180,0,0,0,1,0,0);fn_8036A65C(self);
