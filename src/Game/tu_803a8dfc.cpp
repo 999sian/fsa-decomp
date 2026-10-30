@@ -3504,6 +3504,12 @@ extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
 extern "C" void __construct_array(void* p, void* ctor, void* dtor, s32 size, s32 count);
 extern "C" void __ct__Q29JGeometry8TVec3_f_Fv(void);
 extern "C" void OSReport(const char*, ...);
+class WaveController {
+public:
+    WaveController(s32, s32, s32);
+private:
+    u8 field_00[0x5c];
+};
 static inline void MsgReportFontSize(const char* format, const J2DPane* pane) {
     OSReport(format, *(const u16*)((const u8*)pane + 0x132));
 }
@@ -3514,12 +3520,12 @@ extern "C" void* load__20J2DAnmLoaderDataBaseFPCv(const void*);
 extern "C" void* fn_804030C4(u32,const char*);
 extern "C" void fn_8045B46C(void*,s8,s32,s32,s32);
 extern "C" void __ct__14WaveControllerFlll(void*,s32,s32,s32);
+#pragma opt_propagation off
 #pragma opt_common_subs off
-extern "C" void* fn_803B6FD8(void* this_) {
-    u8* p = (u8*)this_;
+extern "C" void* fn_803B6FD8(u8* p) {
  const char* base=(const char*)lbl_80476208;
- 
- f32 b,a,height;
+ s32 i;
+ f32 b,a,height; f32 y;
  void* obj; J2DScreen* screen; J2DPicture* picture;
     *(void**)p = lbl_804AF9A0;
     __construct_array(p + 0x250, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0xa);
@@ -3577,13 +3583,13 @@ extern "C" void* fn_803B6FD8(void* this_) {
     ((J2DScreen*)*(void**)(p + 0x4))->setPriority(base + 0x224, 0x1100000, (JKRArchive*)((void**)lbl_8053AD68)[6]);
     screen=new J2DScreen(); *(J2DScreen**)(p+0x10)=screen;
     ((J2DScreen*)*(void**)(p + 0x10))->setPriority(base + 0x234, 0x1100000, (JKRArchive*)((void**)lbl_8053AD68)[6]);
-OSReport(base+0x248,*(u16*)((u8*)(*(J2DScreen**)(p+0x10))->search(0x0000546d6d743031ULL)+0x132));
-OSReport(base+0x258,*(u16*)((u8*)(*(J2DScreen**)(p+0x10))->search(0x0000546d6d743032ULL)+0x132));
+MsgReportFontSize(base+0x248,(*(J2DScreen**)(p+0x10))->search(0x0000546d6d743031ULL));
+MsgReportFontSize(base+0x258,(*(J2DScreen**)(p+0x10))->search(0x0000546d6d743032ULL));
 screen=new J2DScreen(); *(J2DScreen**)(p+0x1c)=screen; (*(J2DScreen**)(p+0x1c))->setPriority(base+0x268,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
 screen=new J2DScreen(); *(J2DScreen**)(p+8)=screen; (*(J2DScreen**)(p+8))->setPriority(base+0x278,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
 screen=new J2DScreen(); *(J2DScreen**)(p+0x14)=screen; (*(J2DScreen**)(p+0x14))->setPriority(base+0x288,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
-OSReport(base+0x248,*(u16*)((u8*)(*(J2DScreen**)(p+0x14))->search(0x0000546d6d743031ULL)+0x132));
-OSReport(base+0x258,*(u16*)((u8*)(*(J2DScreen**)(p+0x14))->search(0x0000546d6d743032ULL)+0x132));
+MsgReportFontSize(base+0x248,(*(J2DScreen**)(p+0x14))->search(0x0000546d6d743031ULL));
+MsgReportFontSize(base+0x258,(*(J2DScreen**)(p+0x14))->search(0x0000546d6d743032ULL));
 screen=new J2DScreen(); *(J2DScreen**)(p+0xc)=screen; (*(J2DScreen**)(p+0xc))->setPriority(base+0x29c,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
 screen=new J2DScreen(); *(J2DScreen**)(p+0x18)=screen; (*(J2DScreen**)(p+0x18))->setPriority(base+0x2ac,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
 screen=new J2DScreen(); *(J2DScreen**)(p+0x20)=screen; (*(J2DScreen**)(p+0x20))->setPriority(base+0x2c0,0x1100000,(JKRArchive*)((void**)lbl_8053AD68)[6]);
@@ -3593,12 +3599,12 @@ OSInitFastCast();
 *(void**)(p+0x2c)=load__20J2DAnmLoaderDataBaseFPCv(fn_80403104('SCRN',base+0x2f4)); (*(J2DScreen**)(p+12))->setAnimation(*(J2DAnmTextureSRTKey**)(p+0x2c));
 ResTIMG* image=(ResTIMG*)fn_804030C4('TIMG',base+0x304);
 picture=new J2DPicture(image); *(J2DPicture**)(p+0x170)=picture;
-(*(J2DPicture**)(p+0x170))->setBlackWhite(JUtility::TColor(0),JUtility::TColor(255));
+(*(J2DPicture**)(p+0x170))->setBlackWhite(JUtility::TColor(255),JUtility::TColor(0));
 obj=(*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL);height=*(f32*)((u8*)obj+0x2c)-*(f32*)((u8*)obj+0x24);
 a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1];
-a=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613035ULL))[1]+a;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613035ULL))[1]; a=y+a;
 b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x00506c7465737434ULL))[1];
-b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]+b;
+y=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]; b=y+b;
 *(f32*)(p+0x3f0)=height*lbl_805433E8+(getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x0050727073743034ULL))[1]+b-a);
 *(f32*)(p+1012)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x5074746c626b3035ULL))[1];
 *(f32*)(p+1016)=getBounds__7J2DPaneFv((*(J2DScreen**)(p+0x20))->search(0x50656d6273623036ULL))[1];
@@ -3635,7 +3641,7 @@ b=getBounds__7J2DPaneFv((*(J2DScreen**)(p+4))->search(0x004e646174613034ULL))[1]
 (*(u8**)(p+164))[0xb0]=0;
 (*(u8**)(p+160))[0xb0]=0;
 *(f32*)(p+0x244)=lbl_805433C8;*(f32*)(p+0x248)=lbl_805433C8;*(f32*)(p+0x24c)=lbl_805433C8;
-for(s32 i=0;i<4;i++){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(p+0x174+i*4)=obj;}
+for(i=0;i<4;i++){obj=operator new(0x60);if(obj)fn_8045B46C(obj,(s8)i,0,0,8);*(void**)(p+0x174+i*4)=obj;}
 obj=operator new(0x5c);if(obj)__ct__14WaveControllerFlll(obj,(s32)(p+0x244),0,8);*(void**)(p+0x184)=obj;
 ((JGeometry::TVec3f*)(p+0x250))[0].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+712)=-1;
 ((JGeometry::TVec3f*)(p+0x250))[1].set(lbl_805433C8,lbl_805433C8,lbl_805433C8);*(s32*)(p+716)=-1;
@@ -3651,6 +3657,7 @@ if(*(s32*)(lbl_80529DEC+0x118)==9 && *(s32*)(lbl_80529DEC+0x11c)==3){*(s32*)(lbl
 return p;
 }
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JMath/JMath.h"
 #include "dolphin/os/OSFastCast.h"
@@ -4046,7 +4053,8 @@ extern "C" void fn_803AA8F8(void* this_) {
     q3 = self;
     v = self;
     for (i = 0; i < *(s32*)(self + 0x454); q3 += 4, ++i, v += 12) {
-        *(s32*)(q3 + 0x3e0) = *(s32*)(q3 + 0x3a0) + (*(s32*)(q3 + 0x320) + (*(s32*)(q3 + 0x340) + *(s32*)(q3 + 0x350) + *(s32*)(q3 + 0x360) + *(s32*)(q3 + 0x370)) - *(s32*)(q3 + 0x380) + *(s32*)(q3 + 0x3b0));
+        s32 sum = *(s32*)(q3 + 0x340) + *(s32*)(q3 + 0x350) + *(s32*)(q3 + 0x360) + *(s32*)(q3 + 0x370);
+        *(s32*)(q3 + 0x3e0) = *(s32*)(q3 + 0x3a0) + (*(s32*)(q3 + 0x320) + sum - *(s32*)(q3 + 0x380) + *(s32*)(q3 + 0x3b0));
         if (*(s32*)(q3 + 0x3e0) < -5000) *(s32*)(q3 + 0x3e0) = -5000;
 
         if (*(s32*)(q3 + 0x3e0) < -500) {
