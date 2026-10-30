@@ -403,7 +403,7 @@ static inline u8 tlwpReady() {
 }
 static inline void tlwpArrival(bool arrived) {}
 
-static inline u8 tlwpSendPosition(char* p, s32* table, const JGeometry::TVec3f& pos) {
+static inline u8 tlwpSendPosition(char* p, const s32* table, const JGeometry::TVec3f& pos) {
     s32 handle=*(s32*)(p+0x198);
     s32 room=*(s32*)(p+4);
     return fn_8038AD24(*(s32*)(p+0x244), table[*(s32*)(p+0x254)], handle, room, pos, 0x100);
@@ -509,8 +509,7 @@ else if (isnan(dist)) { dist=NAN; }
         int i;
         s32 count;
         target.x=*(f32*)(p+0xc); target.y=*(f32*)(p+0x10); target.z=*(f32*)(p+0x14);
-        i=0;
-        count=i;
+        count=i=0;
         q=p;
         for(;i<4;i++,q+=0xc) {
             if(fn_8023F264(i)) {
@@ -558,12 +557,9 @@ else if (isnan(dist)) { dist=NAN; }
                     if(i!=0) target.y-=lbl_8053EA6C;
                     fn_801F71A4((f32*)(q+0x264),target.x,lbl_8053EA28,lbl_8053EA10);
                     fn_801F71A4((f32*)(q+0x268),target.y,lbl_8053EA28,lbl_8053EA10);
-                    f32 dist;
-                    f32 dy=*(f32*)(q+0x268)-target.y;
-                    f32 dx=*(f32*)(q+0x264)-target.x;
-                    f32 ay=(f32)fabs(dy);
-                    f32 ax=(f32)fabs(dx);
-                    dist=ax*ax+ay*ay;
+                    f32 dx=(f32)fabs(*(f32*)(q+0x264)-target.x);
+                    f32 dy=(f32)fabs(*(f32*)(q+0x268)-target.y);
+                    f32 dist=dx*dx+dy*dy;
                     if (dist>0.0f) {
 f64 g=__frsqrte(dist);
 g=0.5*g*(3.0-g*g*dist);
