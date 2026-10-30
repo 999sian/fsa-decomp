@@ -11,6 +11,9 @@ extern const f32 lbl_805417EC;
 extern const f32 lbl_805417F0;
 extern const f32 lbl_805417F4;
 extern const f32 lbl_805417F8;
+extern f32 lbl_80541800;
+extern f32 lbl_80541804;
+extern const f32 lbl_80541810;
 
 
 extern "C" char lbl_804AABA8[];
