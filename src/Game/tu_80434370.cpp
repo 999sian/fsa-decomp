@@ -73,6 +73,11 @@ extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
 extern "C" void* lbl_8053AAF8;
 extern "C" u8 lbl_8050EC80[];
+static inline f32 menuTextWidth(f32 measured, f32 ratio, const f32 padding) {
+    f32 width=measured*ratio;
+    width+=padding;
+    return width;
+}
 struct MenuOptionRecord {
     u8 field_00[0x7c];
     u8 flag_7C, flag_7D, field_7E, flag_7F;
@@ -317,6 +322,7 @@ extern "C" void fn_80402E08(void*,f32,f32);
 extern "C" const f32 lbl_80543BF0;
 extern "C" const f32 lbl_80543BF4;
 extern "C" void fn_8043670C(char* this_, s32 flag) {
+    f32 width1, width2, half2;
     f32 f29;
     f32 f30;
     f32 f31 = *(f32*)((char*)((VtSlots*)*(void**)(this_ + 0x4))->s13(0x54713031ULL) + 0x11c);
@@ -353,73 +359,73 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0x129,0,0,0);
         f30=f31/lbl_80543BF8;
         *(u8*)(this_+0x68)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7C;
-        f29*=f30;
-        f29+=lbl_80543BF8;
-        f31=f29*lbl_80543BC8;
+        width1=f29*f30;
+        width1+=lbl_80543BF8;
+        f31=width1*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x1c);
         rec->pane->move(rec->centerX-f31,rec->y);
         rec=*(PaneState**)(this_+0x1c);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width1,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x20);
         rec->pane->move(rec->centerX-f31,rec->y);
         rec=*(PaneState**)(this_+0x20);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width1,rec->height);
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_88;
-        f29*=f30;
-        f29+=lbl_80543BF8;
-        f30=f29*lbl_80543BC8;
+        width2=f29*f30;
+        width2+=lbl_80543BF8;
+        half2=width2*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x24);
-        rec->pane->move(rec->centerX-f30,rec->y);
+        rec->pane->move(rec->centerX-half2,rec->y);
         rec=*(PaneState**)(this_+0x24);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width2,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x28);
-        rec->pane->move(rec->centerX-f30,rec->y);
+        rec->pane->move(rec->centerX-half2,rec->y);
         rec=*(PaneState**)(this_+0x28);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width2,rec->height);
     }
     } else {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0xf8,0,0,0);
         f31/=lbl_80543BF8;
         *(u8*)(this_+0x68)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7D;
-        f29*=f31;
-        f29+=lbl_80543BF8;
-        f30=f29*lbl_80543BC8;
+        width1=f29*f31;
+        width1+=lbl_80543BF8;
+        f30=width1*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x1c);
         rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x1c);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width1,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x20);
         rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x20);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width1,rec->height);
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0xf9,0,0,0);
         *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7F;
-        f29*=f31;
-        f29+=lbl_80543BF8;
-        f30=f29*lbl_80543BC8;
+        width2=f29*f31;
+        width2+=lbl_80543BF8;
+        f30=width2*lbl_80543BC8;
         {
         PaneState* rec=*(PaneState**)(this_+0x24);
         rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x24);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width2,rec->height);
     }
         {
         PaneState* rec=*(PaneState**)(this_+0x28);
         rec->pane->move(rec->centerX-f30,rec->y);
         rec=*(PaneState**)(this_+0x28);
-        rec->pane->resize(f29,rec->height);
+        rec->pane->resize(width2,rec->height);
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713033ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x6a)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_89;
