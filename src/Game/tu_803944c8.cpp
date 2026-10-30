@@ -463,8 +463,8 @@ static inline void msgRestoreChoiceTV(u8* p, const u64* tags) {
     int j = 0;
     const u64* child = tags;
     for (; j < 4; j++, child++) {
-        u64 tag = *child;
-        if (tag != 0) ((MsgDraw*)p)->screen->search(*child)->setAlpha(p[j + 0x1a5]);
+        if (*child == 0) continue;
+        ((MsgDraw*)p)->screen->search(*child)->setAlpha(p[j + 0x1a5]);
     }
 }
 
@@ -475,7 +475,7 @@ extern "C" void fn_80395BE8(void* this_) {
 u8* p=(u8*)this_;
 s32 n=*(s32*)(p+0x160);
 if((*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x100) && ((u8*)lbl_8053AAF8)[0x7e]) n=4;
-if(!p[0x3af] && !p[0x1a9]) {
+if(p[0x3af]==0 && p[0x1a9]==0) {
 *(s16*)(p+0x194)=0;
 if(!(*(u16*)(*(u8**)(*(u8**)(p+0x3c0)+0x3b8)+0x28)&0x40)) {
 for(s32 i=0;i<5;i++) {
