@@ -295,6 +295,7 @@ struct MsgPop {
     s16 fadeTimer;              // 0x196
     u8 pad198[0x1a4 - 0x198];
     u8 alpha;                 // 0x1a4
+    u8 childAlpha[4];         // 0x1a5
 };
 
 // NONMATCHING (99.9%): add operand order for the cumulative durations.
