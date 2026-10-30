@@ -14,7 +14,7 @@ extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
 extern "C" void fn_8030C210(void* p, void* pos);
 extern "C" s32 fn_80236228(s32 i);
 extern "C" s32 fn_8023077C(void);
-extern "C" void fn_80230498(s32 i, void* vec, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230498(s32 i, void* vec, s32 id, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8013CC50(void* obj, void* vec, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" void fn_80134D14(void* p);
 extern "C" void fn_801B7550(void);
