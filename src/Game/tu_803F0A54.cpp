@@ -1489,14 +1489,6 @@ static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fad
     }
 }
 
-static inline void fadePanesB803F(const u64* tags, u8* p, s32 n, s32 ofs, f32 fade) {
-    for (s32 i = 0; i < n; i++, tags++) {
-        J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
-        f32 alpha = p[ofs + i];
-        alpha *= fade;
-        pane->setAlpha((u8)alpha);
-    }
-}
 
 #pragma opt_common_subs off
 extern "C" void fn_803F943C(u8* p) {
@@ -1515,16 +1507,16 @@ extern "C" void fn_803F943C(u8* p) {
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
             if(fade<lbl_8054372C) fade=lbl_8054372C;
             else if(fade>lbl_80543730) fade=lbl_80543730;
-            fadePanesB803F((const u64*)(base+0x3c0), p, 0x22, 0x2c4, fade);
+            fadePanes803F(p, (const u64*)(base+0x3c0), 0x22, 0x2c4, fade);
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
             if(fade<lbl_8054372C) fade=lbl_8054372C;
             else if(fade>lbl_80543730) fade=lbl_80543730;
-            fadePanesB803F((const u64*)(base+0x338), p, 0xb, 0x2af, fade);
+            fadePanes803F(p, (const u64*)(base+0x338), 0xb, 0x2af, fade);
         } else {
             *(f32*)(p+0x9c)=lbl_80543764;
             *(f32*)(p+0xa8)=lbl_80543768;
-            fadePanesB803F((const u64*)(base+0x3c0), p, 0x22, 0x2c4, lbl_8054372C);
-            fadePanesB803F((const u64*)(base+0x338), p, 0xb, 0x2af, lbl_8054372C);
+            fadePanes803F(p, (const u64*)(base+0x3c0), 0x22, 0x2c4, lbl_8054372C);
+            fadePanes803F(p, (const u64*)(base+0x338), 0xb, 0x2af, lbl_8054372C);
         }
     }
     if(*(s16*)(p+0x240)>0) {
@@ -1534,18 +1526,18 @@ extern "C" void fn_803F943C(u8* p) {
             fade=(f32)(8-*(s16*)(p+0x240))*lbl_805437B4;
             if(fade<lbl_8054372C) fade=lbl_8054372C;
             else if(fade>lbl_80543730) fade=lbl_80543730;
-            fadePanesB803F((const u64*)(base+0x390), p, 6, 0x2ba, fade);
+            fadePanes803F(p, (const u64*)(base+0x390), 6, 0x2ba, fade);
         } else {
             *(f32*)(p+0xb4)=lbl_80543754;
             *(f32*)(p+0xb8)=lbl_80543754;
-            fadePanesB803F((const u64*)(base+0x390), p, 6, 0x2ba, lbl_8054372C);
+            fadePanes803F(p, (const u64*)(base+0x390), 6, 0x2ba, lbl_8054372C);
         }
     }
     start=0;
     j=0;
     offset=start;
     stop=8;
-    for(;j<4;j++,start+=5,offset+=5,stop+=5) {
+    for(;j<4;j++,start+=5,stop+=5,offset+=5) {
         if(*(s16*)(p+0x240)>start) {
             if(*(s16*)(p+0x240)<stop) {
                 s32 group=3-j;
@@ -1567,7 +1559,8 @@ extern "C" void fn_803F943C(u8* p) {
                 s32 group=3-j;
                 *(f32*)(p+0xdc+group*4)=lbl_8054376C;
                 u8* alphaBase=p+group*9;
-                const u64* groupTags=(const u64*)(base+0x4d0)+group*9;
+                const u64* groupTags=(const u64*)(base+0x4d0);
+                groupTags+=group*9;
                 for(i=0;i<9;i++,alphaBase++,groupTags++) {
                     J2DPane* pane=(*(J2DPane**)(p+8))->search(groupTags[0]);
                     f32 alpha=alphaBase[0x2ee];
@@ -1579,14 +1572,14 @@ extern "C" void fn_803F943C(u8* p) {
     }
     if(*(s16*)(p+0x240)>=23) {
         s32 bits=0;
-        for(i=0;i<4;i++) {
-            if(i<*(s32*)(p+0x1ac)+2) {
-                lbl_8053AAF8[0x82]|=(u8)(1<<i);
+        for(s32 k=0;k<4;k++) {
+            if(k<*(s32*)(p+0x1ac)+2) {
+                lbl_8053AAF8[0x82]|=(u8)(1<<k);
                 u8* game=lbl_8053AAF8;
                 game[0x83]&=~(u8)(3<<bits);
                 game[0x83]|=(u8)(1<<bits);
             } else {
-                lbl_8053AAF8[0x82]&=~(u8)(1<<i);
+                lbl_8053AAF8[0x82]&=~(u8)(1<<k);
                 lbl_8053AAF8[0x83]&=~(u8)(3<<bits);
             }
             bits+=2;
