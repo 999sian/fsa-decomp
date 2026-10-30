@@ -95,6 +95,11 @@ extern "C" void fn_80230FD0(s32, s32);
 extern "C" void fn_80236554(s32, s32, s32);
 extern "C" void fn_802D9FF4(void*, s32, s32);
 extern "C" void fn_802DBD60(void*);
+
+static inline void zdcoPlaySound(u8* p) {
+    int n = *(s32*)(p + 0x254);
+    if (n != 0) fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
+}
 extern "C" void fn_801B3FC4(u8* p) {
     s32 finalIndex;
     s32 quad = -1;
@@ -197,7 +202,6 @@ activate:
     }
     case 6: {
         u8* c;
-        f32 box[4];
         v.set(*(JGeometry::TVec3<f32>*)(p + 0xc));
         v.y -= lbl_8053E9EC;
         c = *(u8**)(lbl_8053AB10 + 0x24);
@@ -216,26 +220,23 @@ activate:
             c[0x284] = 1;
             *(f32*)(c + 0x28c) = lbl_8053E9F8;
         }
-        f32 height=lbl_8053E9FC;
-        box[0] = lbl_8053EA00;
-        box[1] = lbl_8053EA00;
-        box[2] = lbl_8053E9E8;
-        box[3] = lbl_8053E9E8;
+        JGeometry::TBox2<f32> box(lbl_8053EA00, lbl_8053EA00, lbl_8053E9E8, lbl_8053E9E8);
         v.y = lbl_8053E9C0;
         v.z = lbl_8053E9C0;
         v.x = lbl_8053E9C0;
+        f32 height=lbl_8053E9FC;
         f32 x = *(f32*)(p+0x26c);
-        f32 highx = box[2]+x;
-        f32 lowx = box[0]+x;
-        box[0]=lowx;
+        f32 lowx = box.i.x+x;
+        f32 highx = box.f.x+x;
+        box.i.x=lowx;
         f32 y = *(f32*)(p+0x270);
-        f32 lowy=box[1]+y;
-        f32 highy=box[3]+y;
-        box[2]=highx;
-        box[1]=lowy;
-        box[3]=highy;
+        f32 lowy=box.i.y+y;
+        f32 highy=box.f.y+y;
+        box.f.x=highx;
+        box.i.y=lowy;
+        box.f.y=highy;
         v.y = height;
-        fn_8022FEB8(box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 0, 0);
+        fn_8022FEB8((f32*)&box, *(s32*)(p + 0x4), *(s32*)(p + 0x198), 0, 0);
         *(s32*)(p + 0x248) = fn_8022FD8C(*(s32*)(p + 0x198));
         if (*(s32*)(p + 0x248) < 0) *(s32*)(p + 0x248) = 0;
         s32 handle=*(s32*)(p+0x198);
