@@ -922,6 +922,9 @@ static inline void msgInitFontSize(MsgWindow* w) {
     f32 width=w->fontW;
     w->m14->setScale(s,width);
 }
+static inline void msgLineSpace(J2DScreen* screen,u64 tag,f32 spacing) {
+    ((J2DTextBox*)screen->search(tag))->setLineSpace(spacing);
+}
 static inline void msgFont(J2DScreen* screen,u64 tag,JUTFont* font) {
     ((J2DTextBox*)screen->search(tag))->setFont(font);
 }
@@ -1041,7 +1044,7 @@ extern "C" void* fn_803973E8(u8* p, void* font, s32 player, const char* name) {
     *(void**)(p+0x10)=new MsgSequenceInit(*(void**)(p+0xc),*(void**)(p+8));
     *(void**)(*(u8**)(p+0x10)+0x60)=*(void**)(p+0x3c0);
     *(void**)(p+0x14)=0;
-    *(void**)(p+0x14)=new MsgRenderingInit(*(void**)(p+0xc));
+    *(void**)(p+0x14)=new MsgRenderingInit(p);
     *(void**)(*(u8**)(p+0x14)+0x2bc)=((J2DTextBox*)(*(J2DScreen**)(p+0x20))->search('Tm01'))->getFont();
     { u8* processor=*(u8**)(p+0x14); *(void**)(processor+0x2c0)=p+0x1ab; *(void**)(processor+0x2c4)=p+0x2ab; }
     *(void**)(*(u8**)(p+0x14)+0x2d8)=*(void**)(p+0x3c0);
