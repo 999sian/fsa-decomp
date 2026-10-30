@@ -203,7 +203,7 @@ struct J2DPicture : public J2DPane {
         mCornerColors[3].set(colors.mColor3);
     }
 
-    inline void setCornerColor(const JUtility::TColor color)
+    inline void setCornerColor(JUtility::TColor color)
     {
         mCornerColors[0].set(color);
         mCornerColors[1].set(color);
