@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 extern "C" f32 lbl_8053C67C;
 extern "C" const f32 lbl_8053C684;
@@ -429,12 +430,7 @@ static inline u8 stateMessage(char* self, const s32* messages, const JGeometry::
     return fn_8038BD08(0, messages[*(s32*)(self + 0x238)], room, argument, 0x62);
 }
 
-static inline s32 stateIndexedEffect(char* self, const u16* table, f32 scale) {
-    u16 effect = table[*(s32*)(self + 0x238)];
-    return fn_8013CC50(*(void**)(self + 4), self + 0xc, effect, 0, scale, 2, 0, 0, 1);
-}
-
-#pragma opt_common_subs on
+#pragma opt_common_subs off
 extern "C" void fn_80113EC4(char* this_, s32 state) {
     char* self=this_;
     JGeometry::TVec3f playerPos;
@@ -444,7 +440,8 @@ extern "C" void fn_80113EC4(char* this_, s32 state) {
     JGeometry::TVec3f dropPos;
     JGeometry::TVec3f spawnPos;
     JGeometry::TVec3f finalPos;
-    char* base=(char*)lbl_804647C8;
+    const int* baseWords=lbl_804647C8;
+    char* base=(char*)baseWords;
     switch(state) {
     case 2:
         self[0x234]=0;
@@ -463,7 +460,7 @@ extern "C" void fn_80113EC4(char* this_, s32 state) {
     case 3: {
         self[0x234]=1;
         *(s32*)(self+0x240)=1;
-        *(s32*)(self+0x24c)=((s32*)(base+0xec))[1];
+        *(s32*)(self+0x24c)=baseWords[0xf0/4];
         *(s32*)(self+0x2c4)=fn_8013CC50(*(void**)(self+4),self+0xc,0x2ae,0,0.5f,2,0,0,1);
         *(s32*)(self+0x2c8)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x170))[*(s32*)(self+0x238)],0,0.5f,2,0,0,1);
         *(s32*)(self+0x2cc)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x180))[*(s32*)(self+0x238)],0,0.5f,2,0,0,1);
@@ -491,7 +488,7 @@ extern "C" void fn_80113EC4(char* this_, s32 state) {
         screenPos.x=(f32)(s32)*(u16*)(render+4)*0.5f;
         screenPos.y+=-16.0f;
         fn_8022FE80(0,*(u32*)(self+4),*(void**)(self+0x198),1,0);
-        if(fn_8038BD08(0,((s32*)(base+0x88))[*(s32*)(self+0x238)],*(s32*)(self+4),(screenArg=screenPos,screenArg),0x62))
+        if(stateMessage(self,(const s32*)(base+0x88),screenPos,screenArg))
             fn_80118454(fn_8011921C());
         break;
     }
