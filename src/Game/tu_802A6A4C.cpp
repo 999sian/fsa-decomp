@@ -53,8 +53,27 @@ extern "C" void fn_802A6AAC(Actor* p, s32 player) {
 
 extern "C" void fn_802A6BC0(void) {}
 
-extern "C" s32 fn_801F8108(void* p, u32 id, s32 n);
-extern "C" s32 fn_8023AF14(void* box, u32 room, s32 flag);
+#include "JSystem/JGeometry/Box.h"
+extern "C" s32 fn_801F8108(void* p, u32 id, s32 n, f32 range = 32.0f);
+extern "C" s32 fn_8023AF14(void* box, u32 room, s32 flag, f32 offset = 0.0f);
+extern "C" void* fn_8023E724(s32);
+extern "C" u8 fn_8023513C(s32);
+extern "C" u8 fn_802353AC(s32);
+extern "C" u8 fn_80233DA4(s32);
+extern "C" u8 fn_80235004(s32);
+extern "C" s32 fn_802D7E1C(void*, u32);
+extern "C" u8 fn_8022E39C(s32, s32);
+extern "C" void fn_801F0E34(void*, u32, void*);
+extern "C" void* fn_801F666C(void*, s32);
+extern "C" void fn_802302C4(s32, s32, s32);
+extern "C" u8 fn_80230188(s32);
+extern void* lbl_8053AAF8;
+extern const u32 lbl_8046C838[];
+extern const f32 lbl_805407F0;
+extern const f32 lbl_805407F4;
+extern const f32 lbl_805407F8;
+extern const f32 lbl_805407FC;
+extern const f32 lbl_80540800;
 extern "C" void fn_802A6BC4(void* p) {
     f32 box[4];
     s32 r;
