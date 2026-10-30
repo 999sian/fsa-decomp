@@ -197,39 +197,105 @@ static inline bool SmriCheckGround(SmriActor* p) {
 static inline void SmriPlayerBox(SmriActor* p, JGeometry::TBox2f& box) {
     for(s32 i=0;i<4;i++){
         if(p->players[i]==1){
-            if(!fn_8022DB04(i) || fn_80238CB4(i)==(s32)p->field_198)
-                fn_80239878(i,&box,p->field_04,(s32)p->field_198);
+            if(!fn_8022DB04(i)) fn_80239878(i,&box,p->field_04,(s32)p->field_198);
+            else { s32 handle=p->field_198; if(fn_80238CB4(i)==handle) fn_80239878(i,&box,p->field_04,(s32)p->field_198); }
         } else if(!fn_8023B0F4(i,&box,p->field_04,0,lbl_80541740)) p->players[i]=1;
     }
 }
 
-extern "C" void fn_8030EDBC(u8* this_) {
-    f32 box[4];
-    f32 pb[4];
-    s32 i;
-    s32 n;
-    s32 off;
-    u8* mgr;
-    u8* other;
-
-    pb[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
-    pb[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
-    pb[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
-    pb[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
-    if (*(s32*)(this_ + 0x230) <= 6 && *(u8*)(this_ + 0xc4) == 0 && *(f32*)(this_ + 0x14) <= lbl_8054173C) {
-        mgr = fn_801F856C();
-        n = *(s32*)(mgr + 0x1008);
-        off = 0;
-        for (i = 0; i < n; i++) {
-            mgr = fn_801F856C();
-            other = *(u8**)(mgr + off + 8);
-            if (other != 0 && other[0x11c] != 0 && *(s32*)(other + 4) == *(s32*)(this_ + 4) &&
-                *(s32*)(other + 0x1a0) == 0x4f424c46) {
-                fn_801F31C4(other, box);
-            }
-            off += 4;
-        }
-    }
+extern "C" void fn_8030EDBC(SmriActor* p) {
+ JGeometry::TBox2f pb;
+ pb.set(*(JGeometry::TBox2f*)&p->field_60); pb.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
+ if(p->state<=6 && p->field_C4==0 && p->field_0C.z<=lbl_8054173C){
+ s32 n=*(s32*)(fn_801F856C()+0x1008);
+ for(s32 i=0;i<n;i++){
+ Actor* other=*(Actor**)(fn_801F856C()+8+i*4);
+ if(other && other->field_11C && (s32)other->field_04==(s32)p->field_04 && other->field_1A0=='OBLF'){
+ JGeometry::TBox2f box;
+ fn_801F31C4(other,(f32*)&box);
+ u8* object=(u8*)other;
+ if(*(s32*)(object+0x258)==11){
+ JGeometry::TBox2f overlap; overlap.set(pb);
+ if(overlap.intersect(box)){
+ s32 index=-1;
+ for(;;){
+ s32 found=fn_801F78F4(fn_801F856C(),'SMRI',index); index=found; if(found<0)break;
+ SmriActor* actor=(SmriActor*)fn_801F666C(fn_801F856C(),found);
+ if(actor->state==8 && actor->field_110==p->field_110)actor->state=9;
+ }
+ fn_803513C0(object);p->state=8;p->handle=other->field_198;break;
+ }}}}}
+ switch(p->state){
+ case 0:
+ fn_8013CC50(p->field_04,&p->field_0C,0x457,0,0,0,0,1,lbl_80541744);
+ fn_8013CC50(p->field_04,&p->field_0C,0x458,0,0,0,0,1,lbl_80541744);
+ p->state=1;p->timer=20;fn_801F0E34(p,0x30064,0);break;
+ case 1: p->timer--; if(p->timer<=0)p->state=2;break;
+ case 2:{
+ JGeometry::TVec3f delta,saved;
+ if(SmriCheckGround(p)){
+ JGeometry::TBox2f support;support.set(*(JGeometry::TBox2f*)&p->field_60);support.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);SmriPlayerBox(p,support);
+ s32 player=fn_80238BC4(p->field_198);
+ if(player>=0 && player<4){
+ saved=p->field_0C;
+ delta.set(lbl_80471368[player*3],lbl_80471368[player*3+1],lbl_80471368[player*3+2]);
+ *(JGeometry::TVec3f*)&p->field_0C+=delta;
+ if((u8)fn_801F2618(p,0,0)){*(JGeometry::TVec3f*)&p->field_0C=saved;break;}
+ *(JGeometry::TVec3f*)&p->field_0C=saved;
+ if(fn_80239558(&pb,p->field_04,p->field_198)>=0 && !fn_80233DA4(fn_80239040(p->field_198))){
+ p->field_3C.x=lbl_80471368[player*3];p->field_3C.y=lbl_80471368[player*3+1];p->field_3C.z=lbl_80471368[player*3+2];
+ p->state=3;p->direction=player;p->timer=1;p->tick=0;
+ }
+ }else{
+ for(s32 i=0;i<4;i++)if(fn_8023F264(i)&&fn_80239C00(i,&pb,p->field_04)&&fn_8022F9E4(i,p->field_198,1,0)){
+ p->state=4;p->timer=0;p->players[0]=0;p->players[1]=0;p->players[2]=0;p->players[3]=0;break;
+ }
+ }}break;}
+ case 3:{
+ *(JGeometry::TVec3f*)&p->field_0C+=*(JGeometry::TVec3f*)&p->field_3C;
+ pb.set(*(JGeometry::TBox2f*)&p->field_60);pb.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);
+ JGeometry::TBox2f moving;moving.set(*(JGeometry::TBox2f*)&p->field_60);moving.addPos(*(JGeometry::TVec2<f32>*)&p->field_0C);SmriPlayerBox(p,moving);
+ if((p->tick&31)==0)fn_801F0E34(p,0x30004,0);
+ p->tick++;
+ if(SmriCheckGround(p)){
+ if(!(u8)fn_801F2618(p,0,0)){
+ p->timer--;if(p->timer>0)break;
+ s32 player=fn_80239040(p->field_198);
+ if(player>=0 && !fn_80230188(player)&&!fn_8022D75C(player)&&fn_8022C52C(player,lbl_80471398[p->direction])){
+ p->timer=1;break;
+ }}
+ p->field_3C.x=lbl_8054173C;p->field_3C.y=lbl_8054173C;p->field_3C.z=lbl_8054173C;p->state=2;p->timer=0;p->tick=0;
+ }break;}
+ case 4:
+ if(p->field_C4){
+ Vec* pos=fn_8023E7B0((void*)p->field_C8);p->field_0C.x=pos->x;p->field_0C.y=pos->y;p->field_0C.z=pos->z;p->field_04=fn_8023DE58((void*)p->field_C8);break;
+ }
+ p->field_3C.x*=lbl_80541748;p->field_3C.y*=lbl_80541748;p->field_3C.z=lbl_8054174C;p->state=5;
+ case 5:
+ *(JGeometry::TVec3f*)&p->field_0C+=*(JGeometry::TVec3f*)&p->field_3C;
+ if(p->timer==0)p->field_3C.z-=lbl_80541750;else p->field_3C.z-=lbl_80541754;
+ fn_801F2618(p,0,0);
+ if(p->field_0C.z<lbl_8054173C && p->field_3C.z<lbl_8054173C && SmriCheckGround(p)){
+ p->field_0C.z=lbl_8054173C;p->field_3C.z=lbl_8054173C;p->field_3C.x*=lbl_80541758;p->field_3C.y*=lbl_80541758;
+ if(p->timer==0){p->field_3C.z=lbl_8054175C;p->timer++;}else{p->field_3C.z=lbl_8054173C;p->field_3C.y=lbl_8054173C;p->field_3C.x=lbl_8054173C;p->state=2;p->timer=0;}
+ p->unk245=0;fn_801F0E34(p,0x5007f,0);
+ }break;
+ case 6:
+ *(JGeometry::TVec3f*)&p->field_0C+=*(JGeometry::TVec3f*)&p->field_3C;
+ if(p->field_0C.z<lbl_80541760){
+ if(p->tile==14&&fn_802DE9A0()==1)fn_801F0E34(p,0x5005f,0);
+ else if(p->tile==14&&fn_802DEB58()==1)fn_801F0E34(p,0x5003f,0);
+ else if(p->tile==13||p->tile==0x3b)fn_801F0E34(p,0x30022,0);
+ else fn_801F0E34(p,0x3007c,0);
+ p->field_11C=0;
+ }else p->field_3C.z-=lbl_80541764;break;
+ case 8:
+ for(u32 i=0;i<4;i++){s32 param=p->field_110;Actor_CreateByID(fn_801F856C(),'FIRE',p->field_04,&p->field_0C,(i*16|0x1000)|(param&3),-1,param);}
+ fn_8013CC50(p->field_04,&p->field_0C,0x95,0,0,0,0,1,lbl_80541744);
+ fn_8013CC50(p->field_04,&p->field_0C,0x96,0,0,0,0,1,lbl_80541744);
+ p->field_11C=0;break;
+ case 9:{Actor* actor=fn_801F666C(fn_801F856C(),p->handle);if(actor)fn_803511F0(actor);p->field_11C=0;break;}
+ }
 }
 
 extern "C" f32 lbl_80471368[];
