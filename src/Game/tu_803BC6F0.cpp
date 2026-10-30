@@ -661,22 +661,27 @@ extern "C" void fn_8013B490(void*);
 extern "C" void fn_8013B414(void*,f32*,s32);
 extern "C" void fn_802F86CC(void*,void*,void*,s32,DrawRec*,f32,f32);
 extern "C" const f32 lbl_8054347C,lbl_80543480,lbl_80543484,lbl_80543488,lbl_8054348C,lbl_80543490;
+struct MenuResourceLookup {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10();
+    virtual void v14();
+    virtual void* find(u32, const char*);
+};
 static inline void* menuDrawResource(const char* name) {
-    void* mgr=*(void**)(lbl_8053AAF8+0xa4);
-    return ((void*(*)(void*,u32,const char*))(*(void***)mgr)[6])(mgr,0x534f4220,name);
+    MenuResourceLookup* mgr=*(MenuResourceLookup**)(lbl_8053AAF8+0xa4);
+    return mgr->find(0x534f4220,name);
 }
 #pragma dont_inline off
+#pragma opt_loop_invariants off
 extern "C" void fn_803BE3D8(void* a) {
     u8* p=(u8*)a;
-    const u8* base=lbl_804765D0;
+    u8* base=(u8*)lbl_804765D0;
     (*(s16*)(p+0xdc))++;
     if(*(s16*)(p+0xdc)>=0x36) *(s16*)(p+0xdc)=0;
     if(*(s32*)(p+0xd0)!=0) {
-        f32 f0=lbl_8054347C;
-        f32 f1=lbl_80543480;
-        f32 f2=lbl_80543484;
-        f32 f3=lbl_80543488;
-        f32 f4=lbl_80543458;
         DrawRec rec1;
         DrawRec rec2;
         for(s32 i=0;i<8;i++) {
@@ -687,31 +692,31 @@ extern "C" void fn_803BE3D8(void* a) {
     J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
     width=pane->mBounds.f.x-pane->mBounds.i.x;
     pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
-    pos1.x=f0*(width*f1+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
+    pos1.x=lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
     pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
     width=pane->mBounds.f.y-pane->mBounds.i.y;
     pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8));
-    pos1.y=f2*(f3+(width*f1+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
-    pos1.z=f4;
+    pos1.y=lbl_80543484*(lbl_80543488+(width*lbl_80543480+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
+    pos1.z=lbl_80543458;
 }
             {
     f32 width;
     J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
     width=pane->mBounds.f.x-pane->mBounds.i.x;
     pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
-    pos2.x=f0*(width*f1+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
+    pos2.x=lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
     pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
     width=pane->mBounds.f.y-pane->mBounds.i.y;
     pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8));
-    pos2.y=f2*(f3+(width*f1+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
-    pos2.z=f4;
+    pos2.y=lbl_80543484*(lbl_80543488+(width*lbl_80543480+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
+    pos2.z=lbl_80543458;
 }
             rec1.b26=0;
             ((u8*)&rec1.w10)[0]=0;((u8*)&rec1.w10)[1]=0;((u8*)&rec1.w10)[2]=0;
             ((u8*)&rec1.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x478+i*8)))[0xb2];
             ((u8*)&rec2.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x438+i*8)))[0xb2];
             rec2.b26=0;
-            f32 rect[4];rect[0]=f4;rect[1]=f4;rect[2]=f0;rect[3]=f2;
+            f32 rect[4];rect[0]=lbl_80543458;rect[1]=lbl_80543458;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
             fn_8013B414(lbl_8053AB10,rect,1);
             if(i==6) {
                 fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos1,menuDrawResource((const char*)base+0x830),0xab,&rec1,lbl_80543478,lbl_80543478);
@@ -774,6 +779,7 @@ extern "C" void fn_803BE3D8(void* a) {
     }
     fn_8013B490(lbl_8053AB10);
 }
+#pragma opt_loop_invariants reset
 #pragma dont_inline reset
 
 #pragma opt_propagation off
@@ -3832,10 +3838,14 @@ extern "C" void fn_803C9F14(char* this_) {
     }
 }
 
+#pragma opt_loop_invariants off
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_803C9F80(char* this_) {
     u8* p = (u8*)this_;
     s32 mx;
     s32 t190;
+    s32 t192;
     s32 t194;
     s32 t196;
     s32 t198;
@@ -3854,12 +3864,12 @@ extern "C" void fn_803C9F80(char* this_) {
     t198 = *(s16*)(tb + 0x198);
     t196 = *(s16*)(tb + 0x196);
     t190 = *(s16*)(tb + 0x190);
-    i = *(s16*)(tb + 0x192);
+    t192 = *(s16*)(tb + 0x192);
     t194 = *(s16*)(tb + 0x194);
     t19a = *(s16*)(tb + 0x19a);
     t19c = *(s16*)(tb + 0x19c);
     t19e = *(s16*)(tb + 0x19e);
-    sum = t190 + i;
+    sum = t190 + t192;
     mx = sum;
     aVal = t198 * 3;
     addMenuTiming(aVal, t196);
@@ -3874,12 +3884,12 @@ extern "C" void fn_803C9F80(char* this_) {
 
     *(s16*)(p + 0xd8) += 1;
     if (*(s16*)(p + 0xd8) > t190) {
-        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x14), i, 0, lbl_80543458, lbl_80543498);
-        fn_80402628(*(void**)(p + 0x14), i, *(u8*)(*(u8**)(p + 0x14) + 0x28), 0);
-        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x18), i, 0, lbl_80543458, lbl_80543498);
-        fn_80402628(*(void**)(p + 0x18), i, *(u8*)(*(u8**)(p + 0x18) + 0x28), 0);
-        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), i, 0, lbl_80543458, lbl_80543498);
-        fn_80402628(*(void**)(p + 0x1c), i, *(u8*)(*(u8**)(p + 0x1c) + 0x28), 0);
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x14), t192, 0, lbl_80543458, lbl_80543498);
+        fn_80402628(*(void**)(p + 0x14), t192, *(u8*)(*(u8**)(p + 0x14) + 0x28), 0);
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x18), t192, 0, lbl_80543458, lbl_80543498);
+        fn_80402628(*(void**)(p + 0x18), t192, *(u8*)(*(u8**)(p + 0x18) + 0x28), 0);
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), t192, 0, lbl_80543458, lbl_80543498);
+        fn_80402628(*(void**)(p + 0x1c), t192, *(u8*)(*(u8**)(p + 0x1c) + 0x28), 0);
         {u8* keys;
         for (i = 0, keys = base + 0x48; i < 0x51; i++, keys += 8) {
             void* o = (*(J2DPane**)(p + 4))->search(*(u64*)keys);
@@ -3888,7 +3898,7 @@ extern "C" void fn_803C9F80(char* this_) {
         for (i = 0, keys = base + 0x2d0; i < 0x13; i++, keys += 8) {
             void* o = (*(J2DPane**)(p + 8))->search(*(u64*)keys);
             fn_804023D0(*(void**)(p + 0x14), o, ((MenuSlots24*)p)->flags183[(u32)i]); }}
-        if (*(s16*)(p+0xd8) <= sum) fn_803BC6F0((char*)p,*(u32*)(p+0xa4),(f32)(*(s16*)(p+0xd8)-t190)/(f32)i);
+        if (*(s16*)(p+0xd8) <= sum) fn_803BC6F0((char*)p,*(u32*)(p+0xa4),(f32)(*(s16*)(p+0xd8)-t190)/(f32)t192);
     }
     u8* q = p;
     s32 offset = 0;
@@ -3976,7 +3986,9 @@ extern "C" void fn_803C9F80(char* this_) {
     *(f32*)(p+0x64+*(s32*)(p+0xa4)*4)=*(f32*)(*(u8**)(p+0x44)+0xc)-*(f32*)(*(u8**)(p+0x44+*(s32*)(p+0xa4)*4)+0xc);
     if (*(s16*)(p+0xd8)>mx) {p[0x112]=p[0x110];p[0x110]=0x19;}
 }
-
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 extern "C" void fn_803CABAC(u8* p) {
     f32 zero;
     f32 v;
