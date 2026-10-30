@@ -934,10 +934,9 @@ extern u8* lbl_8053AB10;
 
 // KEY0: link the key's home tile to where it is now.
 static inline void key0LinkHere(char* p) {
-    u32 x18;
     u32 packed = key0PackActorFlags((u8*)p);
     if (!fn_802DCD0C(fn_802D6A9C())) {
-        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+        u32 x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
         packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
@@ -1025,8 +1024,6 @@ extern "C" void fn_802C4498(char* p) {
     } else {
         *(u16*)(p + 0x2a8) = 0xffff;
     }
-    JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
-    JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x3c);
     switch (*(s32*)(p + 0x240)) {
     case 0:
         *(s32*)(p + 0x294) = 0;
@@ -1056,14 +1053,14 @@ extern "C" void fn_802C4498(char* p) {
         fn_802C2840((u8*)p);
         if (key0RoomFlag(*(s32*)(p + 4))) {
             if (!*(u8*)(p + 0x2b2)) {
-                vel.y += lbl_80540CD0;
-                if (vel.y > lbl_80540CB8) {
-                    vel.y = lbl_80540CB8;
+                *(f32*)(p + 0x40) += lbl_80540CD0;
+                if (*(f32*)(p + 0x40) > lbl_80540CB8) {
+                    *(f32*)(p + 0x40) = lbl_80540CB8;
                 }
-                pos.add(vel);
+                ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
                 if (((u8 (*)(char*, void*, s32))fn_801F2618)(p, 0, 0)) {
                     *(u8*)(p + 0x2b2) = 1;
-                    vel.x = vel.y = vel.z = lbl_80540C74;
+                    *(f32*)(p + 0x3c) = *(f32*)(p + 0x40) = *(f32*)(p + 0x44) = lbl_80540C74;
                 }
             }
         } else {
@@ -1115,11 +1112,11 @@ extern "C" void fn_802C4498(char* p) {
         }
         break;
     case 5:
-        vel.z += lbl_80540CC8;
-        pos.add(vel);
-        if (pos.z < lbl_80540C74) {
-            pos.z = lbl_80540C74;
-            vel.x = vel.y = vel.z = lbl_80540C74;
+        *(f32*)(p + 0x44) += lbl_80540CC8;
+        ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
+        if (*(f32*)(p + 0x14) < lbl_80540C74) {
+            *(f32*)(p + 0x14) = lbl_80540C74;
+            *(f32*)(p + 0x3c) = *(f32*)(p + 0x40) = *(f32*)(p + 0x44) = lbl_80540C74;
             *(s32*)(p + 0x240) = 2;
             fn_801F0E34(p, 0x30072, 0);
         }
@@ -1183,15 +1180,15 @@ extern "C" void fn_802C4498(char* p) {
         if (*(s32*)(p + 0x28c) >= 0) {
             break;
         }
-        pos.add(vel);
-        if (pos.z > lbl_80540C74) {
-            vel.z -= lbl_80540C7C;
+        ((JGeometry::TVec3<f32>*)(p + 0xc))->add(*(JGeometry::TVec3<f32>*)(p + 0x3c));
+        if (*(f32*)(p + 0x14) > lbl_80540C74) {
+            *(f32*)(p + 0x44) -= lbl_80540C7C;
             break;
         }
         s32 kind = *(s32*)(p + 0x280);
         if (kind < 0x10) {
-            pos.z = lbl_80540C74;
-            vel.z = lbl_80540C74;
+            *(f32*)(p + 0x14) = lbl_80540C74;
+            *(f32*)(p + 0x44) = lbl_80540C74;
             *(s32*)(p + 0x27c) = 0;
             *(u8*)(p + 0x2ad) = 0xff;
             *(s32*)(p + 0x240) = 2;
@@ -1220,6 +1217,7 @@ extern "C" void fn_802C4498(char* p) {
                     f32 dx2 = dx * dx;
                     f32 dy2 = dy * dy;
                     if (!(dx2 + dy2 > lbl_80540CF8)) {
+                        JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x3c);
                         switch (fn_8023A240() ^ 1) {
                         case 0:
                             vel = JGeometry::TVec3<f32>(lbl_80540C98, lbl_80540C74, lbl_80540C94);
@@ -1278,7 +1276,8 @@ extern "C" void fn_802C4498(char* p) {
         break;
     case 11:
         fn_8022FE80(*(s32*)(p + 0x2a4), *(s32*)(p + 4), *(s32*)(p + 0x198), 1, 0);
-        fn_8038AD24(*(s32*)(p + 0x2a4), 0x168, *(s32*)(p + 0x198), *(s32*)(p + 4), pos, 4);
+        fn_8038AD24(*(s32*)(p + 0x2a4), 0x168, *(s32*)(p + 0x198), *(s32*)(p + 4),
+                    *(JGeometry::TVec3<f32>*)(p + 0xc), 4);
         *(s32*)(p + 0x240) = 12;
         return;
     case 12:
