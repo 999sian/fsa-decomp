@@ -331,7 +331,7 @@ static inline f32 cameraCos(const f32 x) {
     if (angle < 0.0f) angle = -angle;
     return JMath::sincosTable_.mTable[(u16)((2048.0f / 360.0f) * angle) & 2047].second;
 }
-static inline f32 cameraBlend(s32 timer, f32 speed) {
+static inline f32 cameraBlend(const s32 timer, const f32 speed) {
     f32 a = speed * (180.0f * (f32)timer);
     f32 b = 180.0f * (1.0f - (0.5f * cameraCos(a) + 0.5f));
     return 0.5f * cameraCos(b) + 0.5f;
@@ -350,10 +350,10 @@ extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b)
     f32* out = (f32*)a;
     f32* center = (f32*)b;
     f32 left, right, bottom, top, minY, maxY;
-    const GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-    f32 fbWidth = (f32)(s32)mode->fbWidth;
-    f32 efbHeight = (f32)(s32)mode->efbHeight;
-    f32 aspect = efbHeight / fbWidth;
+    const GXRenderModeObj* mode;
+    u16 videoWidth, videoHeight;
+    JUTVideo::getManager()->getBounds(videoWidth, videoHeight);
+    f32 aspect = (f32)(s32)videoHeight / (f32)(s32)videoWidth;
     u8 first = 1;
     s32 count = 0;
     f32* cfg = (f32*)entry;
