@@ -45,20 +45,158 @@ static inline void playerSprite64998(s32 room,void* pos,const char* name,s32 ind
         fn_802F86CC(*(void**)(lbl_8053AB10+0x20),pos,res,index,lbl_805401F4,lbl_805401F4,rec);
     }
 }
-extern "C" void fn_80264998(char* p)
-{
-    u8 r28;
-    u8* r29;
-    if (p[0xcac] == 0) {
-        return;
+extern "C" u8 Player_IsLinked(char*);
+extern "C" u8 fn_80240DAC(char*);
+extern "C" u8 fn_802413F0(char*);
+extern "C" u8 fn_8025F418(char*);
+extern "C" u8 Player_GetField_0x454(char*);
+extern "C" u8 fn_80240818(char*);
+extern "C" u8 fn_8023188C(s32);
+extern "C" s32 Player_GetLinkTargetIndex(char*);
+extern "C" s32 fn_80241544(char*);
+extern "C" u32 fn_80246B10(char*,s32);
+extern "C" s32 fn_8023CB24(s32);
+extern "C" s32 fn_8023CA88(s32);
+extern "C" u8 fn_8022517C(void*,s32);
+extern "C" u8 fn_80270A8C(char*);
+extern "C" u8 fn_802412A4(char*);
+extern "C" u8 fn_80241200(char*);
+extern "C" u8 Player_GetField_0xce8(char*);
+extern "C" u8 fn_80225BE4(void*,s32);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_80158B5C(void*,s32,void*,void*);
+extern "C" void fn_803075AC(s32,s32,void*,s32,s32,s32,s32,s32,s32,s32);
+extern const f32 lbl_805401F8,lbl_805401FC,lbl_80540204,lbl_80540208,lbl_8054020C;
+extern "C" void fn_80264998(char* p) {
+    u8* self=(u8*)p;
+    const char* table=lbl_8046B960;
+    if(!self[0xcac] || self[0xcee]==1)return;
+    if(self[0x1215] && !((u8)lbl_8053AAF8[0x82] & (u8)(1<<*(s32*)(self+4))))return;
+    u8 alpha=fn_8023FC5C(self);
+    s32 player=(s32)GetPtrField_0x4(self);
+    if(*(u16*)(self+0x3c4)>=0x3d5)*(u16*)(self+0x3c4)=0x3d4;
+    if(*(f32*)(self+0xb90)>lbl_805401F0) {
+        u8 c[4]={0,0,0,255};u32 color=*(u32*)c;
+        fn_80158B5C(*(void**)(lbl_8053AB10+0x2c),*(s32*)(self+0x3b4),self+0x338,&color);
     }
-    if (p[0xcee] == 1) {
-        return;
+    if(*(s32*)(self+0x3b4)>8 && fn_80246B10(p,64)) {
+        DrawRec rec;rec.b1c=1;rec.b2d=1;
+        s32 ticks=*(s32*)(lbl_8053AAF8+0x5c);
+        playerSprite64998(0,self+0xcb0,table,(ticks/6)%3+player*3+0x73,&rec);
     }
-    r28 = fn_8023FC5C((u8*)p);
-    r29 = (u8*)GetPtrField_0x4(p);
-    if (*(u16*)(p + 0x3c4) >= 0x3d5) {
-        *(u16*)(p + 0x3c4) = 0x3d4;
+    DrawRec shadow;
+    if(!Player_IsLinked(p) || (!fn_80240DAC(p)&&fn_802413F0(p))) {
+        JGeometry::TVec3<f32> pos;
+        shadow.b1d=-2;
+        if(fn_80240DAC(p)) {
+            pos.set(*(f32*)(self+8),*(f32*)(self+0x328)-lbl_805401F8,lbl_805401FC);
+            shadow.b1d+=2;
+        }else pos.set(*(f32*)(self+8),*(f32*)(self+0xc)-lbl_805401F8,lbl_805401FC);
+        if(*(s32*)(self+0x3b4)==8) {
+            u8* mgr=fn_802D6A9C();
+            pos+=JGeometry::TVec3<f32>(*(f32*)(mgr+0xcc),*(f32*)(mgr+0xd0),lbl_805401F0);
+            pos+=JGeometry::TVec3<f32>(lbl_805401F0,-*(f32*)(self+0x10),lbl_805401F0);
+        }
+        if(self[0xca1]<255)shadow.b2c=0;
+        ((u8*)&shadow.w10)[3]=alpha<self[0xca1]?alpha:self[0xca1];
+        if(((u8*)&shadow.w10)[3]>=159)((u8*)&shadow.w10)[3]=159;
+        if(*(f32*)(self+0x10)>lbl_805401F0) {
+            f32 a=(f32)((u8*)&shadow.w10)[3]-lbl_80540200**(f32*)(self+0x10);
+            ((u8*)&shadow.w10)[3]=(s32)(lbl_80540204>=a?lbl_80540204:a);
+        }
+        Mtx scale;
+        if(*(s32*)(self+0x3b4)==8)PSMTXScale(scale,lbl_805401F4,lbl_805401F4,lbl_805401F4);
+        else PSMTXScale(scale,lbl_80540208,lbl_80540200,lbl_80540200);
+        ((u8*)&shadow.w10)[0]=0;((u8*)&shadow.w10)[1]=0;((u8*)&shadow.w10)[2]=0;
+        shadow.w18=scale;
+        ((u8*)&shadow.w14)[0]=40;((u8*)&shadow.w14)[1]=40;((u8*)&shadow.w14)[2]=40;
+        if(self[0x43f]!=1) {
+            if(*(s32*)(self+0x3b4)==8) {
+                JGeometry::TVec3<f32> draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+                playerSprite64998(0,&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
+            }else {
+                JGeometry::TVec3<f32> draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+                playerSprite64998(*(s32*)(self+0x3b4),&draw,table+0x14,*(u16*)(self+0x3c4),&shadow);
+            }
+        }
+        if(*(f32*)(self+0x10)>lbl_805401F0 && *(s32*)(self+0x3b4)>=8) {
+            s32 room=*(s32*)(self+0x3b4);
+            if(!fn_802D6A9C()[0x131df+room]) {
+                JGeometry::TVec3<f32> pos;
+                if(fn_80240DAC(p))pos.set(*(f32*)(self+8),*(f32*)(self+0x328)-lbl_805401F8,lbl_805401F0);
+                else pos.set(*(f32*)(self+8),*(f32*)(self+0xc)-lbl_805401F8,lbl_805401F0);
+                JGeometry::TVec3<f32> draw=pos+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+                fn_803075AC(-40000-*(s32*)(self+4),*(s32*)(self+0x3b4),&draw,0x3cd,0,1,-1,0,0,0);
+            }
+        }
+    }
+    DrawRec rec;
+    if(fn_80241544(p)>=2)rec.ids[10]=6;
+    rec.ids[7]=player+12;
+    rec.b2d=1;
+    if(alpha<255)shadow.b2c=0;
+    if(self[0x11e9])rec.w30=player+4;
+    Mtx scale;
+    scale[0][3]=scale[1][3]=scale[2][3]=lbl_805401F0;
+    scale[0][0]=*(f32*)(self+0xc84)**(f32*)(self+0xc90);
+    scale[0][1]=scale[0][2]=lbl_805401F0;
+    scale[1][0]=lbl_805401F0;scale[1][1]=*(f32*)(self+0xc88)**(f32*)(self+0xc94);scale[1][2]=lbl_805401F0;
+    scale[2][0]=scale[2][1]=lbl_805401F0;scale[2][2]=*(f32*)(self+0xc8c)**(f32*)(self+0xc98);
+    ((u8*)&rec.w10)[3]=alpha;
+    rec.w18=scale;rec.b20=0;
+    if(fn_8025F418(p)&&!Player_GetField_0x454(p)){
+        rec.b1d=fn_8023CB24(*(s32*)(self+0xd70))+1;
+        rec.b1c=fn_8023CA88(*(s32*)(self+0xd70));
+    }else if(*(f32*)(self+0x10)>=lbl_8054020C){rec.b1d++;rec.b1c++;}
+    else if(*(f32*)(self+0x10)>lbl_805401F0)rec.b1d++;
+    else if(fn_80240818(p))rec.b1d++;
+    if(Player_GetField_0x454(p)) {
+        if(*(s8*)(self+0xca3)!=-128)rec.b1c=self[0xca3];
+        if(*(s8*)(self+0xca4)!=-128)rec.b1d=self[0xca4];
+    }
+    if(self[0x43f]==1 || self[0x441]==1)rec.b1f=0;
+    if(*(s32*)(self+0xca8)>0) {
+        --*(s32*)(self+0xca8);
+        switch(player) {
+        case 0:((u8*)&rec.w10)[0]=0;((u8*)&rec.w10)[1]=255;((u8*)&rec.w10)[2]=0;break;
+        case 1:((u8*)&rec.w10)[0]=255;((u8*)&rec.w10)[1]=0;((u8*)&rec.w10)[2]=0;break;
+        case 2:((u8*)&rec.w10)[0]=0;((u8*)&rec.w10)[1]=255;((u8*)&rec.w10)[2]=255;break;
+        case 3:((u8*)&rec.w10)[0]=255;((u8*)&rec.w10)[1]=0;((u8*)&rec.w10)[2]=255;break;
+        }
+    }else if(self[0x400]&&!Player_GetField_0x454(p)){
+        s32 c=255-(self[0x400]<<5);if(c<0)c=0;
+        ((u8*)&rec.w10)[0]=c;((u8*)&rec.w10)[1]=c;((u8*)&rec.w10)[2]=c;
+    }else if(!lbl_8053AAF8[0x7f] && *(s32*)(self+0x1208)<64){
+        u8 c=(*(s32*)(self+0x1208)&63)*4;
+        ((u8*)&rec.w10)[0]=c;((u8*)&rec.w10)[1]=c;((u8*)&rec.w10)[2]=c;
+    }
+    self[0x3d8]=rec.b1c;self[0x3d9]=rec.b1d;
+    if(!fn_802413F0(p) || alpha<32)return;
+    if(Player_IsLinked(p)&&fn_802486A0(p)!=4&&!fn_8023188C(Player_GetLinkTargetIndex(p)))return;
+    s32 sprite=*(u16*)(self+0x3c4);
+    if(sprite==0x121)return;
+    JGeometry::TVec3<f32> draw=*(JGeometry::TVec3<f32>*)(self+8)+*(JGeometry::TVec3<f32>*)(self+0x2b8);
+    draw.x=(s32)draw.x;draw.y=(s32)draw.y;draw.z=(s32)draw.z;
+    if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),&draw,table+0x14,sprite,&rec);
+    DrawRec water;
+    if(self[0x458]==1&&*(s32*)(self+0x3dc)==2)((u8*)&water.w10)[3]=128;
+    u16 tile=fn_8022461C(self+8,*(s32*)(self+0x3b4));
+    JGeometry::TVec3<f32> waterPos=*(JGeometry::TVec3<f32>*)(self+8);
+    waterPos.y+=lbl_805401F4;
+    if(*(f32*)(self+0x10)<=lbl_805401F0&&fn_8022517C(self+8,*(s32*)(self+0x3b4))){
+        if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),&waterPos,table+0x24,*(u16*)(self+0x3c8),&water);
+        else fn_803075AC(-10000-*(s32*)(self+4),*(s32*)(self+0x3b4),&waterPos,*(u16*)(self+0x3c8),0,1,-1,0,0,0);
+    }else if(*(f32*)(self+0x10)<=lbl_805401F0&&fn_80270A8C(p)&&(tile==0x39||tile==13||tile==0x3b)){
+        if(*(u16*)(self+0x3c4)>=0xc2&&*(u16*)(self+0x3c4)<0xc5){
+            if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),&waterPos,table+0x24,*(u16*)(self+0x3ca)+3,&water);
+            else fn_803075AC(-20000-*(s32*)(self+4),*(s32*)(self+0x3b4),&waterPos,*(u16*)(self+0x3ca)+3,0,1,-1,0,0,0);
+        }else {
+            if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),&waterPos,table+0x24,*(u16*)(self+0x3ca),&water);
+            else fn_803075AC(-20000-*(s32*)(self+4),*(s32*)(self+0x3b4),&waterPos,*(u16*)(self+0x3ca),0,1,-1,0,0,0);
+        }
+    }else if(*(f32*)(self+0x10)<=lbl_805401F0&&(!fn_802412A4(p)||fn_80241200(p))&&!Player_GetField_0xce8(p)&&(tile==0x39||fn_80225BE4(self+8,*(s32*)(self+0x3b4)))){
+        if(*(s32*)(self+0x3b4)<8)playerSprite64998(*(s32*)(self+0x3b4),&waterPos,table+0x24,*(u16*)(self+0x3ca),&water);
+        else fn_803075AC(-20000-*(s32*)(self+4),*(s32*)(self+0x3b4),&waterPos,*(u16*)(self+0x3ca),0,1,-1,0,0,0);
     }
 }
 
