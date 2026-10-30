@@ -1427,23 +1427,19 @@ extern "C" void fn_803C1340(u8* p) {
     p[0x110] = 0x14;
 }
 
-static inline void initializeMenuFlags(u8* p,u8* base) {
- {u8* k;s32 i;k=base+0x3b0;
- for(i=0;i<8;i++,k+=8){
- if(fn_803B90E4(*(u32*)(p+0xa4),i)) ((J2DPane*)*(void**)(p+4))->search(*(u64*)(k+0x10))->hide();
- else ((J2DPane*)*(void**)(p+4))->search(*(u64*)(k+0x10))->show();
- }
- }
- *(u32*)(p+0xa8)=*(u32*)(p+0xa4);
- {u8* q;s32 i;q=p;
- for(i=0;i<8;i++,q+=4) *(u32*)(q+0xb8)=fn_803B8CAC(*(u32*)(p+0xa4),i);}
+static inline void initializeMenuRow(u8* p,u8* q,u8* base) {
+ s32 j;u8* kp;
+ j=0;kp=base+0x7f8;
+ for(;j<4;j++,kp+=8) fn_804023D0(*(void**)(q+0x24),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[j+0x19f]);
 }
 
+#pragma opt_lifetimes off
 extern "C" void fn_803C1734(u8* this_) {
  u8* p=this_;
+ s32 textIndex;
  u8* base=(u8*)lbl_804765D0;
- s32 j;
  u8* kp;
+ s32 j;
  {kp=base+0x3b0;
  for(j=0;j<8;j++,kp+=8){
  if(fn_803B90E4(*(u32*)(p+0xa4),j)) ((J2DPane*)*(void**)(p+4))->search(*(u64*)(kp+0x10))->hide();
@@ -1505,8 +1501,8 @@ stopPane(*(void**)(*(u8**)(p+0x18)+4));
 fn_80402E08(*(void**)(p+0x1c),0.0f,1.0f);
 *(s16*)(*(u8**)(p+0x1c)+0x20)=0;
 stopPane(*(void**)(*(u8**)(p+0x1c)+4));
-{s32 i;i=0;kp=base+0x48;for(;i<81;i++,kp+=8){fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+4))->search(*(u64*)kp),p[i+0x132]);}}
-{s32 i;i=0;kp=base+0x2d0;for(;i<19;i++,kp+=8){fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[i+0x183]);}}
+{textIndex=0;kp=base+0x48;for(;textIndex<81;textIndex++,kp+=8){fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+4))->search(*(u64*)kp),p[textIndex+0x132]);}}
+{textIndex=0;kp=base+0x2d0;for(;textIndex<19;textIndex++,kp+=8){fn_804023D0(*(void**)(p+0x14),((J2DPane*)*(void**)(p+8))->search(*(u64*)kp),p[textIndex+0x183]);}}
 *(s16*)(*(u8**)(p+0x14)+0x26)=0;
 *(s16*)(*(u8**)(p+0x18)+0x26)=0;
 *(s16*)(*(u8**)(p+0x1c)+0x26)=0;
@@ -1529,7 +1525,7 @@ fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x5
 fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x5464656c3031ULL)),282,0,0,0);
 fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p+8))->search(0x546261633031ULL)),283,0,0,0);
 *(s16*)(p+0xd8)=0;*(s16*)(p+0xda)=0;p[0x112]=p[0x110];p[0x110]=0x12;}
-
+#pragma opt_lifetimes reset
 extern "C" void fn_803C21A8(u8* this_) {
     u32 state;
 
@@ -3651,15 +3647,12 @@ extern "C" void fn_803CABAC(u8* p) {
 
 #pragma opt_propagation off
 extern "C" void fn_803CB3DC(u8* p) {
- s32 idx;
- s32 cell;
  const u8* base = lbl_804765D0;
  u8* tbl = lbl_8050DB0C;
  s32 b = *(s16*)(tbl+0x17e);
  s32 c = *(s16*)(tbl+0x180);
  s32 a = *(s16*)(tbl+0x17c);
- s32 lim = b+c;
- lim = a + lim;
+ s32 lim = c+(a+b);
  s32 d = *(s16*)(tbl+0x182);
  s32 e = *(s16*)(tbl+0x184);
  s32 f = *(s16*)(tbl+0x186);
@@ -3678,7 +3671,8 @@ extern "C" void fn_803CB3DC(u8* p) {
  if(*(s16*)(p+0xd8)>a+off) {
  ((Fn5Fn)fn_80402B10)(*(void**)(p+0x38+*id*4),b,0,lbl_80543458,lbl_80543498);
  fn_80402628(*(void**)(p+0x38+*id*4),b,(*(u8**)(p+0x38+*id*4))[0x28],0);
- idx=*id;
+ s32 idx=*id;
+ s32 cell;
 #define KB(o, fl) { const u64* key = (const u64*)(base + o); fn_804023D0(*(void**)(p+cell),((J2DPane*)*(void**)(p+8))->search(key[idx]),p[fl]); }
  { const u64* key = (const u64*)(base + 0x780); fn_804023D0(*(void**)(p+(cell=idx*4+0x38)),((J2DPane*)*(void**)(p+8))->search(key[idx]),p[0x125]); }
  KB(0x768,0x126) KB(0x750,0x127) KB(0x6c8,0x128) KB(0x6b0,0x129) KB(0x698,0x12a) KB(0x680,0x12b)
