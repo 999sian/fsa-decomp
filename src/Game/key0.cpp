@@ -736,10 +736,11 @@ static inline void key0LinkHere(char* p) {
 }
 
 static inline void key0LinkHere2(char* p) {
+    u32 x18;
     u32 packed = key0PackActorFlags((u8*)p);
     if (!fn_802DCD0C(fn_802D6A9C())) {
-        packed |= ((*(u32*)((u8*)fn_802D6A9C() + 0x18) & 0xff) << 8) |
-                  ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
+        packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
