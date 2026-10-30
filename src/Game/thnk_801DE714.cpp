@@ -262,6 +262,7 @@ extern "C" void fn_801DE9F4(void* this_) {
 
 extern "C" void fn_801E0CF4(char* this_);
 #pragma opt_propagation off
+#pragma opt_common_subs off
 static inline bool thnkPlayerActive(s32 player) {
     bool active = false;
     if (fn_802375B0(player) == 0 && (u8)fn_801CCFE4(player)) active = true;
@@ -272,6 +273,7 @@ static inline bool thnkPlayerValid(s32 player) {
     if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = true;
     return valid;
 }
+#pragma opt_common_subs reset
 #pragma opt_common_subs reset
 extern "C" void fn_801DEA70(void* this_) {
     char* p = (char*)this_;
