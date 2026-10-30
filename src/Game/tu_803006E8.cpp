@@ -30,7 +30,14 @@ struct GbaChan {
     void* cb;
     GbaPkt pkt;
     u32 tick;
-    u8 pad4C[0x84];
+    u8* program;      // 0x4c
+    u32 programLen;   // 0x50
+    u32 deviceType;   // 0x54
+    u32 probeType;    // 0x58
+    s32 f5c;
+    u32 crcWord;      // 0x60
+    u8 gameId[4];     // 0x64
+    u8 sendData[0x68]; // 0x68
     char chan;
     u8 f_d1;
     u8 f_d2;
@@ -388,16 +395,16 @@ extern "C" void fn_80300A8C(GbaChan* c) {
 
 extern "C" void* fn_80300E1C(void* arg) {
     GbaChan* c = (GbaChan*)arg;
+    OSTime alarm[6];
     void* msg;
+    u32 dummy;
+    u32 cmd;
     s32 err;
     s32 count;
     s32 writeOff;
     s32 readOff;
     OSTime timeout;
     OSTime start;
-    u32 cmd;
-    u32 dummy;
-    u32 alarm[11];
 
     for (;;) {
         err = OSReceiveMessage(c, &msg, 0);
@@ -417,7 +424,7 @@ extern "C" void* fn_80300E1C(void* arg) {
         readOff = 0;
         count = 0;
         c->f_d1 = 1;
-        c->status[2] = 0;
+        c->status[2] = writeOff;
         switch ((s32)msg) {
         case 3:
             timeout = (*(u32*)0x800000F8 / 4 / 1000) * 500;
@@ -437,10 +444,10 @@ extern "C" void* fn_80300E1C(void* arg) {
         {
             u32 ticks = (*(u32*)0x800000F8 / 4 / 1000) * 15;
             OSCreateAlarm(alarm);
-            alarm[10] = (u32)OSGetCurrentThread();
+            ((u32*)alarm)[10] = (u32)OSGetCurrentThread();
             s32 level = OSDisableInterrupts();
             OSSetAlarm(alarm, ticks, fn_80301A88);
-            OSSuspendThread((void*)alarm[10]);
+            OSSuspendThread((void*)((u32*)alarm)[10]);
             OSRestoreInterrupts(level);
         }
     check:
@@ -602,11 +609,7 @@ extern "C" void* fn_80300E1C(void* arg) {
                     goto wait;
                 }
             }
-            if (fn_801365A8() == 0) {
-                expected = lbl_80541620;
-            } else {
-                expected = lbl_80541628;
-            }
+            expected = fn_801365A8() ? lbl_80541628 : lbl_80541620;
             if (gbaHandshake(c, expected)) {
                 goto wait;
             }
@@ -623,11 +626,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             if ((err = GBAReset(c->chan, c->status)) != 0) {
                 goto wait;
             }
-            if (fn_801365A8() == 0) {
-                expected = lbl_80541620;
-            } else {
-                expected = lbl_80541628;
-            }
+            expected = fn_801365A8() ? lbl_80541628 : lbl_80541620;
             if (gbaHandshake(c, expected)) {
                 goto wait;
             }
@@ -698,7 +697,7 @@ extern "C" void* fn_80300E1C(void* arg) {
             }
             {
                 u32 v = *(u32*)((u8*)c + 0x60);
-                if ((u8)v != fn_803006E8((v & 0xff00) | ((v >> 16) & 0xff))) {
+                if ((u8)v != gbaCrc(((v >> 16) & 0xff) | (v & 0xff00))) {
                     goto fail;
                 }
             }
