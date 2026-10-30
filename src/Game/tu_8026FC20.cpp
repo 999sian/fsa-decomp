@@ -208,6 +208,13 @@ struct PlayerAreas2 {
     s32 mId[0x50];
 };
 
+inline bool liftPositionsEqual(const JGeometry::TVec3<f32>& a, const JGeometry::TVec3<f32>& b, f32 epsilon) {
+    bool equal=false;
+    if(JGeometry::TUtilf::epsilonEquals(a.x,b.x,epsilon) &&
+       JGeometry::TUtilf::epsilonEquals(a.y,b.y,epsilon) &&
+       JGeometry::TUtilf::epsilonEquals(a.z,b.z,epsilon)) equal=true;
+    return equal;
+}
 struct PlayerPos {
     u8 pad0[0x8];
     JGeometry::TVec3<f32> pos;
@@ -1641,6 +1648,7 @@ void fn_80274988(char* p) {
 extern "C" void fn_8013CB44(void*,void*,s32,s32,s32);
 extern "C" void fn_80276BB8(char*);
 void fn_80274CB8(char* p) {
+    f32 epsilon;
     f32 eps;
     f32 neg;
     f32 d;
@@ -1657,7 +1665,7 @@ void fn_80274CB8(char* p) {
     char* self;
 
     self = p;
-    tb = (const u8*)lbl_8046BB48;
+    tb = (const u8*)liftDataPrefix;
 
     if (F32(self, 0x10) > lbl_8054028C) {
         st = U8(self, 0x3f8);
@@ -1674,11 +1682,12 @@ void fn_80274CB8(char* p) {
         return;
     }
 
-    eps = JGeometry::TUtilf::epsilon();
+    b9 = false;
+    b8 = false;
+    b7 = false;
+    epsilon = *(f32*)__float_epsilon;
+    eps = lbl_80540298 * epsilon;
     neg = -eps;
-    b9 = 0;
-    b8 = 0;
-    b7 = 0;
     d = F32(self, 0x8) - F32(self, 0x14);
     if (neg <= d && d <= eps) {
         b7 = 1;
@@ -1732,21 +1741,21 @@ void fn_80274CB8(char* p) {
         }
         } else {
         if (U8(self,0x3f8) < 4) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+0];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][0];
         } else if (U8(self,0x3f8) < 6) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+1];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][1];
         } else if (U8(self,0x3f8) < 10) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+2];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][2];
         } else if (U8(self,0x3f8) < 14) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+3];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][3];
         } else if (U8(self,0x3f8) < 18) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+4];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][4];
         } else if (U8(self,0x3f8) < 20) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+5];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][5];
         } else if (U8(self,0x3f8) < 24) {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+6];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][6];
         } else {
-            U8(self, 0x3f9) = tb[0x180+S32(self,0x3dc)*8+7];
+            U8(self, 0x3f9) = liftFrames[S32(self,0x3dc)][7];
         }
         }
     if (S32(self, 0x3b4) >= 8) {
@@ -1756,12 +1765,12 @@ void fn_80274CB8(char* p) {
     }
 
     if(U8(self,0x403)<0xa7) {
-        v=(const f32*)(tb+0x1a0)+S32(self,0x3dc)*3;
+        v=liftOffsets[S32(self,0x3dc)];
         F32(self,0x12a4)=v[0];
         F32(self,0x12a8)=v[1];
         F32(self,0x12ac)=v[2];
     } else {
-        v=(const f32*)(tb+0x1d0)+S32(self,0x3dc)*3;
+        v=liftChargedOffsets[S32(self,0x3dc)];
         F32(self,0x12a4)=v[0];
         F32(self,0x12a8)=v[1];
         F32(self,0x12ac)=v[2];
@@ -1849,8 +1858,9 @@ void fn_80274CB8(char* p) {
     }
     if(!fn_80246464(self)) {
         if(fn_802486A0(self)==4) {
-            s32 value=fn_80248778(self);
-            if(fn_80240888(self)!=value) fn_80251AEC(self,0);
+            int value=fn_80248778(self);
+            s32 current=fn_80240888(self);
+            if(current!=value) fn_80251AEC(self,0);
         }
         if(U8(self,0x403)<0x30) fn_80251AEC(self,0);
         else if(U8(self,0x403)<0xa8) {
