@@ -39,7 +39,7 @@ struct BootLoad {
     u8 ready;
     u8 pad5[3];
     DtorSlot2 dtor;
-    void destroy() { ((void (*)(BootLoad*, int))(*(void***)(this + 0))[2])(this, 1); }
+    void destroy() { ((void (*)(BootLoad*, int))(*(void***)((u8*)this + 8))[2])(this, 1); }
     u8 padC[8];
     void* resource;
 };
