@@ -7,11 +7,10 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 #pragma auto_inline off
-static inline u32 RoomResourceTag802D(const char* name) {
+static inline u32 RoomResourceTag802D(const char* name, u32 key = 0x4d202020) {
     s32 a = name[0] - 0x20;
     s32 b = name[1] - 0x20;
     s32 c = name[2];
-    u32 key = 0x4d202020;
     key += (a << 16) + (b << 8) + c;
     return key - 0x20;
 }
@@ -364,13 +363,15 @@ extern "C" void fn_802D3D48(char* p) {
         }
     } else {
         fn_80134DC0();
-        s32 count=0;
-        for (s32 i=0;i<4;i++) {
+        int count=0;
+        for (int i=0;i<4;i++) {
             u32 flag=(*(u8*)(lbl_8053AAF8+0x82) & (u8)(1<<i))!=0;
             if (flag==1) count++;
         }
-        int two=0;
-        int shift=0;
+        int shift;
+        int two;
+        two=0;
+        shift=0;
         for (int i=0;i<count;i++,shift+=2) {
             if (((*(u8*)(lbl_8053AAF8+0x83)>>shift)&3u)==2u) two++;
         }
@@ -388,8 +389,10 @@ extern "C" void fn_802D3D48(char* p) {
                 }
             } while (line!=column);
         }
-        u8 value=text[cursor]-'0';
-        u8 next=text[cursor+1];
+        u8 next;
+        u8 value;
+        value=text[cursor]-'0';
+        next=text[cursor+1];
         if (next!=0x2Cu && next!=0xDu) {
             if (value==0) value=0;
             else if (value==1) value=10;
