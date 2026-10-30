@@ -459,6 +459,7 @@ extern "C" s32 fn_80121DB0(u8* self) {
 #pragma fp_contract off
 #pragma fp_reorder on
 #pragma float_opt on
+static inline f32 gameLowRootEstimate(const f32 value) { return __frsqrte(value); }
 extern "C" f32 fn_80121DC8(u8* self, s32 player) {
     GameLowVec pos;
     pos = *fn_8023E724(player);
