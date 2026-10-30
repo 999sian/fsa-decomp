@@ -1807,7 +1807,6 @@ JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGe
 JGeometry::TVec3<f32> fn_80233BC4(JGeometry::TVec3<f32>& left, const JGeometry::TVec3<f32>& right);
 f32 fn_80233C08(JGeometry::TVec3<f32>& value);
 bool fn_80233C9C(const JGeometry::TBox2<f32>& left, const JGeometry::TBox2<f32>& right);
-#pragma opt_common_subs off
 void fn_80232A0C(void)
 {
     JGeometry::TVec3<f32> hit;
