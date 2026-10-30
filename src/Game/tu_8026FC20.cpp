@@ -801,6 +801,20 @@ inline f32 hitInvSqrt(f32 x) {
     y = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
     return y;
 }
+inline f32 hitInvSqrtSelf(f32 x) {
+    if (x <= lbl_8054028C) {
+        return x;
+    }
+    f32 y = __frsqrte(x);
+    x = lbl_8054029C * y * (lbl_805402A0 - (x * (y * y)));
+    return x;
+}
+inline void hitNormalize(JGeometry::TVec3<f32>* v) {
+    f32 sq = v->squared();
+    if (!(sq <= lbl_80540298 * FLT_EPSILON)) {
+        v->scale(hitInvSqrt(sq));
+    }
+}
 inline JGeometry::TVec2<f32>& hitSubEq(JGeometry::TVec2<f32>& v, const Vec2f* pt) {
     v.x -= pt->x;
     v.y -= pt->y;
@@ -919,7 +933,8 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
         }
         if (fn_80251AEC(p, 0x50)) {
             JGeometry::TVec2<f32> d = hitDelta(p, pt);
-            s16 a = (s32)(lbl_80540294 * JMath::atanTable_.atan2_(d.y, d.x));
+            f32 rad = JMath::atanTable_.atan2_(d.y, d.x);
+            s16 a = (s32)(rad * lbl_80540294);
             if (a < -0x6000) {
                 S32(p, 0x3dc) = 1;
                 S32(p, 0x3e8) = 1;
@@ -943,7 +958,8 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
     if (action == 0x18) {
         if (fn_80251AEC(p, 0x51)) {
             JGeometry::TVec2<f32> d = hitDelta(p, pt);
-            s32 a = (s32)(lbl_80540294 * JMath::atanTable_.atan2_(d.y, d.x));
+            f32 rad = JMath::atanTable_.atan2_(d.y, d.x);
+            s32 a = (s32)(rad * lbl_80540294);
             s32 room = S32(p, 0x3b4);
             if (*(u8*)((u32)fn_802D6A9C() + 0x131df + room)) {
                 if ((s16)a < -0x4000) {
@@ -996,9 +1012,9 @@ bool fn_802710C8(char* p_, s32 id, s32 n_, Vec2f* pt, s32 action) {
         d.x = lbl_8054028C;
         d.y = lbl_80540288;
     } else if (!(sq <= eps)) {
-        f32 inv = hitInvSqrt(sq);
-        d.x *= inv;
-        d.y *= inv;
+        sq = hitInvSqrt(sq);
+        d.x *= sq;
+        d.y *= sq;
     }
     JGeometry::TVec3<f32> dir(d.x, d.y, lbl_8054028C);
     if (action == 1 || action == 0x19 || action == 0x1c) {
