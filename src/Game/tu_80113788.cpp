@@ -396,6 +396,32 @@ extern "C" int fn_80113E98(char* self) {
     return 0;
 }
 
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F7A08(void*,u32);
+extern "C" void* fn_801F666C(void*,s32);
+extern "C" void fn_802B3A3C(void*);
+extern "C" void Sev2_ClearField_0x280(void*);
+extern "C" u8* sManager__8JUTVideo;
+extern "C" u8 fn_8038BD08(s32,s32,s32,const JGeometry::TVec3f&,s32);
+extern "C" void fn_80118454(void*);
+extern "C" void* fn_80119DD0();
+extern "C" void fn_80119998(void*,s32,s32,s32,s32,s32,s32,s32);
+extern "C" void fn_80230BF4(s32,s32);
+extern "C" void fn_801EE434(void*);
+extern "C" void Actor_CreateByID(void*,u32,s32,void*,s32,s32,s32);
+extern "C" void* lbl_8053AD70;
+extern "C" void fn_8037AD00(void*,s32);
+extern "C" void detach__5ActorFv(void*);
+extern "C" void fn_802D6A9C(void);
+extern "C" void fn_802D8050(void*,s32,s32,s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" void fn_801D22DC(char*,s32,s32,s32);
+extern "C" void fn_801D1F14(char*,...);
+extern f32 lbl_8053C678;
+extern f32 lbl_8053C688;
+extern f32 lbl_8053C68C;
+extern f32 lbl_8053C6AC;
+
 extern "C" void fn_80113EC4(char* self, s32 state) {
     switch (state) {
     default:
