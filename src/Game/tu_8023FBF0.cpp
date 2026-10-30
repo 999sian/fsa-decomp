@@ -5119,9 +5119,10 @@ inline s32 linkRankLive(char* p) {
     if (S32(p, 0xd60) < 0) {
         return 0;
     }
+    s32 linked;
     s32 c = 0;
     for (s32 i = 0; i < S32(p, 0x4); i++) {
-        s32 linked = S32(p, 0xd60);
+        linked = S32(p, 0xd60);
         if (linked == fn_8022F3DC(i)) {
             c++;
         }
@@ -5196,11 +5197,12 @@ void fn_80254744(char* p) {
         S32(p, 0x1248) = 0;
     } else if (fn_80138A30(lbl_8053AAF8) == 2) {
         U8(p, 0xcac) = 1;
-        if (((u8)(1 << S32(p, 0x4)) & U8(lbl_8053AAF8, 0x82)) != 0) {
+        s32 me = S32(p, 0x4);
+        if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << me)) != 0) {
             S32(p, 0xd60) = -1;
             S32(p, 0x11ec) = S32(p, 0x4);
         } else {
-            S32(p, 0xd60) = S32(p, 0x4) - 2;
+            S32(p, 0xd60) = me - 2;
             S32(p, 0x11ec) = S32(p, 0xd60);
         }
         S32(p, 0x1244) = 0;
@@ -5208,7 +5210,7 @@ void fn_80254744(char* p) {
         S32(p, 0x1248) = 0;
     } else if (fn_80138A30(lbl_8053AAF8) == 3) {
         U8(p, 0xcac) = 1;
-        if (((u8)(1 << S32(p, 0x4)) & U8(lbl_8053AAF8, 0x82)) != 0) {
+        if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) != 0) {
             S32(p, 0xd60) = -1;
             S32(p, 0x11ec) = S32(p, 0x4);
         } else {
@@ -5226,8 +5228,9 @@ void fn_80254744(char* p) {
     } else {
         U8(p, 0xcac) = 1;
         S32(p, 0xd60) = -1;
-        if (((u8)(1 << S32(p, 0x4)) & U8(lbl_8053AAF8, 0x82)) != 0) {
-            S32(p, 0x11ec) = S32(p, 0x4);
+        s32 me = S32(p, 0x4);
+        if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << me)) != 0) {
+            S32(p, 0x11ec) = me;
             S32(p, 0x1244) = 0;
             S32(p, 0x1240) = 0;
             S32(p, 0x1248) = 0;
@@ -5327,6 +5330,7 @@ void fn_80254744(char* p) {
             U16(p, 0x3c4) = 0x3d;
             break;
         case 1:
+        case 2:
             U16(p, 0x3c4) = 0x3e;
             break;
         case 3:
