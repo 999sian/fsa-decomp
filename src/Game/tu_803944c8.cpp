@@ -429,9 +429,8 @@ extern "C" void fn_80395834(MsgPop2* self, J2DPane* pane) {
 
 static inline void msgFadeChoice(u8* p, J2DScreen* screen, const u64* tags) {
     MsgPop* self = (MsgPop*)p;
+    self->fadeTimer++;
     s32 period = *(s16*)(lbl_8050DB0C + 0x284);
-    s32 next = self->fadeTimer + 1;
-    self->fadeTimer = next;
     s32 half = period / 2;
     if (self->fadeTimer >= period) self->fadeTimer = 0;
     s32 t = self->fadeTimer;
@@ -456,7 +455,7 @@ static inline void msgRestoreChoice(u8* p, const u64* tags, bool fixed) {
 }
 
 extern "C" const u64 lbl_80475790[5][4];
-#pragma opt_propagation on
+#pragma opt_common_subs off
 extern "C" void fn_80395BE8(void* this_) {
 u8* p=(u8*)this_;
 s32 n=*(s32*)(p+0x160);
@@ -528,7 +527,7 @@ if (*(u8*)((u8*)((MsgDraw*)p)->screen->search(*tag)+0xb0)) { J2DPane* pane=((Msg
 }
 }
 }
-#pragma opt_propagation reset
+#pragma opt_common_subs reset
 
 extern "C" void fn_80396884(void* this_) {
     u8* self = (u8*)this_;
