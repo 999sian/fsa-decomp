@@ -38,7 +38,7 @@ struct GnldVBase {
     virtual void v07();
     virtual void v08();
     virtual void v09();
-    virtual void v10();
+    virtual void v10(u32, u32);
     virtual u8 v11();
 };
 
