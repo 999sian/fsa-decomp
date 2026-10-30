@@ -510,26 +510,14 @@ extern "C" s32 fn_801F732C(void* mgr, void* a, f32 f, void* p5, void* p6, s32 c)
 extern f32 lbl_8053F4B4, lbl_8053F4B8, lbl_8053F498, lbl_8053F4A0;
 extern "C" void fn_8020CF7C(void*);
 extern "C" void fn_801E1AB4(void*, u8);
-static inline void* thnkFindTarget(char* p, void* found) {
-    s32 idx;
-    idx=*(s32*)(p+0x2ac);
-if(idx>=0) found=fn_801F666C(fn_801F856C(),idx);
-if(!found) {
- idx=*(s32*)(p+0x2b0);
- if(idx>=0) found=fn_801F666C(fn_801F856C(),idx);
-}
-if(!found) {
- idx=*(s32*)(p+0x2b4);
- if(idx>=0) found=fn_801F666C(fn_801F856C(),idx);
-}
-    return found;
-}
+
 
 #pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_801E002C(void* this_, void* obj) {
     s32 period;
     s32 timer;
-    u8 flag;
+    int flag;
     s32 idx;
     void* found;
     char* p=(char*)this_;
@@ -752,8 +740,8 @@ if(!found) {
             if(timer>=0 && timer%period==0)fn_8020CF7C(this_);
         }
     } else {
-        flag=false;
-        found = NULL;
+        flag=0;
+        found = (void*)flag;
 idx=*(s32*)(p+0x2ac);
 if(idx>=0) found=fn_801F666C(fn_801F856C(),idx);
 if(!found) {
@@ -779,7 +767,7 @@ if(!found) {
             }
             if(__fabsf(height-*(f32*)(p+0x14))<lbl_8053F488)flag=1;
         }
-        if(flag) {
+        if((u8)flag) {
             if((fn_801CCF7C()&0xff)==0)fn_801F0E34(this_,0x50019,0);
             fn_801E1AB4(this_,0);
                     *(u32*)(p + 0x230) |= 0x4000;
@@ -801,7 +789,7 @@ if(!found) {
               rec=(char*)fn_802D6A9C();
               field=(idx<8)?rec+0xcc:rec+0xdc;
               if(pos < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field+8))) flag=1;
-            if (flag && lower < *(f32*)(p + 0xc)) {
+            if ((u8)flag && lower < *(f32*)(p + 0xc)) {
                 *(f32*)(p + 0x2c4) = upper;
             } else {
                 *(f32*)(p + 0x2c4) = lower;
@@ -891,7 +879,7 @@ if(!found) {
               rec=(char*)fn_802D6A9C();
               field=(idx<8)?rec+0xcc:rec+0xdc;
               if(pos < lbl_8053F4A8 * (*(f32*)field + *(f32*)(field+8))) flag=1;
-            if (flag && lower < *(f32*)(p + 0xc)) {
+            if ((u8)flag && lower < *(f32*)(p + 0xc)) {
                 *(f32*)(p + 0x2c4) = upper;
             } else {
                 *(f32*)(p + 0x2c4) = lower;
@@ -965,6 +953,7 @@ if(!found) {
     }
 }
 #pragma opt_common_subs reset
+#pragma opt_propagation reset
 static inline s32 thnkCollectRooms(s32* rooms) {
     s32 count=0;
     s32 room;
