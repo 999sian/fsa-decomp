@@ -43,11 +43,31 @@ extern "C" const u16 lbl_80474EC0[];
 extern "C" const f32 lbl_80542D58;
 extern u8 lbl_8050C700[0x40];
 
-static inline void spawnBubble(char* p, s32 slot, JGeometry::TVec3f& pos, s32 id) {
-    *(void**)(p + slot * 4 + 0x258) = fn_8013CC50(0, &pos, lbl_80542D58, id, 0, 0, 0, 0, 1);
-    if (*(void**)(p + slot * 4 + 0x258)) {
-        *(u32*)(*(char**)(p + slot * 4 + 0x258) + 0xf4) |= 0x40;
+static inline void spawnBubble(char* p, const s32& slot, JGeometry::TVec3f& pos, s32 id) {
+    void* em = fn_8013CC50(0, &pos, lbl_80542D58, id, 0, 0, 0, 0, 1);
+    char* e = p + slot * 4;
+    *(void**)(e + 0x258) = em;
+    if (*(void**)(e + 0x258)) {
+        *(u32*)(*(char**)(e + 0x258) + 0xf4) |= 0x40;
     }
+}
+
+static inline bool canDeleteEmitter(char* em) {
+    bool del = false;
+    if (*(u32*)(em + 0xf4) & 8) {
+        if (*(s32*)(em + 0xd0) + *(s32*)(em + 0xdc) == 0) del = true;
+    }
+    return del;
+}
+
+struct BubbleArea {
+    f32 x0, y0, x1, y1;
+};
+
+static inline bool inArea(const BubbleArea& area, const JGeometry::TVec3f& v) {
+    bool inside = false;
+    if (v.x >= area.x0 && v.y >= area.y0 && v.x < area.x1 && v.y < area.y1) inside = true;
+    return inside;
 }
 
 static inline bool inArea(const JGeometry::TBox2f& area, const JGeometry::TVec3f& v) {
@@ -111,6 +131,7 @@ extern "C" const f32 lbl_80542D94;
 extern "C" const f32 lbl_80542D98;
 extern "C" void fn_8036E5E8(void* this_) {
     char* p = (char*)this_;
+    JGeometry::TVec3f pos;
     if (*(s32*)(p + 0x234)) {
         *(s32*)(p + 0x234) = *(s32*)(p + 0x234) - 1;
     }
@@ -122,17 +143,15 @@ extern "C" void fn_8036E5E8(void* this_) {
     }
     *(JGeometry::TVec3f*)(*(char**)(p + 0x250) + 0xc) = *(JGeometry::TVec3f*)(p + 0xc);
     u16* rm = *(u16**)(sManager__8JUTVideo + 4);
-    JGeometry::TVec3f center((f32)rm[2] * lbl_80542D5C, (f32)rm[3] * lbl_80542D5C, lbl_80542D60);
-    JGeometry::TVec3f pos;
+    JGeometry::TVec3f center((f32)(s32)rm[2] * lbl_80542D5C, (f32)(s32)rm[3] * lbl_80542D5C, lbl_80542D60);
     s32 count = 0;
     char* q = p;
     for (s32 i = 0; i < 20; i++, q += 4) {
-        char* em = *(char**)(q + 0x258);
-        if (em) {
+        if (*(char**)(q + 0x258)) {
             count++;
             bool del = false;
-            if (*(u32*)(em + 0xf4) & 8) {
-                if (*(s32*)(em + 0xd0) + *(s32*)(em + 0xdc) == 0) del = true;
+            if (*(u32*)(*(char**)(q + 0x258) + 0xf4) & 8) {
+                if (*(s32*)(*(char**)(q + 0x258) + 0xd0) + *(s32*)(*(char**)(q + 0x258) + 0xdc) == 0) del = true;
             }
             if (del) {
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(q + 0x258));
@@ -154,22 +173,25 @@ extern "C" void fn_8036E5E8(void* this_) {
             }
         }
         if (*(s32*)(p + 0x238) < 0) {
-            s32 j = 0;
             s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
-            for (; j < n; j++) {
+            for (s32 j = 0; j < n; j++) {
                 char* a = *(char**)((char*)fn_801F856C() + j * 4 + 8);
                 if (a && *(s32*)(a + 0x1a0) == 'EETC' && *(s32*)(a + 0x234) == 4) {
-                    s32 s = *(s32*)(a + 0x238);
-                    if (s == 0x26 || s == 0x27 || s == 0x28 || s == 0x29) {
+                    switch (*(s32*)(a + 0x238)) {
+                    case 0x26:
+                    case 0x27:
+                    case 0x28:
+                    case 0x29:
                         *(s32*)(p + 0x238) = j;
-                        break;
+                        goto found;
                     }
                 }
             }
         }
+    found:
         s32 idx = *(s32*)(p + 0x238);
         if (idx >= 0) {
-            char* a = *(char**)((char*)fn_801F856C() + idx * 4 + 8);
+            char* a = ((char**)((char*)fn_801F856C() + 8))[idx];
             if (*(f32*)(p + 0x10) - *(f32*)(a + 0x10) < lbl_80542D64) {
                 *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
                 *(s32*)(p + 0x234) = 0x32;
@@ -222,24 +244,20 @@ extern "C" void fn_8036E5E8(void* this_) {
                 r = fn_801CD664(4);
             } while (r == *(s32*)(p + 0x2ac));
             static s8 sAreasInit;
-            JGeometry::TBox2f* areas = (JGeometry::TBox2f*)lbl_8050C700;
             if (!sAreasInit) {
-                areas[0].set(lbl_80542D7C, lbl_80542D7C, lbl_80542D80, lbl_80542D84);
-                areas[1].set(lbl_80542D88, lbl_80542D7C, lbl_80542D8C, lbl_80542D84);
-                areas[2].set(lbl_80542D7C, lbl_80542D90, lbl_80542D80, lbl_80542D94);
-                areas[3].set(lbl_80542D98, lbl_80542D90, lbl_80542D8C, lbl_80542D94);
+                ((JGeometry::TBox2f*)lbl_8050C700)[0].set(lbl_80542D7C, lbl_80542D7C, lbl_80542D80, lbl_80542D84);
+                ((JGeometry::TBox2f*)lbl_8050C700)[1].set(lbl_80542D88, lbl_80542D7C, lbl_80542D8C, lbl_80542D84);
+                ((JGeometry::TBox2f*)lbl_8050C700)[2].set(lbl_80542D7C, lbl_80542D90, lbl_80542D80, lbl_80542D94);
+                ((JGeometry::TBox2f*)lbl_8050C700)[3].set(lbl_80542D98, lbl_80542D90, lbl_80542D8C, lbl_80542D94);
                 sAreasInit = 1;
             }
-            JGeometry::TBox2f area = areas[r];
             JGeometry::TVec3f pt;
-            bool inside;
+            JGeometry::TBox2f area = ((JGeometry::TBox2f*)lbl_8050C700)[r];
             do {
                 f32 y = (f32)fn_801CD664(0x1a2);
                 f32 x = (f32)fn_801CD664(0x242);
                 pt.set(x, y, lbl_80542D60);
-                inside = false;
-                if (pt.x >= area.i.x && pt.y >= area.i.y && pt.x < area.f.x && pt.y < area.f.y) inside = true;
-            } while (!inside);
+            } while (!inArea(area, pt));
             s32 kind = fn_801CD664(8);
             bool ok;
             if (kind >= 5) {
