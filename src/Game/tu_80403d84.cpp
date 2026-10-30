@@ -1531,7 +1531,7 @@ extern "C" void fn_804096E8(u8* self) {
     }
     if (*(s16*)(self+0x41e)>=0) fn_80458880(lbl_8053AF80,0x54,-1);
 }
-#pragma opt_propagation off
+#pragma opt_propagation on
 
 extern "C" void fn_80409FDC(char* this_){
 u8* self=(u8*)this_; f32 tx=lbl_80543898,ty=tx;Tbl8048C1F8* tbl=&lbl_8048C1F8;const ResTIMG* resource;
