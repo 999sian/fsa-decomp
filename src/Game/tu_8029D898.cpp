@@ -727,17 +727,17 @@ extern "C" void fn_8029EC84(void* p, u32 p2, u32 p3, u32 p4, u32 p5, u32 p6) {
 }
 
 extern "C" u32 fn_8029EDB8(u8* self,JGeometry::TVec3<f32>* pos,s32 h,s32 idx,JGeometry::TVec3<f32>* out) {
-u32 result=0;
+s32 result=0;
 if(pos->z<lbl_80540788) {
 void* mgr=fn_802D6A9C();
-u32 room=idx;
+s32 room=idx;
 JGeometry::TBox2f* src;
 if(idx<8)src=(JGeometry::TBox2f*)((u8*)mgr+0xcc);else src=(JGeometry::TBox2f*)((u8*)mgr+0xdc);
 JGeometry::TVec3<f32> p;
 JGeometry::TBox2f base; base=*src;
 f32 half=lbl_80540780;
-p.y=pos->y-half;p.z=pos->z;p.x=pos->x-half;
-f32 startX=p.x;
+f32 startX=pos->x-half;
+p.y=pos->y-half;p.z=pos->z;
 void* created;
 for(s32 row=0;row<3;row++) {
 p.x=startX;
@@ -745,13 +745,13 @@ for(s32 col=0;col<3;col++) {
 s32 x=(s32)(p.x-base.i.x),y=(s32)(p.y-base.i.y);
 if(x<0)x=0;else if(x>=512)x=511;
 if(y<0)y=0;else if(y>=512)y=511;
-s32 cell=(x&0x100)|((y&0x100)<<1)|(y&0xf0)|((x>>4)&0xf);
-u16 tile=fn_802F9908(*(void**)(lbl_8053AB10+0x20),room,cell);
+s32 cell=((y&0x100)<<1)|(x&0x100)|(y&0xf0)|((x>>4)&0xf);
+u32 tile=fn_802F9908(*(void**)(lbl_8053AB10+0x20),room,cell);
 JGeometry::TVec3<f32> center;
 fn_80226CA8(cell,room,&center);
 if(tile>=0x40&&tile<=0x44) {
  if(tile==0x41) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x12, 0);
+ WaveLiftRetile(&p, room, 0x12, 0);
  s32 count=*(s32*)((u8*)fn_801F856C()+0x1008);
  for(s32 i=0;i<count;i++) {
  u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
@@ -761,20 +761,20 @@ if(tile>=0x40&&tile<=0x44) {
  if(cell==fn_80226BC4(&q,idx)){((Actor*)a)->detach();break;}
  }
  }
- } else if(tile==0x43) {fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x50, 0);}else{fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x11, 1);}
+ } else if(tile==0x43) {WaveLiftRetile(&p, room, 0x50, 0);}else{WaveLiftRetile(&p, room, 0x11, 1);}
  { void* handle=Actor_CreateByID(fn_801F856C(),0x5455424f,room,(JGeometry::TVec2<f32>*)&p,tile-0x40,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }
  fn_80230FD0(h,0x20025);Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
 } else if(tile>=0x45&&tile<=0x49) {
- if(tile==0x46){fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x14, 1);}else if(tile==0x48){fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x52, 1);}else{fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x15, 1);}
+ if(tile==0x46){WaveLiftRetile(&p, room, 0x14, 1);}else if(tile==0x48){WaveLiftRetile(&p, room, 0x52, 1);}else{WaveLiftRetile(&p, room, 0x15, 1);}
  { void* handle=Actor_CreateByID(fn_801F856C(),0x5455424f,room,(JGeometry::TVec2<f32>*)&p,*(u16*)(self+0x24)-0x45,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }
  fn_80230FD0(h,0x20025);Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
 } else if(tile==0x69) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x7a, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }
+ WaveLiftRetile(&p, room, 0x7a, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }
  fn_80458880(lbl_8053AF80,3,-1);Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
-} else if(tile==0x68) {fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x12, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
-} else if(tile==0x6a) {fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x50, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
+} else if(tile==0x68) {WaveLiftRetile(&p, room, 0x12, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
+} else if(tile==0x6a) {WaveLiftRetile(&p, room, 0x50, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
 } else if(tile==0x70||tile==0x75||tile==0x6b) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x79, 1);
+ WaveLiftRetile(&p, room, 0x79, 1);
  if(tile==0x70)created=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1);
  else if(tile==0x75)created=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,1,-1,-1);
  else if(tile==0x6b) {
@@ -784,19 +784,19 @@ if(tile>=0x40&&tile<=0x44) {
  {ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),created);if(actor)actor->activate();}
  Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
 } else if(tile==0x74||tile==0x146) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x7d, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0x100000,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
+ WaveLiftRetile(&p, room, 0x7d, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x47524153,room,(JGeometry::TVec2<f32>*)&p,0x100000,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
 } else if(tile==0x71) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x7b, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x424f5244,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
+ WaveLiftRetile(&p, room, 0x7b, 1);{ void* handle=Actor_CreateByID(fn_801F856C(),0x424f5244,room,(JGeometry::TVec2<f32>*)&p,0,-1,-1); created=handle; ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),handle); if(actor)actor->activate(); }Actor_CreateByID(fn_801F856C(),0x424c5a45,room,(JGeometry::TVec2<f32>*)&p,15,-1,-1);
 } else if(tile==0x81) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x9d, 1);fn_80230FD0(h,0x20025);
+ WaveLiftRetile(&p, room, 0x9d, 1);fn_80230FD0(h,0x20025);
  if(idx>=8){JGeometry::TVec3<f32> v;v.x=lbl_8054078C+center.x;v.y=lbl_8054078C+center.y;v.z=lbl_80540784;Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,(JGeometry::TVec2<f32>*)&v,0,-1,-1);}
  else{fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0xf9,1,0,0,0,1,lbl_80540790);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0xfa,1,0,0,0,1,lbl_80540790);}
 } else if(tile==0x90) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x91, 1);fn_80230FD0(h,0x20025);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24a,1,0,0,0,1,lbl_80540790);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24b,1,0,0,0,1,lbl_80540790);
+ WaveLiftRetile(&p, room, 0x91, 1);fn_80230FD0(h,0x20025);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24a,1,0,0,0,1,lbl_80540790);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24b,1,0,0,0,1,lbl_80540790);
 } else if(tile==0x91||tile==0x22e) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x92, 1);fn_80230FD0(h,0x20025);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24a,1,0,0,0,1,lbl_80540790);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24b,1,0,0,0,1,lbl_80540790);
+ WaveLiftRetile(&p, room, 0x92, 1);fn_80230FD0(h,0x20025);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24a,1,0,0,0,1,lbl_80540790);fn_8013CC50(room,(JGeometry::TVec2<f32>*)pos,0x24b,1,0,0,0,1,lbl_80540790);
 } else if(tile==1) {
- fn_802A3164_sub((JGeometry::TVec2<f32>*)&p, room, 0x3e0, 1);fn_80230FD0(h,0x20025);
+ WaveLiftRetile(&p, room, 0x3e0, 1);fn_80230FD0(h,0x20025);
  if(idx>=8){JGeometry::TVec3<f32> v;v.x=lbl_8054078C+center.x;v.y=lbl_8054078C+center.y;v.z=lbl_80540784;Actor_CreateByID(fn_801F856C(),0x4b4d5249,room,(JGeometry::TVec2<f32>*)&v,0,-1,-1);}
  else{fn_8013CC50(room,(JGeometry::TVec2<f32>*)&center,0xf9,1,0,0,0,1,lbl_80540790);fn_8013CC50(room,(JGeometry::TVec2<f32>*)&center,0xfa,1,0,0,0,1,lbl_80540790);}
 } else if(tile==0x9b||tile==0x9c) {
@@ -827,6 +827,7 @@ p.y+=half;
 return result;
 }
 
+#pragma opt_propagation reset
 extern "C" u32 fn_802A01F0(char* self, const volatile JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
     f32 x;
     f32 y;
