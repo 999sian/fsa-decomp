@@ -1461,8 +1461,8 @@ extern "C" s32 fn_802A1D44(char* self, const volatile JGeometry::TVec2<f32>* pos
 #pragma opt_common_subs off
 static inline void WaveCutTile(const JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
     s32 tile;
-    void* mgr;
     s32 n;
+    void* mgr;
     JGeometry::TVec2<f32> t;
     f32 y,x;
     y=pos->y;x=pos->x;t.y=y;t.x=x;
