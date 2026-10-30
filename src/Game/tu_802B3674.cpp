@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct SubObject {
     void* pad0;
@@ -342,10 +343,12 @@ extern "C" void fn_802B5360(char* p) {
     }
     fn_8016A3AC()[0x1ed] = p[0x2d2];
     if (*(s32*)(p + 0x270) != 0) {
-        fn_8016A3AC()[0x1c7] = 1;
+        char* g = fn_8016A3AC();
+        g[0x1c7] = 1;
     }
     if (*(s32*)(p + 0x274) != 0) {
-        fn_8016A3AC()[0x1c4] = 1;
+        char* g = fn_8016A3AC();
+        g[0x1c4] = 1;
     }
     p[0x2d3] = fn_8016A3AC()[0x1f1];
     if (*(s32*)(p + 0x280) != 0) {
@@ -369,7 +372,7 @@ extern "C" void fn_802B5360(char* p) {
             *(s32*)(p + 0x288) = 3;
         }
     }
-    if (*(s32*)(p + 0x288) == 2 && *(s32*)((char*)fn_802D6A9C() + 4) == 1 && *(s32*)((char*)fn_802D6A9C() + 8) == 1 && ((VFnB802B)VT802B(p, 0x34))(p)) {
+    if (*(s32*)(p + 0x288) == 2 && *(s32*)((char*)fn_802D6A9C() + 4) == 1 && *(s32*)((char*)fn_802D6A9C() + 8) == 1 && ((Actor802B*)p)->v34()) {
         if (*((u8*)fn_802D6A9C() + 0x131f2) != 0) {
             *(s32*)(p + 0x288) = 3;
         } else {
@@ -378,10 +381,10 @@ extern "C" void fn_802B5360(char* p) {
     }
     if (*(s32*)(p + 0x288) != 0) {
         *(s32*)(p + 0x310) = fn_801B7550();
-        if (*(s32*)(p + 0x288) == 2 && (*(u32*)(p + 0x90) >> 27) != 0 && !((VFnB802B)VT802B(p, 0x34))(p)) {
+        if (*(s32*)(p + 0x288) == 2 && (*(u32*)(p + 0x90) >> 27) != 0 && !((Actor802B*)p)->v34()) {
             *(s32*)(p + 0x288) = 1;
         }
-        if (*(s32*)(p + 0x288) == 1 && (((*(u32*)(p + 0x90) >> 27) != 0 && ((VFnB802B)VT802B(p, 0x34))(p) == 1) || *((u8*)fn_802D6A9C() + 0x131f2) != 0)) {
+        if (*(s32*)(p + 0x288) == 1 && (((*(u32*)(p + 0x90) >> 27) != 0 && ((Actor802B*)p)->v34() == 1) || *((u8*)fn_802D6A9C() + 0x131f2) != 0)) {
             *(s32*)(p + 0x288) = 2;
         }
         if (*(s32*)(p + 0x288) == 1) {
@@ -417,7 +420,7 @@ extern "C" void fn_802B5360(char* p) {
                 *(f32*)(*(char**)(p + 0x238) + 0x28) = *(f32*)(p + 0x2c4);
             }
             fn_802D6BF8(fn_802D6A9C(), 1);
-            ((VFn802B)VT802B(p, 0x60))(p);
+            ((Actor802B*)p)->v60();
         } else {
             *(s32*)(p + 0x2f0) = 0x9f;
             *(s32*)(p + 0x2e0) = 0x9f;
@@ -440,7 +443,7 @@ extern "C" void fn_802B5360(char* p) {
                 *(f32*)(*(char**)(p + 0x238) + 0x28) = *(f32*)(p + 0x2c4);
             }
             fn_802D6BF8(fn_802D6A9C(), 1);
-            ((VFn802B)VT802B(p, 0x60))(p);
+            ((Actor802B*)p)->v60();
         }
     }
     if (*(s32*)(p + 0x290) != 0) {
@@ -475,71 +478,71 @@ extern "C" void fn_802B5360(char* p) {
         *(s32*)(p + 0x240) = 9;
         break;
     case 1:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0x80, 0xff, 0, 0xa, 0);
+        ((Actor802B*)p)->v54(0xff, 0x80, 0xff, 0, 0xa, 0);
         break;
     case 2:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xff, 0, 0xff, 0);
+        ((Actor802B*)p)->v54(0xff, 0xff, 0xff, 0, 0xff, 0);
         *(s32*)(p + 0x240) = 0;
         break;
     case 3:
         fn_802D7440(fn_802D6A9C(), 0);
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xff, 0, 0xff, 0);
+        ((Actor802B*)p)->v54(0xff, 0xff, 0xff, 0, 0xff, 0);
         *(s32*)(p + 0x240) = 0;
         break;
     case 4:
         fn_802D7440(fn_802D6A9C(), 0);
         if (!fn_802D75BC(fn_802D6A9C(), *(s32*)(p + 0x16c))) {
-            ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0x80, 0xff, 0, 0xa, 0);
+            ((Actor802B*)p)->v54(0xff, 0x80, 0xff, 0, 0xa, 0);
             *(s32*)(p + 0x240) = 0xb;
         } else {
-            ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xff, 0, 0xff, 0);
+            ((Actor802B*)p)->v54(0xff, 0xff, 0xff, 0, 0xff, 0);
             *(s32*)(p + 0x240) = 8;
         }
         break;
     case 5:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xff, 0, 0x80, 0);
+        ((Actor802B*)p)->v54(0xff, 0xff, 0xff, 0, 0x80, 0);
         break;
     case 6:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0x80, 0xff, 0, 0xa, 0);
+        ((Actor802B*)p)->v54(0xff, 0x80, 0xff, 0, 0xa, 0);
         *(s32*)(p + 0x240) = 0xb;
         break;
     case 7:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xff, 0, 0xa, 9);
+        ((Actor802B*)p)->v54(0xff, 0xff, 0xff, 0, 0xa, 9);
         *(s32*)(p + 0x248) = 100;
         *(s32*)(p + 0x334) = 0;
         *(s32*)(p + 0x338) = 0;
         *(s32*)(p + 0x314) = 10;
         break;
     case 8:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0x28, 0x50, 0xff, 0, 0xff, 0);
+        ((Actor802B*)p)->v54(0x28, 0x50, 0xff, 0, 0xff, 0);
         break;
     case 9:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0x28, 0x50, 0xff, 0, 0xff, 9);
+        ((Actor802B*)p)->v54(0x28, 0x50, 0xff, 0, 0xff, 9);
         break;
     case 10:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xb4, 0x78, 0, 0x8c, 9);
+        ((Actor802B*)p)->v54(0xff, 0xb4, 0x78, 0, 0x8c, 9);
         break;
     case 11:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xa4, 0xc8, 0xdc, 0, 0xff, 9);
+        ((Actor802B*)p)->v54(0xa4, 0xc8, 0xdc, 0, 0xff, 9);
         *(s32*)(p + 0x240) = 0;
         break;
     case 12:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xff, 0, 0xff, 0);
+        ((Actor802B*)p)->v54(0xff, 0xff, 0xff, 0, 0xff, 0);
         *(s32*)(p + 0x240) = 0;
         break;
     case 13:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xbe, 0xd2, 0xc8, 0, 0xff, 9);
+        ((Actor802B*)p)->v54(0xbe, 0xd2, 0xc8, 0, 0xff, 9);
         break;
     case 14:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0x96, 0xc8, 0xff, 0x14, 0xb4, 9);
+        ((Actor802B*)p)->v54(0x96, 0xc8, 0xff, 0x14, 0xb4, 9);
         break;
     case 15:
-        ((VFn6802B)VT802B(p, 0x54))(p, 0xff, 0xff, 0xd2, 0x18, 0xff, 9);
+        ((Actor802B*)p)->v54(0xff, 0xff, 0xd2, 0x18, 0xff, 9);
         break;
     }
     *(WaveController**)(p + 0x230) = new WaveController(0, 0, 8);
     v = *(Vec802B*)(p + 0xc);
-    ((VFn802B)VT802B(p, 0x14))(p);
+    ((Actor802B*)p)->v14();
     *(Vec802B*)(p + 0xc) = v;
     p[0x11f] = 1;
 }
