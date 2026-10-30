@@ -290,7 +290,7 @@ static inline void Endm_updateView(char* p) {
 }
 static inline u8 Endm_tick(s32* timer) {
     if (*timer) --*timer;
-    return __cntlzw(*timer) >> 5;
+    return (u32)__cntlzw(*timer) >> 5;
 }
 
 extern "C" void fn_802E9B6C(char* p) {
@@ -300,6 +300,7 @@ extern "C" void fn_802E9B6C(char* p) {
     case 0:
     again:
         if (*(u8*)(p + 0x29a)) {
+    begin:
         *(u8*)(p + 0x29a) = 0;
         if (*(u8*)(p + 0x294) == 0) *(s32*)(p + 0x27c) = 300;
         else if (*(u8*)(p + 0x294) == 7) *(s32*)(p + 0x27c) = 480;
@@ -318,7 +319,7 @@ extern "C" void fn_802E9B6C(char* p) {
         fn_8016A2B4(fn_8016A3AC());
         } else {
             *(u8*)(p+0x29a)=fn_8044B80C(lbl_8053AF30, *(u8*)(p+0x294));
-            if (*(u8*)(p+0x29a)==1) goto again;
+            if (*(u8*)(p+0x29a)==1) goto begin;
         }
         break;
     case 1:
@@ -336,11 +337,11 @@ extern "C" void fn_802E9B6C(char* p) {
         } else *((u8*)lbl_8053AF30 + 0x14) = 1;
         break;
     case 3:
-        if (data[0xf0 + *(u8*)(p + 0x230)] == 0) {
-            fn_804432DC(lbl_8053AEF0, data[0xf0 + *(u8*)(p + 0x230)], 200, 200);
+        if (((const u8 (*)[20])(data+0xf0))[0][*(u8*)(p+0x230)] == 0) {
+            fn_804432DC(lbl_8053AEF0, ((const u8 (*)[20])(data+0xf0))[0][*(u8*)(p+0x230)], 200, 200);
             *(s32*)(p + 0x27c) = 430;
         } else {
-            fn_804432DC(lbl_8053AEF0, data[0xf0 + *(u8*)(p + 0x230)], 0, 200);
+            fn_804432DC(lbl_8053AEF0, ((const u8 (*)[20])(data+0xf0))[0][*(u8*)(p+0x230)], 0, 200);
             *(s32*)(p + 0x27c) = 200;
         }
         *(s32*)(p + 0x23c) = 4;
@@ -377,8 +378,9 @@ extern "C" void fn_802E9B6C(char* p) {
                 if (*(u8*)(p+0x230)>=4 && *(u8*)(p+0x230)<=6 && !(*(u32*)(actor+0x90)&7)) continue;
                 *(s32*)(p+0x23c)=5;
                 *(JGeometry::TVec3<f32>*)(p+0x244)=*(JGeometry::TVec3<f32>*)(*(char**)(p+0x240)+0xc);
-                *(f32*)(p+0x250)=((f32*)lbl_804D5730)[*(u8*)(p+0x230)*2];
-                *(f32*)(p+0x254)=((f32*)lbl_804D5730)[*(u8*)(p+0x230)*2+1];
+                const f32* point=(f32*)lbl_804D5730 + *(u8*)(p+0x230)*2;
+                *(f32*)(p+0x250)=point[0];
+                *(f32*)(p+0x254)=point[1];
                 JGeometry::TVec2<f32> pos(*(f32*)(p+0x250), -30.0f+*(f32*)(p+0x254));
                 fn_8030C7C4(*(void**)(lbl_8053AB10+0x24), &pos.x, (f32)(s32)*(f32*)(p+0x270));
                 *(u8**)(p+0x290)=lbl_804AA0B8[*(u8*)(p+0x230)];
@@ -484,8 +486,9 @@ extern "C" void fn_802E9B6C(char* p) {
             else { *(s32*)(p+0x23c)=4; *(s32*)(p+0x27c)=10; }
             ++*(u8*)(p+0x230);
             *(u8*)(p+0x28c)=*(u8*)(p+0x230)*2;
-            *(f32*)(p+0x258)=((f32*)lbl_804D5730)[*(u8*)(p+0x230)*2];
-            *(f32*)(p+0x25c)=((f32*)lbl_804D5730)[*(u8*)(p+0x230)*2+1];
+            const f32* point=(f32*)lbl_804D5730 + *(u8*)(p+0x230)*2;
+            *(f32*)(p+0x258)=point[0];
+            *(f32*)(p+0x25c)=point[1];
             *(f32*)(p+0xc)=*(f32*)(p+0x258);
             *(f32*)(p+0x10)=*(f32*)(p+0x25c);
             *(char**)(p+0x240)=0;
