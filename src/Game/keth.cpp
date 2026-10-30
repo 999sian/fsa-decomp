@@ -135,7 +135,7 @@ extern "C" void fn_8015C8B0(char* this_) {
 }
 
 extern "C" u16 fn_80226998(void* pos, s32 room);
-extern "C" void fn_802D6A9C();
+extern "C" char* fn_802D6A9C();
 extern "C" u8 fn_802DCD0C();
 extern "C" void fn_8015CCF8(char* this_) {
     if (*(u32*)(this_ + 0x90) >> 27) {
