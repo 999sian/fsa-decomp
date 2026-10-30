@@ -140,12 +140,209 @@ void TU80414F6C::fn_80415028() {
 
 extern "C" u8 fn_80402940(void* obj, s32 idx, f32 a, f32 b, s32 c);
 extern const f32 lbl_805439D0;
+
+// Sets the alpha of n panes keyed by keys[] to their base alpha (p[flag + i]) scaled by rate.
+static inline void fadeKeys(u8* p, const u64* keys, s32 n, s32 flag, f32 rate) {
+    for (s32 i = 0; i < n; i++, keys++) {
+        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*keys);
+        pane->slot9((s32)((f32)p[flag + i] * rate));
+    }
+}
 void TU80414F6C::fn_80416038() {
-    s16* cnt = (s16*)((char*)this + 0x102);
-    *cnt = *cnt + 1;
-    s32 n = *cnt;
-    for (s32 i = 0; i < n; i++) {
-        fn_80402940(*(void**)((char*)this + 0x28), 0xf, 0.0f, 0, 0.0f);
+    u8* p = (u8*)this;
+    const T80416BD0_Tags* t = (const T80416BD0_Tags*)lbl_8048CD50;
+    u8 done0 = 0;
+    u8 done1 = 0;
+    u8 done2 = 0;
+    u8 done3 = 0;
+    u8 done4 = 0;
+    u8 done5 = 0;
+    u8 done6 = 0;
+    s32 i;
+    s32 j;
+    const u64* k;
+    f32 raw;
+    f32 rate;
+    f32 full;
+
+    *(s16*)(p + 0x102) = *(s16*)(p + 0x102) + 1;
+
+    if (*(s16*)(p + 0x102) > 0) {
+        for (i = 0; i < 2; i++) {
+            fn_80402940(*(void**)(p + 0x28 + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+        }
+        done0 = fn_80402940(*(void**)(p + 0x30), 0xf, lbl_805439C8, lbl_805439CC, 0);
+        if (*(s16*)(p + 0x102) < 0xf) {
+            rate = (f32)*(s16*)(p + 0x102) / lbl_805439D0;
+            if (rate < lbl_805439CC) {
+                rate = lbl_805439CC;
+            } else if (rate > lbl_805439B8) {
+                rate = lbl_805439B8;
+            }
+            for (k = t->first, i = 0; i < 0xb; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * rate));
+            }
+        } else {
+            full = lbl_805439B8;
+            for (k = t->first, i = 0; i < 0xb; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * full));
+            }
+        }
+    }
+
+    if (*(s16*)(p + 0x102) > 0) {
+        done1 = fn_80402940(*(void**)(p + 0x34), 0x19, lbl_805439D4, lbl_805439CC, 0);
+        if (*(s16*)(p + 0x102) < 0x19) {
+            rate = (f32)*(s16*)(p + 0x102) / lbl_805439D8;
+            if (rate < lbl_805439CC) {
+                rate = lbl_805439CC;
+            } else if (rate > lbl_805439B8) {
+                rate = lbl_805439B8;
+            }
+            for (k = t->third, i = 0; i < 9; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x139 + i) * rate));
+            }
+        } else {
+            full = lbl_805439B8;
+            for (k = t->third, i = 0; i < 9; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x139 + i) * full));
+            }
+        }
+    }
+
+    if (*(s16*)(p + 0x102) > 0) {
+        done2 = fn_80402940(*(void**)(p + 0x38), 0xf, lbl_805439DC, lbl_805439CC, 0);
+        for (i = 0; i < 0xf; i++) {
+            fn_80402940(*(void**)(p + 0xa4 + i * 4), 0xf, lbl_805439DC, lbl_805439CC, 0);
+        }
+        if (*(s16*)(p + 0x102) < 0xf) {
+            raw = (f32)*(s16*)(p + 0x102) / lbl_805439D0;
+            rate = raw;
+            if (raw < lbl_805439CC) {
+                rate = lbl_805439CC;
+            } else if (raw > lbl_805439B8) {
+                rate = lbl_805439B8;
+            }
+            for (k = t->second, i = 0; i < 0xb; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x12e + i) * rate));
+            }
+            for (i = 0; i < 0xf; i++) {
+                u8* o = *(u8**)(p + 0xa4 + i * 4);
+                (*(T80416BD0_Child**)(o + 4))->slot9((s32)(raw * (f32)o[0x28]));
+            }
+        } else {
+            for (i = 0; i < 0xf; i++) {
+                u8* o = *(u8**)(p + 0xa4 + i * 4);
+                (*(T80416BD0_Child**)(o + 4))->slot9(o[0x28]);
+            }
+            full = lbl_805439B8;
+            for (k = t->second, i = 0; i < 0xb; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x12e + i) * full));
+            }
+        }
+    }
+
+    for (i = 0; i < 5; i++) {
+        if (*(s16*)(p + 0x102) > i * 2) {
+            fn_80402940(*(void**)(p + 0x3c + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+            if (i == 4) {
+                done5 = fn_80402940(*(void**)(p + 0x6c + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+            } else {
+                fn_80402940(*(void**)(p + 0x6c + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+            }
+            s32 d = *(s16*)(p + 0x102) - i * 2;
+            if (d < 0xf) {
+                rate = (f32)d / lbl_805439D0;
+                if (rate < lbl_805439CC) {
+                    rate = lbl_805439CC;
+                } else if (rate > lbl_805439B8) {
+                    rate = lbl_805439B8;
+                }
+                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
+                    if (*k != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                        pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * rate));
+                    }
+                }
+            } else {
+                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
+                    if (*k != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                        pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439B8));
+                    }
+                }
+            }
+        }
+    }
+    for (i = 5; i < 0xa; i++) {
+        s32 thr = (i - 5) * 2 + 2;
+        if (*(s16*)(p + 0x102) > thr) {
+            fn_80402940(*(void**)(p + 0x3c + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+            if (i == 9) {
+                done6 = fn_80402940(*(void**)(p + 0x6c + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+            } else {
+                fn_80402940(*(void**)(p + 0x6c + i * 4), 0xf, lbl_805439C8, lbl_805439CC, 0);
+            }
+            s32 d = *(s16*)(p + 0x102) - thr;
+            if (d < 0xf) {
+                rate = (f32)d / lbl_805439D0;
+                if (rate < lbl_805439CC) {
+                    rate = lbl_805439CC;
+                } else if (rate > lbl_805439B8) {
+                    rate = lbl_805439B8;
+                }
+                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
+                    if (*k != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                        pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * rate));
+                    }
+                }
+            } else {
+                for (j = 0, k = t->grid[i]; j < 0xa; j++, k++) {
+                    if (*k != 0) {
+                        T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                        pane->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439B8));
+                    }
+                }
+            }
+        }
+    }
+
+    if (*(s16*)(p + 0x102) > 8) {
+        done3 = fn_80402940(*(void**)(p + 0x9c), 0xf, lbl_805439C8, lbl_805439CC, 0);
+        s32 d = *(s16*)(p + 0x102) - 8;
+        if (d < 0xf) {
+            rate = (f32)d / lbl_805439D0;
+            if (rate < lbl_805439CC) {
+                rate = lbl_805439CC;
+            } else if (rate > lbl_805439B8) {
+                rate = lbl_805439B8;
+            }
+            for (k = t->fourth, i = 0; i < 6; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x142 + i) * rate));
+            }
+        } else {
+            full = lbl_805439B8;
+            for (k = t->fourth, i = 0; i < 6; i++, k++) {
+                T80416BD0_Child* pane = (*(T80416BD0_Child**)(p + 0x24))->slot15(*k);
+                pane->slot9((s32)((f32)*(u8*)(p + 0x142 + i) * full));
+            }
+        }
+    }
+
+    if (*(s16*)(p + 0x102) > 0x14) {
+        done4 = fn_80402940(*(void**)(p + 0xa0), 0x19, lbl_805439DC, lbl_805439CC, 0);
+    }
+
+    if (done0 && done1 && done2 && done3 && done4 && done5 && done6) {
+        p[0x109] = 1;
     }
 }
 
