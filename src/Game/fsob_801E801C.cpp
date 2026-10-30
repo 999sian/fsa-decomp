@@ -40,6 +40,7 @@ struct FsobPath {
     JGeometry::TVec2<f32> points[32];
 };
 
+#pragma opt_propagation off
 static inline void fsobSample(char* p, u8 seg, u8 step, f32& outX, f32& outY) {
 char* q=p+seg*8;
 f32 x,y;
@@ -62,6 +63,7 @@ default: {
 }}
 outX=x;outY=y;
 }
+#pragma opt_propagation reset
 
 extern "C" void fn_801E801C(char* p) {
     static f32 radius = -256.0f;
@@ -71,6 +73,7 @@ extern "C" void fn_801E801C(char* p) {
 }
 
 #pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_801E8080(char* p) {
  JGeometry::TVec2<f32> pos;
  f32 length=0.0f,lastY,lastX;
@@ -154,6 +157,7 @@ fn_801E8B1C(p,&pos.x,a,b,length,tilt); }
  }
 }
 #pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 static s8 lbl_8053AC44;
 static f32 lbl_8053AC40;
 extern "C" void fn_801E8B1C(void* p0, f32* pos, s32 a, s32 b, f32 scale, f32 tilt) {
