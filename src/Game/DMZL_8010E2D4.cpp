@@ -13,7 +13,7 @@ extern "C" void fn_80119998(void*,s32,s32,s32,s32,s32,s32,s32);
 extern "C" void fn_802D9FF4(void*,s32,s32);
 extern "C" void fn_802DA8DC(void*);
 extern "C" Vec* fn_8023E604(s32);
-extern "C" u16 fn_8023CBC0(s32);
+extern "C" s32 fn_8023CBC0(s32);
 extern "C" void fn_80230498(s32,void*,u16,s32,s32,s32,s32);
 extern const s32 lbl_8053C548[2];
 extern const f32 lbl_8053C588;
@@ -1074,7 +1074,7 @@ extern "C" void fn_8010E2D4(void* this_, s32 param) {
 extern "C" void fn_8010E7E8(void* this_, s32 state) {
 u8* p=(u8*)this_;
 switch(state) {
-case 3:{*((u8*)fn_8011921C()+2)=1;fn_8043A450(lbl_8053AED0,0,3);}break;
+case 3:{{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}fn_8043A450(lbl_8053AED0,0,3);}break;
 case 4:{fn_801D22DC(p+0x2f4,2,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
 case 5:{fn_801D22DC(p+0x2f4,8,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,lbl_8053C548[*(s32*)(p+0x234)],*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
 case 6:{*(f32*)(p+0x278)=lbl_8053C5A0;}break;
@@ -1085,11 +1085,11 @@ case 10:{fn_801D22DC(p+0x2f4,13,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p
 case 11:{fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(JGeometry::TVec3<f32>*)(p+0x2e8)=JGeometry::TVec3<f32>(lbl_8053C55C,lbl_8053C5AC,lbl_8053C55C);{Vec* v=fn_8023E724(0);*(f32*)(p+0x2dc)=v->x;*(f32*)(p+0x2e0)=v->y;*(f32*)(p+0x2e4)=v->z;}*(f32*)(p+0x2e0)-=lbl_8053C5B0;}break;
 case 12:{fn_80119998(fn_80119DD0(),90,0,2,0,0,60,0);}break;
 case 13:{fn_802D9FF4(fn_802D6A9C(),*(s32*)(p+0x244),*(s32*)(p+0x248));fn_802DA8DC(fn_802D6A9C());}break;
-case 14:{*((u8*)fn_8011921C()+2)=1;{JGeometry::TVec3<f32> dest=*(Vec*)(p+0x24);JGeometry::TVec3<f32> from=*fn_8023E724(0);from.y+=lbl_8053C5B4;dest.y+=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from,a,255,-128,-128,1);}{JGeometry::TVec3<f32> pos(from);pos.y-=lbl_8053C588;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);} fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C); *(f32*)(p+0x324)=lbl_8053C58C;*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5B8,c.y/lbl_8053C5B8,c.z/lbl_8053C5B8);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;} fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
+case 14:{{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}{JGeometry::TVec3<f32> dest=*(Vec*)(p+0x24);JGeometry::TVec3<f32> from=*fn_8023E724(0);from.y+=lbl_8053C5B4;dest.y+=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from,a,255,-128,-128,1);}{JGeometry::TVec3<f32> pos(from);pos.y-=lbl_8053C588;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);} fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C); *(f32*)(p+0x324)=lbl_8053C58C;*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5B8,c.y/lbl_8053C5B8,c.z/lbl_8053C5B8);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;} fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
 case 16:{{JGeometry::TVec3<f32> pos=*fn_8023E604(0);pos.y-=lbl_8053C5B4;((JGeometry::TVec3<f32>*)(p+0xc))->set(pos);}fn_801D22DC(p+0x2f4,3,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C58C;{JGeometry::TVec3<f32> dest=*(Vec*)(p+0x24);JGeometry::TVec3<f32> from=*fn_8023E604(0);dest.y+=lbl_8053C588;from.y-=lbl_8053C588;for(s32 i=0;i<4;i++){u16 a=fn_8023CBC0(i);fn_80230498(i,&from,a,255,-128,-128,1);}*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5BC,c.y/lbl_8053C5BC,c.z/lbl_8053C5BC);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;}fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
 case 17:{fn_801D22DC(p+0x2f4,8,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*(f32*)(p+0x324)=lbl_8053C550;fn_8022FE80(0,*(s32*)(p+4),*(s32*)(p+0x198),1,0);fn_8022FD8C(*(void**)(p+0x198));{JGeometry::TVec3<f32> v(lbl_8053C55C,lbl_8053C570,lbl_8053C55C);fn_8038BD08(0,0x4b0,*(s32*)(p+4),&v,0x4022);}fn_8011921C();fn_80118454();}break;
 case 18:{{JGeometry::TVec3<f32> dest=*(Vec*)(p+0xc);dest.y+=lbl_8053C5C0;JGeometry::TVec3<f32>* from=(JGeometry::TVec3<f32>*)fn_8023E724(0);*(JGeometry::TVec3<f32>*)(p+0x2dc)=dest;{JGeometry::TVec3<f32> d(dest);d.sub(*from);JGeometry::TVec3<f32> c(d);JGeometry::TVec3<f32> v(c.x/lbl_8053C5C4,c.y/lbl_8053C5C4,c.z/lbl_8053C5C4);*(JGeometry::TVec3<f32>*)(p+0x2e8)=v;}fn_801D22DC(p+0x32c,0,2,0);fn_801D1F14(p+0x32c,lbl_8053C55C);}}break;
-case 19:{fn_8011921C();fn_801183BC();fn_801D22DC(p+0x2f4,15,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);*((u8*)fn_8011921C()+2)=1;fn_80458FF0(lbl_8053AF80,0x100001b,0,0);}break;
+case 19:{fn_8011921C();fn_801183BC();fn_801D22DC(p+0x2f4,15,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);{u8* mgr=(u8*)fn_8011921C();mgr[2]=1;}fn_80458FF0(lbl_8053AF80,0x100001b,0,0);}break;
 case 21:{*(void**)(p+0x364)=((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x309,0,0,0,0,1);*(void**)(p+0x368)=((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x30a,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2e1,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2e2,0,0,0,0,1);((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2e3,0,0,0,0,1);*(void**)(p+0x36c)=((void*(*)(u32,void*,f32,s32,s32,s32,s32,s32,s32))fn_8013CC50)(*(u32*)(p+4),p+0xc,lbl_8053C550,0x2ea,0,0,0,0,1);fn_801D22DC(p+0x2f4,21,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
 case 22:{fn_801D22DC(p+0x2f4,20,2,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
 case 23:{{u8* e=*(u8**)(p+868);if(e){*(u32*)(e+0xf4)|=1;*(s32*)(e+0x24)=1;*(void**)(p+868)=0;}}{u8* e=*(u8**)(p+872);if(e){*(u32*)(e+0xf4)|=1;*(s32*)(e+0x24)=1;*(void**)(p+872)=0;}}{u8* e=*(u8**)(p+876);if(e){*(u32*)(e+0xf4)|=1;*(s32*)(e+0x24)=1;*(void**)(p+876)=0;}}fn_801D22DC(p+0x2f4,24,0,0);fn_801D1F14(p+0x2f4,lbl_8053C55C);}break;
