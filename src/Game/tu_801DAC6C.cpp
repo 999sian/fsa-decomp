@@ -18,6 +18,8 @@ struct LinkMgr {
     /* 0x80 */ s32 mCount;
     /* 0x84 */ s16 m84;
 
+    s32 getCount() const { return mCount; }
+
     LinkMgr() {
         mId0 = -1;
         mId1 = -1;
@@ -87,24 +89,28 @@ extern "C" void fn_801DADD0(void* record) {
 typedef void (*VFn)(void*);
 
 extern "C" void fn_801DAE24(const LinkMgr* mgr) {
+    s32 i;
+    const s32* ids = (const s32*)mgr;
+    s32 none = -1;
     s32 n = mgr->mCount;
-    const s32* ids = mgr->mIds;
-    for (s32 i = 0; i < n; i++) {
-        ItemBase* actor = (ItemBase*)fn_801F666C(fn_801F856C(), ids[i]);
+    for (i = 0; i < n; i++) {
+        ItemBase* actor = (ItemBase*)fn_801F666C(fn_801F856C(), ids[2]);
         if (actor != 0) {
-            *(s32*)((u8*)actor + 0x10c) = -1;
+            *(s32*)((u8*)actor + 0x10c) = none;
             actor->v07();
         }
+        ids++;
     }
 }
 
 extern "C" void fn_801DAEAC(LinkMgr* mgr, s32 id) {
     u8 found = 0;
     s32* ids = mgr->mIds;
+    s32 i;
     if (mgr->mCount <= 0) {
         return;
     }
-    for (s32 i = 0; i < mgr->mCount; i++, ids++) {
+    for (i = 0; i < mgr->mCount; i++, ids++) {
         if (!found) {
             if (id == *ids) {
                 found = 1;
