@@ -82,7 +82,7 @@ extern "C" void fn_802D9FF4(void*,s32,s32);
 extern "C" void fn_80136798(void*,s32,s32);
 extern "C" u8 fn_8022B7C4(s32);
 extern "C" void fn_80458F9C(void*,s32);
-static inline s16 shltAngle(f32 y, f32 x) {
+static inline f32 shltAngle(f32 y, f32 x) {
     f32 radians = JMath::atanTable_.atan2_(y, x);
     return radians * lbl_8053DC54;
 }
