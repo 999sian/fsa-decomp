@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/PaneState.h"
 #include "JSystem/JGeometry/Box.h"
 extern "C" const f32 lbl_80543BE4;
 extern "C" const f32 lbl_80543BE8;
@@ -362,16 +363,16 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29+=lbl_80543BF8;
         f31=f29*lbl_80543BC8;
         {
-        char* rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f31,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x1c);
+        rec->pane->move(rec->x-f31,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x1c);
+        rec->pane->resize(f29,rec->height);
     }
         {
-        char* rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f31,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x20);
+        rec->pane->move(rec->x-f31,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x20);
+        rec->pane->resize(f29,rec->height);
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_88;
@@ -379,16 +380,16 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29+=lbl_80543BF8;
         f30=f29*lbl_80543BC8;
         {
-        char* rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x24);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x24);
+        rec->pane->resize(f29,rec->height);
     }
         {
-        char* rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x28);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x28);
+        rec->pane->resize(f29,rec->height);
     }
     } else {
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713031ULL))->getStringPtr(),0xf8,0,0,0);
@@ -398,16 +399,16 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29+=lbl_80543BF8;
         f30=f29*lbl_80543BC8;
         {
-        char* rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x1c);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x1c);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x1c);
+        rec->pane->resize(f29,rec->height);
     }
         {
-        char* rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x20);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x20);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x20);
+        rec->pane->resize(f29,rec->height);
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713032ULL))->getStringPtr(),0xf9,0,0,0);
         *(u8*)(this_+0x69)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_7F;
@@ -415,16 +416,16 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f29+=lbl_80543BF8;
         f30=f29*lbl_80543BC8;
         {
-        char* rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x24);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x24);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x24);
+        rec->pane->resize(f29,rec->height);
     }
         {
-        char* rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x28);
-        ((VtSlots*)*(void**)(rec+4))->s4(f29,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x28);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x28);
+        rec->pane->resize(f29,rec->height);
     }
         f29=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54713033ULL))->getStringPtr(),0x24d,0,0,0);
         *(u8*)(this_+0x6a)=((MenuOptionRecord*)lbl_8050EC80)[*(s32*)(lbl_8050EC80+0x10)].flag_89;
@@ -432,16 +433,16 @@ extern "C" void fn_8043670C(char* this_, s32 flag) {
         f31+=lbl_80543BF8;
         f30=f31*lbl_80543BC8;
         {
-        char* rec=*(char**)(this_+0x2c);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x2c);
-        ((VtSlots*)*(void**)(rec+4))->s4(f31,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x2c);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x2c);
+        rec->pane->resize(f31,rec->height);
     }
         {
-        char* rec=*(char**)(this_+0x30);
-        ((VtSlots*)*(void**)(rec+4))->s2(*(f32*)(rec+0x10)-f30,*(f32*)(rec+0xc));
-        rec=*(char**)(this_+0x30);
-        ((VtSlots*)*(void**)(rec+4))->s4(f31,*(f32*)(rec+0x1c));
+        MenuPaneRecord* rec=*(MenuPaneRecord**)(this_+0x30);
+        rec->pane->move(rec->x-f30,rec->y);
+        rec=*(MenuPaneRecord**)(this_+0x30);
+        rec->pane->resize(f31,rec->height);
     }
     }
     if(*(u8*)(this_+0x68)) *(f32*)(this_+0x48)=fn_803832BC(((J2DTextBox*)((VtSlots*)*(void**)(this_+4))->s13(0x54613031ULL))->getStringPtr(),0xfc,0,0,0);
