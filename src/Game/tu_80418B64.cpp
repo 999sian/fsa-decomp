@@ -458,10 +458,15 @@ extern "C" f32 fn_8043D57C(u8* obj);
 extern "C" f32 fn_8043D514(u8* obj);
 extern "C" void fn_80402E08(u8* obj, f32 a, f32 b);
 extern "C" void fn_8037EB4C(void);
-#pragma dont_inline on
+
+// Sets a pane's alpha to base alpha scaled by a fade factor.
+static inline void HudSetPaneAlpha8041(u8* screen, const u64* names, s32 i, u8 alpha, f32 fade) {
+    (*(SubObj**)screen)->w13(names[i])->w07((s32)((f32)alpha * fade));
+}
+
 extern f32 lbl_80543A18;
 extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
-    const HudPaneNames8041* tbl = (const HudPaneNames8041*)lbl_8048D320;
+    const u8* base = (const u8*)lbl_8048D320;
     u8* p;
     s32 off;
     off = idx * 4;
@@ -473,6 +478,7 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
     s32 j;
     const u64* a;
     const u64* b;
+    const u64* one;
     if (idx >= 2) {
         fn_80402E08(*(u8**)(p + 0x74), *(f32*)(p + 0xf8), fn_8043D57C(lbl_8053AED0));
         fn_80402E08(*(u8**)(p + 0x84), lbl_80543A00, fn_8043D57C(lbl_8053AED0));
@@ -587,41 +593,65 @@ extern "C" void fn_80419C38(u8* self, s32 idx, s32 flag) {
 
     if (v29 != *(f32*)(p + 0x118) || v30 != *(f32*)(p + 0x138) || v31 != *(f32*)(p + 0x148) || (u8)flag != 0) {
         HudFade8041* h = (HudFade8041*)self;
-        (*(SubObj**)(self + 4))->w13(tbl->a4f8[idx][0])->w07((s32)((f32)self[0x24c] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 4))->w13(tbl->a4f8[idx][1])->w07((s32)((f32)self[0x24d] * *(f32*)(p + 0x118)));
-        a = tbl->a3b8[idx];
-        b = tbl->a458[idx];
+        one = (const u64*)(base + 0x4f8);
+        one += idx * 2;
+        (*(SubObj**)(self + 4))->w13(one[0])->w07((s32)((f32)self[0x24c] * *(f32*)(p + 0x118)));
+        one = (const u64*)(base + 0x4f8);
+        one += idx * 2;
+        (*(SubObj**)(self + 4))->w13(one[1])->w07((s32)((f32)self[0x24d] * *(f32*)(p + 0x118)));
+        a = (const u64*)(base + 0x3b8);
+        b = (const u64*)(base + 0x458);
+        a += idx * 5;
+        b += idx * 5;
         for (j = 0; j < 5; j++) {
             (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x24e] * h->fade[idx]));
             (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x24f] * h->fade[idx]));
             a++; b++;
         }
-        a = tbl->a838[idx];
-        b = tbl->a898[idx];
+        a = (const u64*)(base + 0x838);
+        b = (const u64*)(base + 0x898);
+        a += idx * 3;
+        b += idx * 3;
         for (k = 0; k < 3; k++) {
             (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x258 + k] * h->fade[idx]));
             (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25b + k] * h->fade[idx]));
             a++; b++;
         }
-        a = tbl->a538[idx];
-        b = tbl->a6b8[idx];
+        a = (const u64*)(base + 0x538);
+        b = (const u64*)(base + 0x6b8);
+        a += idx * 12;
+        b += idx * 12;
         for (k = 0; k < 12; k++) {
             (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x25e] * h->fade[idx]));
             (*(SubObj**)(self + 4))->w13(*b)->w07((s32)((f32)self[0x25f] * h->fade[idx]));
             a++; b++;
         }
-        a = tbl->a8f8[idx];
+        a = (const u64*)(base + 0x8f8);
+        a += idx * 6;
         for (k = 0; k < 6; k++) {
             (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x260 + k] * h->fade[idx]));
             a++;
         }
-        (*(SubObj**)(self + 4))->w13(tbl->b40[idx])->w07((s32)((f32)self[0x266] * *(f32*)(p + 0x138)));
-        (*(SubObj**)(self + 0x18))->w13(tbl->b20[idx])->w07((s32)((f32)self[0x267] * *(f32*)(p + 0x148)));
-        (*(SubObj**)(self + 0x18))->w13(tbl->ae0[idx])->w07((s32)((f32)self[0x268] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 0x18))->w13(tbl->b00[idx])->w07((s32)((f32)self[0x269] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 4))->w13(tbl->b80[idx])->w07((s32)((f32)self[0x26a] * *(f32*)(p + 0x118)));
-        (*(SubObj**)(self + 4))->w13(tbl->ba0[idx])->w07((s32)((f32)self[0x26b] * *(f32*)(p + 0x118)));
-        a = tbl->a9d8[idx];
+        one = (const u64*)(base + 0xb40);
+        one += idx;
+        (*(SubObj**)(self + 4))->w13(*one)->w07((s32)((f32)self[0x266] * *(f32*)(p + 0x138)));
+        one = (const u64*)(base + 0xb20);
+        one += idx;
+        (*(SubObj**)(self + 0x18))->w13(*one)->w07((s32)((f32)self[0x267] * *(f32*)(p + 0x148)));
+        one = (const u64*)(base + 0xae0);
+        one += idx;
+        (*(SubObj**)(self + 0x18))->w13(*one)->w07((s32)((f32)self[0x268] * *(f32*)(p + 0x118)));
+        one = (const u64*)(base + 0xb00);
+        one += idx;
+        (*(SubObj**)(self + 0x18))->w13(*one)->w07((s32)((f32)self[0x269] * *(f32*)(p + 0x118)));
+        one = (const u64*)(base + 0xb80);
+        one += idx;
+        (*(SubObj**)(self + 4))->w13(*one)->w07((s32)((f32)self[0x26a] * *(f32*)(p + 0x118)));
+        one = (const u64*)(base + 0xba0);
+        one += idx;
+        (*(SubObj**)(self + 4))->w13(*one)->w07((s32)((f32)self[0x26b] * *(f32*)(p + 0x118)));
+        a = (const u64*)(base + 0x9d8);
+        a += idx * 4;
         for (k = 0; k < 4; k++) {
             (*(SubObj**)(self + 4))->w13(*a)->w07((s32)((f32)self[0x26c + k] * h->fade[idx]));
             a++;
