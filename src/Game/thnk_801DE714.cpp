@@ -262,14 +262,14 @@ extern "C" void fn_801DE9F4(void* this_) {
 
 extern "C" void fn_801E0CF4(char* this_);
 #pragma opt_propagation off
-static inline u8 thnkPlayerActive(s32 player) {
-    u8 active = 0;
-    if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) active = 1;
+static inline bool thnkPlayerActive(s32 player) {
+    bool active = false;
+    if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) active = true;
     return active;
 }
-static inline u8 thnkPlayerValid(s32 player) {
-    u8 valid = 0;
-    if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = 1;
+static inline bool thnkPlayerValid(s32 player) {
+    bool valid = false;
+    if (thnkPlayerActive(player) && player < fn_80138A30(lbl_8053AAF8)) valid = true;
     return valid;
 }
 extern "C" void fn_801DEA70(void* this_) {
@@ -303,13 +303,10 @@ extern "C" void fn_801DEA70(void* this_) {
             if(*(u32*)(p+0x230)&0x4000)break;
             s32 player=*(s32*)(p+0x2a8);
             if(player<0)break;
-            u8 valid=0;
-            u8 active=0;
-            if(fn_802375B0(player)==0 && fn_801CCFE4(player))active=1;
-            if(active && player<fn_80138A30(lbl_8053AAF8))valid=1;
-            if(!valid)break;
+            if(!thnkPlayerValid(player))break;
             s32 room=*(s32*)(p+4);
-            if(!(fn_8023DE58(*(s32*)(p+0x2a8))==room))break;
+            s32 playerRoom=fn_8023DE58(*(s32*)(p+0x2a8));
+            if(playerRoom!=room)break;
             if(!(fabs(((f32*)fn_8023E724(*(s32*)(p+0x2a8)))[0]-*(f32*)(p+0xc))<lbl_8053F498))break;
             if(!(fabs(((f32*)fn_8023E724(*(s32*)(p+0x2a8)))[1]-*(f32*)(p+0x10))<lbl_8053F498))break;
             fn_8022FE80(*(s32*)(p+0x2a8),*(s32*)(p+4),*(s32*)(p+0x198),0,0);
@@ -481,9 +478,9 @@ extern "C" void fn_801DEA70(void* this_) {
         {
             s32 room;
             u8 flag;
-            f32 upper;
-            f32 lower;
             f32 pos;
+            f32 lower;
+            f32 upper;
             room = *(s32*)(p + 4);
             char* rec = (char*)fn_802D6A9C();
             char* field = (room < 8) ? rec + 0xcc : rec + 0xdc;
@@ -588,9 +585,9 @@ extern "C" void fn_801DEA70(void* this_) {
         {
             s32 room;
             u8 flag;
-            f32 upper;
-            f32 lower;
             f32 pos;
+            f32 lower;
+            f32 upper;
             room = *(s32*)(p + 4);
             char* rec = (char*)fn_802D6A9C();
             char* field = (room < 8) ? rec + 0xcc : rec + 0xdc;
