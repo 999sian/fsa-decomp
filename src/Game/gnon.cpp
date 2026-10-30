@@ -77,7 +77,10 @@ extern "C" void fn_80192038(ActorVt_gnon* this_) {
     this_->setShadow(2, 0.0f, 0.0f);
 }
 
-extern "C" void fn_801EFD34(void* this_, void* a, void* b, void* c, f32 x, f32 y, s32 z);
+#include "JSystem/JUtility/JUTTexture.h"
+#include "Game/ItemBase.h"
+extern "C" void fn_801EFD34(void* this_, const ResTIMG* tex, DrawRec* rec, s32 mode, f32 x, f32 y, f32 z);
+extern "C" const ResTIMG* fn_804032E8(u32 type, const char* name);
 extern "C" void fn_80192090(char* this_) {
 	u8 tbl[16];
 	s32 idx;
@@ -114,7 +117,8 @@ extern u8 lbl_8053AB91;
 extern u8 lbl_8053AB90;
 extern u32 lbl_80539FE8;
 extern "C" void fn_801968C8(char* p) {
-    u8* tables = (u8*)lbl_804C1BC0;
+    GnonShared* shared = (GnonShared*)lbl_804C1BC0;
+    u8* tables = (u8*)shared;
     for (int i = 0; i < 10; i++) *(s32*)(p + 0x25c + i * 4) = 0;
     for (int j = 0; j < 10; j++) *(s32*)(p + 0x234 + j * 4) = 0;
     *(s32*)(p + 0x318) = -1;
@@ -212,9 +216,11 @@ extern "C" void fn_801968C8(char* p) {
     }
     if (*(u32*)(p + 0x90) == 1 || (u32)(*(u32*)(p + 0x90) - 2) <= 1 || *(u32*)(p + 0x90) == 4) {
         *(s32*)(p + 0x25c) = *(u32*)(p + 0x90) - 1;
-        ((u32*)tables)[*(s32*)(p + 0x25c)] = *(u32*)(p + 4);
-        ((GnonVec*)(tables + 0x10))[*(s32*)(p + 0x25c)] = *(GnonVec*)(p + 0xc);
-        ((GnonVec*)(tables + 0x10))[*(s32*)(p + 0x25c)].y += 48.0f;
+        u32* rooms = shared->rooms;
+        GnonVec* positions = shared->positions;
+        rooms[*(s32*)(p + 0x25c)] = *(u32*)(p + 4);
+        fn_80196D70((f32*)&positions[*(s32*)(p + 0x25c)], (f32*)(p + 0xc));
+        positions[*(s32*)(p + 0x25c)].y += 48.0f;
         *(s32*)(p + 0x230) = 40;
     }
     if (*(u32*)(p + 0x90) == 31) {
