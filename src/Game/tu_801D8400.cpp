@@ -329,8 +329,8 @@ extern const f32 lbl_8053F214;
 inline f32 t84Random() { return ((JMARandFast*)(lbl_8053AAF8+0xb4))->get_ufloat_1(); }
 
 struct T84List {
-    T84List() : n(0) {}
-    void add(s32 x) { v[n] = x; n++; }
+    inline T84List() : n(0) {}
+    inline void add(s32 x) { v[n] = x; n++; }
     s32 v[11];
     s32 n;
 };
