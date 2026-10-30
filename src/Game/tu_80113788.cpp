@@ -422,13 +422,181 @@ extern f32 lbl_8053C688;
 extern f32 lbl_8053C68C;
 extern f32 lbl_8053C6AC;
 
-extern "C" void fn_80113EC4(char* self, s32 state) {
-    switch (state) {
-    default:
-        break;
-    }
+#pragma opt_common_subs off
+static inline s32 stateIndexedEffect(char* self, const u16* table, f32 scale) {
+    u16 effect = table[*(s32*)(self + 0x238)];
+    return fn_8013CC50(*(void**)(self + 4), self + 0xc, effect, 0, scale, 2, 0, 0, 1);
 }
 
+extern "C" void fn_80113EC4(char* this_, s32 state) {
+    char* self=this_;
+    JGeometry::TVec3f playerPos;
+    JGeometry::TVec3f screenPos;
+    JGeometry::TVec3f screenArg;
+    JGeometry::TVec3f fixedPos;
+    JGeometry::TVec3f dropPos;
+    JGeometry::TVec3f spawnPos;
+    JGeometry::TVec3f finalPos;
+    char* base=(char*)lbl_804647C8;
+    switch(state) {
+    case 2:
+        self[0x234]=0;
+        {u8* emitter=*(u8**)(self+0x2d0); *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2d0)=0; }
+{u8* emitter=*(u8**)(self+0x2d4); *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2d4)=0; }
+{u8* emitter=*(u8**)(self+0x2d8); *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2d8)=0; }
+{u8* emitter=*(u8**)(self+0x2dc); *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2dc)=0; }
+{u8* emitter=*(u8**)(self+0x2e0); *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2e0)=0; }
+        ((u8*)fn_8011921C())[2]=1;
+        for(s32 i=0;i<4;i++) {
+            playerPos=*(JGeometry::TVec3f*)fn_8023E724(i);
+            u16 angle=((u32(*)(s32))fn_8023CBC0)(i);
+            fn_80230498(i,&playerPos,angle,255,0,0,1);
+        }
+        break;
+    case 3: {
+        self[0x234]=1;
+        *(s32*)(self+0x240)=1;
+        *(s32*)(self+0x24c)=((s32*)(base+0xec))[1];
+        *(s32*)(self+0x2c4)=fn_8013CC50(*(void**)(self+4),self+0xc,0x2ae,0,0.5f,2,0,0,1);
+        *(s32*)(self+0x2c8)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x170))[*(s32*)(self+0x238)],0,0.5f,2,0,0,1);
+        *(s32*)(self+0x2cc)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x180))[*(s32*)(self+0x238)],0,0.5f,2,0,0,1);
+        *(s32*)(self+0x2a4)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x190))[*(s32*)(self+0x238)],0,1.0f,2,0,0,1);
+        s32 id=fn_801F7A08(fn_801F856C(),0x53574556);
+        void* actor=fn_801F666C(fn_801F856C(),id);
+        if(actor) fn_802B3A3C(actor);
+        id=fn_801F7A08(fn_801F856C(),0x53455632);
+        actor=fn_801F666C(fn_801F856C(),id);
+        if(actor) Sev2_ClearField_0x280(actor);
+        fn_801F0E34(self,0x400d5,0);
+        break;
+    }
+    case 4:
+        switch(*(s32*)(self+0x238)) {
+        case 6: fn_80458FF0((void*)lbl_8053AF80,0x100000f,0,0);break;
+        default: fn_80458FF0((void*)lbl_8053AF80,0x100001c,0,0);break;
+        }
+        self[0x233]=1;
+        break;
+    case 5: {
+        u8* render=*(u8**)(sManager__8JUTVideo+4);
+        screenPos.z=0.0f;
+        screenPos.y=(f32)(s32)*(u16*)(render+6)*0.5f;
+        screenPos.x=(f32)(s32)*(u16*)(render+4)*0.5f;
+        screenPos.y+=-16.0f;
+        fn_8022FE80(0,*(u32*)(self+4),*(void**)(self+0x198),1,0);
+        if(fn_8038BD08(0,((s32*)(base+0x88))[*(s32*)(self+0x238)],*(s32*)(self+4),(screenArg=screenPos,screenArg),0x62))
+            fn_80118454(fn_8011921C());
+        break;
+    }
+    case 6: {
+        self[0x233]=0;
+        char* q=self;
+        u16* ids=(u16*)(base+0x140);
+        for(s32 i=0;i<7;i++,q+=4,ids++) *(s32*)(q+0x2a8)=fn_8013CC50(*(void**)(self+4),self+0xc,*ids,0,0.5f,2,0,0,1);
+        *(s32*)(self+0x29c)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x150))[*(s32*)(self+0x238)],0,0.5f,2,0,0,1);
+        *(s32*)(self+0x2a0)=fn_8013CC50(*(void**)(self+4),self+0xc,((u16*)(base+0x160))[*(s32*)(self+0x238)],0,1.0f,2,0,0,1);
+        fn_801F0E34(self,0x30082,0);
+        ((u8*)fn_8011921C())[2]=0;
+        break;
+    }
+    case 7: self[0x230]=0;self[0x232]=1;break;
+    case 8: {u8* emitter=*(u8**)(self+0x2e4);if(emitter) { *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2e4)=0; }}break;
+    case 9: {
+        fn_80119998(fn_80119DD0(),180,0,0,0,1,0,0);
+        *(s32*)(self+0x248)=1;
+        dropPos=*(JGeometry::TVec3f*)(self+0x24);
+        dropPos.y+=48.0f;
+        dropPos.x-=36.0f;
+        f32 spacing=24.0f;
+        for(s32 i=0;i<4;i++) {
+            if(i>0) dropPos.x+=spacing;
+            fn_80230498(i,&dropPos,63,255,-128,-128,1);
+            fn_80230BF4(i,3);
+        }
+        if(*(s32*)(self+0x238)==0) ((u8*)fn_8011921C())[2]=1;
+        else self[0x232]=0;
+        if(*(void**)(self+0x2a0)) {fn_801EE434(*(void**)(self+0x2a0));*(void**)(self+0x2a0)=0;}
+        if(*(void**)(self+0x29c)) {fn_801EE434(*(void**)(self+0x29c));*(void**)(self+0x29c)=0;}
+        char* q=self;
+        for(s32 i=0;i<7;i++,q+=4) {
+            fn_801EE434(*(void**)(q+0x2a8));*(void**)(q+0x2a8)=0;
+            if(i<2) {fn_801EE434(*(void**)(q+0x2e8));*(void**)(q+0x2e8)=0;}
+            if(i<3) {fn_801EE434(*(void**)(q+0x2c4));*(void**)(q+0x2c4)=0;}
+            if(i<5) {fn_801EE434(*(void**)(q+0x2d0));*(void**)(q+0x2d0)=0;}
+        }
+        if(*(void**)(self+0x2a4)) {fn_801EE434(*(void**)(self+0x2a4));*(void**)(self+0x2a4)=0;}
+        if(*(void**)(self+0x2e4)) {fn_801EE434(*(void**)(self+0x2e4));*(void**)(self+0x2e4)=0;}
+        s32 kind=*(s32*)(self+0x238);
+        if(kind!=0 && kind<6) {
+            spawnPos=*(JGeometry::TVec3f*)(self+0x24);
+            spawnPos.z=20.0f;
+            Actor_CreateByID(fn_801F856C(),0x43524e56,*(s32*)(self+4),&spawnPos,kind,-1,-1);
+        }
+        break;
+    }
+    case 10: {
+        fn_8037AD00(lbl_8053AD70,*(s32*)(self+0x238));
+        *(s32*)(self+0x248)=0;
+        detach__5ActorFv(self);
+        s32 flag=*(s32*)(self+0x244);
+        if(flag>0) fn_802D8050(((void*(*)())fn_802D6A9C)(),flag,1,255);
+        break;
+    }
+    case 11:
+        self[0x232]=1;
+        *(f32*)(self+0x254)=0.0f;
+        fn_801D22DC(self+0x264,4,2,0);
+        ((void(*)(char*,f32))fn_801D1F14)(self+0x264,0.0f);
+        break;
+    case 12:
+        fn_801D22DC(self+0x264,5,0,0);
+        ((void(*)(char*,f32))fn_801D1F14)(self+0x264,0.0f);
+        break;
+    case 13:
+        fn_8022FE80(0,*(u32*)(self+4),*(void**)(self+0x198),1,0);
+        fn_8022FD8C(*(s32*)(self+0x198));
+        fixedPos.set(0.0f,-16.0f,0.0f);
+        fn_8038BD08(0,0x14b,*(s32*)(self+4),fixedPos,0x4022);
+        fn_80118454(fn_8011921C());
+        break;
+    case 15:
+        self[0x11d]=0;
+        *(f32*)(self+0x14)=20.0f;
+        fn_8013CC50(*(void**)(self+4),self+0xc,0x20,0,1.0f,0,0,0,1);
+        fn_8013CC50(*(void**)(self+4),self+0xc,0x21,0,1.0f,0,0,0,1);
+        fn_801F0E34(self,0x400d9,0);
+        break;
+    case 16:
+        self[0x11d]=1;
+        *(s32*)(self+0x2e8)=fn_8013CC50(*(void**)(self+4),self+0xc,0x32c,0,1.0f,0,0,0,1);
+        *(s32*)(self+0x2ec)=fn_8013CC50(*(void**)(self+4),self+0xc,0x183,0,1.0f,0,0,0,1);
+        fn_801D22DC(self+0x264,2,2,0);
+        ((void(*)(char*,f32))fn_801D1F14)(self+0x264,0.0f);
+        break;
+    case 17: {
+        ((u8*)fn_8011921C())[2]=0;
+        fn_8037AD00(lbl_8053AD70,*(s32*)(self+0x238));
+        *(s32*)(self+0x248)=0;
+        {u8* emitter=*(u8**)(self+0x2e8);if(emitter) { *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2e8)=0; }}
+        {u8* emitter=*(u8**)(self+0x2ec);if(emitter) { *(u32*)(emitter+0xf4)|=1; *(s32*)(emitter+0x24)=1; *(void**)(self+0x2ec)=0; }}
+        detach__5ActorFv(self);
+        s32 flag=*(s32*)(self+0x244);
+        if(flag>0) {
+            fn_802D8050(((void*(*)())fn_802D6A9C)(),flag,1,255);
+            s32 kind=*(s32*)(self+0x238);
+            if(kind<6) {
+                finalPos=*(JGeometry::TVec3f*)(self+0x24);
+                finalPos.z=20.0f;
+                Actor_CreateByID(fn_801F856C(),0x43524e56,*(s32*)(self+4),&finalPos,kind,-1,-1);
+            }
+        }
+        break;
+    }
+    case 0: case 1: case 14: default: break;
+    }
+    *(s32*)(self+0x23c)=state;
+}
+#pragma opt_common_subs reset
 extern "C" void fn_80114860(char* this_) {
     s32 v = *(s32*)((u8*)fn_8011921C() + 8);
     switch (*(s32*)(this_ + 0x238)) {
