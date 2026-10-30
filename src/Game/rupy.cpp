@@ -860,6 +860,7 @@ static inline s32 rupyRandScaled(const f32 scale) { return scale * rupyInitRand0
 static inline f32 rupyDistance(f32 dx, f32 dy) { return std::sqrtf(dx * dx + dy * dy); }
 
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_8032C664(u8* p) {
     RupyTbl* base = (RupyTbl*)lbl_80471948;
     s32 i;
