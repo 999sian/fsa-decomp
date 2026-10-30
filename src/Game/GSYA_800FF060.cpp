@@ -90,13 +90,68 @@ extern "C" void fn_800FF0C0(Actor* this_) {
     fn_801F06F0(this_, lbl_80463B8C, (void*)(id + 0x311), 0, 0, lbl_8053C118, lbl_8053C118);
 }
 #pragma opt_common_subs reset
-extern "C" void fn_80239914(s32 a, s32 b);
-extern "C" void fn_8022FEB8(void* p, s32 a, s32 b, s32 c, s32 d);
-extern "C" s32 fn_8022FD8C(s32 a);
-extern "C" s32 fn_802300EC(void);
+#include "Game/HitRect.h"
+struct GSYA : Actor {
+    s32 state;
+    u8 tick, direction, finished;
+    s8 nextPlayer;
+    u8 swapTimer, flag;
+    u8 pad23a[2];
+    s32 frame, player, time, timer, previousTime;
+    s32 scores[4];
+    s32 timeFactor;
+    s32 order[4];
+    s32 rank[4];
+    s32 chosen, audio;
+    s32 savedMode[4], savedFlag[4];
+};
+extern u8* lbl_8053AB10;
+extern u8* lbl_8053AF80;
+extern void* lbl_8053AED0;
+extern const u8 lbl_80539EA8[2];
+extern const s32 lbl_8049C848[];
+extern const f32 lbl_8053C128, lbl_8053C12C, lbl_8053C130;
+extern "C" void fn_80239914(void*, s32, s32);
+extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" u8 fn_8038AD24(s32,s32,s32,s32,const JGeometry::TVec3f&,s32);
+extern "C" void fn_802308E0(s32);
+extern "C" void fn_801EE558(void*,void*,f32*,s32);
+extern "C" u8 fn_803865B8(s32);
+extern "C" s32 fn_8037EFB4(s32);
+extern "C" void fn_8038470C(s32,s32);
+extern "C" void fn_803894BC(s32,s32);
+extern "C" void fn_8038938C(s32,s32);
+extern "C" s32 fn_802373EC(s32);
+extern "C" s32 fn_8023725C(s32);
+extern "C" void fn_802372F8(s32,s32,s32);
+extern "C" u8 fn_80388CAC(s32,s32);
+extern "C" void fn_80230534(s32);
+extern "C" void fn_8022B278();
+extern "C" void fn_801F0D20(void*,s32);
+extern "C" void fn_80458FF0(void*,s32,s32,s32);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D8050(void*,s32,s32,s32);
+extern "C" u8 fn_8023061C(s32,s32);
+extern "C" void fn_80230498(s32,void*,s32,s32,s32,s32,s32);
+extern "C" u8 fn_8022F514(s32);
+extern "C" u8 fn_8023A3DC(s32);
+extern "C" void fn_80458508(void*,s32);
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F68E0(void*);
+extern "C" void fn_8030C210(void*,void*);
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" void fn_8022FE80(s32,s32,s32,s32,s32);
+extern "C" void fn_801003F4(s32*);
+extern "C" void fn_8022B260();
+extern "C" void fn_80138B7C(void*);
+extern "C" void fn_8043D874(void*,s32,s32,s32);
+extern "C" u8 fn_80384C58(s32,s32);
+extern "C" void fn_801F6884(void*);
 extern "C" void fn_800FF6F8(Actor* this_) {
     u8* p = (u8*)this_;
-    fn_80239914(*(s32*)(p + 0x4), *(s32*)(p + 0x198));
+    fn_80239914(p + 0x60, *(s32*)(p + 0x4), *(s32*)(p + 0x198));
     p[0x234] = p[0x234] + 1;
     if (*(s32*)(p + 0x230) > 9) {
         return;
