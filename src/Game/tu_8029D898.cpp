@@ -1460,8 +1460,8 @@ extern "C" s32 fn_802A1D44(char* self, const volatile JGeometry::TVec2<f32>* pos
 
 #pragma opt_common_subs off
 static inline void WaveCutTile(const JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
-    void* mgr;
     s32 tile;
+    void* mgr;
     s32 n;
     JGeometry::TVec2<f32> t;
     f32 y,x;
@@ -1487,7 +1487,6 @@ extern f32 lbl_8054078C;
 #pragma opt_propagation off
 #pragma opt_common_subs on
 extern "C" void fn_802A20F0(char* self, const volatile JGeometry::TVec2<f32>* pos_, s32 who, s32 room, s32 param, s32 extra) {
-    s32 handle;
     JGeometry::TVec2<f32>* pos=(JGeometry::TVec2<f32>*)pos_;
     JGeometry::TVec3<f32> center;
     u32 r=room;
@@ -1497,7 +1496,7 @@ extern "C" void fn_802A20F0(char* self, const volatile JGeometry::TVec2<f32>* po
     p.y=y;p.x=x;
     *(s32*)(self+0x20)=fn_80226BC4(&p,r);
     *(u16*)(self+0x24)=fn_802F9908(*(void**)(lbl_8053AB10+0x20),r,*(s32*)(self+0x20));
-    handle=fn_80226AE0(pos,r);
+    s32 handle=fn_80226AE0(pos,r);
 if(*(u16*)(self+0x24)==105){void* id;WaveCutTile(pos,r,122);
 id=Actor_CreateByID(fn_801F856C(),0x47524153,room,pos,param,-1,-1);
 ActorVt* actor=(ActorVt*)fn_801F666C(fn_801F856C(),id);if(actor)actor->activate();
