@@ -1977,8 +1977,9 @@ extern "C" u8 fn_80390894(void* sub, u32 v);
 extern "C" void fn_80390B64(void* sub);
 extern "C" u8 fn_802D46D8(void* cfg, s32 index, u32 bit, u8 set);
 extern "C" void OSReport(const char* fmt, ...);
+#pragma opt_lifetimes on
 extern "C" u8 fn_803865B8(s32 p) {
-    const s32 i = resolvePlayerConst(p);
+    const s32 i = resolvePlayer(p);
     bool bVar5;
     u8 bVar15;
     u16 uVar2;
@@ -2100,7 +2101,7 @@ L_194d0:
 L_fail:
     return 0;
 }
-
+#pragma opt_lifetimes reset
 extern "C" u8 fn_8022FCF0(s32 q, s32 v);
 extern "C" void fn_8022FC54(s32 q, s32 v);
 extern "C" u8 fn_8038A42C(s32 unused, s32 p, s32 q, u32 id, s32 val, const JGeometry::TVec3<f32>* pos, u16 flags) {
@@ -2191,78 +2192,99 @@ extern "C" u8 fn_8038A984(s32 unused, s32 p, s32 q, u32 id, s32 val, u16 flags) 
     return 0;
 }
 
+extern "C" void fn_8022FBB8(s32, s32);
+static inline u8 canShowMessage(s32 p) {
+    if (!fn_80303750(resolvePlayer(p))) return 0;
+    u8 hit;
+    for (s32 i=0;i<4;++i) {
+        if ((lbl_8053AAF8->b82 & (u8)(1<<i)) && fn_80390818(lbl_8053AD78->sub[i])==1) {
+            hit=1;
+            goto found;
+        }
+    }
+    hit=0;
+found:
+    if (hit) return 0;
+    return 1;
+}
 extern "C" u32 fn_8038AD24(s32 a, u32 id, s32 p3, s32 room, JGeometry::TVec3<f32>* pos, u16 flags) {
     s32 p = resolvePlayer(a);
-    if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) {
-        return 0;
-    }
+    if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) return 0;
     id = fn_80383EB0(p, id);
     if (id == 0xea || id == 0xeb) {
-        if (fn_802D46D8(fn_802D6A9C(), p, id, 0) == 1) {
-            return 0;
-        }
+        if (fn_802D46D8(fn_802D6A9C(), p, id, 0) == 1) return 0;
     } else if (fn_802D46D8(fn_802D6A9C(), p, id, 0) == 1) {
         s32 q = resolvePlayer(p);
         Inf1* inf = &lbl_8053AD78->p8->inf;
         u8* e = (u8*)inf + (inf->size + inf->entries[id].offset + 8);
-        if (e[0] == 0x1a && e[2] == 2 && e[4] == 5) {
-            id = fn_80383EB0(q, *(s32*)(e + 5));
-        }
+        u32 next=id;
+        if (e[0]==0x1a && e[2]==2 && e[4]==5) next=*(s32*)(e+5);
+        id = fn_80383EB0(q,next);
     }
     if (lbl_8053AAF8->b7e == 0 || (flags & 0x40)) {
-        if (room < 8) {
-            JGeometry::TVec3<f32> v(*pos);
-            return fn_8038A42C((s32)lbl_8053AD78, p, a, id, p3, &v, flags);
-        }
+        if (room < 8) { JGeometry::TVec3<f32> v(*pos); return fn_8038A42C((s32)lbl_8053AD78,p,a,id,p3,&v,flags); }
         if (!fn_8022C8EC(0)) {
-            f32 in[2];
-            f32 out[3];
-            in[0] = lbl_805430F8;
-            in[1] = lbl_805430FC;
-            fn_8030C4A0(*(u8**)(lbl_8053AB10 + 0x24), in, 1, out);
+            f32 in[2]; f32 out[3];
+            in[0]=lbl_805430F8; in[1]=lbl_805430FC;
+            fn_8030C4A0(*(u8**)(lbl_8053AB10+0x24),in,1,out);
             JGeometry::TVec3<f32> v(*(Vec*)out);
-            return fn_8038A42C((s32)lbl_8053AD78, p, a, id, p3, &v, flags);
+            return fn_8038A42C((s32)lbl_8053AD78,p,a,id,p3,&v,flags);
         }
+    bool can = false;
+    if (fn_80303750(resolvePlayer(p))) {
+        u8 hitSlot = 0;
+        for (s32 i=0; i<4; ++i) {
+            if ((lbl_8053AAF8->b82 & (u8)(1 << i)) && fn_80390818(lbl_8053AD78->sub[i]) == 1) { hitSlot=1; break; }
+        }
+        if (hitSlot) can=false; else can=true;
+    }
+
+        if (can) { JGeometry::TVec3<f32> v(*pos); return fn_8038A42C((s32)lbl_8053AD78,p,a,id,p3,&v,flags); }
+        return fn_8038A984((s32)lbl_8053AD78,p,a,id,p3,flags);
     } else {
-        s32 q = resolvePlayer(p);
-        Inf1* inf = &lbl_8053AD78->p8->inf;
-        u8* e = (u8*)inf + (inf->size + inf->entries[id].offset + 8);
-        bool hit = false;
-        if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x1f) {
-            hit = true;
-        } else if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x2f && ((u8*)lbl_8053AD78)[0xed] == 0 && fn_80138A30(lbl_8053AAF8) >= 2 && fn_8023DE58(fn_8022EA0C(q)) >= 8) {
-            ((u8*)lbl_8053AD78)[0xed] = 1;
-            *(s32*)((u8*)lbl_8053AD78 + 0x110) = q;
-            ((u8*)lbl_8053AD78)[0xee] = e[5];
-            hit = true;
-        }
-        if (hit) {
-            if (fn_80389964((s32)lbl_8053AD78, p, id, flags)) {
+        u16 flags16=flags;
+        s32 q=resolvePlayer(p);
+        Inf1* inf=&lbl_8053AD78->p8->inf;
+        char* e=(char*)inf+(inf->size+inf->entries[id].offset+8);
+        u8 hit;
+        if (e[0]==0x1a && e[2]==2 && e[4]==0x1f) hit=1;
+        else if(e[0]==0x1a && e[2]==2 && e[4]==0x2f && ((u8*)lbl_8053AD78)[0xed]==0 && fn_80138A30(lbl_8053AAF8)>=2 && fn_8023DE58(fn_8022EA0C(q))>=8) {
+            ((u8*)lbl_8053AD78)[0xed]=1;
+            *(s32*)((u8*)lbl_8053AD78+0x110)=q;
+            ((u8*)lbl_8053AD78)[0xee]=e[5];
+            hit=1;
+        } else hit=0;
+        if(hit) {
+            if(fn_80389964((s32)lbl_8053AD78,p,id,flags)) {
                 JGeometry::TVec3<f32> v(*pos);
-                if (fn_8038A42C((s32)lbl_8053AD78, p, a, id, p3, &v, flags)) {
+                if(fn_8038A42C((s32)lbl_8053AD78,p,a,id,p3,&v,flags)) {
+                    s32 q=resolvePlayer(a);
+                    s32 f4=flags16&4;
+                    s32 f2=flags16&2;
+                    for(s32 i=0;i<4;i++) {
+                        if(i!=q && (lbl_8053AAF8->b82 & (u8)(1<<i))) {
+                            if(fn_8022CAF8(i)==4) fn_8022FBB8(fn_8022EA0C(i),p3); else fn_8022FBB8(i,p3);
+                            ((u8*)lbl_8053AD78->sub[resolvePlayer(i)])[0x24]=9;
+                            if(!f4 && !f2) fn_802308E0(i);
+                        }
+                    }
                     return 1;
                 }
             }
             return 0;
         }
-    }
-    s32 q3 = resolvePlayer(p);
-    if (fn_80303750(q3)) {
-        u32 i = 0;
-        u32 hitSlot = 0;
-        do {
-            if ((lbl_8053AAF8->b82 & (u8)(1 << i)) && fn_80390818(lbl_8053AD78->sub[i]) == 1) {
-                hitSlot = 1;
-                break;
-            }
-            i++;
-        } while (i < 4);
-        if (!hitSlot) {
-            JGeometry::TVec3<f32> v(*pos);
-            return fn_8038A42C((s32)lbl_8053AD78, p, a, id, p3, &v, flags);
+    bool can = false;
+    if (fn_80303750(resolvePlayer(p))) {
+        u8 hitSlot = 0;
+        for (s32 i=0; i<4; ++i) {
+            if ((lbl_8053AAF8->b82 & (u8)(1 << i)) && fn_80390818(lbl_8053AD78->sub[i]) == 1) { hitSlot=1; break; }
         }
+        if (hitSlot) can=false; else can=true;
     }
-    return fn_8038A984((s32)lbl_8053AD78, p, a, id, p3, flags);
+
+        if(can) { JGeometry::TVec3<f32> v(*pos); return fn_8038A42C((s32)lbl_8053AD78,p,a,id,p3,&v,flags); }
+        return fn_8038A984((s32)lbl_8053AD78,p,a,id,p3,flags);
+    }
 }
 
 extern "C" f32 fn_8037F580(u8 type, s32 num, char* out, s32* len, f32 scale);
