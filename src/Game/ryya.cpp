@@ -90,6 +90,9 @@ extern "C" void fn_80138B7C(void*);
 extern "C" void fn_80458508(void*,s32);
 extern "C" void fn_8022B1C8(void);
 extern "C" void fn_801A7C48(void*);
+static inline f32 ryyaRandom() {
+    return ((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1();
+}
 static inline void ryyaSetCycle(char* p, s32 st) {
     if (*(s32*)(p + 0x250) != st) {
         *(s32*)(p + 0x250) = st;
@@ -121,13 +124,14 @@ JGeometry::TBox2f box;
 JGeometry::TVec3f argPos0,zero1,zero2,argPos5,argPos10,delta0,delta10;
 f32 dist;s32 player=-1;
 if(*(s32*)(p+0x260)==1) fn_801EEC98(p,*(s32*)(p+0x198),0,&player,&dist,0,0,0);
-fishPos.x=*(f32*)(p+0xc);fishPos.y=*(f32*)(p+0x10);fishPos.z=*(f32*)(p+0x14);
+fishPos.x=*(f32*)(p+0xc);fishPos.y=*(f32*)(p+0x10);fishPos.z=*(volatile f32*)(p+0x14);
 messagePos.y-=lbl_8053E640;
 cameraPos=*(JGeometry::TVec3f*)(p+0xc);
 box.i.x=*(f32*)(p+0x60);box.i.y=*(f32*)(p+0x64);box.f.x=*(f32*)(p+0x68);box.f.y=*(f32*)(p+0x6c);
 box.addPos(*(f32*)(p+0xc),*(f32*)(p+0x10));
 if(*(s32*)(p+0x250)!=1) fn_80239914(&box,*(s32*)(p+0x4),*(s32*)(p+0x198));
-box=*(JGeometry::TBox2f*)(p+0x70);box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
+JGeometry::TVec3f* selfPos=(JGeometry::TVec3f*)(p+0xc);
+box=*(JGeometry::TBox2f*)(p+0x70);box.addPos(*(JGeometry::TVec2<f32>*)selfPos);
 switch(*(s32*)(p+0x230)) {
 case 0:
 
@@ -142,7 +146,7 @@ if(*(s32*)(p+0x250)!=2&&*(s32*)(p+0x250)!=0&&*(s32*)(p+0x250)!=4){*(s32*)(p+0x25
 
 if(*(s32*)(p+0x250)!=0) break;
 *(s32*)(p+0x264)=fn_80138A30(lbl_8053AAF8);
-if(*(s32*)(p+0x264)>1){for(s32 i=1;i<*(s32*)(p+0x264);i++){int value;value=fn_8023DE58(i);if(value!=fn_8023DE58(0))return;}}
+if(*(s32*)(p+0x264)>1){for(s32 i=1;i<*(s32*)(p+0x264);i++){if(fn_8023DE58(0)!=fn_8023DE58(i))return;}}
 
 if(*(s32*)(p+0x260)==1) {
 if(player<0 || dist>lbl_8053E644) {
@@ -191,18 +195,18 @@ if(*(s32*)(p+0x26c)<0&&*(s32*)(p+0x250)==4) {
 *(f32*)(p+0x60)=lbl_8053E660;*(f32*)(p+0x64)=lbl_8053E660;*(f32*)(p+0x68)=lbl_8053E664;*(f32*)(p+0x6c)=lbl_8053E664;
 s32 index=*(s32*)(p+0x26c);
 if(index>=0){char* obj=fn_801F666C(fn_801F856C(),index);if(obj){
-f32 distance=ryyaDistance(p,obj);
+f32 dy=*(f32*)(obj+0x10)-*(f32*)(p+0x10);f32 dx=*(f32*)(obj+0xc)-*(f32*)(p+0xc);f32 distance=std::sqrtf(dx*dx+dy*dy);
 if(distance>lbl_8053E658) *(s32*)(p+0x26c)=-1;
-else *(JGeometry::TVec3f*)(obj+0x3c)=(zero1.set(lbl_8053E654,lbl_8053E654,lbl_8053E654),zero1);
+else ryyaStop(obj,zero1);
 }}}
 s32 index=*(s32*)(p+0x26c);
 if(index>=0){char* obj=fn_801F666C(fn_801F856C(),index);if(obj) {
-f32 distance=ryyaDistance(p,obj);
+f32 dy=*(f32*)(obj+0x10)-*(f32*)(p+0x10);f32 dx=*(f32*)(obj+0xc)-*(f32*)(p+0xc);f32 distance=std::sqrtf(dx*dx+dy*dy);
 if(distance<lbl_8053E680){
 ryyaSetCycle(p,5);fn_801F0E34(p,0x4005c,0);fn_8013CC50(*(s32*)(p+0x4),p+0xc,0x54e,0,0,0,0,1,lbl_8053E628);
 *(s32*)(p+0x25c)+=1;*(u8*)(obj+0x11c)=0;*(s32*)(p+0x26c)=-1;
 }else{
-*(JGeometry::TVec3f*)(obj+0x3c)=(zero2.set(lbl_8053E654,lbl_8053E654,lbl_8053E654),zero2);
+ryyaStop(obj,zero2);
 fishPos.x=*(f32*)(obj+0xc);fishPos.y=*(f32*)(obj+0x10);fishPos.z=*(f32*)(obj+0x14);
 fn_801F71A4(&fishPos.x,*(f32*)(p+0xc),lbl_8053E684,lbl_8053E628);fn_801F71A4(&fishPos.y,*(f32*)(p+0x10),lbl_8053E684,lbl_8053E628);
 *(JGeometry::TVec3f*)(obj+0xc)=fishPos;
@@ -214,14 +218,14 @@ fn_801F0D20(p,0x3f);fn_80458508(lbl_8053AF80,1);
 }
 break;}
 case 5: {
-fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);
+fn_8030C210(((void**)lbl_8053AB10)[9],selfPos);
 *(s32*)(p+0x244)+=1;if(*(s32*)(p+0x244)<=50)break;
 *(s32*)(p+0x244)=51;fn_8022FE80(fn_8022EA0C(0),fn_8023DE58(0),*(s32*)(p+0x198),0,0);
 s32 result=fn_8022FD8C(*(s32*)(p+0x198));if(result<0)break;
 s32 roomHandle=*(s32*)(p+0x198);s32 room=*(s32*)(p+0x4);argPos5=messagePos;
 fn_8038AD24(fn_8022EA0C(0),0x41d,roomHandle,room,argPos5,0x102);*(s32*)(p+0x230)=6;break;}
 case 6:{
-fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);fn_8022FE80(fn_8022EA0C(0),fn_8023DE58(0),*(s32*)(p+0x198),0,0);
+fn_8030C210(((void**)lbl_8053AB10)[9],selfPos);fn_8022FE80(fn_8022EA0C(0),fn_8023DE58(0),*(s32*)(p+0x198),0,0);
 if(fn_803865B8(fn_8022EA0C(0))){
 fn_80138B7C(lbl_8053AAF8);
 if(*(s32*)(p+0x25c)>=10)fn_8038470C(fn_8022EA0C(0),0x41e);else fn_8038470C(fn_8022EA0C(0),0x420);
@@ -233,7 +237,7 @@ if(!fn_803865B8(fn_8022EA0C(0)))break;
 *(s32*)(p+0x244)=50;
 if(*(s32*)(p+0x25c)>=10){
 s32 count=fn_801F7818(fn_801F856C(),0x53415941,*(s32*)(p+0x4),sayas,-1);
-char* obj;s32 i;s32 found=0;for(i=0;i<count && found<7;i++){obj=sayas[i];if(obj && *(u32*)(obj+0x90)==2){
+char* obj;s32 i;s32 found;i=0;found=0;for(;i<count && found<7;i++){obj=sayas[i];if(obj && *(u32*)(obj+0x90)==2){
 positions[found].x=*(f32*)(obj+0xc);positions[found].y=*(f32*)(obj+0x10);positions[found].z=*(f32*)(obj+0x14);found++;
 }}
 if(found>0){
