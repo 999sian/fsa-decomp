@@ -440,7 +440,7 @@ struct HudPaneNames8041 {
     u64 a8f8[4][6];
     u64 pad9b8[4];
     u64 a9d8[4][4];
-    u64 pada58[0x11];
+    u64 pada58[11]; u64 ab0[6];
     u64 ae0[4];
     u64 b00[4];
     u64 b20[4];
