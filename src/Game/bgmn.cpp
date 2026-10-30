@@ -1,6 +1,7 @@
 // TU 0x802e5c44-0x802e694c (actor BGMN).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- Bgmn_dtor_802E5C44.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
