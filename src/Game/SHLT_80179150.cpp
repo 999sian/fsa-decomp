@@ -50,6 +50,10 @@ extern "C" void fn_801791B0(Actor* this_) {
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern "C" f32 lbl_8053DC2C;
 extern "C" f32 lbl_8053DC20;
+extern "C" Vec lbl_804C0EA0;
+extern "C" s32 lbl_8053AB68;
+extern "C" s32 lbl_80539F80;
+extern "C" s32 lbl_80539F84;
 extern "C" void fn_80179388(Actor* this_)
 {
     u8* p = (u8*)this_;
