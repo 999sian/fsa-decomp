@@ -1771,13 +1771,21 @@ extern "C" void* __nw__FUlP7JKRHeapi(u32, JKRHeap*, s32);
 extern "C" void* __nw__FUl(u32);
 extern "C" void __ct__14WaveControllerFlll(void*, s32, s32, s32);
 extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
+#pragma push
+#pragma opt_propagation off
 extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
+    u8* tex;
+    JKRArchive* arc;
+    void* res;
     u32 strs = (u32)lbl_80466368;
     __construct_array(self + 0x140, (void*)fn_8016FDE0, 0, 0x1c, 4);
     *(JKRSolidHeap**)self = JKRSolidHeap::create(0xffffffff, heap, false);
     (*(JKRHeap**)self)->becomeCurrentHeap();
     u8* tbl = lbl_80529DEC;
-    fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0xb4), (const char*)(strs + 0xc0), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 4), (J3DAnmTextureSRTKey**)(self + 8), 0, 0, 0);
+    J3DModel** model=(J3DModel**)(self+4);
+    J3DAnmTextureSRTKey** animation=(J3DAnmTextureSRTKey**)(self+8);
+    JKRArchive* first=*(JKRArchive**)(tbl+0x14);
+    fn_8016A3BC(first, (const char*)(strs + 0xb4), (const char*)(strs + 0xc0), 0, 0, 0, 0x240000, *(JKRHeap**)self, model, animation, 0, 0, 0);
     fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0xcc), (const char*)(strs + 0xdc), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0xc), (J3DAnmTextureSRTKey**)(self + 0x10), 0, 0, 0);
     fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0xec), (const char*)(strs + 0xfc), 0, 0, 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0x14), (J3DAnmTextureSRTKey**)(self + 0x18), 0, 0, 0);
     fn_8016A3BC(*(JKRArchive**)(tbl + 0x14), (const char*)(strs + 0x10c), (const char*)(strs + 0x118), 0, (const char*)(strs + 0x124), 0, 0x240000, *(JKRHeap**)self, (J3DModel**)(self + 0x1c), (J3DAnmTextureSRTKey**)(self + 0x20), 0, (J3DAnmTevRegKey**)(self + 0x24), 0);
@@ -1803,8 +1811,8 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (const char*)(strs + 0x2c4), 0, 0, 0, 0, 0x220000, *(JKRHeap**)self, (J3DModel**)(self + 0xec), 0, 0, 0, 0);
     }
     {
-        const char** ent = (const char**)lbl_804A0790;
         u8* p = self;
+        const char** ent = (const char**)lbl_804A0790;
         for (s32 i = 0; i < 6; i++) {
             fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), ent[0], ent[1], 0, ent[2], 0, 0x10240000, *(JKRHeap**)self, (J3DModel**)(p + 0x3c), (J3DAnmTextureSRTKey**)(p + 0x54), 0, (J3DAnmTevRegKey**)(p + 0x6c), 0);
             ent += 3;
@@ -1819,9 +1827,9 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     ((JKRSolidHeap*)*(void**)self)->adjustSize();
     heap->becomeCurrentHeap();
     {
-        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
         if (tex) {
-            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3c8));
+            res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3c8));
             *(void**)(tex + 0x28) = 0;
             storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
             tex[0x3b] &= 2;
@@ -1829,9 +1837,9 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0xf4) = tex;
     }
     {
-        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
         if (tex) {
-            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3d8));
+            res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3d8));
             *(void**)(tex + 0x28) = 0;
             storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
             tex[0x3b] &= 2;
@@ -1839,9 +1847,9 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0xf8) = tex;
     }
     {
-        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
         if (tex) {
-            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3e4));
+            res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3e4));
             *(void**)(tex + 0x28) = 0;
             storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
             tex[0x3b] &= 2;
@@ -1849,9 +1857,9 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0xfc) = tex;
     }
     {
-        u8* tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
         if (tex) {
-            void* res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3f4));
+            res = ((JKRArchive*)*(void**)(lbl_8053AAF8 + 0xa4))->getResource(0x3f3f3f3f, (const char*)(strs + 0x3f4));
             *(void**)(tex + 0x28) = 0;
             storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
             tex[0x3b] &= 2;
@@ -1859,12 +1867,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x100) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x40c))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x40c));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x40c));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1873,12 +1881,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x104) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x418))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x418));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x418));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1887,12 +1895,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x108) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x424))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x424));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x424));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1901,12 +1909,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x10c) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x434))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x434));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x434));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1915,12 +1923,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x110) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, 0)) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, 0);
+                res = arc->getResource(0x54494d47, 0);
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1929,12 +1937,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x114) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x440))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x440));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x440));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1943,12 +1951,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x118) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x450))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x450));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x450));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1957,12 +1965,12 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
         *(u8**)(self + 0x11c) = tex;
     }
     {
-        JKRArchive* arc = *(JKRArchive**)(tbl2 + 0x10);
-        u8* tex = 0;
+        arc = *(JKRArchive**)(tbl2 + 0x10);
+        tex = 0;
         if (arc && arc->getResource(0x54494d47, (const char*)(strs + 0x460))) {
             tex = (u8*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
             if (tex) {
-                void* res = arc->getResource(0x54494d47, (const char*)(strs + 0x460));
+                res = arc->getResource(0x54494d47, (const char*)(strs + 0x460));
                 *(void**)(tex + 0x28) = 0;
                 storeTIMG__10JUTTextureFPC7ResTIMGUc((char*)tex, res, 0);
                 tex[0x3b] &= 2;
@@ -1985,6 +1993,7 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     }
     return self;
 }
+#pragma pop
 
 extern "C" void fn_8016FDE0(void) {
 }
