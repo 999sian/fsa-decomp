@@ -798,7 +798,7 @@ static inline u32 messageIndexById(const u32 id) {
 static inline u8 showMessageById(s32 manager, s32 player, s32 source, u32 id, s32 value, JGeometry::TVec3<f32> pos, u32 flags) {
     typedef u8 (*ShowFn)(s32, s32, s32, u32, s32, const JGeometry::TVec3<f32>*, u32);
     u32 index = messageIndexById(id);
-    return ((ShowFn)fn_8038A42C)(manager, player, source, index, value, &pos, flags);
+    return ((ShowFn)fn_8038A42C)((s32)lbl_8053AD78, player, source, index, value, &pos, flags);
 }
 extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
     u32 i;
@@ -819,7 +819,7 @@ extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
 }
 
 #pragma opt_lifetimes off
-extern "C" u8 fn_8038C678(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec3<f32>* pos, u32 flags) {
+extern "C" u8 fn_8038C678(s32 a, u32 id, int p3, s32 room, const JGeometry::TVec3<f32>* pos, u32 flags) {
     f32 out[3];
     s32 i;
     s32 q;
@@ -831,7 +831,7 @@ extern "C" u8 fn_8038C678(s32 a, u32 id, s32 p3, s32 room, const JGeometry::TVec
     int roomCopy=room;
     p = resolvePlayer(a);
     if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) return 0;
-    u32 index=fn_803846BC(id);
+    u32 index=messageIndexById(id);
 index=fn_80383EB0(p,index);
 id=lbl_8053AD78->p8->inf.entries[index].id;
     if(fn_802D46D8(fn_802D6A9C(),p,index,0)==1) {
@@ -843,7 +843,7 @@ if(e[0]==0x1a&&e[2]==2&&e[4]==5)next=*(s32*)(e+5);
 index=fn_80383EB0(q,next);
 id=lbl_8053AD78->p8->inf.entries[index].id;
 }
-if (lbl_8053AAF8->b7e == 0 || (flags & 0x40)) {
+if (lbl_8053AAF8->b7e == 0 || ((flags16=flags), (flags & 0x40))) {
         if (roomCopy < 8) { JGeometry::TVec3<f32> v; v=*pos; return showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags); }
         if (!fn_8022C8EC(0)) {
             f32 in[2];
@@ -856,8 +856,7 @@ if (lbl_8053AAF8->b7e == 0 || (flags & 0x40)) {
         if (can) { JGeometry::TVec3<f32> v; v=*pos; return showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags); }
         return ((u8(*)(s32,s32,s32,u32,s32,u32))fn_8038C60C)((s32)lbl_8053AD78,p,a,id,p3,flags);
     } else {
-        flags16=flags;
-        u32 textIndex=fn_803846BC(id);
+        u32 textIndex=messageIndexById(id);
         q=resolvePlayer(p);
         Inf1* inf=&lbl_8053AD78->p8->inf;
 inf=&lbl_8053AD78->p8->inf;
@@ -871,7 +870,7 @@ e=(char*)inf+inf->size+8+inf->entries[textIndex].offset;
             ((u8*)lbl_8053AD78)[0xee]=e[5];
         } else hit=0;
         if(hit) {
-            if(((u8(*)(s32,s32,u32,u32))fn_80389964)((s32)lbl_8053AD78,p,fn_803846BC(id),flags)) {
+            if(((u8(*)(s32,s32,u32,u32))fn_80389964)((s32)lbl_8053AD78,p,messageIndexById(id),flags)) {
                 JGeometry::TVec3<f32> v; v=*pos;
                 if(showMessageById((s32)lbl_8053AD78,p,a,id,p3,v,flags)) {
                     q=resolvePlayer(a);
