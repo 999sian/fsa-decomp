@@ -41,6 +41,7 @@ struct FsobPath {
 };
 
 #pragma opt_propagation off
+#pragma opt_common_subs off
 static inline void fsobSample(char* p, u8 seg, u8 step, f32& outX, f32& outY) {
 char* q=p+seg*8;
 f32 x,y;
@@ -63,6 +64,7 @@ default: {
 }}
 outX=x;outY=y;
 }
+#pragma opt_common_subs reset
 #pragma opt_propagation reset
 
 extern "C" void fn_801E801C(char* p) {
@@ -75,7 +77,7 @@ extern "C" void fn_801E801C(char* p) {
 #pragma opt_propagation off
 extern "C" void fn_801E8080(char* p) {
  JGeometry::TVec2<f32> pos;
- f32 length=0.0f,lastY,lastX;
+ f32 length=0.0f,lastX,lastY;
  s32 count=(*(u8*)(p+0x2ad)-1)*32+2;
  u8 split=0;
  f32 normal=*(f32*)((char*)fn_801E9AFC()+0x178);
@@ -94,7 +96,7 @@ extern "C" void fn_801E8080(char* p) {
  char* q=p+seg*8;
  for(u8 step=1;step<=16;step++) {
  f32 x,y; fsobSample(p,seg,step,x,y);
- f32 dx=x-pos.x,dy=y-pos.y;
+ f32 dy=y-pos.y,dx=x-pos.x;
  if(seg==0 && step==1) {lastX=dx;lastY=dy;}
  { s32 b=(s32)(JMath::atanTable_.atan2Radian(dx,dy)*10430.4f);
 s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
@@ -124,7 +126,7 @@ fn_801E8B1C(p,(f32*)(p+0xc),a,b,partial,normal); }
  for(u8 step=1;step<=16;step++) {
  if(seg<=start && step<begin) continue;
  f32 x,y; fsobSample(p,seg,step,x,y);
- f32 dx=x-pos.x,dy=y-pos.y;
+ f32 dy=y-pos.y,dx=x-pos.x;
  { s32 b=(s32)(JMath::atanTable_.atan2Radian(dx,dy)*10430.4f);
 s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
 fn_801E8B1C(p,&pos.x,a,b,length,normal); }
@@ -142,7 +144,7 @@ fn_801E8B1C(p,&pos.x,a,b,length,normal); }
  char* q=p+seg*8;
  for(u8 step=1;step<=16;step++) {
  f32 x,y; fsobSample(p,seg,step,x,y);
- f32 dx=x-pos.x,dy=y-pos.y;
+ f32 dy=y-pos.y,dx=x-pos.x;
  if(seg==0 && step==1) {lastX=dx;lastY=dy;}
  { s32 b=(s32)(JMath::atanTable_.atan2Radian(dx,dy)*10430.4f);
 s32 a=(s32)(JMath::atanTable_.atan2Radian(lastX,lastY)*10430.4f);
