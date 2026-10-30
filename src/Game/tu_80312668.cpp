@@ -80,15 +80,14 @@ extern "C" void fn_803126C8(Actor* p) {
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
 #pragma opt_strength_reduction reset
-extern "C" void fn_802D6A9C(Actor* p);
-extern "C" u8 fn_802D800C(Actor* p, u32 v);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D800C(void* mgr, u32 v);
 extern "C" void fn_80458F9C(void* obj, s32 v);
 extern "C" void fn_803129AC(Actor* p) {
     u8* self = (u8*)p;
     switch (*(s32*)(self + 0x230)) {
     case 0:
-        fn_802D6A9C(p);
-        fn_802D800C(p, *(u32*)(self + 0x23c));
+        fn_802D800C(fn_802D6A9C(), *(u32*)(self + 0x23c));
         break;
     }
 }
