@@ -81,6 +81,13 @@ extern "C" s32 ClassifyBamAngleToQuadrant(u32);
 #define GAME_ACTOR_USE_SDK_VEC
 #include "Game/Actor.h"
 extern s32 lbl_804A0C10[];
+static inline void stalImpactVelocity(JGeometry::TVec3<f32>* v, u16 angle) {
+    u32 offset = ((u32)angle & 0xffff) >> 5;
+    const f32* sc = (const f32*)JMath::sincosTable_.mTable;
+    v->x = 1.8f * sc[offset * 2];
+    v->y = 1.8f * sc[offset * 2 + 1];
+}
+
 #pragma pool_data on
 static s32 stalWalkFrames[24] = {0,1,0,2,3,2,6,7,6,8,9,8,12,13,12,14,15,14,18,19,18,20,21,20};
 static s32 stalWalkTicks[6] = {3,10,3,3,10,3};
@@ -125,6 +132,8 @@ static inline void stalTickThree(char* timers) {
     stalTickThree((StalTimerBlock*)timers);
 }
 
+extern f32 lbl_8053DB58;
+#pragma opt_common_subs off
 extern "C" void fn_801757D4(char* this_) {
     s32 quad;
     s32 idxOut = -1;
@@ -134,6 +143,7 @@ extern "C" void fn_801757D4(char* this_) {
     f32 probe[3];
     u8 hit;
     s32 roomForPlayer;
+    s32 handle;
     s32 i;
     f32 z;
 
@@ -173,7 +183,7 @@ extern "C" void fn_801757D4(char* this_) {
         if (*(u32*)(this_ + 0xb0) == 0) {
             *(u32*)(this_ + 0xb0) = 0x42205;
         }
-        if ((*(u32*)(this_ + 0x90) == 0 || *(s32*)(this_ + 0x230) != 4) && (z = *(f32*)(this_+0x14), 0.0f == z) && (u8)fn_801F305C(this_) != 0) {
+        if ((*(u32*)(this_ + 0x90) == 0 || *(s32*)(this_ + 0x230) != 4) && *(f32*)(this_+0x14) == lbl_8053DB58 && (u8)fn_801F305C(this_) != 0) {
             if (*(u32*)(this_ + 0x90) == 5) {
                 *(s32*)(this_ + 0x25c) -= 10000 - *(s32*)(this_ + 0x108);
                 if (*(s32*)(this_ + 0x25c) <= 0) {
@@ -219,7 +229,7 @@ case 0: {
 void* list[0x400];
 if(*(u32*)(this_ + 0x90)==5 && fn_801F7818(fn_801F856C(),'WIZR',*(u32*)(this_ + 0x4),list,-1)==0) {*(s32*)(this_ + 0x230)=7;break;}
 if(*(s32*)(this_ + 0x23c)==0) *(s32*)(this_ + 0x23c)=(s32)(30.0f*lbl_8053AAF8->rnd.get_ufloat_1())+30;
-{ if(stalRoomFlag(this_) && hit && (z=probe[1],0.0f!=z))hit=0;}
+{ if(stalRoomFlag(this_) && hit && probe[1] != lbl_8053DB58)hit=0;}
 if(hit || lbl_8053AAF8->rnd.get_ufloat_1()<0.3f || quad<0) {
 {if(!stalRoomFlag(this_))*(s32*)(this_ + 0x98)^=2;}
 if(lbl_8053AAF8->rnd.get_ufloat_1()<0.5f)*(s32*)(this_ + 0x98)^=1;
@@ -257,19 +267,21 @@ if(quad>=0){ if(!stalRoomFlag(this_)) *(s32*)(this_ + 0x98)=quad; else if(!(quad
 case 4:
 {if(!stalRoomFlag(this_))*(f32*)(this_ + 0x44)-=0.4f;}
 if(*(s32*)(this_ + 0x24c)<4){if(*(s32*)(this_ + 0x238)==0) {
-stalAnimate(this_,stalJumpFrames,stalJumpTicks,4);
+*(s32*)(this_+0x258)=stalJumpFrames[(*(s32*)(this_+0x98)<<2)+*(s32*)(this_+0x24c)];
+*(s32*)(this_+0x238)=stalJumpTicks[*(s32*)(this_+0x24c)];
+++*(s32*)(this_+0x24c);
 }}
 { if(!stalRoomFlag(this_) && *(f32*)(this_+0x14)<0.0f)goto landed;}
 { if(!stalRoomFlag(this_) || !(probe[1]<0.0f))break;}
 landed:
 {
 if(*(u32*)(this_ + 0x90)==2) {
-s32 handle=Actor_CreateByID(fn_801F856C(),'OKTM',*(u32*)(this_ + 0x4),this_+0xc,2,-1,-1);
+handle=Actor_CreateByID(fn_801F856C(),'OKTM',*(u32*)(this_ + 0x4),this_+0xc,2,-1,-1);
 char* actor=fn_801F666C(fn_801F856C(),handle);
 if(actor!=0) {
 JGeometry::TVec3<f32> velocity;
-velocity.x=1.8f*((const f32*)JMath::sincosTable_.mTable)[((u32)ang>>5)*2];
-velocity.y=1.8f*JMath::sincosTable_.mTable[ang>>5].second;
+velocity.x=1.8f*((const f32*)JMath::sincosTable_.mTable)[(ang / 32U)*2];
+velocity.y=1.8f*((const f32*)JMath::sincosTable_.mTable)[(ang / 32U)*2+1];
 *(JGeometry::TVec3<f32>*)(actor+0x3c)=velocity;
 }}
 *(f32*)(this_ + 0x14)=0.0f;
@@ -306,11 +318,10 @@ fn_801EE4F0(this_);
 fn_8013CC50(*(u32*)(this_ + 0x4),this_+0xc,0x35c,1,1,0,0,1);
 *(s32*)(this_ + 0x250)=0;*(s32*)(this_ + 0x230)=0;
 } else {
-f32 randomAngle=65536.0f*lbl_8053AAF8->rnd.get_ufloat_1();
+s32 angle=(s32)(65536.0f*lbl_8053AAF8->rnd.get_ufloat_1());
 *(f32*)(this_ + 0x44)=4.0f;
-s16 angle=randomAngle;
-*(f32*)(this_ + 0x26c)=1.3f*JMath::sincosTable_.mTable[(u16)angle>>5].first;
-*(f32*)(this_ + 0x270)=1.3f*JMath::sincosTable_.mTable[(u16)angle>>5].second;
+*(f32*)(this_ + 0x26c)=1.3f*JMASinShort((s16)angle);
+*(f32*)(this_ + 0x270)=1.3f*JMACosShort((s16)angle);
 *(s32*)(this_ + 0x98)=ClassifyBamAngleToQuadrant((u16)angle);
 }
 } else *(f32*)(this_ + 0x44)-=1.0f;
@@ -334,11 +345,10 @@ if(*(s32*)(this_ + 0x248)==0) ((Actor*)this_)->v07();
 break;
 }
 
-if(*(s32*)(this_ + 0x238)>0)--*(s32*)(this_ + 0x238);
-if(*(s32*)(this_ + 0x23c)>0)--*(s32*)(this_ + 0x23c);
-stalTickThree(this_+8);
+char* timerBase=this_;
+for(s32 t=0;t<5;t++,timerBase+=4){if(*(s32*)(timerBase+0x238)>0)--*(s32*)(timerBase+0x238);}
 }
-
+#pragma opt_common_subs reset
 extern "C" void fn_80176538(char* this_) {
     *(f32*)(this_ + 0x60) = -8.0f;
     *(f32*)(this_ + 0x64) = -8.0f;
