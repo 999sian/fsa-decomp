@@ -205,6 +205,14 @@ public:
     void* m2CC;
 };
 extern const f32 lbl_80541418, lbl_8054141C, lbl_80541420, lbl_80541424;
+struct GnefEffectData {
+    u8 pad00[0x3c];
+    u16 burst[12];
+    u16 travel[12];
+    u8 pad6C[0xc0-0x6c];
+    u16 wind[16];
+    u16 finish[20];
+};
 extern const u8 lbl_8046F508[];
 extern void* lbl_804AA340[];
 extern "C" void fn_802D8050(void*, s32, s32, s32);
