@@ -1110,6 +1110,14 @@ extern "C" u8 fn_8037EC98(s32 p, u16 flags) {
 }
 
 
+static inline s32 resolvePlayerConst(const s32 p) {
+    if(isShared()) {
+        const s32 r=fn_8022F340(p);
+        if(r>=0 && r<4) return r;
+    }
+    return p;
+}
+
 extern "C" u8 fn_803865B8(s32 p);
 extern "C" u8 fn_80385960(s32 p);
 extern "C" u8 fn_80384C58(s32 p, s32 q);
@@ -1221,69 +1229,79 @@ extern "C" f32 fn_80381560(u8 type, s32 num, f32 scale)
     }
 }
 
-extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
+#pragma dont_inline on
+#pragma opt_loop_invariants off
+extern "C" f32 fn_80382B48(char* out, u32 id, int num, char* out2, char* out3) {
+    f32 lw[10];
+    char padbuf[0x10];
+    s32 len;
+    char chunk[3];
     f32 maxW = lbl_805430C8;
     f32 width = maxW;
-    char padbuf[0xc];
-    char chunk[3];
-    f32 lw[11];
     Inf1* inf = &lbl_8053AD78->p8->inf;
-    s8* data = (s8*)inf + inf->size + inf->entries[id].offset + 8;
-    s32 pos = 0;
+    s32 i = 0;
     s32 col = 1;
+    s8* data = (s8*)inf + inf->size + inf->entries[id].offset + 8;
     u8 mode = 0;
-    s32 len = 0;
-    s8* p;
     s8 c;
-    f32* wr = &lw[2];
-    f32* rd = &lw[2];
 
-    lw[1] = lw[2] = lw[3] = lw[4] = lw[5] = lw[6] = lw[7] = lw[8] = lw[9] = lw[10] = maxW;
-    while ((c = (p = data + pos)[0]) != 0) {
+    len = 0;
+    lw[0] = maxW;
+    lw[1] = maxW;
+    lw[2] = maxW;
+    lw[3] = maxW;
+    lw[4] = maxW;
+    lw[5] = maxW;
+    lw[6] = maxW;
+    lw[7] = maxW;
+    lw[8] = maxW;
+    lw[9] = maxW;
+    while ((c = data[i]) != 0) {
         if (c == '\n') {
-            wr[-1] = width;
+            lw[col - 1] = width;
             if (width > maxW) {
                 maxW = width;
             }
             width = lbl_805430C8;
-            wr++;
             col++;
-            pos++;
+            i++;
         } else if (c == 0x1a) {
-            if (p[2] == 2) {
-                s8 t = p[4];
+            if (data[i + 2] == 2) {
+                s8 t = data[i + 4];
                 if (t == 0 || t == 10 || t == 0x12 || t == 0x19) {
                 } else if (t == 1 || t == 9 || t == 0x11 || t == 0x1a) {
                 }
-            } else if (p[2] == 3) {
-                s32 ch = num + '0';
+            } else if (data[i + 2] == 3) {
+                int ch = num + '0';
                 JUTFont::TWidth tw;
                 (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(ch, &tw);
                 width += (s32)tw.w1;
-                width += fn_80381560(p[5], num, lbl_805430E8);
+                width += fn_80381560(data[i + 5], num, lbl_805430E8);
             }
-            pos += p[1];
+            i += data[i + 1];
         } else {
-            s32 code = (u8)*p;
-            pos++;
+            s32 code = c & 0xff;
+            i++;
             if ((*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->isLeadByte(code)) {
                 code <<= 8;
-                code |= (u8)data[pos++];
+                code |= (u8)data[i++];
             }
             JUTFont::TWidth tw;
             (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(code, &tw);
             width += (s32)tw.w1;
         }
     }
-    lw[col] = width;
+    lw[col - 1] = width;
     if (width > maxW) {
         maxW = width;
     }
-    width = lbl_805430C8;
-    col = 1;
-    pos = 0;
+    i = 0;
     len = 0;
-    chunk[0] = chunk[1] = chunk[2] = 0;
+    col = 1;
+    width = lbl_805430C8;
+    chunk[2] = 0;
+    chunk[1] = 0;
+    chunk[0] = 0;
     out[0] = 0;
     if (out2) {
         out2[0] = 0;
@@ -1292,13 +1310,13 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
         out3[0] = 0;
     }
     {
-        s32 pad = (s32)((lbl_805430EC - lw[1]) * lbl_805430BC + lbl_805430BC);
+        s32 pad = (s32)((lbl_805430EC - lw[col - 1]) / 2.0f + 0.5f);
         if (pad > 0) {
             snprintf(padbuf, 0xf, "\x1b" "CR[%d]", pad);
             strcat(out, padbuf);
         }
     }
-    while ((c = data[pos]) != 0) {
+    while ((c = data[i]) != 0) {
         if (c == '\n') {
             chunk[0] = c;
             chunk[1] = 0;
@@ -1310,10 +1328,9 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
                 strcat(out, chunk);
             }
             col++;
-            pos++;
+            i++;
             {
-                s32 pad = (s32)((lbl_805430EC - *rd) * lbl_805430BC + lbl_805430BC);
-                rd++;
+                s32 pad = (s32)((lbl_805430EC - lw[col - 1]) / 2.0f + 0.5f);
                 if (pad > 0) {
                     snprintf(padbuf, 0xf, "\x1b" "CR[%d]", pad);
                     strcat(out, padbuf);
@@ -1321,8 +1338,8 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
             }
             width = lbl_805430C8;
         } else if (c == 0x1a) {
-            if (p[2] == 2) {
-                s8 t = p[4];
+            if (data[i + 2] == 2) {
+                s8 t = data[i + 4];
                 if (t == 0 || t == 10 || t == 0x12 || t == 0x19) {
                     if (mode < 2) {
                         (&lbl_8053AD78->f5c)[mode] = width;
@@ -1337,8 +1354,8 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
                         mode++;
                     }
                 }
-            } else if (p[2] == 3) {
-                s32 ch = num + '0';
+            } else if (data[i + 2] == 3) {
+                int ch = num + '0';
                 chunk[0] = ch;
                 chunk[1] = 0;
                 if (mode == 1 && out2) {
@@ -1351,17 +1368,18 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
                 JUTFont::TWidth tw;
                 (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(ch, &tw);
                 width += (s32)tw.w1;
-                width += fn_8037F580(p[5], num, out, &len, lbl_805430C4);
+                width += fn_8037F580(data[i + 5], num, out, &len, lbl_805430E8);
             }
-            pos += p[1];
+            i += data[i + 1];
         } else {
-            s32 code = (u8)*p;
+            s32 code = c & 0xff;
             if ((*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->isLeadByte(code)) {
-                chunk[0] = c;
-                chunk[1] = data[pos + 1];
+                chunk[0] = data[i];
+                code <<= 8;
+                chunk[1] = data[i + 1];
                 chunk[2] = 0;
                 if (mode == 1 && out2) {
-                    if (c != 0x20) {
+                    if (chunk[0] != 0x20) {
                         strcat(out2, chunk);
                     }
                 } else if (mode == 2 && out3) {
@@ -1369,13 +1387,13 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
                 } else {
                     strcat(out, chunk);
                 }
-                code = (code << 8) | (u8)data[pos + 1];
-                pos += 2;
+                code |= (u8)data[i];
+                i += 2;
             } else {
-                chunk[0] = c;
+                chunk[0] = data[i];
                 chunk[1] = 0;
                 if (mode == 1 && out2) {
-                    if (c != 0x20) {
+                    if (chunk[0] != 0x20) {
                         strcat(out2, chunk);
                     }
                 } else if (mode == 2 && out3) {
@@ -1383,16 +1401,26 @@ extern "C" f32 fn_80382B48(char* out, u32 id, s32 num, char* out2, char* out3) {
                 } else {
                     strcat(out, chunk);
                 }
-                pos++;
+                i++;
             }
             JUTFont::TWidth tw;
             (*(JUTFont**)((u8*)lbl_8053AD78 + 0x154))->getWidthEntry(code, &tw);
             width += (s32)tw.w1;
         }
     }
+    chunk[0] = c;
+    chunk[1] = 0;
+    if (mode == 1 && out2) {
+        strcat(out2, chunk);
+    } else if (mode == 2 && out3) {
+        strcat(out3, chunk);
+    } else {
+        strcat(out, chunk);
+    }
     return maxW;
 }
-
+#pragma opt_loop_invariants reset
+#pragma dont_inline reset
 class ResLoader {
 public:
     virtual void v0();
@@ -1677,6 +1705,12 @@ extern "C" u8 fn_8038B8A8(s32 unused, const s32 p, s32 q, u32 id, u32 options) {
     return 0;
 }
 extern "C" u8 fn_8038BD08(s32 a, s32 id, s32 room, JGeometry::TVec3<f32>* pos, s32 flags) {
+    typedef u8 (*TvFn)(s32, s32, s32, u32, JGeometry::TVec3<f32>*, s32);
+    typedef u8 (*TvFnV)(s32, s32, s32, u32, JGeometry::TVec3<f32>, s32);
+    typedef u8 (*CheckFn)(s32, s32, u32, s32);
+    f32 out[3];
+    f32 in[2];
+    bool ok;
     s32 p = resolvePlayer(a);
     if (!lbl_8053AAF8->b7f && !(flags & 0x2000)) {
         return 0;
@@ -1690,63 +1724,70 @@ extern "C" u8 fn_8038BD08(s32 a, s32 id, s32 room, JGeometry::TVec3<f32>* pos, s
     } else if (fn_802D46D8(fn_802D6A9C(), p, id, 0) == 1) {
         s32 q = resolvePlayer(p);
         Inf1* inf = &lbl_8053AD78->p8->inf;
-        u8* e = (u8*)inf + (inf->size + inf->entries[id].offset + 8);
+        s8* e = (s8*)inf + (inf->size + inf->entries[id].offset + 8);
+        s32 next = id;
         if (e[0] == 0x1a && e[2] == 2 && e[4] == 5) {
-            id = fn_80383EB0(q, *(s32*)(e + 5));
+            next = *(s32*)(e + 5);
         }
+        id = fn_80383EB0(q, next);
     }
     if (lbl_8053AAF8->b7e == 0 || (flags16 & 0x40)) {
         if (room < 8) {
-            JGeometry::TVec3<f32> v(*pos);
-            return fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags);
+            return ((TvFnV)fn_80389F78)((s32)lbl_8053AD78, p, a, id, *pos, flags);
         }
         if (!fn_8022C8EC(0)) {
-            f32 in[2];
-            f32 out[3];
             in[0] = lbl_805430F8;
             in[1] = lbl_805430FC;
             fn_8030C4A0(*(u8**)(lbl_8053AB10 + 0x24), in, 1, out);
             JGeometry::TVec3<f32> v(*(Vec*)out);
-            return fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags);
+            return ((TvFn)fn_80389F78)((s32)lbl_8053AD78, p, a, id, &v, flags);
         }
-    } else {
-        s32 q = resolvePlayer(p);
-        Inf1* inf = &lbl_8053AD78->p8->inf;
-        u8* e = (u8*)inf + (inf->size + inf->entries[id].offset + 8);
-        bool hit = false;
-        if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x1f) {
-            hit = true;
-        } else if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x2f && ((u8*)lbl_8053AD78)[0xed] == 0 && fn_80138A30(lbl_8053AAF8) >= 2 && fn_8023DE58(fn_8022EA0C(q)) >= 8) {
-            ((u8*)lbl_8053AD78)[0xed] = 1;
-            *(s32*)((u8*)lbl_8053AD78 + 0x110) = q;
-            ((u8*)lbl_8053AD78)[0xee] = e[5];
-            hit = true;
+        if (!fn_80303750(resolvePlayer(p))) {
+            ok = false;
+        } else if (fn_8037E4BC()) {
+            ok = false;
+        } else {
+            ok = true;
         }
-        if (hit) {
-            if (fn_80389964((s32)lbl_8053AD78, p, id, flags)) {
-                JGeometry::TVec3<f32> v(*pos);
-                if (fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags)) {
-                    return 1;
-                }
-            }
-            return 0;
-        }
-    }
-    s32 q3 = resolvePlayer(p);
-    if (fn_80303750(q3)) {
-        u32 i = 0;
-        u32 hitSlot = 0;
-        do {
-            if ((lbl_8053AAF8->b82 & (u8)(1 << i)) && fn_80390818(lbl_8053AD78->sub[i]) == 1) {
-                hitSlot = 1;
-                break;
-            }
-            i++;
-        } while (i < 4);
-        if (!hitSlot) {
+        if (ok) {
             JGeometry::TVec3<f32> v(*pos);
-            return fn_80389F78((s32)lbl_8053AD78, p, a, id, &v, flags);
+            return ((TvFn)fn_80389F78)((s32)lbl_8053AD78, p, a, id, &v, flags);
         }
+        return fn_8038B8A8((s32)lbl_8053AD78, p, a, id, flags);
+    }
+    s32 q = resolvePlayer(p);
+    Inf1* inf = &lbl_8053AD78->p8->inf;
+    s8* e = (s8*)inf + inf->size + inf->entries[id].offset + 8;
+    bool hit;
+    if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x1f) {
+        hit = true;
+    } else if (e[0] == 0x1a && e[2] == 2 && e[4] == 0x2f && ((u8*)lbl_8053AD78)[0xed] == 0 && fn_80138A30(lbl_8053AAF8) >= 2 && fn_8023DE58(fn_8022EA0C(q)) >= 8) {
+        ((u8*)lbl_8053AD78)[0xed] = 1;
+        *(s32*)((u8*)lbl_8053AD78 + 0x110) = q;
+        ((u8*)lbl_8053AD78)[0xee] = e[5];
+        hit = true;
+    } else {
+        hit = false;
+    }
+    if (hit) {
+        if (((CheckFn)fn_80389964)((s32)lbl_8053AD78, p, id, flags)) {
+            JGeometry::TVec3<f32> v(*pos);
+            if (((TvFn)fn_80389F78)((s32)lbl_8053AD78, p, a, id, &v, flags)) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    if (!fn_80303750(resolvePlayer(p))) {
+        ok = false;
+    } else if (fn_8037E4BC()) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (ok) {
+        JGeometry::TVec3<f32> v(*pos);
+        return ((TvFn)fn_80389F78)((s32)lbl_8053AD78, p, a, id, &v, flags);
     }
     return fn_8038B8A8((s32)lbl_8053AD78, p, a, id, flags);
 }
@@ -2334,8 +2375,8 @@ extern "C" void fn_80230E1C(s32, s32);
 
 #pragma optimization_level 3
 extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 fb) {
-    s32 shift;
     u8 flag;
+    s32 shift;
     char* p;
     Inf1* inf = &lbl_8053AD78->p8->inf;
     char* str = (char*)inf + (inf->size + inf->entries[idx].offset + 8);
@@ -2357,8 +2398,9 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
     out[0] = 0;
     while ((c = (p = str + pos)[0]) != 0) {
         if (c == '\n') {
-            line[len] = c;
-            line[len + 1] = 0;
+            char* dst = line + len;
+            dst[0] = c;
+            dst[1] = 0;
             finishMessageLine(out, line, col, width, fa, fb, padbuf);
             width = lbl_805430C8;
             len = 0;
@@ -2407,7 +2449,7 @@ extern "C" s32 fn_803837A4(char* out, s32 idx, s32 player, s32 val, f32 fa, f32 
                             msgFont()->getWidthEntry(ch, &tw);
                             width += (s32)tw.w1;
                         }
-                        val -= val / divisor * divisor;
+                        val %= divisor;
                         divisor /= 10;
                         digit++;
                     } while (digit < 4);
