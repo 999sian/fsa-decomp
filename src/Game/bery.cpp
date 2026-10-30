@@ -415,30 +415,42 @@ extern "C" void fn_80236ED8(s32,s32);
 extern "C" void fn_80236DB0(s32);
 extern "C" void fn_802370FC(s32,s32);
 extern "C" void detach__5ActorFv(void*);
+static inline u8 beryCheckFullItem(BeryFull* actor) {
+    s32 id = actor->mSw[fn_8022F340(actor->mPlayer)];
+    return fn_802D800C(fn_802D6A9C(), id);
+}
 extern "C" void fn_8038E368(BeryFull* this_) {
+    s32 i;
+    s32 anim;
+    s32 id;
+    s32 index;
+    s32 current;
+    s32 n;
     JGeometry::TVec3f playerPos;
     if (this_->m248 != 1) {
         if (this_->mParam != 3) {
             if (fn_80138A30(lbl_8053AAF8) > 1 && this_->mRoom >= 8) {
-                for (s32 i = 0; i < 4; i++) {
-                    s32 room = this_->mRoom;
-                    if (fn_8023DE58(i) == room && !fn_8022F478(i) && !fn_80236B50(i) && (&this_->m24C)[fn_8022F340(i)] == 0) {
+                for (i = 0; i < 4; i++) {
+                    n = this_->mRoom;
+                    if ((s32)fn_8023DE58(i) == n && !fn_8022F478(i) && !fn_80236B50(i) && (&this_->m24C)[fn_8022F340(i)] == 0) {
                         fn_803037D4(fn_8022F340(i), 0x11);
                         (&this_->m24C)[fn_8022F340(i)] = 1;
                     }
                 }
             }
-            JGeometry::TBox2f box(this_->m60, this_->m64, this_->m68, this_->m6C);
-            box.addPos(this_->mPos.x, this_->mPos.y);
+            JGeometry::TBox2f box;
+            box.i.x = this_->m60; box.i.y = this_->m64; box.f.x = this_->m68; box.f.y = this_->m6C;
+            box.i.x += this_->mPos.x; box.i.y += this_->mPos.y;
+            box.f.x += this_->mPos.x; box.f.y += this_->mPos.y;
             fn_80239914((f32*)&box, this_->mRoom, this_->m198);
         }
-        JGeometry::TBox2f nearBox(lbl_80543104, lbl_80543104, lbl_80543108, lbl_80543108);
-        nearBox.addPos(*(f32*)((u8*)this_ + 0x24), *(f32*)((u8*)this_ + 0x28));
-        JGeometry::TBox2f farBox(lbl_8054310C, lbl_8054310C, lbl_80543110, lbl_80543110);
-        farBox.addPos(*(f32*)((u8*)this_ + 0x24), *(f32*)((u8*)this_ + 0x28));
+        JGeometry::TBox2f nearBox(-24.0f, -24.0f, 24.0f, 24.0f);
+        nearBox.addPos(*(JGeometry::TVec2f*)((u8*)this_ + 0x24));
+        JGeometry::TBox2f farBox(-36.0f, -36.0f, 36.0f, 36.0f);
+        farBox.addPos(*(JGeometry::TVec2f*)((u8*)this_ + 0x24));
         switch (this_->mState) {
         case 0:
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (this_->m238 != i && lbl_80543114 == fn_8023E724(i)->z && !fn_8023EFEC(i) && !fn_8023EA28(i) && !fn_80236B50(i)) {
                     if (!((u8*)lbl_8053AAF8)[0x7f] && fn_80237060(fn_8022F340(i)) >= 2) {
                         if (fn_8023725C(fn_8022F340(i)) >= 2 || fn_8023725C(fn_8022F340(i)) == 0) continue;
@@ -450,12 +462,14 @@ extern "C" void fn_8038E368(BeryFull* this_) {
             }
             this_->mPlayer = fn_8022FD8C(this_->m198);
             if (this_->mPlayer >= 0 && lbl_80543114 == fn_8023E724(this_->mPlayer)->z) {
-                switch ((s32)this_->mParam) {
+                switch (this_->mParam) {
                 case 0: this_->mMsg = 0x25e; break;
                 default: this_->mMsg = 0x25f; break;
                 }
+                void* handle = this_->m198;
+                s32 room = this_->mRoom;
                 JGeometry::TVec3f pos = this_->mPos;
-                if (fn_8038AD24(this_->mPlayer, this_->mMsg, this_->m198, this_->mRoom, &pos, 0x2080)) {
+                if (fn_8038AD24(this_->mPlayer, this_->mMsg, handle, room, &pos, 0x2080)) {
                     this_->m238 = this_->mPlayer;
                     this_->mState = 1;
                 }
@@ -467,7 +481,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
                 switch ((s32)this_->mParam) {
                 case 0:
                     if (fn_80388CAC(this_->mPlayer, this_->m198)) {
-                s32 n = fn_80237810(fn_8022F340(this_->mPlayer));
+                n = fn_80237810(fn_8022F340(this_->mPlayer));
                 fn_80236554(fn_8022F340(this_->mPlayer), n, 0);
                 s32 room = this_->mRoom;
                 if (room >= 8) Actor_CreateByID(fn_801F856C(), 'PEFF', room, &this_->mPos, (this_->mPlayer & 3) | 4, -1, -1);
@@ -477,7 +491,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
                     break;
                 case 1: fn_8038DE74((Bery*)this_); break;
                 case 2:
-                    if (fn_80236E3C(fn_8022F340(this_->mPlayer)) || (this_->mSw[fn_8022F340(this_->mPlayer)] != 0 && fn_802D800C(fn_802D6A9C(), this_->mSw[fn_8022F340(this_->mPlayer)]) == 1)) {
+                    if (fn_80236E3C(fn_8022F340(this_->mPlayer)) || (this_->mSw[fn_8022F340(this_->mPlayer)] != 0 && beryCheckItem((Bery*)this_) == 1)) {
                         this_->mMsg = 0x267;
                         fn_8038470C(this_->mPlayer, this_->mMsg);
                         this_->mState = 2;
@@ -486,7 +500,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
                         if (this_->mChildId >= 0) {
                             this_->mKind = 11; this_->mState = 5;
                             if (this_->mSw[fn_8022F340(this_->mPlayer)] != 0) {
-                                s32 id = this_->mSw[fn_8022F340(this_->mPlayer)];
+                                id = this_->mSw[fn_8022F340(this_->mPlayer)];
                                 fn_802D8050(fn_802D6A9C(), id, 1, 255);
                             }
                         }
@@ -499,7 +513,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
         case 2:
             fn_8022FEB8(&nearBox, this_->mRoom, this_->m198, 0, 1);
             if (fn_80388CAC(this_->mPlayer, this_->m198)) {
-                s32 n = fn_80237810(fn_8022F340(this_->mPlayer));
+                n = fn_80237810(fn_8022F340(this_->mPlayer));
                 fn_80236554(fn_8022F340(this_->mPlayer), n, 0);
                 s32 room = this_->mRoom;
                 if (room >= 8) Actor_CreateByID(fn_801F856C(), 'PEFF', room, &this_->mPos, (this_->mPlayer & 3) | 4, -1, -1);
@@ -511,7 +525,9 @@ extern "C" void fn_8038E368(BeryFull* this_) {
             if (fn_80237810(fn_8022F340(this_->mPlayer)) == ((s32*)(lbl_80529DEC + 0xd8))[fn_8022F340(this_->mPlayer)] && this_->m25C == 0 && fn_8023061C(this_->mPlayer, 0) == 1) {
                 this_->m25C = 30; this_->mKind = 0; this_->mState = 6;
             }
-            if (fn_80237810(fn_8022F340(this_->mPlayer)) == ((s32*)(lbl_80529DEC + 0xd8))[fn_8022F340(this_->mPlayer)] && this_->m25C > 0) {
+            index = fn_8022F340(this_->mPlayer);
+            current = fn_80237810(fn_8022F340(this_->mPlayer));
+            if (current == ((s32*)(lbl_80529DEC + 0xd8))[index] && this_->m25C > 0) {
                 if (this_->m25C % 10 == 0) fn_80230EB8(fn_8022F340(this_->mPlayer), 9);
                 this_->m25C--;
             }
@@ -526,7 +542,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
             }
             break;
         case 6:
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (i == this_->mPlayer) {
                     if (!fn_8023B0F4(i, &farBox, this_->mRoom, 0, lbl_80543118)) { this_->mState = 0; goto state_done; }
                 } else if (fn_8023B0F4(i, &farBox, this_->mRoom, 0, lbl_80543118) && !fn_8022F478(i)) {
@@ -545,7 +561,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
             } else this_->m264++;
             break;
         case 8: {
-            s32 anim = 0x331;
+            anim = 0x331;
             if (this_->m264 >= 8) {
                 if (this_->m264 < 9) anim = 0x332;
                 else if (this_->m264 < 10) anim = 0x333;
@@ -601,7 +617,6 @@ extern "C" void fn_8038E368(BeryFull* this_) {
         case 11: {
             JGeometry::TVec3f* pos = fn_8023E724(this_->mPlayer);
             playerPos.x = pos->x; playerPos.y = pos->y; playerPos.z = pos->z;
-            s32 anim;
             if (this_->m264 < 10) anim = 0;
             else if (this_->m264 < 14) {
                 anim = 1;
@@ -617,8 +632,9 @@ extern "C" void fn_8038E368(BeryFull* this_) {
                 if (!this_->m2A0) this_->m2A0 = (s32)fn_8013CC50(this_->mRoom, &this_->mStart, lbl_80543140, 0x562, 0, 1, 0, 0, 1);
                 if (!this_->m2A0) this_->m2A4 = (s32)fn_8013CC50(this_->mRoom, &this_->mStart, lbl_80543144, 0x563, 0, 1, 0, 0, 1);
                 if (this_->m264 >= 100) {
+                    s32 room = this_->mRoom;
                     JGeometry::TVec3f vec = *(JGeometry::TVec3f*)((u8*)this_ + 0x24);
-                    if (fn_8038BD08(this_->mPlayer, this_->mMsg, this_->mRoom, &vec, 0x2022) == 1) {
+                    if (fn_8038BD08(this_->mPlayer, this_->mMsg, room, &vec, 0x2022) == 1) {
                         this_->mState = 12;
                         if (this_->mKind == 10) fn_80236ED8(fn_8022F340(this_->mPlayer), 2);
                         else if (this_->mKind == 11) fn_80236DB0(fn_8022F340(this_->mPlayer));
@@ -645,7 +661,7 @@ extern "C" void fn_8038E368(BeryFull* this_) {
                     if (!((u8*)lbl_8053AAF8)[0x7f]) detach__5ActorFv(this_);
                     else {
                         this_->mState = 13; fn_801F0E34(this_, 0x40090, 0);
-                s32 n = fn_80237810(fn_8022F340(this_->mPlayer));
+                n = fn_80237810(fn_8022F340(this_->mPlayer));
                 fn_80236554(fn_8022F340(this_->mPlayer), n, 0);
                 s32 room = this_->mRoom;
                 if (room >= 8) Actor_CreateByID(fn_801F856C(), 'PEFF', room, &this_->mPos, (this_->mPlayer & 3) | 4, -1, -1);
@@ -656,7 +672,9 @@ extern "C" void fn_8038E368(BeryFull* this_) {
             break;
         case 13:
             if (fn_80237774(fn_8022F340(this_->mPlayer)) <= ((s32*)(lbl_80529DEC + 0xd8))[fn_8022F340(this_->mPlayer)] && this_->m25C == 0) detach__5ActorFv(this_);
-            if (fn_80237774(fn_8022F340(this_->mPlayer)) <= ((s32*)(lbl_80529DEC + 0xd8))[fn_8022F340(this_->mPlayer)] && this_->m25C > 0) {
+            index = fn_8022F340(this_->mPlayer);
+            current = fn_80237774(fn_8022F340(this_->mPlayer));
+            if (current <= ((s32*)(lbl_80529DEC + 0xd8))[index] && this_->m25C > 0) {
                 if (this_->m25C % 10 == 0) fn_80230EB8(fn_8022F340(this_->mPlayer), 9);
                 this_->m25C--;
             }
@@ -672,12 +690,13 @@ state_done:
         }
     }
     if (this_->mParam != 3 && fn_80138A30(lbl_8053AAF8) > 1) {
-        u8 present[4] = {0,0,0,0};
-        for (s32 i = 0; i < 4; i++) {
+        u8 present[4];
+        present[0] = 0; present[1] = 0; present[2] = 0; present[3] = 0;
+        for (i = 0; i < 4; i++) {
             s32 room = this_->mRoom;
             if (fn_8023DE58(i) == room && !fn_8022F478(i) && !fn_80236B50(i)) present[fn_8022F340(i)] = 1;
         }
-        for (s32 i = 0; i < fn_80138A30(lbl_8053AAF8); i++) {
+        for (i = 0; i < fn_80138A30(lbl_8053AAF8); i++) {
             if (!present[i] && (&this_->m24C)[i] == 1) { fn_803037D4(i, 0x12); (&this_->m24C)[i] = 0; }
         }
     }
