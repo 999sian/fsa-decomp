@@ -721,18 +721,17 @@ extern "C" void fn_801F0D20(char* p, s32 a);
 
 // KEY0: link the key's home tile to where it is now.
 static inline void key0LinkHere(char* p) {
-    u32 x18;
     u32 packed = key0PackActorFlags((u8*)p);
+    u32 x18;
     if (!fn_802DCD0C(fn_802D6A9C())) {
         x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
         packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
-    const Key0Pt& key = Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
-    const Key0Pt& pos = Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
     u32 id = *(u32*)(p + 0x238);
-    key0LinkPoints(key, pos, packed, id);
+    fn_802D6D70(fn_802D6A9C(), Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10)),
+                Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), packed, id);
 }
 
 // KEY0: collected. Spawns the pickup effect, registers the tile and deactivates.
@@ -818,14 +817,7 @@ extern "C" void fn_802C2C30(char* p) {
                 room = *(s32*)(p + 4);
                 if (room < 8) {
                     Actor_CreateByID(fn_801F856C(), 0x414c4345, room, p + 0xc, (*(s32*)(p + 0x290) << 4) | 2, -1, -1);
-                    room = *(s32*)(p + 0x4);
-                    if (room >= 8) {
-                        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, room, p + 0xc, 0, -1, -1);
-                    } else {
-                        fn_8013CC50(room, p + 0xc, lbl_80540C7C, 0x503, 1, 0, 0, 0, 1);
-                    }
-                    key0Register(p);
-                    *(u8*)(p + 0x11c) = 0;
+                    key0Collect(p);
                     return;
                 }
             }
@@ -833,14 +825,7 @@ extern "C" void fn_802C2C30(char* p) {
                 room = *(s32*)(p + 4);
                 if (room < 8) {
                     Actor_CreateByID(fn_801F856C(), 0x414c4345, room, p + 0xc, (*(s32*)(p + 0x290) << 4) | 1, -1, -1);
-                    room = *(s32*)(p + 0x4);
-                    if (room >= 8) {
-                        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, room, p + 0xc, 0, -1, -1);
-                    } else {
-                        fn_8013CC50(room, p + 0xc, lbl_80540C7C, 0x503, 1, 0, 0, 0, 1);
-                    }
-                    key0Register(p);
-                    *(u8*)(p + 0x11c) = 0;
+                    key0Collect(p);
                     return;
                 }
             }
@@ -856,7 +841,10 @@ extern "C" void fn_802C2C30(char* p) {
                     }
                     return;
                 }
-                JGeometry::TVec3<f32> probe(lbl_80540C84 + *(f32*)(p + 0xc), lbl_80540C88 + *(f32*)(p + 0x10), lbl_80540C74);
+                JGeometry::TVec3<f32> probe;
+                probe.x = lbl_80540C84 + *(f32*)(p + 0xc);
+                probe.y = lbl_80540C88 + *(f32*)(p + 0x10);
+                probe.z = lbl_80540C74;
                 u16 a = fn_80226850(&probe, *(s32*)(p + 4));
                 probe.x = *(f32*)(p + 0xc) - lbl_80540C84;
                 u16 b = fn_80226850(&probe, *(s32*)(p + 4));
@@ -889,15 +877,7 @@ extern "C" void fn_802C2C30(char* p) {
                 *(f32*)(p + 0xc) = *(f32*)(p + 0x248);
                 *(f32*)(p + 0x10) = *(f32*)(p + 0x24c);
                 *(f32*)(p + 0x14) = *(f32*)(p + 0x250);
-                u32 x18;
-                u32 packed = key0PackActorFlags((u8*)p);
-                if (!fn_802DCD0C(fn_802D6A9C())) {
-                    x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-                    packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
-                } else {
-                    packed = *(u16*)(p + 0x2aa) << 8;
-                }
-                key0LinkSelf(p, packed);
+                key0LinkHere(p);
                 return;
             }
             if (delta.x != lbl_80540C74) {
@@ -916,15 +896,7 @@ extern "C" void fn_802C2C30(char* p) {
         return;
     }
     if (*(u8*)(p + 0x2af) != 0) {
-        u32 x18;
-        u32 packed = key0PackActorFlags((u8*)p);
-        if (!fn_802DCD0C(fn_802D6A9C())) {
-            x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-            packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
-        } else {
-            packed = *(u16*)(p + 0x2aa) << 8;
-        }
-        key0LinkSelf(p, packed);
+        key0LinkHere(p);
         *(u8*)(p + 0x2af) = 0;
         if (*(s32*)(p + 0x280) == 6) {
             if (vel.x != lbl_80540C74 || vel.y != lbl_80540C74) {
@@ -994,33 +966,15 @@ extern "C" void fn_802C2C30(char* p) {
             } else {
                 Actor_CreateByID(fn_801F856C(), 0x414c4345, room, p + 0xc, (*(s32*)(p + 0x290) << 4) | 1, -1, -1);
             }
-            room = *(s32*)(p + 0x4);
-            if (room >= 8) {
-                Actor_CreateByID(fn_801F856C(), 0x4b4d5249, room, p + 0xc, 0, -1, -1);
-            } else {
-                fn_8013CC50(room, p + 0xc, lbl_80540C7C, 0x503, 1, 0, 0, 0, 1);
-            }
-            key0Register(p);
-            *(u8*)(p + 0x11c) = 0;
+            key0Collect(p);
             return;
         }
         key0Register(p);
-        u32 x18;
-        u32 packed = key0PackActorFlags((u8*)p);
-        if (!fn_802DCD0C(fn_802D6A9C())) {
-            x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-            packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
-        } else {
-            packed = *(u16*)(p + 0x2aa) << 8;
-        }
-        key0LinkSelf(p, packed);
+        key0LinkHere(p);
         return;
     }
     if (fn_801F2618(p, &delta, 0)) {
-        if ((u16)(tile - 0xd) <= 1) {
-            return;
-        }
-        if (tile == 0x3b) {
+        if (tile == 0xd || tile == 0xe || tile == 0x3b) {
             return;
         }
         if (delta.x != lbl_80540C74) {
