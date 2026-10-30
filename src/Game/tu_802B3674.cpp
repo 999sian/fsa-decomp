@@ -257,8 +257,6 @@ private:
 typedef void (*VFn802B)(char*);
 typedef u8 (*VFnB802B)(char*);
 typedef void (*VFn6802B)(char*, s32, s32, s32, s32, s32, s32);
-#define VT802B(p, off) (*(void**)(*(char**)(p) + (off)))
-
 static void __sinit_tu_802B3674_cpp(void) {
 }
 
