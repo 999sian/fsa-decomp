@@ -5,6 +5,11 @@
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/Inline.h"
 #include "Game/TlwpDrawParam.h"
+extern "C" u8 fn_8022F514(s32);
+extern "C" void fn_802372F8(s32,s32,s32);
+extern "C" void fn_80458508(void*,s32);
+extern "C" void fn_80138B7C(void*);
+extern "C" void fn_8022B17C();
 
 struct SykyVec {
     f32 x, y, z;
