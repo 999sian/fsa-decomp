@@ -4,6 +4,9 @@
 #include "Game/Actor.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+static inline JGeometry::TVec3<f32> DMZLDivide(JGeometry::TVec3<f32> v, f32 divisor) {
+return JGeometry::TVec3<f32>(v.x/divisor,v.y/divisor,v.z/divisor);
+}
 extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
 extern "C" void fn_8043A450(void*, s32, s32);
