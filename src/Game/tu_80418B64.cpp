@@ -447,7 +447,7 @@ struct HudPaneNames8041 {
     u64 b40[4];
     u64 padb60[4];
     u64 b80[4];
-    u64 ba0[4];
+    u64 ba0[4]; u64 bc0[4]; u64 be0[4]; u64 c00[4]; u64 c20[16]; u64 ca0[16];
 };
 
 static inline const HudPaneNames8041* HudNames8041() { return (const HudPaneNames8041*)lbl_8048D320; }
