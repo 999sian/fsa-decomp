@@ -87,26 +87,33 @@ extern "C" s32 fn_803BAE68(CARDFileInfo* fileInfo) {
     return 0;
 }
 
-static inline s32 cardBlockValid(const u8* data) {
+struct CardSaveRecord {
+    u8 data[0xc0];
+    u32 sum;
+    u32 inv;
+};
+static inline s32 cardBlockValid(const u8* bytes) {
+    const CardSaveRecord* data = (const CardSaveRecord*)bytes;
     u32 inv = 0;
     u32 sum = 0;
-    const u8* p = data;
+    const u8* p = data->data;
     for (s32 i = 192; i > 0; i--) {
         u8 b = *p++;
         sum += b;
         inv += ~b;
     }
-    return ((sum ^ *(const u32*)(data + 0xc0)) | (inv ^ *(const u32*)(data + 0xc4))) == 0;
+    return ((sum ^ data->sum) | (inv ^ data->inv)) == 0;
 }
 extern "C" s32 fn_803B933C(void* unused, void* slots, s32 idx);
 extern "C" u8 lbl_8050EC80[];
+#pragma optimization_level 3
 extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 size) {
     u8* base = lbl_8051E2C0;
     u8* blkA = base + 0;
     u8* blkB = base + 0x2000;
-    u8 changed = 0;
+    s32 changed = 0;
     s32 result;
-    bool vA0, vA1, vA2, vB0, vB1, vB2;
+    s32 vA0, vA1, vA2, vB0, vB1, vB2;
     bool ok;
     s32 i, j, k, p, q;
     u32 s;
@@ -117,26 +124,24 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     if (result != 0) {
         return result;
     }
-    vA0 = fn_803BADAC(blkA + 0xa);
-    vA1 = fn_803BADAC(blkA + 0xd2);
-    vA2 = fn_803BADAC(blkA + 0x19a);
+    vA0 = cardBlockValid(blkA + 0xa);
+    vA1 = cardBlockValid(blkA + 0xd2);
+    vA2 = cardBlockValid(blkA + 0x19a);
     result = CARDRead(fileInfo, blkB, 0x2000, 0x4000);
     if (result != 0) {
         return result;
     }
-    vB0 = fn_803BADAC(blkB + 0xa);
-    vB1 = fn_803BADAC(blkB + 0xd2);
-    vB2 = fn_803BADAC(blkB + 0x19a);
+    vB0 = cardBlockValid(blkB + 0xa);
+    vB1 = cardBlockValid(blkB + 0xd2);
+    vB2 = cardBlockValid(blkB + 0x19a);
 
     if (!vA0) {
         s = 0;
-        for (k = 0; k < 200; k++) {
-            s += blkA[0xa + k];
-        }
+        { u8* data = blkA + 0xa; for (k = 200; k > 0; k--) { s += *data++; } }
         if (s == 0) {
             fn_803B933C(lbl_8050EC80, blkA + 0xa, 0);
             fn_803BACF8(blkA + 0xa, 0);
-            fn_803BADAC(blkA + 0xa);
+            cardBlockValid(blkA + 0xa);
         } else if (vB0) {
             memcpy(blkA + 0xa, blkB + 0xa, 200);
             changed = 1;
@@ -146,13 +151,11 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     }
     if (!vA1) {
         s = 0;
-        for (k = 0; k < 200; k++) {
-            s += blkA[0xd2 + k];
-        }
+        { u8* data = blkA + 0xd2; for (k = 200; k > 0; k--) { s += *data++; } }
         if (s == 0) {
             fn_803B933C(lbl_8050EC80, blkA + 0xa, 1);
             fn_803BACF8(blkA + 0xa, 1);
-            fn_803BADAC(blkA + 0xd2);
+            cardBlockValid(blkA + 0xd2);
         } else if (vB1) {
             memcpy(blkA + 0xd2, blkB + 0xd2, 200);
             changed = 1;
@@ -162,13 +165,11 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     }
     if (!vA2) {
         s = 0;
-        for (k = 0; k < 200; k++) {
-            s += blkA[0x19a + k];
-        }
+        { u8* data = blkA + 0x19a; for (k = 200; k > 0; k--) { s += *data++; } }
         if (s == 0) {
             fn_803B933C(lbl_8050EC80, blkA + 0xa, 2);
             fn_803BACF8(blkA + 0xa, 2);
-            fn_803BADAC(blkA + 0x19a);
+            cardBlockValid(blkA + 0x19a);
         } else if (vB2) {
             memcpy(blkA + 0x19a, blkB + 0x19a, 200);
             changed = 1;
@@ -326,7 +327,7 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
             }
         }
         if (dirty) {
-            fn_803BADAC(rec);
+            cardBlockValid(rec);
         }
     }
 
@@ -340,12 +341,6 @@ extern "C" s32 fn_803BAEF4(CARDFileInfo* fileInfo, void* dst, s32 unused, s32 si
     *(u64*)(lbl_8051C1A0 + 0x1ff8) = serial;
     return 0;
 }
-
-#pragma optimization_level reset
-#pragma opt_unroll_loops reset
-#pragma peephole on
-#pragma optimization_level 3
-#pragma opt_loop_invariants off
 extern "C" s32 fn_803BBF08(CARDFileInfo* info, void* data, s32 unused, s32 len) {
     CARDFileInfo* fileInfo = info;
     void* src = data;
