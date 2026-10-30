@@ -1480,6 +1480,15 @@ extern "C" void fn_803F8FBC(u8* p) {
 extern const f32 lbl_805437B0;
 extern const f32 lbl_805437B4;
 extern const f32 lbl_80543748;
+static inline void fadePanes803F(u8* p, const u64* tags, s32 n, s32 ofs, f32 fade) {
+    for (s32 i = 0; i < n; i++, tags++) {
+        J2DPane* pane = (*(J2DPane**)(p + 8))->search(tags[0]);
+        f32 alpha = p[ofs + i];
+        alpha *= fade;
+        pane->setAlpha((u8)alpha);
+    }
+}
+
 #pragma opt_common_subs off
 extern "C" void fn_803F943C(u8* p) {
     u8* base=lbl_80478A60;
