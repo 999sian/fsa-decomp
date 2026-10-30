@@ -1,7 +1,7 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 extern const f32 lbl_8053C580;
-static inline s16 DMZLAngle(f32 x, f32 y) {
+static inline f32 DMZLAngle(f32 x, f32 y) {
     return JMath::atanTable_.atan2_(x,y)*lbl_8053C580;
 }
 static inline s32 DMZLElapsed(void* manager,const char* table) {
@@ -736,7 +736,7 @@ extern const f32 lbl_8053C578;
 extern const f32 lbl_8053C57C;
 extern const f32 lbl_8053C580;
 extern const f32 lbl_8053C584;
-extern "C" void fn_80110E9C(void* const this_) {
+extern "C" void fn_80110E9C(void* this_) {
 JGeometry::TVec3<f32>* v;
 s32 j;
 s32 i;
@@ -748,9 +748,6 @@ f32 dist;
 s32 out,quad;
 u16 angle;
 f32 zero,dz;
-f32 radians;
-s16 ang;
-s32 now,elapsed;
 s32 result,kind;
 u8* p=(u8*)this_;
 box.set(*(JGeometry::TBox2<f32>*)(p+0x60));box.addPos(*(JGeometry::TVec2<f32>*)(p+0xc));
@@ -810,12 +807,12 @@ case 32:switch(*(s32*)(p+0x260)){case 0:case 90:case 110:case 130:
 switch(*(s32*)(p+0x2fc)){case 9:case 11:case 13:fn_801D22DC(p+0x2f4,10,0,0);break;default:fn_801D22DC(p+0x2f4,11,0,0);break;}
 fn_801D1F14(p+0x2f4,lbl_8053C55C);break;}
 ++*(s32*)(p+0x260);break;
-case 33:now=*(s32*)((u8*)fn_8011921C()+8);elapsed=now-*(s32*)(lbl_80464550+0x84);f32 t=elapsed;dz=lbl_8053C560-lbl_8053C564*t;zero=lbl_8053C55C;
+case 33:s32 elapsed=DMZLElapsed(fn_8011921C(),lbl_80464550);f32 t=elapsed;dz=lbl_8053C560-lbl_8053C564*t;zero=lbl_8053C55C;
 for(s32 j=0;j<4;j++){g=*(JGeometry::TVec3<f32>*)fn_8023E724(j);g.z+=dz;if(g.z<=zero)g.z=zero;else g.y+=lbl_8053C560;((void(*)(s32,void*,s32,s32,s32,s32,s32))fn_80230498)(j,&g,0x3f,255,-128,-128,1);}break;
 case 35:
 *(f32*)(p+0x268)+=lbl_8053C578;
 fn_801CD950((f32*)(p+0x26c),lbl_8053C560,lbl_8053C57C);
-radians=JMath::atanTable_.atan2_(*(f32*)(p+0x27c)-*(f32*)(p+0xc),*(f32*)(p+0x280)-*(f32*)(p+0x10));radians*=lbl_8053C580;ang=radians;
+s16 ang=DMZLAngle(*(f32*)(p+0x27c)-*(f32*)(p+0xc),*(f32*)(p+0x280)-*(f32*)(p+0x10));
 *(f32*)(p+0x3c)=*(f32*)(p+0x26c)*JMASSin(ang);
 *(f32*)(p+0x40)=*(f32*)(p+0x26c)*JMASCos(ang);
 s32 x=fn_801CD950((f32*)(p+0xc),*(f32*)(p+0x27c),*(f32*)(p+0x3c));
