@@ -608,7 +608,8 @@ extern "C" void* createTexGenBlock__11J3DMaterialFUl(u32);
 extern "C" void* createTevBlock__11J3DMaterialFi(int);
 extern "C" void fn_800CBB9C(J3DNBTScaleInfo* out, u8* p, s32 idx);
 extern "C" TevKColorWord fn_800CB104(const J3DMaterialFactory* self, int idx, int no);
-extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 no);
+struct J3DTevSwapModeTable;
+extern "C" J3DTevSwapModeTable fn_800CB520(const J3DMaterialFactory* self, int idx, int stage);
 extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags) {
     u32 nTev, colorFlag, nTex, peFlag, texFlag, indFlag, nTexNo;
     u8 nInd;
@@ -626,8 +627,7 @@ extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial*
     u16 chanCopy[2], zCopy[2], z[2], chan[2];
     u8 kselCopy[4], ksel[4];
     if (self->mDisplayLists != 0) return fn_800CA7F0(self,material,idx,flags);
-    u16 remapped=self->mMatRemapTable[idx];
-    u8* init=(u8*)self->mInitData+remapped*0x14c;
+    u8* init=(u8*)self->mInitData+self->mMatRemapTable[idx]*0x14c;
     u32 textures=0;
     u32 stages=textures;
     if (init[4]!=0xff) stages=((u8*)self->unk_0C[16])[init[4]];
@@ -693,11 +693,11 @@ extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial*
     u32 no;
     u16* swap;
     u32 stageIndex;
-    u8* entry;
     u8* data=(u8*)self->mInitData;
     u16* remap=self->mMatRemapTable;
+    u8* entry;
     for(stageIndex=0;(u8)stageIndex<nTev;stageIndex++) {
-        entry=data+remap[idx]*0x14c;
+        entry=data+idx[remap]*0x14c;
         ((void (*)(void*, const J3DMaterialFactory*, int, int))fn_800CB460)(stage,self,idx,(u8)stageIndex);
         no=(u8)stageIndex;
         stageCopy[0]=stage[0];stageCopy[1]=stage[1];
@@ -746,16 +746,16 @@ extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial*
     for(u8 i=0;i<8;i++) {
         ((J3DTexGenBlock*)*(void**)((u8*)material + 0x28))->v19(i,((void* (*)(const J3DMaterialFactory*, int, int))fn_800CB1F4)(self,idx,i));
     }
-    init=(u8*)self->mInitData+self->mMatRemapTable[idx]*0x14c;
+    u8* tevInit=(u8*)self->mInitData+self->mMatRemapTable[idx]*0x14c;
     for(u8 i=0;i<nTev;i++) {
         u32 no=i;
-        u8 v=init[0x9c+no];
+        u8 v=tevInit[0x9c+no];
         if(v!=0xff) ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v31(no,v);
         else ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v31(no,0xc);
     }
     for(u8 i=0;i<nTev;i++) {
         u32 no=i;
-        u8 v=init[0xac+no];
+        u8 v=tevInit[0xac+no];
         if(v!=0xff) ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v34(no,v);
         else ((J3DTevBlock*)*(void**)((u8*)material + 0x2c))->v34(no,0x1c);
     }
@@ -889,16 +889,8 @@ extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial*
     }
     bool indFlag = (flags & 0x03000000) != 0;
     *(void**)((u8*)material + 0x24) = createColorBlock__11J3DMaterialFUl(0x40000000);
-    void* tg = operator new(0x5c);
-    if (tg) {
-        ctorTexGenBlockPatched(tg);
-    }
-    *(void**)((u8*)material + 0x28) = tg;
-    void* tev = operator new(0xd8);
-    if (tev) {
-        ctorTevBlockPatched(tev);
-    }
-    *(void**)((u8*)material + 0x2c) = tev;
+    *(void**)((u8*)material + 0x28) = new PatchedTexGenBlockMem;
+    *(void**)((u8*)material + 0x2c) = new PatchedTevBlockMem;
     *(void**)((u8*)material + 0x30) = createIndBlock__11J3DMaterialFi(indFlag);
     *(void**)((u8*)material + 0x34) = createPEBlock__11J3DMaterialFUlUl(0x10000000, ((u8*)self->mInitData)[self->mMatRemapTable[idx] * 0x14c]);
     *(u16*)((u8*)material + 0x14) = idx;
@@ -1468,12 +1460,7 @@ struct J3DTevSwapModeInfo {
     u8 mRasSel; // _00
     u8 mTexSel; // _01
 };
-struct J3DTevSwapModeTableInfo {
-    u8 mR; // _00
-    u8 mG; // _01
-    u8 mB; // _02
-    u8 mA; // _03
-};
+#include "JSystem/J3D/J3DTevSwapModeTable.h"
 extern J3DTevSwapModeInfo j3dDefaultTevSwapMode;
 extern const J3DTevSwapModeTableInfo j3dDefaultTevSwapModeTable;
 extern u32 j3dDefaultIndTexOrderNull;
@@ -1487,19 +1474,12 @@ extern "C" void* fn_800CB4C0(void* out, u8* e) {
 }
 
 #pragma opt_propagation on
-extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
-    u16* ids = *(u16**)(p + 8);
-    u8* base = *(u8**)(p + 4);
-    s32 offset = ids[idx] * 0x14c + 0x124;
-    offset += stage * 2;
-    u16 v = *(u16*)(base + offset);
-    if (v != 0xffff) {
-        u8* e = *(u8**)(p + 0x58) + v * 4;
-        *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
-        return;
+extern "C" J3DTevSwapModeTable fn_800CB520(const J3DMaterialFactory* self, int idx, int stage) {
+    J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+    if (initData->mTevSwapModeTableIndex[stage] != 0xffff) {
+        return J3DTevSwapModeTable(((J3DTevSwapModeTableInfo*)self->unk_0C[19])[initData->mTevSwapModeTableIndex[stage]]);
     }
-    u8* d = (u8*)&j3dDefaultTevSwapModeTable;
-    *out = d[0] * 0x40 + d[1] * 0x10 + d[2] * 4 + d[3];
+    return J3DTevSwapModeTable(j3dDefaultTevSwapModeTable);
 }
 #pragma opt_propagation reset
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
