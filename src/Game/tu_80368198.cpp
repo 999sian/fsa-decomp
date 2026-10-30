@@ -121,8 +121,8 @@ u8 pad00[0x30]; s32 messages[9]; s32 animStart[3]; u8 pad60[0x18];
 s32 offsets[5]; u8 pad8c[0x3c]; u16 emitters[8];
 u16 d8[8], e8[8], f8[8], f108[8], f118[8], f128[8];
 };
-static inline u16 cutsceneTable16(const u16* table, s32 index) { return table[index]; }
-static inline s32 cutsceneTable32(const s32* table, s32 index) { return table[index]; }
+static inline u16 cutsceneTable16(const u16* __restrict table, int index) { return table[index]; }
+static inline s32 cutsceneTable32(const s32* __restrict table, int index) { return table[index]; }
 extern f32 lbl_80542CA4;
 extern f32 lbl_80542CC4;
 extern f32 lbl_80542CC8;
@@ -966,9 +966,15 @@ extern f32 lbl_80542CCC;
 extern f32 lbl_80542CA8;
 #pragma opt_common_subs off
 extern "C" void fn_8036B03C(u8* this_,s32 param){
-int state=param;
-const char* tbl=lbl_80474C38;
-u8* self=this_;
+s32 i, n;
+u8* dst;
+u16* ids;
+const char* tbl;
+u8* self;
+s32 state;
+state=param;
+tbl=lbl_80474C38;
+self=this_;
 JGeometry::TVec3<f32> pos,v,v24;
 switch(state){
 case 0: {  break; }
@@ -984,8 +990,8 @@ case 3: { self[0x238]=1; *(s32*)(self + 0x244)=1; *(s32*)(self + 0x254)=cutscene
 *(u8**)(self + 0x380) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0x108),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 *(u8**)(self + 0x358) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0x118),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 fn_801F0E34(self,0x400d5,0);
-{ s32 n = *(s32*)((u8*)fn_801F856C()+0x1008);
-for (s32 i=0;i<n;i++) { u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
+{ n = *(s32*)((u8*)fn_801F856C()+0x1008);
+for (i=0;i<n;i++) { u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
 if(a && *(u32*)(a+0x1a0)==0x53574556){ fn_802B3A3C(a); break; } } }
  break; }
 case 4: { switch(*(s32*)(self + 0x23c)){case 6: fn_80458FF0(lbl_8053AF80,0x100000f,0,0);break; default: fn_80458FF0(lbl_8053AF80,0x100001c,0,0);break;} self[0x237]=1; break; }
@@ -1027,14 +1033,14 @@ fn_8038BD08(0,cutsceneTable32((s32*)(tbl+0x30),*(s32*)(self+0x268)),*(s32*)(self
 ++*(s32*)(self + 0x268);  break; }
 case 12: { *(s32*)(self + 0x258)=150; break; }
 case 14: { self[0x237]=0;
-{u16* a=(u16*)(tbl+0xc8); u8* dst=self; for(s32 i=0;i<7;i++,a++,dst+=4){ *(void**)(dst+0x35c)=fn_8013CC50(*(s32*)(self + 4),self+0xc,lbl_80542CA4,*a,0,1,0,0,1); }}
+{ids=(u16*)(tbl+0xc8); dst=self; for(i=0;i<7;i++,ids++,dst+=4){ *(void**)(dst+0x35c)=fn_8013CC50(*(s32*)(self + 4),self+0xc,lbl_80542CA4,*ids,0,1,0,0,1); }}
 *(s32*)(self + 0x2f0)=300;fn_801F0E34(self,0x30082,0);
 *(u8**)(self + 0x350) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0xd8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 *(u8**)(self + 0x354) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0xe8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 *(s32*)(self + 0x26c)=400; break; }
 case 15: { self[0x234]=0;self[0x236]=1; break; }
 case 16: { self[0x236]=0;fn_80119998(fn_80119DD0(),180,0,0,0,1,0,0);*(s32*)(self + 0x24c)=1;
-for(s32 i=0;i<4;i++){v=*fn_8023E724(i);fn_80230498(i,&v,(u16)fn_8023CBC0(i),255,-128,-128,1);}
+for(i=0;i<4;i++){v=*fn_8023E724(i);fn_80230498(i,&v,(u16)fn_8023CBC0(i),255,-128,-128,1);}
 fn_8036A65C(self);v.set(*(f32*)(self + 0x24),*(f32*)(self + 0x28),*(f32*)(self + 0x2c));v.z+=lbl_80542C78;
 Actor_CreateByID(fn_801F856C(),0x43524e56,*(s32*)(self + 4),&v,*(s32*)(self + 0x23c),-1,-1); break; }
 case 17: { *(s32*)(self + 0x24c)=0;detach__5ActorFv(self);{s32 v=*(s32*)(self + 0x248);if(v>0){fn_802D8050(fn_802D6A9C(),v,1,255);fn_8037AD00(lbl_8053AD70,4);}} break; }
@@ -1052,8 +1058,8 @@ case 22: { self[0x238]=1; *(s32*)(self + 0x244)=1; *(s32*)(self + 0x254)=cutscen
 *(u8**)(self + 0x380) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0x108),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 *(u8**)(self + 0x358) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0x118),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 fn_801F0E34(self,0x400d5,0);
-{ s32 n = *(s32*)((u8*)fn_801F856C()+0x1008);
-for (s32 i=0;i<n;i++) { u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
+{ n = *(s32*)((u8*)fn_801F856C()+0x1008);
+for (i=0;i<n;i++) { u8* a=*(u8**)((u8*)fn_801F856C()+8+i*4);
 if(a && *(u32*)(a+0x1a0)==0x53574556){ fn_802B3A3C(a); break; } } }
  break; }
 case 23: { switch(*(s32*)(self + 0x23c)){case 6: fn_80458FF0(lbl_8053AF80,0x100000f,0,0);break; default: fn_80458FF0(lbl_8053AF80,0x100001c,0,0);break;} self[0x237]=1; break; }
@@ -1072,7 +1078,7 @@ case 25: { *(s32*)(self + 0x294)=((s32*)(tbl+0x78))[0]+70;
 *(s32*)(self + 0x2a0)=((s32*)(tbl+0x78))[3]+70;
 *(s32*)(self + 0x2a4)=((s32*)(tbl+0x78))[4]+70; break; }
 case 26: { self[0x237]=0;
-{u16* a=(u16*)(tbl+0xc8); u8* dst=self; for(s32 i=0;i<7;i++,a++,dst+=4){ *(void**)(dst+0x35c)=fn_8013CC50(*(s32*)(self + 4),self+0xc,lbl_80542CA4,*a,0,1,0,0,1); }}
+{ids=(u16*)(tbl+0xc8); dst=self; for(i=0;i<7;i++,ids++,dst+=4){ *(void**)(dst+0x35c)=fn_8013CC50(*(s32*)(self + 4),self+0xc,lbl_80542CA4,*ids,0,1,0,0,1); }}
 *(s32*)(self + 0x2f0)=300;fn_801F0E34(self,0x30082,0);
 *(u8**)(self + 0x350) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542CA4, cutsceneTable16((u16*)(tbl+0xd8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
 *(u8**)(self + 0x354) = (u8*)fn_8013CC50(*(s32*)(self + 4), self + 0xc, lbl_80542C58, cutsceneTable16((u16*)(tbl+0xe8),*(s32*)(self+0x23c)), 0, 1, 0, 0, 1);
@@ -1080,21 +1086,21 @@ case 26: { self[0x237]=0;
 case 27: { self[0x234]=0;self[0x236]=1; break; }
 case 28: { *(s32*)(self + 0x24c)=1; fn_80119998(fn_80119DD0(),180,0,0,0,1,0,0);fn_8036A65C(self);
 *(JGeometry::TVec3<f32>*)(self+0xc)+=JGeometry::TVec3<f32>(lbl_80542C6C,lbl_80542C80,lbl_80542C6C);
-*(s32*)(self + 0x258)=180;{u8* dst=self;for(s32 i=0;i<5;i++,dst+=4){
+*(s32*)(self + 0x258)=180;{dst=self;for(i=0;i<5;i++,dst+=4){
 if(*(void**)(dst+0x3bc)){forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824()+0xc),*(void**)(dst+0x3bc));*(void**)(dst+0x3bc)=0;}
 if(*(void**)(dst+0x3d4)){forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824()+0xc),*(void**)(dst+0x3d4));*(void**)(dst+0x3d4)=0;}
 }} break; }
 case 29: { *(s32*)(self + 0x258)=170; break; }
 case 30: {  break; }
 case 31: { *(s32*)(self + 0x264)=0;v=*(JGeometry::TVec3<f32>*)(self+0xc);v.y+=lbl_80542C80;v.z=lbl_80542C6C;*(f32*)(self + 0x288)=lbl_80542C6C;*(s32*)(self + 0x28c)=0;
-{u16* a=(u16*)(tbl+0x128);u8* dst=self;for(s32 i=0;i<6;i++,a++,dst+=4){*(void**)(dst+0x39c)=fn_8013CC50(*(s32*)(self + 4),&v,lbl_80542C58,*a,0,1,0,0,1);(*(u8**)(dst+0x39c))[0xbb]=(s32)*(f32*)(self + 0x288);}}
+{ids=(u16*)(tbl+0x128);dst=self;for(i=0;i<6;i++,ids++,dst+=4){*(void**)(dst+0x39c)=fn_8013CC50(*(s32*)(self + 4),&v,lbl_80542C58,*ids,0,1,0,0,1);(*(u8**)(dst+0x39c))[0xbb]=(s32)*(f32*)(self + 0x288);}}
 *(u8**)(self + 0x3b4) = (u8*)fn_8013CC50(*(s32*)(self + 4), &v, lbl_80542C58, 0x540, 0, 1, 0, 0, 1);
 *(u8**)(self + 0x3b8) = (u8*)fn_8013CC50(*(s32*)(self + 4), &v, lbl_80542C58, 0x541, 0, 1, 0, 0, 1);
 
 *(s32*)(self + 0x258)=150;fn_8045873C(lbl_8053AF80,1); break; }
 case 32: { fn_80119998(fn_80119DD0(),150,0,1,0,0,50,0);*(s32*)(self + 0x258)=185;fn_801F0E34(self,0x40041,0); break; }
 case 33: { fn_80119998(fn_80119DD0(),150,0,0,0,0,25,0);*(s32*)(self + 0x24c)=1;Gol2_SetField_0x2f4(*(u8**)(self + 0x2f4),255);
-{u8* dst=self;for(s32 i=0;i<6;i++,dst+=4){if(*(void**)(dst+0x39c)){forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824()+0xc),*(void**)(dst+0x39c));}*(void**)(dst+0x39c)=0;}}*(s32*)(self + 0x264)=10;fn_8045873C(lbl_8053AF80,0); break; }
+{dst=self;for(i=0;i<6;i++,dst+=4){if(*(void**)(dst+0x39c)){forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824()+0xc),*(void**)(dst+0x39c));}*(void**)(dst+0x39c)=0;}}*(s32*)(self + 0x264)=10;fn_8045873C(lbl_8053AF80,0); break; }
 case 34: { { u8* mode=*(u8**)((u8*)sManager__8JUTVideo+4);
 const s32 height=*(u16*)(mode+6);
 const s32 width=*(u16*)(mode+4);
