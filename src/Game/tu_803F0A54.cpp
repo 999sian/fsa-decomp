@@ -1136,6 +1136,7 @@ extern const f32 lbl_805437B0;
 extern const f32 lbl_805437B4;
 extern const f32 lbl_805437B8;
 extern const f32 lbl_805437BC;
+extern const f32 lbl_80543748;
 extern "C" void fn_803F726C(u8* p) {
     s32 t = *(s32*)(p + 0x210);
     if (*(s32*)(p + 0x1ac) == 2) {
