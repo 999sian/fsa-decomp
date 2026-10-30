@@ -736,11 +736,10 @@ static inline void key0LinkHere(char* p) {
 }
 
 static inline void key0LinkHere2(char* p) {
-    u32 x18;
     u32 packed = key0PackActorFlags((u8*)p);
     if (!fn_802DCD0C(fn_802D6A9C())) {
-        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-        packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
+        packed |= ((*(u32*)((u8*)fn_802D6A9C() + 0x18) & 0xff) << 8) |
+                  ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
     } else {
         packed = *(u16*)(p + 0x2aa) << 8;
     }
@@ -903,7 +902,7 @@ extern "C" void fn_802C2C30(char* p) {
                 *(f32*)(p + 0xc) = *(f32*)(p + 0x248);
                 *(f32*)(p + 0x10) = *(f32*)(p + 0x24c);
                 *(f32*)(p + 0x14) = *(f32*)(p + 0x250);
-                key0LinkHere(p);
+                key0LinkHere2(p);
                 return;
             }
             if (delta.x != lbl_80540C74) {
@@ -922,7 +921,7 @@ extern "C" void fn_802C2C30(char* p) {
         return;
     }
     if (*(u8*)(p + 0x2af) != 0) {
-        key0LinkHere(p);
+        key0LinkHere2(p);
         *(u8*)(p + 0x2af) = 0;
         if (*(s32*)(p + 0x280) == 6) {
             if (vel.x != lbl_80540C74 || vel.y != lbl_80540C74) {
@@ -954,7 +953,7 @@ extern "C" void fn_802C2C30(char* p) {
     }
     if (*(f32*)(p + 0x14) < lbl_80540C74 || *(s32*)(p + 0x298) != -1) {
         moving = 1;
-        if (lbl_80540C74 == vel.x && lbl_80540C74 == vel.y) {
+        if (0.0f == vel.x && 0.0f == vel.y) {
             moving = 0;
         }
         if (*(u8*)(p + 0x2b1) == 1) {
@@ -996,7 +995,7 @@ extern "C" void fn_802C2C30(char* p) {
             return;
         }
         key0RegisterRef(p);
-        key0LinkHere(p);
+        key0LinkHere2(p);
         return;
     }
     if (fn_801F2618(p, &delta, 0)) {
