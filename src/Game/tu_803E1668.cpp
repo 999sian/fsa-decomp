@@ -892,7 +892,7 @@ static inline f32 MenuPulse803E(s32 n,const f32 magnitude,const f32 denominator,
     f32 value=(f32)(n*n);
     return magnitude*(value/denominator)+base;
 }
-static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return (span-size)*half+origin;}
+static inline f32 MenuCenter803E(const f32 half,const f32 size,const f32 span,const f32 origin) {return half*(span-size)+origin;}
 static inline void MenuMove803E(J2DPane* screen,u64 tag,f32 x,f32 y) { screen->search(tag)->move(x,y); }
 
 #pragma opt_common_subs off
@@ -921,7 +921,7 @@ extern "C" void fn_803E51C4(void* param_1) {
                 if(*(s16*)(p+0x25e)==0) p[0x26b]|=1<<i;
                 if(p[0x26b]&(1<<i)) {
                     s16 t=*(s16*)(p+0x25e);
-                    if(t<50) {s32 n=t;alpha=((f32)(n*n)/lbl_805436D4)*lbl_805436D0+lbl_80543690;}
+                    if(t<50) {s32 n=t;alpha=MenuPulse803E(n,lbl_805436D0,lbl_805436D4,lbl_80543690);}
                     else {s32 n=50-(t-50);alpha=((f32)(n*n)/lbl_805436D4)*lbl_805436D0+lbl_80543690;}
                 } else alpha=150;
             }
