@@ -24,7 +24,7 @@ extern "C" void fn_80230F44(s32 a, s32 b);
 extern "C" void fn_80236ED8(s32 a, s32 b);
 extern "C" void fn_8045873C(void* p, s32 a);
 extern "C" void fn_80128C58(s32 a);
-extern "C" u8 lbl_8053AAF8[];
+extern "C" u8* lbl_8053AAF8;
 extern "C" void fn_802F0330(void* this_) {
     u8* p = (u8*)this_;
     s32 i;
