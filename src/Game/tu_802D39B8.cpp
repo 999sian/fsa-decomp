@@ -114,6 +114,8 @@ extern const f32 lbl_8054111C;
 extern const f32 lbl_80541124;
 extern const f32 lbl_80541160;
 extern const f32 lbl_80541164;
+extern const f32 lbl_80541158;
+extern const f32 lbl_8054115C;
 extern void* lbl_8053AF80;
 extern f32 lbl_8053A1A8;
 
@@ -2668,10 +2670,10 @@ extern "C" void fn_802DD808(char* p) {
     f32 spawnGBA[3];
     JGeometry::TVec3<f32> camera;
     f32 points[3];
-    s32 i, j, k;
+    int k; int j; int i;
     *(s32*)((char*)roomArrays()+0x1328C)=0;
     fn_802DEE2C();
-    for(i=0;i<10;i++) for(j=0;j<10;j++) for(k=0;k<8;k++) roomArrays()->flags1048[i][j][k]=0;
+    for(i=0;i<10;i++) for(j=0;j<80;j++) roomArrays()->roomFlags1048[i][j]=0;
     for(i=0;i<8;i++) for(j=0;j<64;j++) roomArrays()->values2948[i][j]=0;
     for(i=0;i<4;i++) for(j=0;j<128;j++) roomArrays()->flags2D48[i][j]=0;
     for(i=0;i<10;i++) for(j=0;j<10;j++){
