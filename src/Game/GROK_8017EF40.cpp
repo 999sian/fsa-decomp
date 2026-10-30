@@ -46,10 +46,13 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     f32 cz,cy,cx,sz,sy,sx;
     sx=sin(lbl_8053DDD8);sy=sin(lbl_8053DDD8);sz=sin(lbl_8053DDD8);
     cx=cos(lbl_8053DDD8);cy=cos(lbl_8053DDD8);cz=cos(lbl_8053DDD8);
-    f32 ss,cs,cc;
-    ss=sx*sy;
-    cc=cx*cz;
-    cs=cx*sz;
+    f32 ss=sx*sy;
+    f32 cs=cx*sz;
+    f32 cc=cx*cz;
+    f32 sxsz=sx*sz;
+    f32 sxcz=sx*cz;
+    f32 cycz=cy*cz;
+    f32 cysz=cy*sz;
     m[0][0]=scaleX*(cy*cz);
     m[1][0]=scaleX*(cy*sz);
     m[2][0]=scaleX*-sy;
@@ -61,15 +64,16 @@ static inline void grokRotation(f32 m[3][4],f32 scaleX,f32 scaleY,f32 scaleZ) {
     m[2][2]=scaleZ*(cx*cy);
 }
 
+#pragma opt_propagation off
 extern "C" void fn_8017EF98(u8* p) {
     GrokDrawTable* t=&lbl_804A13E0;
     DrawRec rec;
     f32 m[3][4];
     JGeometry::TVec3<f32> pos=*(JGeometry::TVec3<f32>*)(p+0xc);
     m[0][3]=0.0f;m[1][3]=0.0f;m[2][3]=0.0f;
-    if(*(s32*)(p+0x230)==0 || *(s32*)(p+0x230)==1) return;
-    if(*(s32*)(p+0x230)==23) return;
-    switch(*(u32*)(p+0x90)) { case 1: return; default: break; }
+    if(*(s32*)(p+0x230)!=0 && *(s32*)(p+0x230)!=1 && *(s32*)(p+0x230)!=23) {
+    if(*(u32*)(p+0x90)!=1) {
+    
     f32 offset;
     if(*(u32*)(p+0x90)==2 || *(u32*)(p+0x90)==3) {
         if(*(u16*)(p+0x94)==0) return;
@@ -159,8 +163,9 @@ extern "C" void fn_8017EF98(u8* p) {
     rec.w18=m;
     if(lbl_80539F98<=0) rec.w30=17;
     fn_801EFD34(p,texture,&rec,-1,0.0f,-8.0f+offset,0.0f);
+}}
 }
-
+#pragma opt_propagation reset
 extern "C" void fn_801546F4(void* a, void* b);
 extern "C" void fn_801826E4(f32* dst, f32 a, f32 b);
 extern "C" u8* fn_801826A4(s32 idx);
