@@ -423,11 +423,18 @@ extern f32 lbl_8053C68C;
 extern f32 lbl_8053C6AC;
 
 #pragma opt_common_subs off
+static inline u8 stateMessage(char* self, const s32* messages, const JGeometry::TVec3f& pos, JGeometry::TVec3f& argument) {
+    s32 room = *(s32*)(self + 4);
+    argument = pos;
+    return fn_8038BD08(0, messages[*(s32*)(self + 0x238)], room, argument, 0x62);
+}
+
 static inline s32 stateIndexedEffect(char* self, const u16* table, f32 scale) {
     u16 effect = table[*(s32*)(self + 0x238)];
     return fn_8013CC50(*(void**)(self + 4), self + 0xc, effect, 0, scale, 2, 0, 0, 1);
 }
 
+#pragma opt_common_subs on
 extern "C" void fn_80113EC4(char* this_, s32 state) {
     char* self=this_;
     JGeometry::TVec3f playerPos;
