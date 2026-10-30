@@ -34,8 +34,8 @@ extern "C" void fn_801F0E34(void*,u32,s32);
 extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
 extern "C" void fn_801F71A4(void*,f32,f32,f32);
 extern "C" void fn_8030C210(void*,void*);
-extern "C" s32 fn_8022EA0C(s32);
-extern "C" void fn_8022FE80(s32,s32,s32,s32,s32);
+extern "C" int fn_8022EA0C(int);
+extern "C" void fn_8022FE80(int,int,int,int,int);
 extern "C" s32 Actor_CreateByID(void*,u32,u32,f32*,u32,s32,s32);
 extern "C" u8 fn_80384C58(s32,s32);
 extern "C" void fn_801F6884(void*);
@@ -136,7 +136,7 @@ if(*(s32*)(p+0x250)!=2&&*(s32*)(p+0x250)!=0&&*(s32*)(p+0x250)!=4){*(s32*)(p+0x25
 
 if(*(s32*)(p+0x250)!=0) break;
 *(s32*)(p+0x264)=fn_80138A30(lbl_8053AAF8);
-if(*(s32*)(p+0x264)>1){for(s32 i=1;i<*(s32*)(p+0x264);i++){s32 value=fn_8023DE58(i);if(value!=fn_8023DE58(0))return;}}
+if(*(s32*)(p+0x264)>1){for(s32 i=1;i<*(s32*)(p+0x264);i++){int value=fn_8023DE58(i);if(value!=fn_8023DE58(0))return;}}
 
 if(*(s32*)(p+0x260)==1) {
 if(player<0 || dist>lbl_8053E644) {
@@ -210,19 +210,19 @@ break;}
 case 5: {
 fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);
 *(s32*)(p+0x244)+=1;if(*(s32*)(p+0x244)<=50)break;
-*(s32*)(p+0x244)=51;s32 value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+*(s32*)(p+0x244)=51;int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 s32 result=fn_8022FD8C(*(s32*)(p+0x198));if(result<0)break;
 s32 roomHandle=*(s32*)(p+0x198);s32 room=*(s32*)(p+0x4);argPos5=messagePos;
 fn_8038AD24(fn_8022EA0C(0),0x41d,roomHandle,room,argPos5,0x102);*(s32*)(p+0x230)=6;break;}
 case 6:{
-fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);s32 value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+fn_8030C210(((void**)lbl_8053AB10)[9],p+0xc);int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 if(fn_803865B8(fn_8022EA0C(0))){
 fn_80138B7C(lbl_8053AAF8);
 if(*(s32*)(p+0x25c)>=10)fn_8038470C(fn_8022EA0C(0),0x41e);else fn_8038470C(fn_8022EA0C(0),0x420);
 *(s32*)(p+0x230)=7;}break;}
 case 7:{
 char* sayas[1024];JGeometry::TVec3f positions[8];
-ryyaFocus(cameraPos);s32 value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+ryyaFocus(cameraPos);int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 if(!fn_803865B8(fn_8022EA0C(0)))break;
 *(s32*)(p+0x244)=50;
 if(*(s32*)(p+0x25c)>=10){
@@ -245,7 +245,7 @@ case 8:
 if(*(s32*)(p+0x25c)>=10)fn_8038470C(fn_8022EA0C(0),0x41f);else fn_8038470C(fn_8022EA0C(0),0x421);
 ryyaSetCycle(p,0);*(s32*)(p+0x230)=9;}break;
 case 9:{
-ryyaFocus(cameraPos);s32 value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
+ryyaFocus(cameraPos);int value=fn_8023DE58(0);s32 handle=fn_8022EA0C(0);fn_8022FE80(handle,value,*(s32*)(p+0x198),0,0);
 if(!fn_803865B8(fn_8022EA0C(0)))break;
 if(!fn_80384C58(fn_8022EA0C(0),*(s32*)(p+0x198)))break;
 fn_801F6884(fn_801F856C());
