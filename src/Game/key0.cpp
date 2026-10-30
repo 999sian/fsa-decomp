@@ -706,6 +706,18 @@ extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b
 extern "C" u8 fn_802DE9A0();
 extern "C" u8 fn_802DEB58();
 extern const f32 lbl_80540C7C;
+extern const f32 lbl_80540C90;
+extern const f32 lbl_80540CB0;
+extern const f32 lbl_80540CB4;
+extern const f32 lbl_80540CB8;
+extern const f32 lbl_80540CBC;
+extern const f32 lbl_80540CC0;
+extern const f32 lbl_80540CC4;
+extern const f32 lbl_80540CC8;
+extern const f32 lbl_80540CCC;
+extern const f32 lbl_80540CD0;
+extern "C" void fn_801F2B20(char* p, s32 a);
+extern "C" void fn_801F0D20(char* p, s32 a);
 
 // KEY0: react to the tile the key landed on (pit / special floor).
 static inline u8 key0TileEvent(char* p, u16 tile) {
