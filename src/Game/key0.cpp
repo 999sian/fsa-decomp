@@ -1256,23 +1256,6 @@ extern "C" u8 fn_8023061C(s32 a, s32 b);
 extern "C" u8 fn_80230534(s32 a);
 extern u8* lbl_8053AB10;
 
-#ifndef KEY0_LINK_HERE_EARLY
-// KEY0: link the key's home tile to where it is now.
-static inline void key0LinkHere(char* p) {
-    u32 x18;
-    u32 packed = key0PackActorFlags((u8*)p);
-    if (!fn_802DCD0C(fn_802D6A9C())) {
-        x18 = *(u32*)((u8*)fn_802D6A9C() + 0x18);
-        packed |= ((x18 & 0xff) << 8) | ((*(u32*)((u8*)fn_802D6A9C() + 0x14) & 0xff) << 16);
-    } else {
-        packed = *(u16*)(p + 0x2aa) << 8;
-    }
-    const Key0Pt& key = Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
-    const Key0Pt& pos = Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
-    u32 id = *(u32*)(p + 0x238);
-    key0LinkPoints(key, pos, packed, id);
-}
-#endif
 
 // KEY0: the key sat dropped too long; send it home.
 static inline void key0ReturnHome(char* p) {
