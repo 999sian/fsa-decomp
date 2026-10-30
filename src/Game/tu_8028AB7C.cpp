@@ -13,7 +13,7 @@ extern "C" const f32 lbl_805404C0;
 extern "C" const f32 lbl_805404D8;
 extern "C" const f32 lbl_805404F0;
 extern void* lbl_8053AAF8;
-static inline s32 platformRoom(const s32 param) {
+static inline s32 platformRoom(s32 param) {
     s32 value = (param >> 24) & 7;
     s32 room = value + 7;
     if (value == 0) room = value;
