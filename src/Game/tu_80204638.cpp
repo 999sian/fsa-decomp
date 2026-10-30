@@ -100,19 +100,19 @@ extern "C" u8 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
     *(s32*)(param_1 + 0x54) = *(s32*)(param_1 + 0x54) + 1;
     return ret;
 }
-#pragma opt_propagation off
-extern "C" void fn_80204834(u8* param_1) {
-    for (u32 i = 0; i < 8; i += 4) {
-        for (int j = 4; j <= 0x28; j += 4) {
-            u8* p = *(u8**)(param_1 + j);
-            if (p) {
-                p[0x11c] = 0;
+#pragma opt_strength_reduction on
+extern "C" void fn_80204834(ActorGroups80204638* groups) {
+    u8* actor;
+    for (s32 i = 0; i < 10; i++) {
+        for (s32 j = 0; j < 2; j++) {
+            actor = groups->actors[i][j];
+            if (actor != NULL) {
+                actor[0x11c] = 0;
             }
         }
-        param_1 += 0x28;
     }
 }
-#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
 extern "C" void* fn_802D6A9C(void);
 static inline bool actorInsideBounds(const f32* rect, const f32* pos) {
  return pos[0] >= rect[0] && pos[1] >= rect[1] && pos[0] < rect[2] && pos[1] < rect[3];
