@@ -35,7 +35,9 @@ static inline f32 menuPulseSquare(s32 value) { return (f32)(value * value); }
 struct MenuSlots24 {
     u8 pad0[0x24];
     u8* slot[2];
-    u8 pad2c[0x118-0x2c];
+    u8 pad2c[0xdc-0x2c];
+    s16 pulseFrame;
+    u8 padde[0x118-0xde];
     u8 flags118[13];
     u8 flags125[13];
     u8 flags132[81];
@@ -674,8 +676,10 @@ static inline void* menuDrawResource(const char* name) {
 }
 #pragma dont_inline off
 #pragma opt_loop_invariants off
+#pragma opt_common_subs off
 extern "C" void fn_803BE3D8(void* a) {
-    u8* p=(u8*)a;
+    char* p=(char*)a;
+    JGeometry::TVec3<f32> pos1,pos2,pos;
     u8* base=(u8*)lbl_804765D0;
     (*(s16*)(p+0xdc))++;
     if(*(s16*)(p+0xdc)>=0x36) *(s16*)(p+0xdc)=0;
@@ -686,8 +690,6 @@ extern "C" void fn_803BE3D8(void* a) {
         const u64* key2=(const u64*)(base+0x438);
         const s32* icons=(const s32*)(base+0x818);
         for(s32 i=0;i<8;i++,key1++,key2++,icons++) {
-            JGeometry::TVec3<f32> pos1;
-            JGeometry::TVec3<f32> pos2;
             {
     f32 width;
     J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*key1);
@@ -734,22 +736,23 @@ extern "C" void fn_803BE3D8(void* a) {
             }
         }
     } else {
-        for(s32 i=0;i<8;i++) {
+        const u64* key=(const u64*)(base+0x400);
+        const s32* icons=(const s32*)(base+0x818);
+        for(s32 i=0;i<8;i++,key++,icons++) {
             if(i<7 && *(s32*)(p+0xb8+i*4)!=0) {
                 DrawRec rec;
                 rec.b26=0;
-                ((u8*)&rec.w10)[3]=((u8*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8)))[0xb2];
-                JGeometry::TVec3<f32> pos;
+                ((u8*)&rec.w10)[3]=((u8*)keyObj(*(void**)(p+4),*key))[0xb2];
                 if(i==6) {
                     {
     f32 width;
-    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     width=pane->mBounds.f.x-pane->mBounds.i.x;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     pos.x=lbl_80543458+lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     width=pane->mBounds.f.y-pane->mBounds.i.y;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     pos.y=lbl_80543484*(lbl_8054348C+(width*lbl_80543480+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
     pos.z=lbl_80543458;
 }
@@ -760,19 +763,19 @@ extern "C" void fn_803BE3D8(void* a) {
                 } else {
                     {
     f32 width;
-    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    J2DPane* pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     width=pane->mBounds.f.x-pane->mBounds.i.x;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     pos.x=lbl_80543458+lbl_8054347C*(width*lbl_80543480+pane->mGlobalBounds.i.x)/(f32)(int)JUTVideo::getManager()->getFbWidth();
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     width=pane->mBounds.f.y-pane->mBounds.i.y;
-    pane=(J2DPane*)keyObj(*(void**)(p+4),*(u64*)(base+0x400+i*8));
+    pane=(J2DPane*)keyObj(*(void**)(p+4),*key);
     pos.y=lbl_80543484*(lbl_80543490+(width*lbl_80543480+pane->mGlobalBounds.i.y))/(f32)(int)JUTVideo::getManager()->getEfbHeight();
     pos.z=lbl_80543458;
 }
                     f32 rect[4];rect[0]=lbl_80543458;rect[1]=lbl_80543458;rect[2]=lbl_8054347C;rect[3]=lbl_80543484;
                     fn_8013B414(lbl_8053AB10,rect,1);
-                    s32 id=*(s16*)(p+0xdc)/9+*(s32*)(base+0x818+i*4);
+                    s32 id=*(s16*)(p+0xdc)/9+*icons;
                     fn_802F86CC(*(void**)((u8*)lbl_8053AB10+0x20),&pos,menuDrawResource((const char*)base+0x854),id,&rec,lbl_80543478,lbl_80543478);
                 }
             }
@@ -780,6 +783,7 @@ extern "C" void fn_803BE3D8(void* a) {
     }
     fn_8013B490(lbl_8053AB10);
 }
+#pragma opt_common_subs reset
 #pragma opt_loop_invariants reset
 #pragma dont_inline reset
 
@@ -3839,7 +3843,6 @@ extern "C" void fn_803C9F14(char* this_) {
     }
 }
 
-#pragma opt_loop_invariants off
 #pragma opt_propagation off
 #pragma opt_strength_reduction off
 extern "C" void fn_803C9F80(char* this_) {
@@ -3885,11 +3888,11 @@ extern "C" void fn_803C9F80(char* this_) {
 
     *(s16*)(p + 0xd8) += 1;
     if (*(s16*)(p + 0xd8) > t190) {
-        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x14), t192, 0, lbl_80543458, lbl_80543498);
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x14), t192, 0, 0.0f, lbl_80543498);
         fn_80402628(*(void**)(p + 0x14), t192, *(u8*)(*(u8**)(p + 0x14) + 0x28), 0);
-        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x18), t192, 0, lbl_80543458, lbl_80543498);
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x18), t192, 0, 0.0f, lbl_80543498);
         fn_80402628(*(void**)(p + 0x18), t192, *(u8*)(*(u8**)(p + 0x18) + 0x28), 0);
-        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), t192, 0, lbl_80543458, lbl_80543498);
+        ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x1c), t192, 0, 0.0f, lbl_80543498);
         fn_80402628(*(void**)(p + 0x1c), t192, *(u8*)(*(u8**)(p + 0x1c) + 0x28), 0);
         {u8* keys;
         for (i = 0, keys = base + 0x48; i < 0x51; i++, keys += 8) {
@@ -3905,7 +3908,7 @@ extern "C" void fn_803C9F80(char* this_) {
     s32 offset = 0;
     for (i = 0; i < 4; i++, q += 4, offset += t198) {
         if (*(s16*)(p + 0xd8) > t194 + offset) {
-            fn_80402940(*(void**)(q + 0x24), t196, lbl_80543458, lbl_8054349C, 0);
+            fn_80402940(*(void**)(q + 0x24), t196, 0.0f, lbl_8054349C, 0);
             fn_80402628(*(void**)(q + 0x24), t196, (*(u8**)(q + 0x24))[0x28], 0);
             switch (i) {
             case 0:{j=0;keys=base+0x7f8;
@@ -3923,7 +3926,8 @@ extern "C" void fn_803C9F80(char* this_) {
     f32 top=(*(f32*)(*(u8**)(p+0x3c)+0xc)+*(f32*)(*(u8**)(p+0x40)+0xc))*0.5f;
     f32 bottom=(*(f32*)(*(u8**)(p+0x48)+0xc)+*(f32*)(*(u8**)(p+0x4c)+0xc))*0.5f;
     s32 off, k;
-    unsigned int idx;
+    s32 idx;
+    s32 cell;
     void* pane;
     k = 0;
     off = 0;
@@ -3932,50 +3936,50 @@ extern "C" void fn_803C9F80(char* this_) {
             if (*(s32*)ordWalker == 0) {
                 *(f32*)(p+0x70)=top-*(f32*)(*(u8**)(p+0x38)+0xc);
                 *(f32*)(p+0x64)=bottom-*(f32*)(*(u8**)(p+0x44)+0xc);
-                fn_80402E08(*(void**)(p+0x38+*(s32*)ordWalker*4),lbl_80543458,*(f32*)(p+0x70));
-                fn_80402E08(*(void**)(p+0x44+*(s32*)ordWalker*4),lbl_80543458,*(f32*)(p+0x64));
+                fn_80402E08(*(void**)(p+0x38+*(s32*)ordWalker*4),0.0f,*(f32*)(p+0x70));
+                fn_80402E08(*(void**)(p+0x44+*(s32*)ordWalker*4),0.0f,*(f32*)(p+0x64));
             } else if (*(s32*)ordWalker == 1) {
                 *(f32*)(p+0x74)=top-*(f32*)(*(u8**)(p+0x3c)+0xc)+(f32)k*(*(f32*)(*(u8**)(p+0x40)+0xc)-*(f32*)(*(u8**)(p+0x3c)+0xc));
                 *(f32*)(p+0x68)=bottom-*(f32*)(*(u8**)(p+0x48)+0xc)+(f32)k*(*(f32*)(*(u8**)(p+0x4c)+0xc)-*(f32*)(*(u8**)(p+0x48)+0xc));
-                fn_80402E08(*(void**)(p+0x38+*(s32*)ordWalker*4),lbl_80543458,*(f32*)(p+0x74));
-                fn_80402E08(*(void**)(p+0x44+*(s32*)ordWalker*4),lbl_80543458,*(f32*)(p+0x68));
+                fn_80402E08(*(void**)(p+0x38+*(s32*)ordWalker*4),0.0f,*(f32*)(p+0x74));
+                fn_80402E08(*(void**)(p+0x44+*(s32*)ordWalker*4),0.0f,*(f32*)(p+0x68));
             } else {
                 *(f32*)(p+0x78)=top-*(f32*)(*(u8**)(p+0x3c)+0xc);
                 *(f32*)(p+0x6c)=bottom-*(f32*)(*(u8**)(p+0x48)+0xc);
-                fn_80402E08(*(void**)(p+0x38+*(s32*)ordWalker*4),lbl_80543458,*(f32*)(p+0x78));
-                fn_80402E08(*(void**)(p+0x44+*(s32*)ordWalker*4),lbl_80543458,*(f32*)(p+0x6c));
+                fn_80402E08(*(void**)(p+0x38+*(s32*)ordWalker*4),0.0f,*(f32*)(p+0x78));
+                fn_80402E08(*(void**)(p+0x44+*(s32*)ordWalker*4),0.0f,*(f32*)(p+0x6c));
             }
-            ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x38 + *(s32*)ordWalker * 4), t19c, 0, lbl_80543498, lbl_80543458);
+            ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x38 + *(s32*)ordWalker * 4), t19c, 0, lbl_80543498, 0.0f);
             fn_80402628(*(void**)(p + 0x38 + *(s32*)ordWalker * 4), t19c, 0, *(u8*)(*(u8**)(p + 0x38 + *(s32*)ordWalker * 4) + 0x28));
             idx = *(s32*)ordWalker;
-            { const u64* keys = (const u64*)(base + 0x780); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x125]); }
-            { const u64* keys = (const u64*)(base + 0x768); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x126]); }
-            { const u64* keys = (const u64*)(base + 0x750); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x127]); }
-            { const u64* keys = (const u64*)(base + 0x6c8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x128]); }
-            { const u64* keys = (const u64*)(base + 0x6b0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x129]); }
-            { const u64* keys = (const u64*)(base + 0x698); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x12a]); }
-            { const u64* keys = (const u64*)(base + 0x680); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x12b]); }
-            { const u64* keys = (const u64*)(base + 0x668); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x12c]); }
-            { const u64* keys = (const u64*)(base + 0x650); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x12d]); }
-            { const u64* keys = (const u64*)(base + 0x638); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x12e]); }
-            { const u64* keys = (const u64*)(base + 0x620); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x12f]); }
-            { const u64* keys = (const u64*)(base + 0x608); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x130]); }
-            { const u64* keys = (const u64*)(base + 0x5f0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x38 + idx * 4), pane, p[0x131]); }
-            ((Fn5Fn)fn_80402B10)(*(void**)(p + 0x44 + idx * 4), t19c, 0, lbl_80543498, lbl_80543458);
-            fn_80402628(*(void**)(p + 0x44 + *(s32*)ordWalker * 4), t19c, 0, *(u8*)(*(u8**)(p + 0x44 + idx * 4) + 0x28));
-            { const u64* keys = (const u64*)(base + 0x5d8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x118]); }
-            { const u64* keys = (const u64*)(base + 0x5c0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x119]); }
-            { const u64* keys = (const u64*)(base + 0x5a8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x11a]); }
-            { const u64* keys = (const u64*)(base + 0x590); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x11b]); }
-            { const u64* keys = (const u64*)(base + 0x578); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x11c]); }
-            { const u64* keys = (const u64*)(base + 0x560); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x11d]); }
-            { const u64* keys = (const u64*)(base + 0x548); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x11e]); }
-            { const u64* keys = (const u64*)(base + 0x530); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x11f]); }
-            { const u64* keys = (const u64*)(base + 0x518); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x120]); }
-            { const u64* keys = (const u64*)(base + 0x500); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x121]); }
-            { const u64* keys = (const u64*)(base + 0x4e8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x122]); }
-            { const u64* keys = (const u64*)(base + 0x4d0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x123]); }
-            { const u64* keys = (const u64*)(base + 0x4b8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + 0x44 + idx * 4), pane, p[0x124]); }
+            { const u64* keys = (const u64*)(base + 0x780); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); cell=idx*4+0x38; fn_804023D0(*(void**)(p + cell), pane, p[0x125]); }
+            { const u64* keys = (const u64*)(base + 0x768); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x126]); }
+            { const u64* keys = (const u64*)(base + 0x750); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x127]); }
+            { const u64* keys = (const u64*)(base + 0x6c8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x128]); }
+            { const u64* keys = (const u64*)(base + 0x6b0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x129]); }
+            { const u64* keys = (const u64*)(base + 0x698); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x12a]); }
+            { const u64* keys = (const u64*)(base + 0x680); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x12b]); }
+            { const u64* keys = (const u64*)(base + 0x668); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x12c]); }
+            { const u64* keys = (const u64*)(base + 0x650); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x12d]); }
+            { const u64* keys = (const u64*)(base + 0x638); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x12e]); }
+            { const u64* keys = (const u64*)(base + 0x620); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x12f]); }
+            { const u64* keys = (const u64*)(base + 0x608); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x130]); }
+            { const u64* keys = (const u64*)(base + 0x5f0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x131]); }
+            ((Fn5Fn)fn_80402B10)(*(void**)(p + (0x44 + idx*4)), t19c, 0, lbl_80543498, 0.0f);
+            fn_80402628(*(void**)(p + (0x44+idx*4)), t19c, 0, *(u8*)(*(u8**)(p + (0x44+idx*4)) + 0x28));
+            { const u64* keys = (const u64*)(base + 0x5d8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); cell=idx*4+0x44; fn_804023D0(*(void**)(p + cell), pane, p[0x118]); }
+            { const u64* keys = (const u64*)(base + 0x5c0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x119]); }
+            { const u64* keys = (const u64*)(base + 0x5a8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x11a]); }
+            { const u64* keys = (const u64*)(base + 0x590); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x11b]); }
+            { const u64* keys = (const u64*)(base + 0x578); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x11c]); }
+            { const u64* keys = (const u64*)(base + 0x560); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x11d]); }
+            { const u64* keys = (const u64*)(base + 0x548); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x11e]); }
+            { const u64* keys = (const u64*)(base + 0x530); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x11f]); }
+            { const u64* keys = (const u64*)(base + 0x518); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x120]); }
+            { const u64* keys = (const u64*)(base + 0x500); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x121]); }
+            { const u64* keys = (const u64*)(base + 0x4e8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x122]); }
+            { const u64* keys = (const u64*)(base + 0x4d0); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x123]); }
+            { const u64* keys = (const u64*)(base + 0x4b8); pane = (*(J2DPane**)(p + 8))->search(keys[idx]); fn_804023D0(*(void**)(p + cell), pane, p[0x124]); }
         }
         k++;
         off += t19e;
@@ -3989,7 +3993,6 @@ extern "C" void fn_803C9F80(char* this_) {
 }
 #pragma opt_strength_reduction reset
 #pragma opt_propagation reset
-#pragma opt_loop_invariants reset
 extern "C" void fn_803CABAC(u8* p) {
     f32 zero;
     f32 v;
