@@ -2,6 +2,13 @@
 #include "JSystem/JKernel/JKRArchive.h"
 #include "Game/ItemBase.h"
 #include "Game/ActorDrawRec.h"
+// One byte of a BG scroll register pair: high nibble, then a single bit.
+struct ScrollByte802F {
+    u8 hi : 4;
+    u8 bit : 1;
+    u8 lo : 3;
+};
+
 struct SpriteOam802F {
     u8 y;
     u8 affine : 2;
@@ -1876,9 +1883,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
         GXSetTevAlphaIn(GX_TEVSTAGE0,(GXTevAlphaArg)4,(GXTevAlphaArg)1,(GXTevAlphaArg)6,GX_CA_ZERO);
         GXSetTevAlphaOp(GX_TEVSTAGE0,(GXTevOp)14,GX_TB_ZERO,GX_CS_SCALE_1,GX_TRUE,GX_TEVPREV);
     } else {
-        JUtility::TColor color(*(u32*)&lbl_80543F50);
-        color.r=shade;color.g=shade;color.b=shade;color.a=alpha;
-        GXSetTevColor(GX_TEVREG0,color);
+        GXSetTevColor(GX_TEVREG0,TileShade802F(shade,alpha));
         GXSetTevOrder(GX_TEVSTAGE0,GX_TEXCOORD0,GX_TEXMAP0,GX_COLOR_NULL);
         GXSetTevColorIn(GX_TEVSTAGE0,GX_CC_ZERO,(GXTevColorArg)8,(GXTevColorArg)9,GX_CC_ZERO);
         GXSetTevAlphaIn(GX_TEVSTAGE0,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO,GX_CA_ZERO);
@@ -1896,14 +1901,15 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
     GXSetCullMode(GX_CULL_NONE);
     u16* map=((u16**)(self+0x48))[plane];
     s32 palette;
-    if ((plane&7)!=0) {
-        if (paletteFlag) palette=1;else palette=2;
-    } else palette=1;
-    s32 paletteOffset=palette*4+0x18;
-    for (s32 i=0;i<16;i++) {
-        GXInitTlutObj(&tluts[i],*(u8**)(self+paletteOffset)+i*0x20,GX_TL_RGB5A3,16);
-        GXLoadTlut(&tluts[i],lbl_8046FA30[i]);
+    if ((plane&7)==0 || paletteFlag) palette=1;
+    else palette=2;
+    int paletteOffset=palette*4+0x18;
+    GXTlutObj* tlut=tluts;
+    for (int i=0;i<16;i++,tlut++) {
+        GXInitTlutObj(tlut,*(u8**)(self+paletteOffset)+i*0x20,GX_TL_RGB5A3,16);
+        GXLoadTlut(tlut,lbl_8046FA30[i]);
     }
+    s32* paletteCounts=counts;
     counts[0]=0;
     counts[1]=0;
     counts[2]=0;
@@ -1920,19 +1926,19 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
     counts[13]=0;
     counts[14]=0;
     counts[15]=0;
-    for (s32 sy=0;sy<2;sy++) {
-        for (s32 sx=0;sx<2;sx++) {
-            for (s32 row=0;row<16;row++) {
+    for (int sy=0;sy<2;sy++) {
+        for (int sx=0;sx<2;sx++) {
+            for (int row=0;row<16;row++) {
                 s32 py=(sy*32+row*2)*8-scrollY;
                 if (py<=-16 || py>=160) continue;
-                for (s32 col=0;col<16;col++) {
+                for (int col=0;col<16;col++) {
                     s32 px=(sx*32+col*2)*8-scrollX;
                     if (wave || (px>-16 && px<240)) {
                         u16 tile=map[((sy*2+sx)*16+row)*16+col];
                         if (tile) {
                             u16* list=*(u16**)(self+0x24);
-                            for (s32 dy=0;dy<2;dy++) {
-                                for (s32 dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++;
+                            for (int dy=0;dy<2;dy++) {
+                                for (int dx=0;dx<2;dx++) counts[(list[tile*4+dy*2+dx]>>12)&15]++;
                             }
                         }
                     }
@@ -1940,22 +1946,22 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
             }
         }
     }
-    for (s32 pal=0;pal<16;pal++) {
-        if (counts[pal]<=0) continue;
+    for (int pal=0;pal<16;pal++) {
+        if (paletteCounts[pal]<=0) continue;
         GXInitTexObjCI(&texture,*(void**)(self+8),128,512,GX_TF_C4,GX_CLAMP,GX_CLAMP,GX_FALSE,lbl_8046FA30[pal]);
         GXLoadTexObj(&texture,GX_TEXMAP0);
-        GXBegin(GX_QUADS,GX_VTXFMT0,counts[pal]*4);
-        for (s32 sy=0;sy<2;sy++) {
-            for (s32 sx=0;sx<2;sx++) {
-                for (s32 row=0;row<16;row++) {
+        GXBegin(GX_QUADS,GX_VTXFMT0,paletteCounts[pal]*4);
+        for (int sy=0;sy<2;sy++) {
+            for (int sx=0;sx<2;sx++) {
+                for (int row=0;row<16;row++) {
                     s32 ty=sy*32+row*2;
                     s32 py=ty*8-scrollY;
                     if (py<=-16 || py>=160) continue;
                     if (wave) {
-                        for (s32 j=0;j<3;j++) {
+                        for (int j=0;j<3;j++) {
                             shifts[j]=lbl_805414F8;
                             s32 y=py+j*8;
-                            for (s32 n=0;n<8;n++,y++) {
+                            for (int n=0;n<8;n++,y++) {
                                 s32 idx;
                                 if (y<0) idx=0;else if (y>159) idx=159;else idx=y;
                                 shifts[j]-=wave[idx];
@@ -1965,7 +1971,7 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                         f32 shiftTop=shifts[0];
                         f32 shiftMiddle=shifts[1];
                         f32 shiftBottom=shifts[2];
-                        for (s32 col=0;col<16;col++) {
+                        for (int col=0;col<16;col++) {
                             u16 tile=map[((sy*2+sx)*16+row)*16+col];
                             if (!tile) continue;
                             s32 tx=sx*32+col*2;
@@ -1973,9 +1979,9 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                             if (x+shiftTop<lbl_8054157C && x+shiftMiddle<lbl_8054157C && x+shiftBottom<lbl_8054157C) x+=lbl_80541580;
                             else if (x+shiftTop>lbl_80541584 && x+shiftMiddle>lbl_80541584 && x+shiftBottom>lbl_80541584) x-=lbl_80541580;
                             s32 subY=ty;
-                            for (s32 dy=0;dy<2;dy++,subY++) {
+                            for (int dy=0;dy<2;dy++,subY++) {
                                 f32 y=oy+(f32)(subY*8);
-                                for (s32 dx=0;dx<2;dx++) {
+                                for (int dx=0;dx<2;dx++) {
                                     u16 t=(*(u16**)(self+0x24))[tile*4+dy*2+dx];
                                     if (((t>>12)&15)==pal) {
                                         WarpTileQuad802F(t,x+(f32)(dx*8),y,shifts[dy],shifts[dy+1]);
@@ -1984,17 +1990,17 @@ extern "C" void fn_802FAC10(u8* self, s32 plane, s32 scrollX, s32 scrollY, s32 p
                             }
                         }
                     } else {
-                        for (s32 col=0;col<16;col++) {
+                        for (int col=0;col<16;col++) {
                             s32 tx=sx*32+col*2;
                             s32 px=tx*8-scrollX;
                             if (px<=-16 || px>=240) continue;
                             u16 tile=map[((sy*2+sx)*16+row)*16+col];
                             if (!tile) continue;
                             s32 subY=ty;
-                            for (s32 dy=0;dy<2;dy++,subY++) {
+                            for (int dy=0;dy<2;dy++,subY++) {
                                 f32 y=oy+(f32)(subY*8);
                                 s32 subX=tx;
-                                for (s32 dx=0;dx<2;dx++,subX++) {
+                                for (int dx=0;dx<2;dx++,subX++) {
                                     u16 t=(*(u16**)(self+0x24))[tile*4+dy*2+dx];
                                     if (((t>>12)&15)==pal) PlainTileQuad802F(t,ox+(f32)(subX*8),y);
                                 }
@@ -2022,21 +2028,20 @@ extern "C" void fn_8030DFE8(void*,s32);
 #pragma opt_common_subs on
 #pragma opt_strength_reduction off
 extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData, u8* viewportData, u8 enabled, s32 effect, u8 opacity) {
-    u8* regs=(u8*)registerPtr;
-    const s32* rect=(s32*)rectData;
-    const s32* viewport=(s32*)viewportData;
+    s32* rect=(s32*)rectData;
+    s32* viewport=(s32*)viewportData;
     JGeometry::TBox2<f32> box;
     box.set((f32)rect[0],(f32)rect[1],(f32)(rect[0]+rect[2]),(f32)(rect[1]+rect[3]));
     fn_8013B414(lbl_8053AB10,&box,0);
     GXSetViewport(viewport[0],viewport[1],viewport[2],viewport[3],lbl_805414F8,lbl_80541518);
     GXSetScissor(viewport[0],viewport[1],viewport[2],viewport[3]);
-    s32 scrollX=((regs[0xb]<<1)&0x1f0)|((regs[0xf]>>4)&15);
-    s32 scrollY=((regs[0x13]<<1)&0x1f0)|((regs[0x17]>>4)&15);
+    s32 scrollX=((((u8*)registerPtr)[0xb]<<1)&0x1f0)|((((u8*)registerPtr)[0xf]>>4)&15);
+    s32 scrollY=((((u8*)registerPtr)[0x13]<<1)&0x1f0)|((((u8*)registerPtr)[0x17]>>4)&15);
     s32* wave=NULL;
     void* controller=fn_8022BCD4(player);
     if (enabled) {
         u8 special=0;
-        if (((((regs[2]>>2)&7)-1)&7)==0 || self[0x134+player]!=0) special=1;
+        if (((((((u8*)registerPtr)[2]>>2)&7)-1)&7)==0 || self[0x134+player]!=0) special=1;
         u16 color=((u16*)(self+0x114))[2-(special!=0)];
         fn_8013B3F0(lbl_8053AB10);
         JGeometry::TBox2<f32> bg;
@@ -2050,15 +2055,15 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
         rgb.b=(blue<<3)|(blue>>2);
         rgb.a=255;
         fn_8013B004(&bg,&rgb);
-        if ((regs[0x17]>>3)&1) {
+        if ((((u8*)registerPtr)[0x17]>>3)&1) {
             u8* game=(u8*)lbl_8053AAF8;
             if ((!RendererStage11_802F() && game[0x88]==0) || RendererFadeAlpha802F()<255) {
-                s32 mode=(regs[2]>>2)&7;
+                s32 mode=(((u8*)registerPtr)[2]>>2)&7;
                 s32 selector=6;
                 if ((u32)mode<=1 || self[0x134+player]) selector=5;
-                else if (((regs[2]>>6)&3)==3) selector=(regs[5]>>4)&3;
+                else if (((((u8*)registerPtr)[2]>>6)&3)==3) selector=(((u8*)registerPtr)[5]>>4)&3;
                 if (controller) wave=fn_8030B1E8(controller,mode,selector,(u16)scrollY);
-                fn_802FAC10(self,((regs[2]>>2)&7)-1,scrollX,scrollY,self[0x134+player],255,255,wave);
+                fn_802FAC10(self,((((u8*)registerPtr)[2]>>2)&7)-1,scrollX,scrollY,self[0x134+player],255,255,wave);
             }
         }
     } else {
@@ -2076,17 +2081,17 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
         GXSetAlphaUpdate(GX_FALSE);
         GXSetAlphaCompare(GX_GREATER,0,GX_AOP_AND,GX_ALWAYS,0);
     }
-    fn_8030275C(regs,player,enabled,self[0x134+player]!=0);
+    fn_8030275C((u8*)registerPtr,player,enabled,self[0x134+player]!=0);
     if (enabled) {
         fn_8013B3F0(lbl_8053AB10);
-        if ((regs[0x17]>>3)&1) {
+        if ((((u8*)registerPtr)[0x17]>>3)&1) {
             u8* game=(u8*)lbl_8053AAF8;
             if ((!RendererStage11_802F() && game[0x88]==0) || RendererFadeAlpha802F()<255) {
                 if (self[0x130+player]==1)
-                    fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],128,255,wave);
+                    fn_802FAC10(self,((((u8*)registerPtr)[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],128,255,wave);
                 else if (self[0x130+player]==2)
-                    fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],0,192,wave);
-                else fn_802FAC10(self,((regs[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],255,255,wave);
+                    fn_802FAC10(self,((((u8*)registerPtr)[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],0,192,wave);
+                else fn_802FAC10(self,((((u8*)registerPtr)[2]>>2)&7)+7,scrollX,scrollY,self[0x134+player],255,255,wave);
             }
         }
         u8* game=(u8*)lbl_8053AAF8;
@@ -2103,7 +2108,7 @@ extern "C" void fn_802FB69C(u8* self, s32 player, s32 registerPtr, u8* rectData,
             fn_8013B004(&overlay,&black);
         }
     }
-    fn_803022C4(regs,player,enabled,self[0x134+player]!=0);
+    fn_803022C4((u8*)registerPtr,player,enabled,self[0x134+player]!=0);
     if (effect) {
         s32 step=effect+1;
         fn_8013B3F0(lbl_8053AB10);
