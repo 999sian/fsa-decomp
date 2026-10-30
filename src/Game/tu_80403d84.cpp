@@ -990,6 +990,10 @@ extern "C" void fn_8040F16C(u8* self) {
 
 struct J2DGrafContext;
 #include "JSystem/J2D/J2DPicture.h"
+static inline void menuSetCornerColor(J2DPicture* pane, const JUtility::TColor& color) {
+    pane->setCornerColor(color);
+}
+
 #include "JSystem/J2D/J2DScreen.h"
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
 extern "C" void fn_8037AA7C();
@@ -1877,8 +1881,10 @@ fn_803832BC(self+0x5be,menuLayoutText((u32*)((u32)tbl+160),*(s32*)(self+0x340)),
  }} }else if(time>last*5+20)rowsDone=1;
  if(scaleDone&&itemsDone&&delayDone&&rowsDone){
  if(*(s32*)(self+0x340)<=7){
- s16* coords=(s16*)tbl->cursorPos+(*(s32*)(self+0x348)+*(s32*)(self+0x340)*4)*2;
- f32 x=coords[0];f32 y=coords[1];*(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;
+ s16* coords=(s16*)tbl->cursorPos;
+ s32 index=*(s32*)(self+0x348)+*(s32*)(self+0x340)*4;
+ s32 px=coords[index*2],py=coords[index*2+1];
+ f32 x=px;f32 y=py;*(f32*)(self+0x394)=x;*(f32*)(self+0x398)=y;
  }else{*(f32*)(self+0x398)=lbl_80543898;*(f32*)(self+0x394)=lbl_80543898;}
  if(self[0x663]){
  u32 id=0x400e4;(*(SoundHolder**)(self+0x2c8))->play(&id);
@@ -2895,6 +2901,116 @@ extern "C" void fn_80406F68(u8* self, f32 a, f32 b) {
     res = mgr->get('SOB ', (const char*)lbl_8048CC2C);
 	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, id2, &rec, lbl_805438BC, lbl_805438BC);
 }
+
+extern "C" void fn_8040245C(void*,s32,s32,u8,s32);
+extern "C" s32 lbl_8048C8EC[];
+#pragma opt_common_subs off
+#pragma opt_propagation on
+#pragma opt_lifetimes on
+extern "C" void fn_8040732C(u8* self){
+s32 out=-1;
+if(*(s32*)(self+0x340)<=7){
+ if(lbl_8053AAF8[0x7e]==0){
+ s32 i=*(s32*)(self+0x340)*4;
+ u8* p=self+*(s32*)(self+0x340)*16;
+ u64* tags=(u64*)(lbl_8048C2F8+*(s32*)(self+0x340)*64);
+ s32 room;
+ for(;i<(room=*(s32*)(self+0x340))*4+4;p+=4,tags+=2,i++){
+ if(*(u32*)(self+0x38c)&(1<<i)){
+ if(fn_804045F8(self,room)){
+ fn_8040245C(*(PaneRef**)(p+0x128),100,0,(*(PaneRef**)(p+0x128))->alpha,0);
+ fn_804023D0(*(PaneRef**)(p+0x128),(*(J2DPane**)(self+0x10))->search(tags[1]),self[0x641]);
+ }else if(i!=lbl_8048C8EC[room]&&(u8)fn_80404074(self,i/4,i%4,&out)==0){
+ fn_8040245C(*(PaneRef**)(p+0x128),100,0,(*(PaneRef**)(p+0x128))->alpha,0);
+ fn_804023D0(*(PaneRef**)(p+0x128),(*(J2DPane**)(self+0x10))->search(tags[1]),self[0x641]);
+ }
+ }
+ }
+}
+ else{
+ s32 i=*(s32*)(self+0x340)*3;
+ u8* p=self+i*4;
+ for(;i<*(s32*)(self+0x340)*3+3;i++,p+=4){
+ s32 group=i/3;
+ u8 style;
+ if(group<0||group>=8)style=255;
+ else{
+ s32 slot=i%3;
+ if(slot<0||slot>=3)style=255;
+ else style=lbl_80529DEC[0x1fc+group*3+slot];
+ }
+ s32 slot=i%3;
+ if(group==7){if(slot>0)slot++;}
+ else if(slot>1)slot++;
+ s32 idx=slot+group*4;
+ switch(style){
+ case 0: {
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,50,0,0),JUtility::TColor(255,255,255,255));
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(127,248,37,255));
+ u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(100,255,50,0),JUtility::TColor(100,255,50,255));
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(100,255,50,0),JUtility::TColor(100,255,50,255));
+ break;
+}
+case 1: {
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(50,0,0,0),JUtility::TColor(255,255,255,255));
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(255,150,120,255));
+ u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(255,100,50,0),JUtility::TColor(255,100,50,255));
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(255,100,50,0),JUtility::TColor(255,100,50,255));
+ break;
+}
+case 2: {
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(0,10,40,0),JUtility::TColor(255,255,255,255));
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(120,240,255,255));
+ u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(50,220,240,0),JUtility::TColor(50,220,240,255));
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(50,220,240,0),JUtility::TColor(50,220,240,255));
+ break;
+}
+case 3: {
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setBlackWhite(JUtility::TColor(20,0,20,0),JUtility::TColor(255,255,255,255));
+ ((J2DPicture*)(*(PaneRef**)(p+0x1a8))->pane)->setCornerColor((const JUtility::TColor)JUtility::TColor(220,150,255,255));
+ u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(200,100,240,0),JUtility::TColor(200,100,240,255));
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(200,100,240,0),JUtility::TColor(200,100,240,255));
+ break;
+}
+ default:{
+ u64* tags=(u64*)(lbl_8048C2F8+idx*16);
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[0]))->setBlackWhite(JUtility::TColor(255,255,120,0),JUtility::TColor(255,255,120,255));
+ ((J2DPicture*)(*(J2DPane**)(self+0x10))->search(tags[1]))->setBlackWhite(JUtility::TColor(255,255,120,0),JUtility::TColor(255,255,120,255));
+ break;}
+ }
+ if(style<4)fn_80402628(*(void**)(p+0x1a8),100,0,(*(PaneRef**)(p+0x128))->alpha);
+ }
+ {
+ s32 i=*(s32*)(self+0x340)*4;
+ u8* p=self+*(s32*)(self+0x340)*16;
+ u64* tags=(u64*)(lbl_8048C2F8+*(s32*)(self+0x340)*64);
+ s32 room;
+ for(;i<(room=*(s32*)(self+0x340))*4+4;p+=4,tags+=2,i++){
+ if(*(u32*)(self+0x38c)&(1<<i)){
+ if(fn_804045F8(self,room)){
+ fn_8040245C(*(PaneRef**)(p+0x128),100,0,(*(PaneRef**)(p+0x128))->alpha,0);
+ fn_804023D0(*(PaneRef**)(p+0x128),(*(J2DPane**)(self+0x10))->search(tags[1]),self[0x641]);
+ }else if(i!=lbl_8048C8EC[room]&&(u8)fn_80404074(self,i/4,i%4,&out)==0){
+ fn_8040245C(*(PaneRef**)(p+0x128),100,0,(*(PaneRef**)(p+0x128))->alpha,0);
+ fn_804023D0(*(PaneRef**)(p+0x128),(*(J2DPane**)(self+0x10))->search(tags[1]),self[0x641]);
+ }
+ }
+ }
+}
+ Slots208* slots=(Slots208*)self;
+ PaneRef* pane=(PaneRef*)slots->slot[*(s32*)(self+0x340)];
+ if(((u8*)pane->pane)[0xb2]!=pane->alpha)fn_80402628(pane,50,0,pane->alpha);
+ }
+}
+}
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+
 #pragma opt_common_subs on
 extern "C" u64 lbl_8048C2B8[];
 extern "C" f32 lbl_805438F8;
