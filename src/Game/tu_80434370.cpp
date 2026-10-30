@@ -78,12 +78,6 @@ static inline void menuMovePane(PaneState* rec, f32 offset) {
     x=x-offset;
     rec->pane->move(x,rec->y);
 }
-static inline f32 menuFontRatio(f32 fontSize, const f32 baseSize) { return fontSize/baseSize; }
-static inline f32 menuTextWidth(f32 measured, f32 ratio, const f32 padding) {
-    f32 width=measured*ratio;
-    width+=padding;
-    return width;
-}
 struct MenuOptionRecord {
     u8 field_00[0x7c];
     u8 flag_7C, flag_7D, field_7E, flag_7F;
