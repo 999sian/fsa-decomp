@@ -106,7 +106,7 @@ extern "C" void fn_801597EC(char* this_) {
 
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
-extern "C" f32 lbl_8053D4AC;
+extern "C" const f32 lbl_8053D4AC;
 extern "C" f32 lbl_8053D480;
 extern "C" u8* lbl_8053AED0;
 extern "C" void* lbl_804A0170[];
@@ -536,32 +536,34 @@ extern "C" void fn_8015A374(char* this_) {
                 }
                 break;
             }
-            if (*(s32*)(this_ + 0x258) != 0) {
-                *(s32*)(this_ + 0x230) = 3;
-            } else if (lbl_8053AAF8[0x7e] == 1) {
-                if (fn_80388EEC(*(s32*)(this_ + 0x24c))) {
-                    if (*(s32*)(this_ + 0x268) != 0) {
-                        if (fn_8023061C(*(void**)(this_ + 0x274), 0) == 1) {
-                            ((FSAVirtBase*)this_)->m7();
+            if (*(s32*)(this_ + 0x258) == 0) {
+                if (lbl_8053AAF8[0x7e] == 1) {
+                    if (fn_80388EEC(*(s32*)(this_ + 0x24c))) {
+                        if (*(s32*)(this_ + 0x268) != 0) {
+                            if (fn_8023061C(*(void**)(this_ + 0x274), 0) == 1) {
+                                ((FSAVirtBase*)this_)->m7();
+                            }
+                        } else {
+                            if (fn_80230224(*(s32*)(this_ + 0x250), 0) == 1) {
+                                ((FSAVirtBase*)this_)->m7();
+                            }
                         }
-                    } else {
-                        if (fn_80230224(*(s32*)(this_ + 0x250), 0) == 1) {
-                            ((FSAVirtBase*)this_)->m7();
+                    }
+                } else {
+                    if (fn_80388EEC(*(s32*)(this_ + 0x24c))) {
+                        if (*(s32*)(this_ + 0x268) != 0) {
+                            if (fn_80230534(0) == 1) {
+                                ((FSAVirtBase*)this_)->m7();
+                            }
+                        } else {
+                            if (fn_80230224(*(s32*)(this_ + 0x250), 0) == 1) {
+                                ((FSAVirtBase*)this_)->m7();
+                            }
                         }
                     }
                 }
             } else {
-                if (fn_80388EEC(*(s32*)(this_ + 0x24c))) {
-                    if (*(s32*)(this_ + 0x268) != 0) {
-                        if (fn_80230534(0) == 1) {
-                            ((FSAVirtBase*)this_)->m7();
-                        }
-                    } else {
-                        if (fn_80230224(*(s32*)(this_ + 0x250), 0) == 1) {
-                            ((FSAVirtBase*)this_)->m7();
-                        }
-                    }
-                }
+                *(s32*)(this_ + 0x230) = 3;
             }
         }
         if (findGbaLink() != NULL) {
