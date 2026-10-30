@@ -336,7 +336,7 @@ static inline f32 cameraBlend(s32 timer, f32 speed) {
     return 0.5f * cameraCos(b) + 0.5f;
 }
 static inline f32 cameraClampDelta(f32 value, f32 lower, f32 upper) {
-    if (value < lbl_805416C8) {
+    if (value < 0.0f) {
         if (value < lower) value = lower;
     } else {
         if (value > upper) value = upper;
