@@ -297,16 +297,19 @@ box=tmp;box.addPos(*(JGeometry::TVec2<f32>*)(self+0xc));
 *(s32*)(self+0x274)=0;*(s32*)(self+0x278)=0;*(s32*)(self+0x27c)=0;*(s32*)(self+0x280)=0;s32 index=-1;
 for(;;){index=fn_801F78F4(fn_801F856C(),0x4e495741,index);if(index<0)break;
 u8* obj=(u8*)fn_801F666C(fn_801F856C(),index);
-if(obj&&*(s32*)(obj+0x25c)>=0&&*(s32*)(self+0x4)==*(s32*)(obj+0x4)&&*(f32*)(obj+0x14)<lbl_8054252C){
-u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1){if(obj[0x2a3]==1)self[0x284+*(s32*)(obj+0x25c)]=1;*(s32*)(self+0x274);(*(s32*)(self+0x274+*(s32*)(obj+0x25c)*4))+=1;}
-}}
+if(obj){s32 owner=*(s32*)(obj+0x25c);if(owner>=0&&*(s32*)(self+0x4)==*(s32*)(obj+0x4)&&*(f32*)(obj+0x14)<lbl_8054252C){
+u8 inside=0;if(*(f32*)(obj+0xc)>=box.i.x&&*(f32*)(obj+0x10)>=box.i.y&&*(f32*)(obj+0xc)<box.f.x&&*(f32*)(obj+0x10)<box.f.y)inside=1;if(inside==1){if(obj[0x2a3]==1)self[0x284+owner]=1;*(s32*)(self+0x274);(*(s32*)(self+0x274+*(s32*)(obj+0x25c)*4))+=1;}
+}}}
 }
 static inline s32 nwokWinner(u8* self,s32* choices){
 s32 best=*(s32*)(self+0x274);s32 count=0;
 if(fn_80138A30(lbl_8053AAF8)==1)return 0;
 s32* next=choices;
 if(best<*(s32*)(self+0x278))best=*(s32*)(self+0x278);if(best<*(s32*)(self+0x27c))best=*(s32*)(self+0x27c);if(best<*(s32*)(self+0x280))best=*(s32*)(self+0x280);
-if(best==*(s32*)(self+0x274)){*next++=0;count=1;}if(best==*(s32*)(self+0x278)){*next++=1;count++;}if(best==*(s32*)(self+0x27c)){*next++=2;count++;}if(best==*(s32*)(self+0x280)){*next=3;count++;}
+s32 digit=0;if(best==*(s32*)(self+0x274)){*next=digit;next++;count=1;}
+digit=1;if(best==*(s32*)(self+0x278)){*next=digit;next++;count+=1;}
+digit=2;if(best==*(s32*)(self+0x27c)){*next=digit;next++;count+=1;}
+digit=3;if(best==*(s32*)(self+0x280)){*next=digit;count+=1;}
 if(count==1)return choices[0];
 return choices[(s32)(count*((JMath::TRandom_fast_*)(lbl_8053AAF8+0xb4))->get_ufloat_1())];
 }
@@ -315,7 +318,8 @@ struct NwokScoreView {u8 field_000[0x274]; s32 scores[4];};
 
 extern "C" void fn_8034B088(u8* self){
 JGeometry::TBox2f box;JGeometry::TVec3f msg0,msg4,msg6,msg9,msg11,camera;
-JGeometry::TVec3f delta;f32 distance;
+JGeometry::TBox2f queryTmp,queryBox,tallyTmp,tallyBox;
+s32 choices[4];JGeometry::TVec3f delta;f32 distance;
 s32 count=0;
 if(*(s32*)(self+0x230)==6||*(s32*)(self+0x230)==7){
 for(s32 i=0;i<4;i++){if(nwokEnabled(i)==1){u8 mask=1<<i;lbl_8053AF08[0x28+i]=*(s32*)(self+0x274+i*4);lbl_8053AF08[0x2c]|=mask;}}
@@ -327,7 +331,7 @@ s32 roomHandle=*(s32*)(self+0x198);s32 room=*(s32*)(self+0x4);u8* collisions=fn_
 fn_8034ACF4(self);
 switch(*(s32*)(self+0x230)){
 case 0:
-if(nwokHasChicken(self)==1){*(s32*)(self+0x230)=4;break;}
+if(nwokHasChicken(self,queryTmp,queryBox)==1){*(s32*)(self+0x230)=4;break;}
 fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),1,0);*(s32*)(self+0x240)=fn_8022FD8C(*(s32*)(self+0x198));
 if(*(s32*)(self+0x240)>=0&&fn_802300EC(*(s32*)(self+0x240))){
 s32 roomHandle=*(s32*)(self+0x198);s32 room=*(s32*)(self+0x4); if(fn_8038AD24(*(s32*)(self+0x240),*(s32*)(self+0x2c0),roomHandle,room,(msg0=*(JGeometry::TVec3f*)(self+0xc),msg0),0))*(s32*)(self+0x230)=1;}break;
@@ -338,7 +342,7 @@ case 0:switch(*(s32*)(self+0x244)){case 0:*(s32*)(self+0x2c0)=0x425;break;case 1
 case 1:switch(*(s32*)(self+0x244)){case 0:*(s32*)(self+0x2c0)=0x424;break;case 1:*(s32*)(self+0x2c0)=0x428;break;}if(fn_8038470C(*(s32*)(self+0x240),*(s32*)(self+0x2c0)))*(s32*)(self+0x230)=2;break;
 }}break;
 case 2:case 3:case 5:case 12:{
-if(*(s32*)(self+0x230)==5){s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();box=*(JGeometry::TBox2f*)(manager+(boxRoom<8?0xcc:0xdc));}
+if(*(s32*)(self+0x230)==5){s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();JGeometry::TBox2f* bounds;if(boxRoom<8)bounds=(JGeometry::TBox2f*)(manager+0xcc);else bounds=(JGeometry::TBox2f*)(manager+0xdc);box=*bounds;}
 fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),1,0);if(!fn_80388CAC(*(s32*)(self+0x240),*(s32*)(self+0x198)))break;fn_801F6884(fn_801F856C());
 switch(*(s32*)(self+0x230)){
 case 3:case 5:fn_801F0D20(self,0x3a);fn_80458FF0(lbl_8053AF80,0x1000007,1,0);fn_8022ADE4();*(s32*)(self+0x230)=6;break;
@@ -346,14 +350,14 @@ case 2:switch(*(s32*)(self+0x244)){case 0:*(s32*)(self+0x2c0)=0x423;break;case 1
 case 12:fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),1,0);if(fn_80388CAC(*(s32*)(self+0x240),*(s32*)(self+0x198))){fn_801F6884(fn_801F856C());*(s32*)(self+0x230)=11;}break;
 }break;}
 case 4:{
-if(fn_801F68E0(fn_801F856C())!=1)break;s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();box=*(JGeometry::TBox2f*)(manager+(boxRoom<8?0xcc:0xdc));fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),0,0);
+if(fn_801F68E0(fn_801F856C())!=1)break;s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();JGeometry::TBox2f* bounds;if(boxRoom<8)bounds=(JGeometry::TBox2f*)(manager+0xcc);else bounds=(JGeometry::TBox2f*)(manager+0xdc);box=*bounds;fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),0,0);
 *(s32*)(self+0x240)=fn_8022FD8C(*(s32*)(self+0x198));if(*(s32*)(self+0x240)<0)break;fn_8038938C(*(s32*)(self+0x240),*(s32*)(self+0x24c));
 s32 roomHandle=*(s32*)(self+0x198);s32 room=*(s32*)(self+0x4); if(fn_8038AD24(*(s32*)(self+0x240),0x42f,roomHandle,room,(msg4=*(JGeometry::TVec3f*)(self+0xc),msg4),0x112))*(s32*)(self+0x230)=5;break;}
 case 6:
 if(count>=*(s32*)(self+0x24c)){
-fn_801F0D20(self,0x3b);fn_80458508(lbl_8053AF80,0);fn_80138B7C(lbl_8053AAF8);nwokTally(self);
+fn_801F0D20(self,0x3b);fn_80458508(lbl_8053AF80,0);fn_80138B7C(lbl_8053AAF8);nwokTally(self,tallyTmp,tallyBox);
 for(s32 i=0;i<4;i++)fn_802D7844(fn_802D6A9C(),self[0x284+i],i);
-*(s32*)(self+0x254)=nwokWinner(self);fn_8022ADCC();*(bool*)(self+0x28f)=fn_801F68E0(fn_801F856C())!=0;*(s32*)(self+0x230)=9;
+*(s32*)(self+0x254)=nwokWinner(self,choices);fn_8022ADCC();*(bool*)(self+0x28f)=fn_801F68E0(fn_801F856C())!=0;*(s32*)(self+0x230)=9;
 }else{
 *(s32*)(self+0x270)=count;*(s32*)(self+0x248)+=1;fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),1,0);*(s32*)(self+0x240)=fn_8022FD8C(*(s32*)(self+0x198));
 if(*(s32*)(self+0x240)>=0&&fn_802300EC(*(s32*)(self+0x240))){
@@ -369,23 +373,23 @@ case 8:if(fn_80388CAC(*(s32*)(self+0x240),*(s32*)(self+0x198))){fn_801F6884(fn_8
 case 9:{
 if(self[0x28f]==0)*(bool*)(self+0x28f)=fn_801F68E0(fn_801F856C())!=0;
 if(*(s32*)(self+0x250)>0){*(s32*)(self+0x250)-=1;break;}
-if(!self[0x28f])break;s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();box=*(JGeometry::TBox2f*)(manager+(boxRoom<8?0xcc:0xdc));
+if(!self[0x28f])break;s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();JGeometry::TBox2f* bounds;if(boxRoom<8)bounds=(JGeometry::TBox2f*)(manager+0xcc);else bounds=(JGeometry::TBox2f*)(manager+0xdc);box=*bounds;
 switch(*(s32*)(self+0x244)){case 0:fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),0,0);break;case 1:fn_8022FF8C(*(s32*)(self+0x254),&box,*(s32*)(self+0x4),*(s32*)(self+0x198),0,0);break;}
 *(s32*)(self+0x240)=fn_8022FD8C(*(s32*)(self+0x198));if(*(s32*)(self+0x240)<0)break;
 switch(*(s32*)(self+0x244)){case 0:*(s32*)(self+0x2c0)=0x426;break;case 1:*(s32*)(self+0x2c0)=0x42b;fn_803894BC(*(s32*)(self+0x240),*(s32*)(self+0x254));break;}
 s32 roomHandle=*(s32*)(self+0x198);s32 room=*(s32*)(self+0x4); if(fn_8038AD24(*(s32*)(self+0x240),*(s32*)(self+0x2c0),roomHandle,room,(msg9=*(JGeometry::TVec3f*)(self+0xc),msg9),0x112))*(s32*)(self+0x230)=10;break;}
 case 10:{
-s32 restrictArea=1;if(*(s32*)(self+0x244)==0){s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();box=*(JGeometry::TBox2f*)(manager+(boxRoom<8?0xcc:0xdc));restrictArea=0;}
+s32 restrictArea=1;if(*(s32*)(self+0x244)==0){s32 boxRoom=*(s32*)(self+0x4);u8* manager=(u8*)fn_802D6A9C();JGeometry::TBox2f* bounds;if(boxRoom<8)bounds=(JGeometry::TBox2f*)(manager+0xcc);else bounds=(JGeometry::TBox2f*)(manager+0xdc);box=*bounds;restrictArea=0;}
 fn_8022FEB8(&box,*(s32*)(self+0x4),*(s32*)(self+0x198),restrictArea,0);
 if(!fn_803865B8(*(s32*)(self+0x240)))break;
 switch(*(s32*)(self+0x244)){
 case 0:
 if(*(s32*)(self+0x258)<fn_80138A30(lbl_8053AAF8)){
 fn_803894BC(*(s32*)(self+0x240),*(s32*)(self+0x258)+1);
-fn_8038938C(*(s32*)(self+0x240),*(s32*)(self+0x274+*(s32*)(self+0x258)*4));
-fn_80389254(*(s32*)(self+0x240),*(s32*)(self+0x274+*(s32*)(self+0x258)*4)*100);
-if(*(s32*)(self+0x274+*(s32*)(self+0x258)*4)>0){
-if(fn_8038470C(*(s32*)(self+0x240),0x427)==1){fn_8043D874(lbl_8053AED0,*(s32*)(self+0x258),*(s32*)(self+0x274+*(s32*)(self+0x258)*4)*100,0);*(s32*)(self+0x258)+=1;}
+fn_8038938C(*(s32*)(self+0x240),((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]);
+fn_80389254(*(s32*)(self+0x240),((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]*100);
+if(((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]>0){
+if(fn_8038470C(*(s32*)(self+0x240),0x427)==1){fn_8043D874(lbl_8053AED0,*(s32*)(self+0x258),((NwokScoreView*)self)->scores[*(s32*)(self+0x258)]*100,0);*(s32*)(self+0x258)+=1;}
 }else{if(fn_8038470C(*(s32*)(self+0x240),0x428)==1)*(s32*)(self+0x258)+=1;}
 }else if(*(s32*)(self+0x258)==fn_80138A30(lbl_8053AAF8)){
 if(fn_8038470C(*(s32*)(self+0x240),0x429)==1)*(s32*)(self+0x258)+=1;
@@ -395,10 +399,10 @@ case 1:
 if(!fn_80388CAC(*(s32*)(self+0x240),*(s32*)(self+0x198)))break;fn_801F6884(fn_801F856C());
 if(fn_802308E0(*(s32*)(self+0x254))!=1)break;
 for(s32 i=0;i<4;i++){
-s32 winner=*(s32*)(self+0x254);
-if(winner==i){void* position=fn_8023E724(winner);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,(winner<<26)|(winner<<24)|0x1000a,-1,-1);}
+void* position;s32 winner=*(s32*)(self+0x254);
+if(winner==i){position=fn_8023E724(winner);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,(winner<<26)|(winner<<24)|0x1000a,-1,-1);}
 else if(!fn_80236B50(i)&&fn_8022F514(i)==1&&*(s32*)(self+0x254)==fn_8022F3DC(i)){
-winner=*(s32*)(self+0x254);void* position=fn_8023E724(i);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,(winner<<26)|(i<<24)|0x1001000a,-1,-1);}
+winner=*(s32*)(self+0x254);position=fn_8023E724(i);Actor_CreateByID(fn_801F856C(),0x494d5550,*(s32*)(self+0x4),position,(winner<<26)|(i<<24)|0x1001000a,-1,-1);}
 }
 *(s32*)(self+0x230)=11;((Actor*)self)->v10(255,1);break;
 }break;}
