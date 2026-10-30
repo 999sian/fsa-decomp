@@ -1503,16 +1503,28 @@ extern "C" u32 fn_8023CD74(s32);
 extern "C" s32 fn_803066F0(void*,s32,s32);
 
 extern "C" u64 fn_802D7AC4(void*,s32);
+#pragma opt_lifetimes off
+static inline void packetPrimaryFlag(Ctl4_80301CD0* header, s32 owner) {
+    header->x=fn_8023CE10(owner)>>4;
+}
+static inline void packetSecondaryFlag(Ctl4_80301CD0* header, s32 owner) {
+    header->x=fn_8023CD74(owner)>>4;
+}
 extern "C" void fn_80306A94(s32 ctx,s32 player) {
+    s32 owner;
+    Hi_80301CD0* firstFlags;
+    u8* p;
+    s32 i;
+    u32 slot;
     if(((u8*)lbl_8053AAF8)[0x82] & (u8)(1<<player))
         ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=5;
     else ((Packet_80301CD0*)(lbl_80506DE8+player*0x68))->code=14;
     fn_803085A4(ctx,player);
-    s32 owner=fn_8022EA0C(player);
-    u8* p=lbl_80506DE8+player*0x68;
-    Hi_80301CD0* firstFlags=(Hi_80301CD0*)(p+1);
-    for(s32 i=0;i<4;i++) {
-        u32 slot=fn_802340A0(i);
+    owner=fn_8022EA0C(player);
+    p=lbl_80506DE8+player*0x68;
+    firstFlags=(Hi_80301CD0*)(p+1);
+    for(i=0;i<4;i++) {
+        slot=fn_802340A0(i);
         if(!fn_8023F264(i) || !fn_8023188C(i) || fn_8023DE58(owner)<8) goto empty;
         {
             if(fn_8022BC38(owner,fn_8023DE58(i),fn_8023E724(i))) goto valid;
@@ -1652,7 +1664,7 @@ nextPlayer:;
     }
     p[0]=sum;
 }
-
+#pragma opt_lifetimes reset
 // fn_803074A4(a, b) - a range-dispatch classifier: returns a small
 // integer code (-1, 0, 1, 2, 3, or 4) based on which named range `b`
 // falls in, with the applicable range set selected by `a`.
@@ -2017,17 +2029,17 @@ extern "C" void fn_8030801C(s32 param_1, s32 i) {
 
 #pragma opt_strength_reduction reset
 #pragma opt_common_subs reset
-extern "C" void fn_803085A4(s32 unused, s32 player)
+extern "C" void fn_803085A4(s32 unused, s32 i)
 {
     u8* e;
     Rec2_80301CD0* q2;
     Rec3_80301CD0* q3;
     Rec4b_80301CD0* p4;
+    s32 i4;
     s32 off;
     s32 r26;
     s32 r25;
     s32 x;
-    s32 i = player;
 
     r25 = fn_8022EA0C(i);
     off = i * 0x68;
@@ -2041,7 +2053,8 @@ extern "C" void fn_803085A4(s32 unused, s32 player)
     } else {
         q2->b = fn_8023DE58(r25) - 7;
     }
-    q2->a = ((s32*)lbl_80506D48)[i];
+    i4 = i * 4;
+    q2->a = *(s32*)(lbl_80506D48 + i4);
 
     if (lbl_8053ACD0 != 0 && tu80301_isPlayerOn(i)) {
         if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 9 || ((u8*)lbl_8053AAF8)[0x80] != 0 ||
@@ -2064,24 +2077,24 @@ extern "C" void fn_803085A4(s32 unused, s32 player)
     ((Nib_80301CD0*)(e + 1))->lo |= lbl_8053ACF8[2] << 2;
     ((Nib_80301CD0*)(e + 1))->lo |= lbl_8053ACF8[3] << 3;
     *(u32*)(e + 4) = 0;
-    if (((s32*)lbl_80506D48)[i] == 1) {
+    if (*(s32*)(lbl_80506D48 + i4) == 1) {
         ((Nib_80301CD0*)(e + 5))->hi = 0xf;
     }
     if (((u8*)lbl_8053AAF0)[0x78] < 4 || (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) == 0) {
         goto end;
     }
-    ((Rec4a_80301CD0*)p4)->lo = lbl_80506D38[i];
-    lbl_80506D38[i] = 0;
+    ((Rec4a_80301CD0*)p4)->lo = *(s32*)((u8*)lbl_80506D38 + i4);
+    *(s32*)((u8*)lbl_80506D38 + i4) = 0;
     if (lbl_8053ACD0 == 0 && !fn_80379F84(lbl_8053AD68)) {
         goto chain2;
     }
-    if ((((s32*)lbl_80506D48)[i] & 1) == 0) {
+    if ((*(s32*)(lbl_80506D48 + i4) & 1) == 0) {
         Rec6_80301CD0* p6;
-        ((Rec5a_80301CD0*)(e + 5))->lo = *(s32*)((u8*)lbl_80529DEC + 0xd8 + i * 4);
-        ((Rec4a_80301CD0*)p4)->hi = (u8)(*(s32*)((u8*)lbl_80529DEC + 0xc8 + i * 4) / 4 - 1);
+        ((Rec5a_80301CD0*)(e + 5))->lo = *(s32*)((u8*)lbl_80529DEC + i4 + 0xd8);
+        ((Rec4a_80301CD0*)p4)->hi = (u8)(*(s32*)((u8*)lbl_80529DEC + i4 + 0xc8) / 4 - 1);
         ((Rec6_80301CD0*)(e + 6))->lo = (u8)fn_8037EE8C(i);
         p6 = (Rec6_80301CD0*)(e + 6);
-        x = *(s32*)((u8*)lbl_80529DEC + 0xe8 + i * 4) + 5000;
+        x = *(s32*)((u8*)lbl_80529DEC + (i4 + 0xe8)) + 5000;
         if (x > 14999) {
             x = 14999;
         } else if (x < 0) {
@@ -2089,7 +2102,7 @@ extern "C" void fn_803085A4(s32 unused, s32 player)
         }
         lbl_80506DE8[off + 7] = (x >> 6) & 0xff;
         p6->hi = x & 0x3f;
-    } else if (((s32*)lbl_80506D48)[i] == 1) {
+    } else if (*(s32*)(lbl_80506D48 + i4) == 1) {
         u8* g = (u8*)lbl_8053AAF8;
         u8* h = (u8*)lbl_8053AEC8;
         u8 g88 = g[0x88];
@@ -2100,16 +2113,16 @@ extern "C" void fn_803085A4(s32 unused, s32 player)
         } else {
             cc = 0;
         }
-        p4->two = g88 | (cc << 1 | t);
-        ((Nib_80301CD0*)(e + 5))->hi = *(s32*)((u8*)lbl_80529DEC + 0xf8 + i * 4);
+        p4->two = g88 | ((cc << 1) | t);
+        ((Nib_80301CD0*)(e + 5))->hi = *(s32*)((u8*)lbl_80529DEC + i4 + 0xf8);
     }
 
 chain2:
     if (lbl_8053ACD0 != 0) {
-        if (((s32*)lbl_80506D48)[i] == 2) {
+        if (*(s32*)(lbl_80506D48 + i4) == 2) {
             r25 = fn_8023DE58(r25);
             ((Rec5_80301CD0*)(e + 5))->flag = fn_802D7804(fn_802D6A9C(), r25, 1);
-        } else if ((((s32*)lbl_80506D48)[i] & 1) == 1) {
+        } else if ((*(s32*)(lbl_80506D48 + i4) & 1) == 1) {
             if (fn_8023DE58(r25) >= 8) {
                 bool blocked;
                 if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xb) {
@@ -2145,19 +2158,21 @@ chain2:
                     ((Nib_80301CD0*)(e + 5))->lo = (u8)(r26 >> 1);
                 }
             }
-            if (((s32*)lbl_80506D48)[i] == 3) {
+            if (*(s32*)(lbl_80506D48 + i4) == 3) {
                 Rec5_80301CD0* p5;
+                u8 v;
                 r26 = fn_8023DE58(r25);
                 if (fn_802D7804(fn_802D6A9C(), r26, 0xc)) {
                     r26 = fn_8023DE58(r25);
-                    e[5] = (e[5] & 0xCF) | ((*(u16*)((u8*)fn_802D6A9C() + 0x10000 + r26 * 2 + 0x31b8) << 2) & 0x30);
+                    ((Rec5_80301CD0*)(e + 5))->two = (u32)((u16*)((u8*)fn_802D6A9C() + 0x131b8))[r26] >> 2;
                 } else {
                     ((Rec5_80301CD0*)(e + 5))->two = (u8)fn_802351D8(r25) != 0;
                 }
                 r25 = fn_8023DE58(r25);
-                e[4] = (e[4] & 0x9F) | ((*(u16*)((u8*)fn_802D6A9C() + 0x10000 + r25 * 2 + 0x31b8) >> 7) & 0x60);
-                ((Rec5_80301CD0*)(e + 5))->b6 = (u8)(fn_80237060(i) - 1);
+                p4->two = (u32)((u16*)((u8*)fn_802D6A9C() + 0x131b8))[r25] >> 12;
+                v = fn_80237060(i) - 1;
                 p5 = (Rec5_80301CD0*)(e + 5);
+                e[5] = (e[5] & 0xBF) | ((v << 6) & 0x40);
                 if (!fn_802DEBF8() && !fn_802DEBA0()) {
                     p5->flag = 1;
                 }
@@ -2166,9 +2181,9 @@ chain2:
     }
 
     if (fn_80379F84(lbl_8053AD68)) {
-        if (((s32*)lbl_80506D48)[i] == 0) {
+        if (*(s32*)(lbl_80506D48 + i4) == 0) {
             ((Rec5_80301CD0*)(e + 5))->flag = 1;
-        } else if (((s32*)lbl_80506D48)[i] == 3) {
+        } else if (*(s32*)(lbl_80506D48 + i4) == 3) {
             ((Rec5_80301CD0*)(e + 5))->flag = 1;
         }
     }
