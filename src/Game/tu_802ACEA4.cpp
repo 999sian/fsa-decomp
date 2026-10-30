@@ -95,8 +95,8 @@ static inline void platformRotation(f32 m[3][4], const f32 ry) {
     m[0][0]=cy*cx;
     m[1][0]=cy*sx;
     m[2][0]=-sy;
-    f32 szsy=sz*sy;
     f32 czcx=cz*cx;
+    f32 szsy=sz*sy;
     f32 czsx=cz*sx;
     f32 szsx=sz*sx;
     f32 szcx=sz*cx;
