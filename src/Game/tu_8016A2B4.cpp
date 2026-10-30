@@ -1771,6 +1771,21 @@ extern "C" void* __nw__FUlP7JKRHeapi(u32, JKRHeap*, s32);
 extern "C" void* __nw__FUl(u32);
 extern "C" void __ct__14WaveControllerFlll(void*, s32, s32, s32);
 extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
+static inline JUTTexture* loadSceneTexture(JKRArchive* archive, const char* name, JKRHeap* heap) {
+    JUTTexture* texture = 0;
+    if (archive && archive->getResource(0x54494d47, name)) {
+        texture = (JUTTexture*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+        if (texture) {
+            void* resource = archive->getResource(0x54494d47, name);
+            texture->mEmbPalette = 0;
+            texture->storeTIMG((const ResTIMG*)resource, (u8)0);
+            texture->mFlags &= 2;
+        }
+    }
+    return texture;
+}
+
+
 #pragma push
 #pragma opt_propagation off
 extern const char lbl_8053DA04[8];
@@ -1816,10 +1831,10 @@ extern "C" void* fn_8016F0BC(u8* self, JKRHeap* heap) {
     }
     {
         u8* p = self;
-        u32 ent = (u32)lbl_804A0790;
+        const char* (*ent)[3]=lbl_804A0790;
         for (s32 i = 0; i < 6; i++) {
-            fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), *(const char**)ent, *(const char**)(ent+4), 0, *(const char**)(ent+8), 0, 0x10240000, *(JKRHeap**)self, (J3DModel**)(p + 0x3c), (J3DAnmTextureSRTKey**)(p + 0x54), 0, (J3DAnmTevRegKey**)(p + 0x6c), 0);
-            ent += 12;
+            fn_8016A3BC(*(JKRArchive**)(tbl2 + 0x10), (*ent)[0], (*ent)[1], 0, (*ent)[2], 0, 0x10240000, *(JKRHeap**)self, (J3DModel**)(p + 0x3c), (J3DAnmTextureSRTKey**)(p + 0x54), 0, (J3DAnmTevRegKey**)(p + 0x6c), 0);
+            ++ent;
             p += 4;
         }
     }
