@@ -2891,7 +2891,10 @@ static inline void spawnMenuEmitter(void* self,u32 kind,f32 scale) {
         ((Menu_Main*)self)->emitters[slot]->flags |= 0x40;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_common_subs off
+static inline s32 menuRandomCount(const s32 count) {
+    return (s32)(lbl_8053AAF8->rnd.get_ufloat_1()*(f32)count);
+}
 extern "C" void fn_803B236C(void* this_) {
     Menu_Main* menu=(Menu_Main*)this_;
     u8* self=(u8*)menu;
@@ -2965,22 +2968,23 @@ extern "C" void fn_803B236C(void* this_) {
         (*(MsgSinkObj2**)(self+0x184))->send(&msg);
         for(s32 i=0;i<10;i++) {
             if(menu->countdown[i]==-1) {
-                FVec3* p=&menu->positions[i];
-                p->x=*(f32*)(self+0x244);p->y=*(f32*)(self+0x248);p->z=*(f32*)(self+0x24c);
+                menu->positions[i].x=menu->position.x;
+                menu->positions[i].y=menu->position.y;
+                menu->positions[i].z=menu->position.z;
                 menu->countdown[i]=0x3a;
                 break;
             }
         }
         if(*(s16*)(self+0x45a)<=0) {
             *(s16*)(self+0x458)=*(s16*)(lbl_8050DB0C+0x50);
-            *(s16*)(self+0x45a)=(s32)((f32)*(s16*)(lbl_8050DB0C+0x52)*lbl_8053AAF8->rnd.get_ufloat_1());
+            *(s16*)(self+0x45a)=(int)(lbl_8053AAF8->rnd.get_ufloat_1()*(f32)*(s16*)(lbl_8050DB0C+0x52));
         } else {
             *(s16*)(self+0x458)=20;
             (*(s16*)(self+0x45a))--;
         }
     } else (*(s16*)(self+0x458))--;
 }
-#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 struct PFlag {
     u8 v;
 };
