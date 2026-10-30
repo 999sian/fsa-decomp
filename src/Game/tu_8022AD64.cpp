@@ -1734,6 +1734,8 @@ void fn_80231DE4(void) {
     }
 }
 
+#define PF(p, off, T) (*(T*)((u8*)(p) + (off)))
+
 void fn_80232A0C(void)
 {
     if (lbl_8053AC90->players[0] != NULL) *((u8*)lbl_8053AC90->players[0] + 0xafc) = 0;
