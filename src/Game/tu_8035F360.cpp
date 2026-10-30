@@ -370,6 +370,25 @@ static inline void restartMovingAnim(u8* p, s32 animation) {
     *(s32*)(p + 0x240) = 0;
     advanceMovingAnim(p, animation);
 }
+extern const f32 lbl_80542A40;
+extern "C" f32 lbl_80542A44;
+extern "C" f32 lbl_80542A48;
+extern "C" void fn_8021ABC0(u8* r);
+static inline void releaseEffects(u8* p) {
+    u8* e = *(u8**)(p + 0x2b4);
+    if (e != NULL) {
+        *(u32*)(e + 0xf4) |= 1;
+        *(s32*)(e + 0x24) = 1;
+        *(u8**)(p + 0x2b4) = NULL;
+    }
+    e = *(u8**)(p + 0x2b8);
+    if (e != NULL) {
+        *(u32*)(e + 0xf4) |= 1;
+        *(s32*)(e + 0x24) = 1;
+        *(u8**)(p + 0x2b8) = NULL;
+    }
+    *(u8*)(p + 0x11c) = 0;
+}
 
 extern "C" void fn_8036003C(u8* p) {
     s32 oldState = *(s32*)(p + 0x274);
