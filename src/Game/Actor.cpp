@@ -361,6 +361,9 @@ int Actor::v18(int a, f32* b) {
     return result;
 }
 #pragma opt_propagation reset
+static inline void actorNormalizeCollision(JGeometry::TVec3<f32>* normal) {
+    normal->normalize();
+}
 extern u32 lbl_80469F78[];
 extern f32 lbl_8053F740;
 extern u32 lbl_80469F84[];
@@ -369,30 +372,219 @@ extern u32 lbl_80469F9C[];
 extern f32 lbl_8053F7A8;
 extern f32 lbl_8053F7AC;
 
+#pragma opt_propagation on
 extern "C" u8 fn_801F172C(Actor* a, u32 id, Vec* p, void* lim, void* out2, u32 c)
 {
-    Vec v;
-    u32 cnt[3];
-    u32 r30 = 0;
-    f32* rect = (f32*)lim;
-    u32 i;
-    v.x = p->x + rect[0];
-    v.y = p->y + rect[1];
-    v.z = lbl_8053F740;
-    cnt[0] = lbl_80469F78[0];
-    cnt[1] = lbl_80469F78[1];
-    cnt[2] = lbl_80469F78[2];
+    JGeometry::TVec3<f32> v;
+    JGeometry::TVec3<f32> n;
+    s32 cL[3];
+    s32 cR[3];
+    s32 cB[3];
+    s32 cT[3];
+    JGeometry::TVec3<f32> acc;
+    f32 q1[2];
+    f32 q2[2];
+    f32 q3[2];
+    f32 q4[2];
+    s32 moved = 0;
+    s32 i;
+    f32 r0 = ((f32*)lim)[0];
+    f32 dL;
+    f32 dR;
+    f32 dB;
+    f32 dT;
+
+    f32 r1, r2, r3;
+    {
+    dL = 0.0f;
+    v.x = p->x + r0;
+    v.y = dL;
+    v.z = dL;
+    r1 = ((f32*)lim)[1];
+    r2 = ((f32*)lim)[2] - 0.01f;
+    r3 = ((f32*)lim)[3] - 0.01f;
+    cL[0] = lbl_80469F78[0];
+    cL[1] = lbl_80469F78[1];
+    cL[2] = lbl_80469F78[2];
     i = 0;
-    while (v.y < p->y + rect[3] - 1.0f) {
-        if (a->v18(id, (f32*)&v)) {
-            i++;
+    f32 step = 8.0f;
+    for (v.y = p->y + r1; v.y < p->y + r3; v.y += step) {
+        if ((u8)a->v18((s32)id, (f32*)&v)) {
+            cL[i != 0]++;
+            dL = (f32)((s32)(0.125f * v.x + 1.0f) << 3) - v.x;
         }
-        v.y += lbl_8053F7A4;
+        i++;
     }
-    return (u8)r30;
+    v.y = p->y + r3;
+    if ((u8)a->v18((s32)id, (f32*)&v)) {
+        cL[2]++;
+        dL = (f32)((s32)(0.125f * v.x + 1.0f) << 3) - v.x;
+    }
+
+    }
+    {
+    dR = 0.0f;
+    v.x = p->x + r2;
+    v.y = dR;
+    v.z = dR;
+    cR[0] = lbl_80469F84[0];
+    cR[1] = lbl_80469F84[1];
+    cR[2] = lbl_80469F84[2];
+    i = 0;
+    f32 step = 8.0f;
+    for (v.y = p->y + r1; v.y < p->y + r3; v.y += step) {
+        if ((u8)a->v18((s32)id, (f32*)&v)) {
+            cR[i != 0]++;
+            dR = (p->x + ((f32*)lim)[2]) - (f32)((s32)(0.125f * v.x) << 3);
+        }
+        i++;
+    }
+    v.y = p->y + r3;
+    if ((u8)a->v18((s32)id, (f32*)&v)) {
+        cR[2]++;
+        v.x = p->x + ((f32*)lim)[2];
+        dR = v.x - (f32)((s32)(0.125f * v.x) << 3);
+    }
+
+    }
+    {
+    dB = 0.0f;
+    v.x = dB;
+    v.y = p->y + r1;
+    v.z = dB;
+    cB[0] = lbl_80469F90[0];
+    cB[1] = lbl_80469F90[1];
+    cB[2] = lbl_80469F90[2];
+    i = 0;
+    f32 step = 8.0f;
+    for (v.x = p->x + r0; v.x < p->x + r2; v.x += step) {
+        if ((u8)a->v18((s32)id, (f32*)&v)) {
+            cB[i != 0]++;
+            dB = (f32)((s32)(0.125f * v.y + 1.0f) << 3) - v.y;
+        }
+        i++;
+    }
+    v.x = p->x + r2;
+    if ((u8)a->v18((s32)id, (f32*)&v)) {
+        cB[2]++;
+        dB = (f32)((s32)(0.125f * v.y + 1.0f) << 3) - v.y;
+    }
+
+    }
+    {
+    dT = 0.0f;
+    v.x = dT;
+    v.y = p->y + r3;
+    v.z = dT;
+    cT[0] = lbl_80469F9C[0];
+    cT[1] = lbl_80469F9C[1];
+    cT[2] = lbl_80469F9C[2];
+    i = 0;
+    f32 step = 8.0f;
+    for (v.x = p->x + r0; v.x < p->x + r2; v.x += step) {
+        if ((u8)a->v18((s32)id, (f32*)&v)) {
+            cT[i != 0]++;
+            dT = (p->y + ((f32*)lim)[3]) - (f32)((s32)(0.125f * v.y) << 3);
+        }
+        i++;
+    }
+    v.x = p->x + r2;
+    if ((u8)a->v18((s32)id, (f32*)&v)) {
+        cT[2]++;
+        v.y = p->y + ((f32*)lim)[3];
+        dT = v.y - (f32)((s32)(0.125f * v.y) << 3);
+    }
+
+    }
+    if (out2 != NULL) {
+        v.x = p->x;
+        v.y = p->y;
+        v.z = p->z;
+        n.x = n.y = n.z = 0.0f;
+    }
+
+    if ((cL[1] && !cR[1]) || (cL[0] && cL[2]) ||
+        (cL[0] && !cB[2] && dL < dB && (!cR[0] || !cR[2])) ||
+        (cL[2] && !cT[2] && dL < dT && (!cR[2] || !cR[0]))) {
+        p->x += dL;
+        moved = 1;
+        n.x = 1.0f;
+    }
+    if ((cR[1] && !cL[1]) || (cR[0] && cR[2]) ||
+        (cR[0] && !cB[0] && dR < dB && (!cL[0] || !cL[2])) ||
+        (cR[2] && !cT[0] && dR < dT && (!cL[2] || !cL[0]))) {
+        p->x -= dR;
+        moved = 1;
+        n.x = -1.0f;
+    }
+    if ((cB[1] && !cT[1]) || (cB[0] && cB[2]) ||
+        (cB[0] && !cL[2] && dB < dL && (!cT[0] || !cT[2])) ||
+        (cB[2] && !cR[2] && dB < dR && (!cT[2] || !cT[0]))) {
+        p->y += dB;
+        moved = 1;
+        n.y = 1.0f;
+    }
+    if ((cT[1] && !cB[1]) || (cT[0] && cT[2]) ||
+        (cT[0] && !cL[0] && dT < dL && (!cB[0] || !cB[2])) ||
+        (cT[2] && !cR[0] && dT < dR && (!cB[2] || !cB[0]))) {
+        p->y -= dT;
+        moved = 1;
+        n.y = -1.0f;
+    }
+
+    if ((u8)moved && out2 != NULL) {
+        if ((u8)c) {
+            f32 yb = v.y + ((f32*)lim)[1];
+            f32 yt = v.y + ((f32*)lim)[3];
+            f32 xl = v.x + ((f32*)lim)[0];
+            f32 xr = v.x + ((f32*)lim)[2];
+            acc.x = 0.0f;
+            acc.y = 0.0f;
+            acc.z = 0.0f;
+            if (cL[0] && (n.x > 0.0f || n.y > 0.0f)) {
+                q1[0] = xl;
+                q1[1] = yb;
+                if ((u16)fn_802265FC(q1, id) == 0xb) {
+                    acc.x += 1.0f;
+                    acc.y += 1.0f;
+                }
+            }
+            if (cR[0] && (n.x < 0.0f || n.y > 0.0f)) {
+                q2[0] = xr;
+                q2[1] = yb;
+                if ((u16)fn_802265FC(q2, id) == 0xa) {
+                    acc.x += -1.0f;
+                    acc.y += 1.0f;
+                }
+            }
+            if (cL[2] && (n.x > 0.0f || n.y < 0.0f)) {
+                q3[0] = xl;
+                q3[1] = yt;
+                if ((u16)fn_802265FC(q3, id) == 9) {
+                    acc.x += 1.0f;
+                    acc.y += -1.0f;
+                }
+            }
+            if (cR[2] && (n.x < 0.0f || n.y < 0.0f)) {
+                q4[0] = xr;
+                q4[1] = yt;
+                if ((u16)fn_802265FC(q4, id) == 8) {
+                    acc.x += -1.0f;
+                    acc.y += -1.0f;
+                }
+            }
+            if (!acc.isZero()) {
+                n.set(acc);
+            }
+        }
+        n.normalize();
+        ((Vec*)out2)->x = n.x;
+        ((Vec*)out2)->y = n.y;
+        ((Vec*)out2)->z = n.z;
+    }
+    return moved;
 }
-#pragma dont_inline reset
-#pragma dont_inline reset
+#pragma opt_propagation reset
 
 /* --- 0x801EE434: release a collision object back to its pool (or reactivate
  * it if it is still on-screen).  Operates on the collision object, not the
