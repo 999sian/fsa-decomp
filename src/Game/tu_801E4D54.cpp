@@ -14,6 +14,57 @@ extern "C" void fn_801E4D74(u8* this_) {
     *(f32*)(this_ + 0x4bc) = 255.0f;
 }
 
+extern "C" u8* fn_801F856C(u8* this_);
+extern "C" s32 fn_801F7818(u8* this_, u32 fourcc, s32 room, u8** list, s32 max);
+extern "C" s32 fn_801F666C(u8* a, s32 id);
+extern "C" void fn_801D7874(u8* p);
+extern "C" void fn_801D7830(u8* p);
+extern "C" void fn_801EB00C(u8*, f32*, f32*);
+extern "C" void fn_801E5BA8(u8*, u8*, f32*, u8);
+extern "C" f32 lbl_8053F578;
+extern "C" f32 lbl_8053F580;
+
+static inline u8 hasBombSlot(u8* self, u8* actor, int flag) {
+    u8 found = 0;
+    if (*(u32*)(actor + 0x1a0) == 0x48424d42) {
+        u8* slot = self;
+        for (int i = 0; i < 16; i++, slot += 0x14) {
+            if (*(s32*)(slot + 0x308) == *(s32*)(actor + 0x198) && slot[flag]) {
+                found = 1;
+                break;
+            }
+        }
+    }
+    return found;
+}
+
+extern "C" void fn_801E4D88(u8* this_) {
+    u8* list[0x400];
+    s32 count;
+    s32 i;
+    s32 id;
+    u8* p;
+    u8* e;
+
+    fn_801F856C(this_);
+    count = fn_801F7818(this_, 0x48424D42, *(s32*)(this_ + 4), list, -1);
+    for (i = 0, p = this_ + 0x308; i < 16; i++, p += 0x14) {
+        if (p[4] == 0) continue;
+        id = *(s32*)p;
+        if (id < 0) {
+            fn_801D7874(p);
+            p[4] = 0;
+            continue;
+        }
+        e = (u8*)fn_801F666C(fn_801F856C(this_), id);
+        if (e == 0) {
+            fn_801D7874(p);
+            p[4] = 0;
+            continue;
+        }
+    }
+}
+
 extern "C" f32 lbl_8053F578;
 extern "C" s32 fn_8023F264(s32 i);
 extern "C" s32 fn_80236B50(s32 i);
@@ -137,61 +188,33 @@ extern "C" s32 fn_801D05F8(u8* this_, u8* pos, f32 range);
 extern "C" u32 fn_801D0280(u8* this_);
 extern "C" f32 sincosTable___5JMath[];
 extern "C" void fn_801E5BA8(u8* this_, u8* actor, f32* dir, u8 flag) {
+    u8* p = this_;
     s32 id = *(s32*)(actor + 0x198);
-    s32 i;
-    for (i = 0; i < 16; i++) {
-        u8* slot = this_ + i * 0x14;
-        if (*(u8*)(slot + 0x30c) == 0 || *(s32*)(slot + 0x308) != id) {
+    for (int i = 0; i < 16; i++, p += 0x14) {
+        if (*(u8*)(p + 0x30c) == 0 || *(s32*)(p + 0x308) != id) {
             continue;
         }
         if (flag == 0) {
-            f32 y = dir[1];
-            f32 x = dir[0];
-            f32 lenSq = x * x + y * y;
-            if (lenSq > lbl_8053F580 * FLT_EPSILON) {
-                if (lenSq > lbl_8053F578) {
-                    f32 inv = __frsqrte(lenSq);
-                    lenSq = lbl_8053F584 * inv * (lbl_8053F588 - lenSq * (inv * inv));
-                }
-                x *= lenSq;
-                y *= lenSq;
-            }
-            x *= lbl_8053F58C;
-            y *= lbl_8053F58C;
-            *(f32*)(slot + 0x310) = x;
-            *(f32*)(slot + 0x314) = y;
-            *(f32*)(slot + 0x318) = lbl_8053F590;
-            *(u8*)(slot + 0x30d) = 1;
+            JGeometry::TVec2<f32> v;
+            v.set(dir[0], dir[1]);
+            v.normalize();
+            v.scale(lbl_8053F58C);
+            ((JGeometry::TVec3<f32>*)(this_ + i * 0x14 + 0x310))->set(v.x, v.y, lbl_8053F590);
+            *(u8*)(this_ + i * 0x14 + 0x30d) = 1;
             return;
-        }
-        {
+        } else {
+            JGeometry::TVec2<f32> v;
             s32 idx = fn_801D05F8(this_, this_ + 0xc, lbl_8053F594);
-            f32 x;
-            f32 y;
             if (idx >= 0 && this_[idx * 0x18 + 0x2a8] == 0) {
-                u32 off = (fn_801D0280(this_) >> 2) & 0x3ff8;
-                x = *(f32*)((u8*)sincosTable___5JMath + off);
-                y = *(f32*)((u8*)sincosTable___5JMath + off + 4);
+                u32 ang = fn_801D0280(this_);
+                v.set(JMath::sincosTable_.mTable[(u16)ang >> 5].first, JMath::sincosTable_.mTable[(u16)ang >> 5].second);
             } else {
-                f32 lenSq;
-                x = dir[0];
-                y = dir[1];
-                lenSq = x * x + y * y;
-                if (lenSq > lbl_8053F580 * FLT_EPSILON) {
-                    if (lenSq > lbl_8053F578) {
-                        f32 inv = __frsqrte(lenSq);
-                        lenSq = lbl_8053F584 * inv * (lbl_8053F588 - lenSq * (inv * inv));
-                    }
-                    x *= lenSq;
-                    y *= lenSq;
-                }
+                v.set(dir[0], dir[1]);
+                v.normalize();
             }
-            x *= lbl_8053F598;
-            y *= lbl_8053F598;
-            *(f32*)(slot + 0x310) = x;
-            *(f32*)(slot + 0x314) = y;
-            *(f32*)(slot + 0x318) = lbl_8053F588;
-            *(u8*)(slot + 0x30d) = 1;
+            v.scale(lbl_8053F598);
+            ((JGeometry::TVec3<f32>*)(this_ + i * 0x14 + 0x310))->set(v.x, v.y, lbl_8053F588);
+            *(u8*)(this_ + i * 0x14 + 0x30d) = 1;
             return;
         }
     }
