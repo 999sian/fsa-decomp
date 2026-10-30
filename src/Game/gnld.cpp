@@ -195,6 +195,35 @@ struct GnldRandom {
 };
 
 
+extern "C" void* fn_801F856C(void);
+extern "C" char* fn_801F666C(void*,s32);
+extern "C" s32 fn_801F8544(void*,u32,s32,void*,u32);
+extern "C" void fn_8032A4FC(s32,s32,u8);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_80458880(void*,s32,s32);
+extern "C" void* fn_8013CC50(s32,void*,s32,s32,s32,s32,s32,s32,f32);
+extern "C" void fn_801F71A4(f32*,f32,f32,f32);
+extern "C" s32 fn_801F3D94(void*,s32);
+extern "C" u8 fn_801F305C(void*);
+extern "C" void fn_801EEC98(void*,s32,s16*,s32*,f32*,s32*,s32,s32);
+extern void* lbl_8053AF80;
+extern const s32 lbl_804AB630[];
+extern const f32 lbl_80541D1C;
+extern const f32 lbl_80541D20;
+extern const f32 lbl_80541D24;
+extern const f32 lbl_80541D28;
+extern const f32 lbl_80541D2C;
+extern const f32 lbl_80541D30;
+extern const f32 lbl_80541D34;
+extern const f32 lbl_80541D38;
+extern const f32 lbl_80541D3C;
+extern const f32 lbl_80541D40;
+extern const f32 lbl_80541D44;
+extern const f32 lbl_80541D48;
+extern const f32 lbl_80541D4C;
+extern const f32 lbl_80541D50;
+extern const f32 lbl_80541D54;
+
 extern "C" u32 fn_801F6874(void*);
 extern "C" void fn_80329640(u8* this_) {
     u8* p = this_;
