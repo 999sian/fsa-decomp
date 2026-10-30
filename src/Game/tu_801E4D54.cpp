@@ -14,7 +14,7 @@ extern "C" void fn_801E4D74(u8* this_) {
     *(f32*)(this_ + 0x4bc) = 255.0f;
 }
 
-extern "C" u8* fn_801F856C(...);
+extern "C" u8* fn_801F856C();
 extern "C" s32 fn_801F7818(u8* this_, u32 fourcc, s32 room, u8** list, s32 max);
 extern "C" s32 fn_801F666C(u8* a, s32 id);
 extern "C" void fn_801D7874(u8* p);
@@ -51,14 +51,23 @@ extern "C" void fn_801E4D88(u8* this_) {
     s32 id;
     u8* p;
     u8* e;
-    count = fn_801F7818(fn_801F856C(this_), 0x48424D42, *(s32*)(this_ + 4), list, -1);
+    count = fn_801F7818(fn_801F856C(), 0x48424D42, *(s32*)(this_ + 4), list, -1);
     for (i = 0, p = this_; i < 16; i++, p += 0x14) {
         if (p[0x30c] == 0) continue;
         id = *(s32*)(p+0x308);
-        if (id < 0) goto clear;
-        e = (u8*)fn_801F666C(fn_801F856C(this_), id);
-        if (e == 0) goto clear;
-        if (!e[0x11c] || *(s32*)(e+4)!=*(s32*)(this_+4) || *(u16*)(e+0x94)==1 || *(u32*)(e+0x90)) goto clear;
+        if (id < 0) {
+            u8* slot=p+0x308;
+            fn_801D7874(slot); slot[4]=0; continue;
+        }
+        e = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (e == 0) {
+            u8* slot=p+0x308;
+            fn_801D7874(slot); slot[4]=0; continue;
+        }
+        if (!e[0x11c] || *(s32*)(e+4)!=*(s32*)(this_+4) || *(u16*)(e+0x94)==1 || *(u32*)(e+0x90)) {
+            u8* slot=p+0x308;
+            fn_801D7874(slot); slot[4]=0; continue;
+        }
         {
             s32 j;
             for(j=0;j<count;j++) {
@@ -66,7 +75,6 @@ extern "C" void fn_801E4D88(u8* this_) {
             }
             if(j<count) continue;
         }
-clear:
         u8* slot=p+0x308;
         fn_801D7874(slot);
         slot[4]=0;
@@ -103,7 +111,7 @@ clear:
         f32 x=pv.x-*(f32*)(this_+0xc);
         f32 y=pv.y-*(f32*)(this_+0x10);
         f32 range=*(f32*)(this_+0x47c);
-        if(x*x+y*y > range*range) {
+        if(!(x*x+y*y <= range*range)) {
             fn_801EB00C(this_+0x464,&pv.x,&out.x);
             u32 flags=*(u32*)(this_+0x230)&0x4000;
             if(!flags && hasBombSlot(this_,e,0x30c) && !hasBombSlot(this_,e,0x30d)) {
