@@ -64,7 +64,8 @@ static inline u8 SpawnRadiusZero(f32 value) {
 
 static inline f32 SpawnRandom() {
     union { f32 f; u32 s; } out;
-    out.s=(((JMARandFast*)(lbl_8053AAF8+0xb4))->get()>>9)|0x3f800000;
+    JMARandFast* rnd=(JMARandFast*)(lbl_8053AAF8+0xb4);
+    out.s=(rnd->get()>>9)|0x3f800000;
     return out.f-lbl_80540858;
 }
 
@@ -189,7 +190,7 @@ pos.y=y;pos.z=z;pos.x=x;}
             if((s32)a->m23C>=a->m240)break;
         }
         if((s32)a->m23C>=a->m240) {
-            for(i=0;i<(s32)a->m234;i++) {
+            for(s32 j=0;j<(s32)a->m234;j++) {
                 pos.x=a->field_0C.x;pos.y=a->field_0C.y;pos.z=a->field_0C.z;
                 s32 room=a->field_04;
                 if(*(u8*)((u32)fn_802D6A9C()+room+0x131df)) {pos.y=a->field_0C.y;pos.z=lbl_80540854;}
