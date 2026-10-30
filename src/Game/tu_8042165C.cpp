@@ -97,7 +97,7 @@ struct HeartPane {
     virtual void v34();
     virtual void v35();
     virtual void v36();
-    virtual void v37();
+    virtual bool append(u32, f32);
     virtual void v38();
     virtual void v39();
     virtual void v40();
@@ -1586,35 +1586,103 @@ static inline void hudCtorAppend(u8* pane, u32 texture, f32 blend) {
     ((bool (*)(u8*, u32, f32))(*(void***)pane)[39])(pane, texture, blend);
 }
 extern "C" void* fn_80426DEC(u8* this_) {
-    u8* p = this_;
-    u8* g = lbl_8053AED0;
-    u8* sc;
-    *(u32*)p = (u32)(lbl_804B1428 + 0x44);
-    *(s32*)(p + 0x210) = -1;
-    *(s32*)(p + 0x214) = -1;
-    p[0x25c] = 0;
-    p[0x25d] = 0;
-    p[0x25e] = 0;
-    p[0x25f] = 0;
-    p[0x260] = 0;
-    p[0x261] = 0;
-    g[0x10e] |= 1;
-    sc = (u8*)__nw__FUl(0xd4);
-    if (sc != 0) {
-        __ct__13J2DOrthoGraphFffffff(sc, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    }
-    *(u8**)(p + 0x4c) = sc;
-    sc = (u8*)__nw__FUl(0x10);
-    if (sc != 0) {
-        fn_80441778();
-    }
-    *(u8**)(p + 0xf0) = sc;
-    sc = (u8*)__nw__FUl(0x118);
-    if (sc != 0) {
-        __ct__9J2DScreenFv(sc);
-    }
-    *(u8**)(p + 0x4) = sc;
-    return this_;
+const u8* data=lbl_804B1428;
+const u8* base=lbl_8048E1B8;
+u8* p=this_;
+*(void**)p=(void*)(data+0x44);
+*(s32*)(p+0x210)=-1;*(s32*)(p+0x214)=-1;
+p[0x25d]=0;p[0x25c]=0;p[0x25e]=0;p[0x25f]=0;p[0x260]=0;p[0x261]=0;
+lbl_8053AED0[0x10e]|=1;
+u8* graph=(u8*)__nw__FUl(0xd4);
+if(graph) {
+u8* video=*(u8**)(sManager__8JUTVideo+4);
+__ct__13J2DOrthoGraphFffffff(graph,0.0f,0.0f,(f32)*(u16*)(video+4),(f32)*(u16*)(video+6),-10000.0f,10000.0f);
+}
+*(u8**)(p+0x4c)=graph;
+u8* animator=(u8*)__nw__FUl(0x10);if(animator)((void(*)(void*))fn_80441778)(animator);
+*(u8**)(p+0xf0)=animator;
+*(u8**)(p+4)=hudCtorScreen();
+setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+4),(const char*)base+0x106c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
+for(s32 i=0;i<4;i++) {
+*(u8**)(p+8+i*4)=hudCtorScreen();
+setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+8+i*4),(const char*)base+0x107c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
+*(u8**)(p+0x2c+i*4)=hudCtorScreen();
+setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+0x2c+i*4),(const char*)base+0x108c,0x1100000,*(void**)(lbl_80529DEC+0x20));
+}
+*(u8**)(p+0x18)=hudCtorScreen();
+setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(p+0x18),(const char*)base+0x109c,0x1100000,*(void**)(lbl_80529DEC+0x4c));
+GetHeart(*(u8**)(p+4),0x5070316c693031ULL)[0xb0]=0;
+GetHeart(*(u8**)(p+4),0x5070326c693031ULL)[0xb0]=0;
+GetHeart(*(u8**)(p+4),0x5070336c693031ULL)[0xb0]=0;
+GetHeart(*(u8**)(p+4),0x5070346c693031ULL)[0xb0]=0;
+u8* pane=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x148));
+*(f32*)(p+0xf4)=(*(f32*)(pane+0x28)-*(f32*)(pane+0x20));
+((JUtility::TColor*)(p+0x214))->setRGBA(hudCtorColor(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xa28)),77));
+((JUtility::TColor*)(p+0x210))->setRGBA(hudCtorColor(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xa28)),78));
+const u64* tags0=(const u64*)(base+0xd68);
+const u64* tags1=(const u64*)(base+0xda8);
+const u64* tags2=(const u64*)(base+0xdc8);
+const u64* tags3=(const u64*)(base+0xde8);
+const u64* tags4=(const u64*)(base+0xe08);
+const u64* tags5=(const u64*)(base+0xe28);
+const u64* tags6=(const u64*)(base+0xe68);
+const u64* tags7=(const u64*)(base+0xe88);
+const u64* tags8=(const u64*)(base+0xea8);
+const u64* tags9=(const u64*)(base+0xec8);
+u8* owner=p;
+for(s32 i=0;i<4;i++,owner+=4,tags0++,tags1++,tags2++,tags3++,tags4++,tags5++,tags6++,tags7++,tags8++,tags9++) {
+hudCtorChild(owner,0x50,(u8**)(p+0x18),tags0);
+hudCtorChild(owner,0x60,(u8**)(p+0x18),tags1);
+hudCtorChild(owner,0x70,(u8**)(p+4),tags2);
+hudCtorChild(owner,0x80,(u8**)(p+4),tags3);
+hudCtorChild(owner,0x90,(u8**)(p+4),tags4);
+hudCtorChild(owner,0xa0,(u8**)(p+4),tags5);
+hudCtorChild(owner,0xb0,(u8**)(p+4),tags6);
+hudCtorChild(owner,0xc0,(u8**)(p+4),tags7);
+hudCtorChild(owner,0xd0,(u8**)(p+4),tags8);
+hudCtorChild(owner,0xe0,(u8**)(p+4),tags9);
+}
+p[0x218]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x148))[0xb2];
+for(s32 i=0;i<3;i++)p[0x219+i]=hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x1c8)+i)[0xb2];
+p[0x21c]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x228))[0xb2];
+p[0x21d]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x328))[0xb2];
+p[0x21e]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x428))[0xb2];
+p[0x21f]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x528))[0xb2];
+for(s32 i=0;i<3;i++) {p[0x220+i]=hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x628)+i)[0xb2];p[0x223+i]=hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x688)+i)[0xb2];}
+p[0x226]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x6e8))[0xb2];
+p[0x227]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x868))[0xb2];
+p[0x228]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x9e8))[0xb2];
+p[0x229]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0x9f0))[0xb2];
+p[0x22a]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xa28))[0xb2];
+p[0x22b]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xac8))[0xb2];
+for(s32 i=0;i<6;i++)p[0x22c+i]=hudCtorFind(*(u8**)(p+4),(const u64*)(base+0xb68)+i)[0xb2];
+p[0x232]=hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xda8))[0xb2];
+p[0x233]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xdc8))[0xb2];
+p[0x234]=hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xc28))[0xb2];
+p[0x235]=hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xc30))[0xb2];
+p[0x236]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xe28))[0xb2];
+p[0x237]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xe48))[0xb2];
+p[0x238]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xec8))[0xb2];
+p[0x239]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xee8))[0xb2];
+p[0x23a]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xf08))[0xb2];
+p[0x23b]=hudCtorFind(*(u8**)(p+0x4),(const u64*)(base+0xf28))[0xb2];
+for(s32 i=0;i<6;i++)p[0x247+i]=hudCtorFind(*(u8**)(p+0x2c),(const u64*)(base+0xfa0)+i)[0xb2];
+for(s32 i=0;i<4;i++) for(s32 j=0;j<8;j++) for(s32 k=0;k<3;k++) {
+u32 resource=fn_804030C4('TIMG',((const u32*)data)[k]);
+hudCtorAppend(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x228)+i*8+j),resource,lbl_80543A4C);
+hudCtorAppend(hudCtorFind(*(u8**)(p+4),(const u64*)(base+0x328)+i*8+j),resource,lbl_80543A4C);
+}
+for(s32 i=0;i<4;i++)for(s32 j=1;j<4;j++) {
+u32 resource=fn_804030C4('TIMG',((const u32*)(data+0x34))[j]);
+hudCtorAppend(hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xd68)+i),resource,lbl_80543A4C);
+hudCtorAppend(hudCtorFind(*(u8**)(p+0x18),(const u64*)(base+0xd88)+i),resource,lbl_80543A4C);
+}
+for(s32 i=0;i<4;i++)for(s32 j=0;j<8;j++)for(s32 k=0;k<3;k++) {
+u32 resource=fn_804030C4('TIMG',((const u32*)data)[k]);
+hudCtorAppend(hudCtorFind(*(u8**)(p+8+i*4),(const u64*)(base+0xc68)+j),resource,lbl_80543A4C);
+hudCtorAppend(hudCtorFind(*(u8**)(p+8+i*4),(const u64*)(base+0xce8)+j),resource,lbl_80543A4C);
+}
+return p;
 }
 
 
