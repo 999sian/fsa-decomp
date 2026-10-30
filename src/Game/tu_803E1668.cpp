@@ -973,12 +973,6 @@ void fn_803E6AB0(void)
 {
 }
 
-static inline s32 scaledMenuAlpha803E(u8 alpha, const f32 scale) {
-    f32 value=alpha;
-    value*=scale;
-    return (s32)value;
-}
-
 extern "C" void fn_803E8210(u8* p) {
     s32 t;
     u8* q;
@@ -1176,9 +1170,9 @@ lo=(long)group*10;hi=(int)group*10+10;lo2=group*30;
  pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x506c69626b6b3033ULL);
  pane->v10(*(f32*)(p+0x190)+*(f32*)(p+0x198),*(f32*)(p+0x194));
  pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
- f32 h=getBounds__7J2DPaneFv(pane)[1];
+ v=getBounds__7J2DPaneFv(pane)[1];
  pane=(Pane803E4650*)(*(J2DPane**)(p+0xc))->search(0x50736375726f3032ULL);
- pane->v10(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],h);
+ pane->v10(*(f32*)(p+0x1a4)+((f32*)(p+0x184))[*(s32*)(p+0x1b8)],v);
 }
 #pragma opt_common_subs reset
 
@@ -1588,7 +1582,6 @@ extern const f32 lbl_8054369C;
 extern const f32 lbl_805436E8;
 extern "C" void fn_803EA3F8(u8* p) {
     u8* base = lbl_80477970;
-    int lo;
     u64* names;
     int j;
     int i;
@@ -1669,8 +1662,9 @@ extern "C" void fn_803EA3F8(u8* p) {
     }
     int lo2;
     int hi;
-    lo = 0;
-    for (i = 0; i < 4; i++) {
+    int lo;
+    i = 0;
+    for (lo = 0; i < 4; lo += 5) {
         lo2 = i * 5;
         hi = i * 5 + 8;
         if (*(s16*)(p + 0x254) > lo) {
@@ -1703,7 +1697,7 @@ extern "C" void fn_803EA3F8(u8* p) {
                 }
             }
         }
-        lo += 5;
+        i++;
     }
     if (*(s16*)(p + 0x254) >= 23) {
         for (j = 0, i = 0; i < 4; i++, j += 2) {
