@@ -47,7 +47,7 @@ extern const f32 lbl_8053E7AC;
 extern "C" s32 fn_801F285C(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8030C210(void* a, void* b);
 extern "C" s32 fn_801F3D94(void* p, s32 n);
-extern "C" u32 fn_801F2618(void* p, s32 a, s32 b);
+extern "C" u32 fn_801F2618(void* p, void* a, s32 b);
 extern "C" u8 fn_801F2DB4(void* p, u32 a, u32 b, s32 c);
 extern "C" void fn_801F71A4(void* v, f32 a, f32 b, f32 c);
 extern "C" void fn_801F2B7C(void* p, s32 a, s32 b, s32 c);
