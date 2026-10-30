@@ -61,7 +61,7 @@ extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" u8 fn_80237948(void* a, void* b);
 extern "C" void fn_8013CC50(s32 obj, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 v);
-extern "C" void fn_80239914(void* a, void* b, void* c);
+extern "C" void fn_80239914(void* a, s32 b, s32 c);
 extern "C" void fn_801EF510(void* this_);
 extern "C" f32 lbl_8053CEA8;
 extern "C" f32 lbl_8053CEB4;
